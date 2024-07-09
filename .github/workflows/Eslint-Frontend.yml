@@ -1,0 +1,37 @@
+name: Lint-Frontend
+# Controls when the workflow will run
+run-name: Run Linting Checks on 
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  workflow_call:
+# Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  lint:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend 
+# Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Node Dependencies
+        run: npm ci
+      - name: Save Code Linting Report JSON
+        run: npm run lint -- --output-file eslint_report.json --format json .
+        continue-on-error: true
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@v3
+        if: always()
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          report-json: "frontend/eslint_report.json"
+          markdown-report-on-step-summary: true

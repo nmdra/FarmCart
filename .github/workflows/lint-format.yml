@@ -1,0 +1,26 @@
+name: Lint Checks
+
+on:
+  pull_request:
+    branches:
+      - master
+      - development
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+  push:
+    branches:
+      - master
+      - development
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+
+jobs:
+  Lint-Backend:
+    name: Lint backend 
+    uses: ./.github/workflows/Eslint-Backend.yml
+
+  Lint-Frontend:
+    name: Lint frontend
+    uses: ./.github/workflows/Eslint-Frontend.yml
