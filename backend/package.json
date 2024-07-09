@@ -1,6 +1,5 @@
 {
-  "name": "itptest",
-  "version": "1.0.0",
+  "name": "itp-project",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -8,7 +7,7 @@
     "dev": "nodemon --verbose --env-file=.env server.js",
     "watch": "node --watch --env-file=.env server",
     "lint": "eslint ",
-    "format": "npx prettier --write **/*.js"
+    "format": "npx prettier --write '*.js' '**/*.js'"
   },
   "author": "Nimendra",
   "license": "MIT",
