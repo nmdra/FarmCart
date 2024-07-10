@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema(
             required: true,
             validate: {
                 validator: function (v) {
-                    return /^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$/.test(v);
+                    return /^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$/.test(v)
                 },
                 message: '{VALUE} is not a valid contact number!',
             },
