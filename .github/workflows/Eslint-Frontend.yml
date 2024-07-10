@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: '22'
       - name: Install Node Dependencies
-        run: npm ci
+        run: npm install
       - name: Save Code Linting Report JSON
         run: npm run lint -- --output-file eslint_report.json --format json .
         continue-on-error: true

@@ -27,6 +27,3 @@ jobs:
         run: npm ci
       - name: Run Jest Testing
         run: npm run test -- --ci --json --coverage --testLocationInResults --outputFile=jestReport.json 
-        continue-on-error: true
-      - name: Annotate Code Linting Results
-        uses: ArtiomTr/jest-coverage-report-action@v2
