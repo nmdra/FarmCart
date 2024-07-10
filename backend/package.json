@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "type": "module",
+  "jest": {
+    "transform": {}
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon --verbose --env-file=.env server.js",
