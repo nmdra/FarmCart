@@ -31,17 +31,17 @@ const userSchema = new mongoose.Schema(
             required: [true, 'Password not provided'],
         },
         defaultAddress: {
-            address: { type: String, required: false, default: '' },
-            city: { type: String, required: false, default: '' },
-            postalCode: { type: Number, required: false, default: '' },
-            country: { type: String, required: false, default: '' },
+            address: { type: String, required: false },
+            city: { type: String, required: false },
+            postalCode: { type: String, required: false },
+            country: { type: String, required: false },
         },
         contactNumber: {
             type: String,
-            required: true,
+            required: false,
             validate: {
                 validator: function (v) {
-                    return /^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$/.test(v);
+                    return /^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$/.test(v)
                 },
                 message: '{VALUE} is not a valid contact number!',
             },
