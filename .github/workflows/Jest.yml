@@ -24,9 +24,6 @@ jobs:
         with:
           node-version: '22'
       - name: Install Node Dependencies
-        run: npm ci
+        run: npm install
       - name: Run Jest Testing
         run: npm run test -- --ci --json --coverage --testLocationInResults --outputFile=jestReport.json 
-        continue-on-error: true
-      - name: Annotate Code Linting Results
-        uses: ArtiomTr/jest-coverage-report-action@v2
