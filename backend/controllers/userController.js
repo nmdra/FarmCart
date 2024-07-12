@@ -5,7 +5,7 @@ import generateToken from '../utils/generateToken.js'
 // @route   POST /api/users
 // @access  Public
 export const registerUser = async (req, res, next) => {
-    const { name, email, password, role, defaultAddress, contactNumber } =
+    const { name, email, password, role, defaultAddress, contactNumber, pic } =
         req.body
 
     try {
@@ -22,6 +22,7 @@ export const registerUser = async (req, res, next) => {
             role,
             defaultAddress,
             contactNumber,
+            pic
         })
 
         if (user) {

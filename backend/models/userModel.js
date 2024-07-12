@@ -30,6 +30,11 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Password not provided'],
         },
+        pic:{
+            type: String,
+            default: 'default_user_pic.jpg',
+            required: false,
+        },
         defaultAddress: {
             address: { type: String, required: false },
             city: { type: String, required: false },
