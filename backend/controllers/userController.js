@@ -61,8 +61,7 @@ export const authUser = async (req, res, next) => {
                 contactNumber: user.contactNumber,
             })
         } else {
-            res.status(401)
-            throw new Error('Invalid email or password')
+            res.status(401).json({ message: "Invalid Password or Email" })
         }
     } catch (error) {
         return next(error)
