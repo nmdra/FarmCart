@@ -26,8 +26,15 @@ export const registerUser = async (req, res, next) => {
         })
 
         if (user) {
-            generateToken(res, user._id, user.name)
-            return res.status(201).json(user)
+            generateToken(res, user._id)
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                defaultAddress: user.defaultAddress,
+                contactNumber: user.contactNumber,
+            })
         } else {
             res.status(500)
             throw new Error('User creation failed')
@@ -61,8 +68,7 @@ export const authUser = async (req, res, next) => {
                 contactNumber: user.contactNumber,
             })
         } else {
-            res.status(401)
-            throw new Error('Invalid email or password')
+            res.status(401).json({ message: "Invalid Password or Email" })
         }
     } catch (error) {
         return next(error)

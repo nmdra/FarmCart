@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
 
-const generateToken = (res, userId, userName) => {
-    const token = jwt.sign({ userId, userName }, process.env.JWT_SECRET, {
-        expiresIn: '12h',
+const generateToken = (res, userId) => {
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: '24h',
     })
 
     // Set the token as a cookie in the response
