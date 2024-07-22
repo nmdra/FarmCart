@@ -9,7 +9,6 @@ const UserProfile = () => {
                 <p className="text-lg mb-8">Name: {user.name}</p>
                 <p className="text-lg mb-8">ID: {user._id}</p>
                 <p className="text-lg mb-8">Email: {user.email}</p>
-                {/* Add more user details here */}
             </div>
         </div>
     );

@@ -10,14 +10,18 @@ import NotFound from "./Pages/NotFound";
 import Login from "./Pages/LoginForm"
 import Register from "./Pages/RegisterForm"
 import UserProfile from "./Pages/UserProfile";
+import PrivateRoute from "./Components/PrivateRoute";
 
 const router = createBrowserRouter(
+    
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
       <Route index element={<HomePage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/profile" element={<UserProfile />} />
+        <Route path="/profile" element={<PrivateRoute />}>
+          <Route path="" element={<UserProfile />} />
+        </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
   )
