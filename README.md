@@ -1,22 +1,40 @@
-# ITP Project
+# FarmCart
+
+![Banner](https://github.com/user-attachments/assets/397fa451-14bf-4d31-bf53-28ab9b685e64)
 
 ## Overview
 
-The ITP Project is a web application designed to facilitate farmers in selling their harvest directly to customers. The platform offers pre-made and customizable vegetable boxes, handles delivery tracking, payments, feedback, and manages farmer communication and product quality. 
+Empowering Sri Lankan Farmers through Direct Farm-to-Table E-Commerce FarmCart is an innovative web application designed to revolutionize the agricultural landscape in Sri Lanka. Our platform connects local farmers directly with consumers, eliminating intermediaries and ensuring fair pricing for both parties. 
+
+## Technologies
+
+<div align="center">
+    <img height="32" width="32" src="https://cdn.simpleicons.org/react" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/tailwindcss" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/vite" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/nodedotjs" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/express" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/postman" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/git" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/github" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/vercel" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/javascript" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/puppeteer" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/npm" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/docker" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/mongodb" /></a>
+    <img height="32" width="32" src="https://cdn.simpleicons.org/mongoose" /></a>
+</div>
 
 ---
-
 ## Table of Contents
 
-- [ITP Project](#itp-project)
-  - [Overview](#overview)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Branching Model](#branching-model)
-    - [Pull Request Guidelines](#pull-request-guidelines)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Branching Model](#branching-model)
+  - [Pull Request Guidelines](#pull-request-guidelines)
 
 ## Features
 
@@ -41,7 +59,7 @@ The ITP Project is a web application designed to facilitate farmers in selling t
 ### Prerequisites
 
 - Node.js
-- npm or Yarn
+- npm
 - Git
 
 ### Installation
