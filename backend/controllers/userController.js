@@ -134,18 +134,18 @@ export const getUserProfile = async (req, res) => {
 // @route   GET /api/users/verify
 // @access  Private
 
-export const sendVerifyEmail = async (user) => {
-
-    const token = tokenToVerify(user.email);
-    const body = {
-        from: `'FarmCart 🌱' <${process.env.EMAIL_USER}>`,
-        to: `${user.email}`,
-        subject: 'FarmCart: Email Activation',
-        html: `
+export const sendVerifyEmail = async (user, res) => {
+    try {
+        const token = tokenToVerify(user.email);
+        const body = {
+            from: `'FarmCart 🌱' <${process.env.EMAIL_USER}>`,
+            to: `${user.email}`,
+            subject: 'FarmCart: Email Activation',
+            html: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <h2 style="color: #22c55e;">Hello ${user.name},</h2>
       <p>Thank you for signing up with <strong>FarmCart</strong>. Please verify your email address to complete your registration.</p>
-      <p>This link will expire in <strong>2 days</strong>.</p>
+      <p>This link will expire in <strong>2 minutes</strong>.</p>
       <p style="margin-bottom: 20px;">Click the button below to activate your account:</p>
       <a href="${process.env.SITE_URL}/api/users/verify?token=${token}" 
          style="background: #22c55e; color: white; border: 1px solid #22c55e; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Verify Account</a>
@@ -154,10 +154,15 @@ export const sendVerifyEmail = async (user) => {
       <p style="font-weight: bold;">The FarmCart Team</p>
     </div>
   `,
-    };
+        };
 
-    const message = 'Please check your email to verify!';
-    sendEmail(body, message);
+        const message = 'Please check your email to verify!';
+        await sendEmail(body, message);
+        return res.status(200).json({ success: true, message });
+    } catch (error) {
+        console.error(`Error in sending verification email: ${error.message}`);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
 }
 
 export const verifyEmail = async (req, res) => {
@@ -181,5 +186,47 @@ export const verifyEmail = async (req, res) => {
         return res.status(200).json({ success: true, message: 'Email verified successfully!' })
     } catch (error) {
         return res.status(400).json({ success: false, message: error.message })
+    }
+}
+
+// @desc    Send Password Reset Email
+// @route   GET /api/users/forgot-password
+// @access  Private
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const isAdded = await User.findOne({ email: req.body.verifyEmail })
+        if (!isAdded) {
+            return res.status(404).json({ success: false, message: 'No user found with this email' })
+        }
+
+        const token = await tokenToVerify(isAdded.email)
+
+        const body = {
+            from: `'FarmCart 🌱' <${process.env.EMAIL_USER}>`,
+            to: `${req.body.verifyEmail}`,
+            subject: 'FarmCart: Password Reset',
+            html: `<h2>Hello ${req.body.verifyEmail}</h2>
+      <p>A request has been received to change the password for your <strong>FarmCart</strong> account </p>
+
+        <p>This link will expire in <strong> 15 minutes</strong>.</p>
+
+        <p style="margin-bottom:20px;">Click this link for reset your password</p>
+
+        <a href="${process.env.SITE_URL}/api/users/reset-pass?token=${token}" 
+             style="background: #ff0000; color: white; border: 1px solid #ff0000; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Reset Password</a>
+        <p style="margin-top: 35px;">If you did not initiate this request, please contact us immediately at support@farmcart.com</p>
+        <p style="margin-bottom:0px;">Thank you</p>
+        <strong>FarmCart Team</strong>
+             `,
+        };
+
+        const message = 'Please check your email to reset your password!';
+        await sendEmail(body);
+
+        return res.status(200).json({ success: true, message });
+    } catch (error) {
+        console.error(`Error in forgotPassword: ${error.message}`);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
