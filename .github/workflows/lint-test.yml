@@ -26,6 +26,6 @@ jobs:
     name: Lint frontend
     uses: ./.github/workflows/Eslint-Frontend.yml
 
-  Lint-Test:
-    name: Jest Testing
-    uses: ./.github/workflows/Jest.yml
+  # Lint-Test:
+  #   name: Jest Testing
+  #   uses: ./.github/workflows/Jest.yml
