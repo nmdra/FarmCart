@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const generateToken = (res, userId) => {
+export const generateToken = (res, userId) => {
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
         expiresIn: '24h',
     })
@@ -14,4 +14,9 @@ const generateToken = (res, userId) => {
     })
 }
 
-export default generateToken
+export const tokenToVerify = (email) => {
+  return jwt.sign({ email }, process.env.JWT_SECRET,{
+     expiresIn: '48h' 
+    });
+};
+

@@ -1,5 +1,7 @@
 import User from '../models/userModel.js'
-import generateToken from '../utils/generateToken.js'
+import { generateToken, tokenToVerify } from '../utils/generateToken.js'
+import { sendEmail } from '../utils/sendEmail.js'
+import jwt from 'jsonwebtoken'
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -27,6 +29,7 @@ export const registerUser = async (req, res, next) => {
 
         if (user) {
             generateToken(res, user._id)
+            sendVerifyEmail(user)
             res.json({
                 _id: user._id,
                 name: user.name,
@@ -113,16 +116,70 @@ export const getUserById = async (req, res, next) => {
 // @route   GET /api/users/profile
 // @access  Private
 export const getUserProfile = async (req, res) => {
-  const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id);
 
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404)
-    throw new Error('User not found')
-  }
+    if (user) {
+        res.json(user);
+    } else {
+        res.status(404)
+        throw new Error('User not found')
+    }
 }
 
 // @desc    Upload User Profile picture
 // @route   GET /api/users/pfp
 // @access  Private
+
+// @desc    Send Verify Email
+// @route   GET /api/users/verify
+// @access  Private
+
+export const sendVerifyEmail = async (user) => {
+
+    const token = tokenToVerify(user.email);
+    const body = {
+        from: `'FarmCart 🌱' <${process.env.EMAIL_USER}>`,
+        to: `${user.email}`,
+        subject: 'FarmCart: Email Activation',
+        html: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <h2 style="color: #22c55e;">Hello ${user.name},</h2>
+      <p>Thank you for signing up with <strong>FarmCart</strong>. Please verify your email address to complete your registration.</p>
+      <p>This link will expire in <strong>2 days</strong>.</p>
+      <p style="margin-bottom: 20px;">Click the button below to activate your account:</p>
+      <a href="${process.env.SITE_URL}/api/users/verify?token=${token}" 
+         style="background: #22c55e; color: white; border: 1px solid #22c55e; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Verify Account</a>
+      <p style="margin-top: 35px;">If you did not initiate this request, please contact us immediately at support@farmcart.com</p>
+      <p style="margin-bottom: 0;">Thank you,</p>
+      <p style="font-weight: bold;">The FarmCart Team</p>
+    </div>
+  `,
+    };
+
+    const message = 'Please check your email to verify!';
+    sendEmail(body, message);
+}
+
+export const verifyEmail = async (req, res) => {
+    const token = req.query.token
+
+    if (!token) {
+        return res.status(400).json({ success: false, message: 'Invalid token' })
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const user = await User.findOne({ email: decoded.email })
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid token or user does not exist' })
+        }
+
+        user.isVerified = true
+        await user.save()
+
+        return res.status(200).json({ success: true, message: 'Email verified successfully!' })
+    } catch (error) {
+        return res.status(400).json({ success: false, message: error.message })
+    }
+}
