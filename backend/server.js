@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
+import userRoute from './routes/userRoute.js'
 import { errorHandler } from './middlewares/errorMiddleware.js'
 
 // load environment variables
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 // routes
-// app.use('/api/users', userRoute)
+app.use('/api/users', userRoute)
 
 app.all('*', (_req, res) => {
     res.status(404).json({
