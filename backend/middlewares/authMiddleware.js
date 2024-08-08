@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
-import CustomError from '../utils/customError.js'
-import User from '../model/userModel.js'
+import User from '../models/userModel.js'
 
 const protect = async (req, res, next) => {
     let token = req.cookies.jwt
@@ -12,16 +11,19 @@ const protect = async (req, res, next) => {
             req.user = await User.findById(decoded.userId).select('-password')
 
             if (!req.user) {
-                throw new CustomError('User not found', 403)
+                res.status(403)
+                throw new Error('User not found')
             }
 
             next()
         } else {
-            throw new CustomError('Not authorized. No token provided', 401)
+            res.status(401)
+            throw new Error('Not authorized. No token provided', 401)
         }
     } catch (error) {
         if (error instanceof jwt.JsonWebTokenError) {
-            return next(new CustomError('Invalid token signature', 401))
+            res.status(401)
+            return next(new Error('Invalid token signature'))
         }
         next(error)
     }

@@ -89,6 +89,43 @@ export const logoutUser = (_req, res) => {
     res.status(200).json({ message: 'Logged out successfully' })
 }
 
+export const updateUserProfile = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user._id)
+
+        if (user) {
+            user.name = req.body.name || user.name
+            user.email = req.body.email || user.email
+            user.password = req.body.password || user.password
+            user.defaultAddress = req.body.defaultAddress || user.defaultAddress
+            user.contactNumber = req.body.contactNumber || user.contact
+            // user.picture = req.body.picture || user.picture
+            // user.role = user.role;
+            // user.password = req.body.password || user.password
+
+            if (req.body.password) {
+                user.password = req.body.password
+            }
+
+            const updatedUser = await user.save()
+
+            res.status(201).json({
+                message: 'User updated successfully',
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                contactNumber: updatedUser.contactNumber
+            })
+        } else {
+            res.status(404)
+            throw new Error('User not found')
+        }
+    } catch (error) {
+        return next(error)
+    }
+}
+
 // @desc    Get user by ID
 // @route   GET /api/users/:id
 // @access  Private/Admin
@@ -133,7 +170,6 @@ export const getUserProfile = async (req, res) => {
 // @desc    Send Verify Email
 // @route   GET /api/users/verify
 // @access  Private
-
 export const sendVerifyEmail = async (user, res) => {
     try {
         const token = tokenToVerify(user.email);
