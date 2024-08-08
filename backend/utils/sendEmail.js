@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer from 'nodemailer'
 
 export const sendEmail = async (body) => {
     try {
@@ -8,12 +8,15 @@ export const sendEmail = async (body) => {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
-        });
+        })
 
-        await transporter.sendMail(body);
+        await transporter.sendMail(body)
 
-        return { success: true, message: 'Email sent successfully' };
+        return { success: true, message: 'Email sent successfully' }
     } catch (err) {
-        return { success: false, message: `Error sending email: ${err.message}` };
+        return {
+            success: false,
+            message: `Error sending email: ${err.message}`,
+        }
     }
-};
+}
