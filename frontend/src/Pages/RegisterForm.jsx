@@ -1,34 +1,34 @@
-import { useState, useEffect } from 'react';
-import { useRegister } from '../Hooks/useRegister';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useState, useEffect } from 'react'
+import { useRegister } from '../Hooks/useRegister'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Register = () => {
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const { register,error, isLoading } = useRegister();
+    const [email, setEmail] = useState('')
+    const [name, setName] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const { register, error, isLoading } = useRegister()
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        event.preventDefault()
         if (password !== confirmPassword) {
-            toast.error("Passwords do not match");
-            return;
+            toast.error('Passwords do not match')
+            return
         }
         await register(name, email, password)
 
         // Perform registration logic here
         // toast.success('Registration successful!');
-    };
+    }
 
     useEffect(() => {
         if (error) {
             toast.error(error)
-            setEmail("")
-            setName("")
-            setPassword("")
-            setConfirmPassword("")
+            setEmail('')
+            setName('')
+            setPassword('')
+            setConfirmPassword('')
         }
     }, [error])
 
@@ -133,6 +133,6 @@ const Register = () => {
             </div>
         </div>
     )
-};
+}
 
-export default Register;
+export default Register

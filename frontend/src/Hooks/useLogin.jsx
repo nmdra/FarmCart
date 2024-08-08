@@ -7,7 +7,7 @@ export const useLogin = () => {
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useAuthContext()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const login = async (email, password) => {
         setIsLoading(true)
@@ -30,10 +30,14 @@ export const useLogin = () => {
             navigate('/profile')
         } catch (error) {
             console.error(error)
-            if (error.response && error.response.data && error.response.data.message) {
-                setError(error.response.data.message);
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                setError(error.response.data.message)
             } else {
-                setError('Internal server error. Please try again later.');
+                setError('Internal server error. Please try again later.')
             }
             setIsLoading(false)
         }
