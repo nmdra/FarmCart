@@ -24,20 +24,20 @@ export const registerUser = async (req, res, next) => {
             role,
             defaultAddress,
             contactNumber,
-            pic
+            pic,
         })
 
         if (user) {
-            generateToken(res, user._id)
-            sendVerifyEmail(user)
-            res.json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                defaultAddress: user.defaultAddress,
-                contactNumber: user.contactNumber,
-            })
+            // generateToken(res, user._id)
+            await sendVerifyEmail(user, res)
+            // res.json({
+            //     _id: user._id,
+            //     name: user.name,
+            //     email: user.email,
+            //     role: user.role,
+            //     defaultAddress: user.defaultAddress,
+            //     contactNumber: user.contactNumber,
+            // })
         } else {
             res.status(500)
             throw new Error('User creation failed')
@@ -71,7 +71,7 @@ export const authUser = async (req, res, next) => {
                 contactNumber: user.contactNumber,
             })
         } else {
-            res.status(401).json({ message: "Invalid Password or Email" })
+            res.status(401).json({ message: 'Invalid Password or Email' })
         }
     } catch (error) {
         return next(error)
@@ -115,7 +115,7 @@ export const updateUserProfile = async (req, res, next) => {
                 name: updatedUser.name,
                 email: updatedUser.email,
                 role: updatedUser.role,
-                contactNumber: updatedUser.contactNumber
+                contactNumber: updatedUser.contactNumber,
             })
         } else {
             res.status(404)
@@ -138,7 +138,7 @@ export const getUserById = async (req, res, next) => {
         const user = await User.findById(req.params.id).select('-password')
 
         if (user) {
-            res.json(user);
+            res.json(user)
         } else {
             return res.status(404).json('User not found')
         }
@@ -151,10 +151,10 @@ export const getUserById = async (req, res, next) => {
 // @route   GET /api/users/profile
 // @access  Private
 export const getUserProfile = async (req, res) => {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id)
 
     if (user) {
-        res.json(user);
+        res.json(user)
     } else {
         res.status(404)
         throw new Error('User not found')
@@ -170,7 +170,7 @@ export const getUserProfile = async (req, res) => {
 // @access  Private
 export const sendVerifyEmail = async (user, res) => {
     try {
-        const token = tokenToVerify(user.email);
+        const token = tokenToVerify(user.email)
         const body = {
             from: `'FarmCart 🌱' <${process.env.EMAIL_USER}>`,
             to: `${user.email}`,
@@ -181,22 +181,23 @@ export const sendVerifyEmail = async (user, res) => {
       <p>Thank you for signing up with <strong>FarmCart</strong>. Please verify your email address to complete your registration.</p>
       <p>This link will expire in <strong>2 minutes</strong>.</p>
       <p style="margin-bottom: 20px;">Click the button below to activate your account:</p>
-      <a href="${process.env.SITE_URL}/api/users/verify?token=${token}" 
+      <a href="${process.env.SITE_URL}/verify-email?token=${token}"
          style="background: #22c55e; color: white; border: 1px solid #22c55e; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Verify Account</a>
       <p style="margin-top: 35px;">If you did not initiate this request, please contact us immediately at support@farmcart.com</p>
       <p style="margin-bottom: 0;">Thank you,</p>
       <p style="font-weight: bold;">The FarmCart Team</p>
     </div>
   `,
-        };
+        }
 
-        const message = 'Please check your email to verify!';
-        await sendEmail(body, message);
-        return res.status(200).json({ success: true, message });
+        const message = 'Please check your email to verify!'
+        await sendEmail(body, message)
+        return res.status(200).json({ success: true, message })
     } catch (error) {
-        console.error(`Error in sending verification email: ${error.message}`);
-        res.status(500)
-        throw new Error(`Error in sending verification email`)
+        // console.error(`Error in sending verification email: ${error.message}`);
+        return res
+            .status(500)
+            .json(`Error in sending verification email: ${error.message}`)
     }
 }
 
@@ -204,7 +205,9 @@ export const verifyEmail = async (req, res) => {
     const token = req.query.token
 
     if (!token) {
-        return res.status(400).json({ success: false, message: 'Invalid token' })
+        return res
+            .status(400)
+            .json({ success: false, message: 'Invalid token' })
     }
 
     try {
@@ -212,13 +215,20 @@ export const verifyEmail = async (req, res) => {
         const user = await User.findOne({ email: decoded.email })
 
         if (!user) {
-            return res.status(400).json({ success: false, message: 'Invalid token or user does not exist' })
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: 'Invalid token or user does not exist',
+                })
         }
 
         user.isVerified = true
         await user.save()
 
-        return res.status(200).json({ success: true, message: 'Email verified successfully!' })
+        return res
+            .status(200)
+            .json({ success: true, message: 'Email verified successfully!' })
     } catch (error) {
         return res.status(400).json({ success: false, message: error.message })
     }
@@ -232,7 +242,12 @@ export const forgotPassword = async (req, res) => {
     try {
         const isAdded = await User.findOne({ email: req.body.verifyEmail })
         if (!isAdded) {
-            return res.status(404).json({ success: false, message: 'No user found with this email' })
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message: 'No user found with this email',
+                })
         }
 
         const token = await tokenToVerify(isAdded.email)
@@ -248,21 +263,55 @@ export const forgotPassword = async (req, res) => {
 
         <p style="margin-bottom:20px;">Click this link for reset your password</p>
 
-        <a href="${process.env.SITE_URL}/api/users/reset-pass?token=${token}" 
+        <a href="${process.env.SITE_URL}/reset-pass?token=${token}" 
              style="background: #ff0000; color: white; border: 1px solid #ff0000; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Reset Password</a>
         <p style="margin-top: 35px;">If you did not initiate this request, please contact us immediately at support@farmcart.com</p>
         <p style="margin-bottom:0px;">Thank you</p>
         <strong>FarmCart Team</strong>
              `,
-        };
+        }
 
-        const message = 'Please check your email to reset your password!';
-        await sendEmail(body);
+        const message = 'Please check your email to reset your password!'
+        await sendEmail(body)
 
-        return res.status(200).json({ success: true, message });
+        return res.status(200).json({ success: true, message })
     } catch (error) {
-        console.error(`Error in forgotPassword: ${error.message}`);
+        console.error(`Error in forgotPassword: ${error.message}`)
         res.status(500)
-        throw new Error('Internal server error');
+        throw new Error('Internal server error')
+    }
+}
+
+export const resetPassword = async (req, res) => {
+    const { token, password } = req.body
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+        // Find the user by email (which is embedded in the token)
+        const user = await User.findOne({ email: decoded.email })
+
+        if (!user) {
+            return res
+                .status(404)
+                .json({ success: false, message: 'User not found' })
+        }
+
+        // Update the user's password
+        user.password = password
+        await user.save()
+
+        return res
+            .status(200)
+            .json({
+                success: true,
+                message: 'Password has been reset successfully',
+            })
+    } catch (error) {
+        console.error('Error in resetPassword:', error.message)
+        return res
+            .status(400)
+            .json({ success: false, message: 'Invalid or expired token' })
     }
 }

@@ -1,24 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useLogin } from '../Hooks/useLogin';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useState, useEffect } from 'react'
+import { useLogin } from '../Hooks/useLogin'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const { login, error, isLoading } = useLogin();
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const { login, error, isLoading } = useLogin()
 
     const handleSubmit = async (event) => {
         event.preventDefault()
         await login(email, password)
         // toast.success('Login successful!')
     }
-    
+
     useEffect(() => {
         if (error) {
             toast.error(error)
-            setEmail("")
-            setPassword("")
+            setEmail('')
+            setPassword('')
         }
     }, [error])
 
@@ -28,7 +29,9 @@ const Login = () => {
                 <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label htmlFor="email" className="block text-gray-700">Email</label>
+                        <label htmlFor="email" className="block text-gray-700">
+                            Email
+                        </label>
                         <input
                             type="email"
                             id="email"
@@ -39,7 +42,12 @@ const Login = () => {
                         />
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="password" className="block text-gray-700">Password</label>
+                        <label
+                            htmlFor="password"
+                            className="block text-gray-700"
+                        >
+                            Password
+                        </label>
                         <input
                             type="password"
                             id="password"
@@ -82,9 +90,17 @@ const Login = () => {
                     </button>
                     <ToastContainer />
                 </form>
+                <div className="mt-4">
+                    <Link
+                        to="/forgot-password"
+                        className="text-blue-600 hover:underline"
+                    >
+                        Forgot Password?
+                    </Link>
+                </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

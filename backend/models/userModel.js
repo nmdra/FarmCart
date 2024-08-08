@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Password not provided'],
         },
-        pic:{
+        pic: {
             type: String,
             default: 'default_user_pic.jpg',
             required: false,
@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
                 message: '{VALUE} is not a valid contact number!',
             },
         },
-        isVerified:{
+        isVerified: {
             type: Boolean,
             default: false,
             required: false,

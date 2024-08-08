@@ -7,7 +7,7 @@ export const useRegister = () => {
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useAuthContext()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const register = async (name, email, password) => {
         setIsLoading(true)
@@ -28,13 +28,17 @@ export const useRegister = () => {
             dispatch({ type: 'REGISTER', payload: json })
 
             setIsLoading(false)
-            navigate('/profile')
+            navigate('/check-email')
         } catch (error) {
             console.error(error)
-            if (error.response && error.response.data && error.response.data.message) {
-                setError(error.response.data.message);
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+            ) {
+                setError(error.response.data.message)
             } else {
-                setError('Internal server error. Please try again later.');
+                setError('Internal server error. Please try again later.')
             }
             setIsLoading(false)
         }
@@ -42,4 +46,3 @@ export const useRegister = () => {
 
     return { error, isLoading, register }
 }
-
