@@ -131,8 +131,7 @@ export const updateUserProfile = async (req, res, next) => {
 // @access  Private/Admin
 export const getUserById = async (req, res, next) => {
     if (req.user.role !== 'admin') {
-        res.status(403)
-        throw new Error('Unauthorized access')
+        return res.status(403).json('Unauthorized')
     }
 
     try {
@@ -141,8 +140,7 @@ export const getUserById = async (req, res, next) => {
         if (user) {
             res.json(user);
         } else {
-            res.status(404);
-            throw new Error('User not found');
+            return res.status(404).json('User not found')
         }
     } catch (error) {
         next(error)
@@ -197,7 +195,8 @@ export const sendVerifyEmail = async (user, res) => {
         return res.status(200).json({ success: true, message });
     } catch (error) {
         console.error(`Error in sending verification email: ${error.message}`);
-        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+        res.status(500)
+        throw new Error(`Error in sending verification email`)
     }
 }
 
@@ -263,6 +262,7 @@ export const forgotPassword = async (req, res) => {
         return res.status(200).json({ success: true, message });
     } catch (error) {
         console.error(`Error in forgotPassword: ${error.message}`);
-        return res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500)
+        throw new Error('Internal server error');
     }
 }

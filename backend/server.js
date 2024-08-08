@@ -3,7 +3,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
 import userRoute from './routes/userRoute.js'
-import { errorHandler } from './middlewares/errorMiddleware.js'
+import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
 // load environment variables
 const PORT = process.env.PORT || 8000
@@ -21,17 +21,24 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 // routes
-app.use('/api/users', userRoute)
-
-app.all('*', (_req, res) => {
-    res.status(404).json({
-        message: 'Page not found',
-        statusCode: 404,
-    })
+app.get('/', (_req, res) => {
+    res.send('FarmCart API is Running...')
 })
 
+// User API routes
+app.use('/api/users', userRoute)
+
+// Shop API routes
+// app.use('/api/shops', shopRoute);
+// app.use('/api/shops', productRoutes)
+
+// Middleware to handle 404 errors (route not found)
+app.use(notFound)
+
+// Middleware to handle errors and send appropriate responses
 app.use(errorHandler)
 
+// Start the server and listen on the specified port
 app.listen(PORT, () => {
     console.log(`Server currently is running on port ${PORT}`)
 }).on('error', (error) => {
