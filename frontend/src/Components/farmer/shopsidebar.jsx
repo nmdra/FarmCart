@@ -2,15 +2,54 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
+  const id = localStorage.getItem('shopId'); 
   return (
-    <nav>
-      <ul>
-        <li><Link to="#">Shop Profile</Link></li>
-        <li><Link to="#">My Orders</Link></li>
-        <li><Link to="">Products</Link></li>
-        <li><Link to="#">Settings</Link></li>
-      </ul>
-    </nav>
+    <div className="bg-white p-4 w-48 shadow-md rounded-lg">
+      <nav>
+        <ul className="space-y-4">
+          <li>
+            <Link 
+              to={`/shop/${id}` }
+              className="block px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded"
+            >
+              Shop Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/myshop" 
+              className="block px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded"
+            >
+              My Shops
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="#" 
+              className="block px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded"
+            >
+              My Orders
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="#" 
+              className="block px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded"
+            >
+              Products
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/shop/profile" 
+              className="block px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded"
+            >
+              Settings
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 

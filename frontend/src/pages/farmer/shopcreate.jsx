@@ -1,0 +1,242 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../Components/farmer/sidebar';
+import shop from '../../assets/shop.png'; // Placeholder image
+import axios from '../../../axios';
+
+const CreateShopPage = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: '',
+    district: '',
+    address: {
+      houseNo: '',
+      streetName: '',
+      city: '',
+    },
+    category: '',
+    email: '',
+    contactNumber: '',
+    description: '',
+  });
+  const [shopImage, setShopImage] = useState(null);
+  const [error, setError] = useState(null);
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    
+    if (name.startsWith('address.')) {
+      const addressField = name.split('.')[1];
+      setFormData({
+        ...formData,
+        address: { ...formData.address, [addressField]: value },
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  // Handle image input change
+  const handleImageChange = (e) => {
+    setShopImage(URL.createObjectURL(e.target.files[0]));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      await axios.post('/myshop', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      alert('Shop created successfully');
+      navigate('/shops');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error creating shop. Please try again.');
+      console.error('Error creating shop:', err);
+    }
+  };
+
+  // Handle cancel action
+  const handleCancel = () => {
+    navigate('/shops'); // Redirect to the shops list or any other desired route
+  };
+
+  return (
+    <div className="flex min-h-screen w-screen bg-gray-100">
+      {/* Sidebar */}
+      <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+        <Sidebar />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 p-8">
+        {/* Breadcrumb */}
+        <div className="text-sm text-gray-600 mb-4">
+          <span className="text-gray-500">Shop Owner</span> &gt; <span className="text-green-500">Create Shop</span>
+        </div>
+
+        {/* Create Shop Form */}
+        <form onSubmit={handleSubmit} className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Create Shop</h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Form Fields */}
+            <div className="md:col-span-2">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-gray-700 text-left">Shop Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-left">District</label>
+                  <input
+                    type="text"
+                    name="district"
+                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                    value={formData.district}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="flex space-x-4">
+                  <div className="flex-1">
+                    <label className="block text-gray-700 text-left">House No</label>
+                    <input
+                      type="text"
+                      name="address.houseNo"
+                      className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                      value={formData.address.houseNo}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-gray-700 text-left">Street Name</label>
+                    <input
+                      type="text"
+                      name="address.streetName"
+                      className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                      value={formData.address.streetName}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-gray-700 text-left">City</label>
+                    <input
+                      type="text"
+                      name="address.city"
+                      className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                      value={formData.address.city}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-left">Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                    value={formData.category}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-left">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-left">Contact Number</label>
+                  <input
+                    type="tel"
+                    name="contactNumber"
+                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                    value={formData.contactNumber}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-left">Description</label>
+                  <textarea
+                    name="description"
+                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Image Upload */}
+            <div className="flex flex-col items-center mt-12">
+              <img
+                className="w-48 h-32 object-cover border rounded-md"
+                src={shopImage || shop} // Display uploaded image or placeholder
+                alt="Shop"
+              />
+              <label
+                className="mt-4 bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded cursor-pointer"
+              >
+                Choose Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
+              </label>
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-x-5 mt-2">
+            <button
+              type="submit"
+              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 w-30 "
+            >
+              Create Shop
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 w-36"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default CreateShopPage;

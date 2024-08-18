@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from '../../../axios';
 
 const Login = () => {
@@ -22,14 +22,14 @@ const Login = () => {
                 setError('Failed to retrieve token');
             }
         } catch (err) {
-            console.error(err)
+            console.error(err);
             setError(err.response?.data?.message || 'Something went wrong');
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <div className="flex min-h-screen w-screen items-center justify-center bg-gray-50">
+            <div className="bg-white p-8 rounded-lg shadow-md w-sm min-w-md">
                 <div className="text-center mb-8">
                     <img src="/path-to-your-logo.png" alt="Logo" className="mx-auto w-12 h-12" />
                     <h1 className="text-2xl font-semibold text-gray-800 mt-4">Welcome back!</h1>
@@ -46,7 +46,7 @@ const Login = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-white text-black focus:ring-green-500 focus:border-green-500"
                             placeholder="Enter your username or email"
                         />
                     </div>
@@ -60,7 +60,7 @@ const Login = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-white text-black focus:ring-green-500 focus:border-green-500"
                             placeholder="Enter your password"
                         />
                     </div>
@@ -73,7 +73,10 @@ const Login = () => {
                 </form>
                 <div className="mt-4 text-center">
                     <p className="text-sm text-gray-600">
-                        If you don’t have an account, <a href="#" className="text-green-600 hover:text-green-700">Register now</a>
+                        If you don’t have an account,{' '}
+                        <Link to="/register" className="text-green-600 hover:text-green-700">
+                            Register now
+                        </Link>
                     </p>
                 </div>
             </div>

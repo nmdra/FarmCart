@@ -105,18 +105,21 @@ const updateFarmerProfile = asyncHandler(async (req, res) => {
             farmer.password = req.body.password;
         }
 
-        const updatedFarmer = await farmer.save();
-
-        res.json({
-            _id: updatedFarmer._id,
-            name: updatedFarmer.name,
-            BirthDay: updatedFarmer.BirthDay,
-            NIC: updatedFarmer.NIC,
-            Address: updatedFarmer.Address,
-            email: updatedFarmer.email,
-            contactNumber: updatedFarmer.contactNumber,
-            token: generateToken(res, updatedFarmer._id),
-        });
+        try {
+            const updatedFarmer = await farmer.save();
+            res.json({
+                _id: updatedFarmer._id,
+                name: updatedFarmer.name,
+                BirthDay: updatedFarmer.BirthDay,
+                NIC: updatedFarmer.NIC,
+                Address: updatedFarmer.Address,
+                email: updatedFarmer.email,
+                contactNumber: updatedFarmer.contactNumber,
+                token: generateToken(res,updatedFarmer._id),
+            });
+        } catch (error) {
+            res.status(500).json({ message: 'Error updating farmer profile', error });
+        }
     } else {
         res.status(404);
         throw new Error('Farmer not found');
@@ -140,14 +143,18 @@ const logoutFarmer = asyncHandler(async (req, res) => {
 // @route   DELETE /api/farmers/profile
 // @access  Private (or Public if no auth check is required)
 const deleteFarmerAccount = asyncHandler(async (req, res) => {
-    const farmer = await Farmer.findById(req.user._id);
+    try {
+        const farmer = await Farmer.findByIdAndDelete(req.user._id);
 
-    if (farmer) {
-        await farmer.remove(); // Remove the farmer from the database
+        if (!farmer) {
+            res.status(404);
+            throw new Error('Farmer not found');
+        }
+
         res.status(200).json({ message: 'Farmer account deleted successfully' });
-    } else {
-        res.status(404);
-        throw new Error('Farmer not found');
+    } catch (error) {
+        console.error('Error deleting farmer account:', error); // Log the full error
+        res.status(500).json({ message: 'Error deleting farmer account', error: error.message });
     }
 });
 
