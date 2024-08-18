@@ -13,7 +13,9 @@ import MyShop from './pages/farmer/Myshop';
 import AddShop from './pages/farmer/shopcreate';
 import Shop from './pages/farmer/Shop';
 import ShopProfile from './pages/farmer/shopProfile';
-
+import Products from './pages/farmer/products';
+import AddProduct from './pages/farmer/addProduct';
+import UpdateProduct from './pages/farmer/UpdateProduct';
 const App = () => {
     return (
      <Router>
@@ -29,6 +31,9 @@ const App = () => {
                <Route path="/shopcreate" element={<AddShop />} />
                <Route path="/shop/:id" element={<Shop />} />
                <Route path="/shop/profile" element={<ShopProfile />} />
+               <Route path="/shop/:id/productpage" element={<Products />} />
+               <Route path="/addproduct" element={<AddProduct />} />
+               <Route path="/updateproduct" element={<UpdateProduct />} />
                <Route path="/logout" element={<Logout />} />
              </Routes>
            </div>

@@ -64,6 +64,7 @@ const Shop = () => {
           <div className="w-1/2 pr-4 text-left">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Details</h3>
             <p className="text-gray-600">{shop.name}</p>
+            <p className="text-gray-600">{shop.district}</p>
             <p className="text-gray-600">{shop.address.houseNo}, {shop.address.streetName}, {shop.address.city}</p>
             <p className="text-gray-600">{shop.email}</p>
             <p className="text-gray-600">{shop.contactNumber}</p>

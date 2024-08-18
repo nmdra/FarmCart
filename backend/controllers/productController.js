@@ -126,11 +126,15 @@ const updateProductInShop = asyncHandler(async (req, res) => {
     }
 });
 
+
 // Delete a product from a shop
 const deleteProductFromShop = asyncHandler(async (req, res) => {
-    const { id, productId } = req.params;
+    const  shopId = req.params.id;
+    const  productId = req.params.productId
+    console.log("shopid :", shopId);
+    console.log(productId)
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(shopId)) {
         res.status(400);
         throw new Error('Invalid Shop ID');
     }
@@ -140,13 +144,13 @@ const deleteProductFromShop = asyncHandler(async (req, res) => {
         throw new Error('Invalid Product ID');
     }
 
-    const shop = await Shop.findById(id);
+    const shop = await Shop.findById(shopId);
     if (shop) {
         const product = shop.products.id(productId);
 
         if (product) {
             product.deleteOne();
-            const updatedShop = await shop.save();
+            await shop.save();
             res.json({ message: 'Product removed from shop' });
         } else {
             res.status(404);
@@ -157,6 +161,7 @@ const deleteProductFromShop = asyncHandler(async (req, res) => {
         throw new Error('Shop not found');
     }
 });
+
 
 export { 
     getShopProducts,

@@ -52,14 +52,14 @@ const CreateShopPage = () => {
         throw new Error('No token found');
       }
 
-      await axios.post('/myshop', formData, {
+      await axios.post('/shops', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
 
       alert('Shop created successfully');
-      navigate('/shops');
+      navigate('/myshop');
     } catch (err) {
       setError(err.response?.data?.message || 'Error creating shop. Please try again.');
       console.error('Error creating shop:', err);

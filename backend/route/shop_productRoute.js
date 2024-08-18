@@ -28,7 +28,17 @@ router.route('/:id')
   .get(protect, getShopById)  // Fetch a shop by its ID
   .put(protect, updateShop)   // Update a shop by its ID
   .delete(protect, deleteShop); // Delete a shop by its ID
-  router.route('/:id/products')
+
+
+router.route('/:id/products')
     .get(protect,getShopProducts)
     .post(protect,addProductToShop)
-export default router;
+
+
+router.route('/:id/products/:productId')
+    .get(protect, getShopProductById)  // Fetch a product by its ID
+    .put(protect, updateProductInShop)   // Update a Product by its ID
+    .delete(protect, deleteProductFromShop); // Delete a delete by its ID
+
+
+    export default router;

@@ -90,22 +90,6 @@ const ShopProfile = () => {
     }
   };
 
-  const handleAddressSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      await axios.put(`/shops/${id}`, formData.address, config);
-      alert('Shop address updated successfully');
-    } catch (error) {
-      console.error('Error updating shop address:', error);
-    }
-  };
-
   const handleDeleteShop = async () => {
     const confirmDelete = window.confirm('Are you sure you want to delete your shop? This action cannot be undone.');
     if (confirmDelete) {
@@ -224,7 +208,7 @@ const ShopProfile = () => {
         </form>
 
         {/* Shop Address Card */}
-        <form onSubmit={handleAddressSubmit} className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12">
+        <form onSubmit={handleSubmit} className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Shop Address</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex flex-col">
@@ -263,9 +247,10 @@ const ShopProfile = () => {
               <label className="block text-gray-700 text-left">District</label>
               <input
                 type="text"
+                name="district"
                 className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-                value="Polonnaruwa"
-                readOnly
+                value={formData.district}
+                onChange={handleChange}
               />
             </div>
             <div className="flex flex-col">
