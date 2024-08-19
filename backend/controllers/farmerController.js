@@ -8,12 +8,31 @@ import { generateToken } from '../utils/genrateToken.js';
 const registerFarmer = asyncHandler(async (req, res) => {
     const { name, BirthDay, NIC, Address, email, contactNumber, password } = req.body;
 
-    // Check if the farmer already exists
-    const farmerExists = await Farmer.findOne({ email });
+    // Check if all required fields are provided
+    if (!name || !BirthDay || !NIC || !Address || !email || !contactNumber || !password) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
 
-    if (farmerExists) {
-        res.status(400);
-        throw new Error('Farmer already exists');
+    // Check if the farmer already exists by email
+    try {
+        const farmerByEmail = await Farmer.findOne({ email });
+        if (farmerByEmail) {
+            return res.status(400).json({ message: 'Farmer with this email already exists' });
+        }
+    } catch (error) {
+        console.error('Error checking email:', error);
+        return res.status(500).json({ message: 'Error checking email', error: error.message });
+    }
+
+    // Check if the farmer already exists by NIC
+    try {
+        const farmerByNIC = await Farmer.findOne({ NIC });
+        if (farmerByNIC) {
+            return res.status(400).json({ message: 'Farmer with this NIC already exists' });
+        }
+    } catch (error) {
+        console.error('Error checking NIC:', error);
+        return res.status(500).json({ message: 'Error checking NIC', error: error.message });
     }
 
     // Create a new Farmer
@@ -39,7 +58,7 @@ const registerFarmer = asyncHandler(async (req, res) => {
         Address: farmer.Address,
         email: farmer.email,
         contactNumber: farmer.contactNumber,
-        token: generateToken(res, farmer._id),
+        token: generateToken(res, farmer._id), // Include token in the response
     });
 });
 
@@ -49,8 +68,10 @@ const registerFarmer = asyncHandler(async (req, res) => {
 const authFarmer = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
+    // Find farmer by email
     const farmer = await Farmer.findOne({ email });
 
+    // Check if farmer exists and passwords match
     if (farmer && (await farmer.matchPassword(password))) {
         const token = generateToken(res, farmer._id);
         res.json({
@@ -69,6 +90,7 @@ const authFarmer = asyncHandler(async (req, res) => {
 // @route   GET /api/farmers/profile
 // @access  Private (or Public if no auth check is required)
 const getFarmerProfile = asyncHandler(async (req, res) => {
+    // Find farmer by ID from the request (req.user._id should be set by authentication middleware)
     const farmer = await Farmer.findById(req.user._id);
 
     if (farmer) {
@@ -91,9 +113,11 @@ const getFarmerProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/farmers/profile
 // @access  Private (or Public if no auth check is required)
 const updateFarmerProfile = asyncHandler(async (req, res) => {
+    // Find farmer by ID from the request (req.user._id should be set by authentication middleware)
     const farmer = await Farmer.findById(req.user._id);
 
     if (farmer) {
+        // Update farmer fields with provided data or keep existing values
         farmer.name = req.body.name || farmer.name;
         farmer.BirthDay = req.body.BirthDay || farmer.BirthDay;
         farmer.NIC = req.body.NIC || farmer.NIC;
@@ -101,11 +125,13 @@ const updateFarmerProfile = asyncHandler(async (req, res) => {
         farmer.email = req.body.email || farmer.email;
         farmer.contactNumber = req.body.contactNumber || farmer.contactNumber;
 
+        // Update password if provided
         if (req.body.password) {
             farmer.password = req.body.password;
         }
 
         try {
+            // Save updated farmer
             const updatedFarmer = await farmer.save();
             res.json({
                 _id: updatedFarmer._id,
@@ -115,7 +141,7 @@ const updateFarmerProfile = asyncHandler(async (req, res) => {
                 Address: updatedFarmer.Address,
                 email: updatedFarmer.email,
                 contactNumber: updatedFarmer.contactNumber,
-                token: generateToken(res,updatedFarmer._id),
+                token: generateToken(res, updatedFarmer._id), // Generate new token and include in response
             });
         } catch (error) {
             res.status(500).json({ message: 'Error updating farmer profile', error });
@@ -144,6 +170,7 @@ const logoutFarmer = asyncHandler(async (req, res) => {
 // @access  Private (or Public if no auth check is required)
 const deleteFarmerAccount = asyncHandler(async (req, res) => {
     try {
+        // Find and delete farmer by ID
         const farmer = await Farmer.findByIdAndDelete(req.user._id);
 
         if (!farmer) {
@@ -162,6 +189,7 @@ const deleteFarmerAccount = asyncHandler(async (req, res) => {
 // @route   GET /api/farmers/:id
 // @access  Private (or Public if no auth check is required)
 const getFarmerById = asyncHandler(async (req, res) => {
+    // Find farmer by ID from the request parameters
     const farmer = await Farmer.findById(req.params.id);
 
     if (farmer) {
