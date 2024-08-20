@@ -96,14 +96,7 @@ const farmerSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: [true, 'Password is required'],  // Ensure password is provided
-            validate: {
-                validator: function (v) {
-                    // Validate password to be at least 8 characters long and include at least one special character and one number
-                    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v);
-                },
-                message: 'Password must be at least 8 characters long and include at least one special character and one number.',
-            },
+            required: [true, 'Password is required'],
         },
     },
     {

@@ -113,11 +113,25 @@ const getFarmerProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/farmers/profile
 // @access  Private (or Public if no auth check is required)
 const updateFarmerProfile = asyncHandler(async (req, res) => {
-    // Find farmer by ID from the request (req.user._id should be set by authentication middleware)
-    const farmer = await Farmer.findById(req.user._id);
+    try {
+        const farmer = await Farmer.findById(req.user._id);
 
-    if (farmer) {
-        // Update farmer fields with provided data or keep existing values
+        if (!farmer) {
+            return res.status(404).json({ message: 'Farmer not found' });
+        }
+
+        // Validate password format if provided
+        if (req.body.password) {
+            const passwordIsValid = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(req.body.password);
+            if (!passwordIsValid) {
+                return res.status(400).json({ message: 'Invalid password format' });
+            }
+
+            // Hash the new password
+            farmer.password = await bcrypt.hash(req.body.password, 10);
+        }
+
+        // Update other fields
         farmer.name = req.body.name || farmer.name;
         farmer.BirthDay = req.body.BirthDay || farmer.BirthDay;
         farmer.NIC = req.body.NIC || farmer.NIC;
@@ -125,32 +139,23 @@ const updateFarmerProfile = asyncHandler(async (req, res) => {
         farmer.email = req.body.email || farmer.email;
         farmer.contactNumber = req.body.contactNumber || farmer.contactNumber;
 
-        // Update password if provided
-        if (req.body.password) {
-            farmer.password = req.body.password;
-        }
+        const updatedFarmer = await farmer.save();
 
-        try {
-            // Save updated farmer
-            const updatedFarmer = await farmer.save();
-            res.json({
-                _id: updatedFarmer._id,
-                name: updatedFarmer.name,
-                BirthDay: updatedFarmer.BirthDay,
-                NIC: updatedFarmer.NIC,
-                Address: updatedFarmer.Address,
-                email: updatedFarmer.email,
-                contactNumber: updatedFarmer.contactNumber,
-                token: generateToken(res, updatedFarmer._id), // Generate new token and include in response
-            });
-        } catch (error) {
-            res.status(500).json({ message: 'Error updating farmer profile', error });
-        }
-    } else {
-        res.status(404);
-        throw new Error('Farmer not found');
+        res.json({
+            _id: updatedFarmer._id,
+            name: updatedFarmer.name,
+            BirthDay: updatedFarmer.BirthDay,
+            NIC: updatedFarmer.NIC,
+            Address: updatedFarmer.Address,
+            email: updatedFarmer.email,
+            contactNumber: updatedFarmer.contactNumber,
+            token: generateToken(res, updatedFarmer._id), // Generate new token and include in response
+        });
+    } catch (error) {
+        console.error('Error updating profile:', error.message); // Detailed logging
+        res.status(500).json({ message: 'Error updating farmer profile', error: error.message });
     }
-});
+})
 
 // @desc    Logout farmer
 // @route   POST /api/farmers/logout

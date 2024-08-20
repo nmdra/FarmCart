@@ -63,13 +63,17 @@ const Register = () => {
 
     // Validation function for NIC
     const validateNIC = (NIC, BirthDay) => {
-        const nicRegex = /^(?:(\d{4})(\d{6})[0-9]|\d{4}[0-9]{5}[XV])$/;
-        const birthYear = BirthDay.substring(0, 4);
-        if (!nicRegex.test(NIC) || NIC.substring(0, 4) !== birthYear) {
-            return 'Please enter valid NIC';
-        }
-        return '';
-    };
+    // Regex to check if NIC is exactly 12 digits long and the last character is a digit or 'X' or 'V'
+    const nicRegex = /^\d{11}[0-9XV]$/;
+    const birthYear = BirthDay.substring(0, 4);
+
+    // Check if NIC is exactly 12 characters long and matches the birth year
+    if (!nicRegex.test(NIC) || NIC.substring(0, 4) !== birthYear) {
+        return 'Please enter a valid NIC ';
+    }
+
+    return '';
+};
 
     // Validation function for age
     const validateAge = (birthDate) => {
@@ -83,11 +87,19 @@ const Register = () => {
     // Handler for input changes with validation
     const handleInputChange = (e, validationFunc, field) => {
         const { value } = e.target;
-        const errorMessage = validationFunc(value);
+        let errorMessage = '';
+        
+        if (field === 'confirmPassword') {
+            errorMessage = confirmPassword !== password ? 'Passwords do not match' : '';
+        } else {
+            errorMessage = validationFunc(value);
+        }
+        
         setErrors((prevErrors) => ({
             ...prevErrors,
             [field]: errorMessage,
         }));
+
         if (field === 'name') setName(value);
         if (field === 'email') setEmail(value);
         if (field === 'password') setPassword(value);
@@ -114,7 +126,11 @@ const Register = () => {
         e.preventDefault();
 
         // Check for existing errors before submitting
-        if (Object.values(errors).some((error) => error)) {
+        if (Object.values(errors).some((error) => error) || password !== confirmPassword) {
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                confirmPassword: password !== confirmPassword ? 'Passwords do not match' : '',
+            }));
             return;
         }
 
@@ -210,7 +226,7 @@ const Register = () => {
                             required
                             max={new Date().toISOString().split("T")[0]} // Ensures only past dates can be selected
                             min="1930-01-01" // Ensures the earliest selectable date is 1930-01-01
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-white text-black focus:ring-green-500 focus:border-green-500"
+                            className={`mt-1 block w-full p-2 border rounded-md ${errors.age ? 'border-red-500' : 'border-gray-300'} bg-white text-black focus:ring-green-500 focus:border-green-500`}
                         />
                         {errors.age && <p className="text-red-500 text-sm">{errors.age}</p>}
                     </div>
@@ -224,7 +240,7 @@ const Register = () => {
                             type="text"
                             id="NIC"
                             value={NIC}
-                            onChange={(e) => handleInputChange(e, () => validateNIC(NIC, BirthDay), 'NIC')}
+                            onChange={(e) => handleInputChange(e, (value) => validateNIC(value, BirthDay), 'NIC')}
                             required
                             className={`mt-1 block w-full p-2 border rounded-md ${errors.NIC ? 'border-red-500' : 'border-gray-300'} bg-white text-black focus:ring-green-500 focus:border-green-500`}
                             placeholder="Enter your NIC"
@@ -232,39 +248,54 @@ const Register = () => {
                         {errors.NIC && <p className="text-red-500 text-sm">{errors.NIC}</p>}
                     </div>
 
-                    {/* Address inputs */}
+                    {/* Address input */}
                     <div className="mb-4">
-                        <label htmlFor="address" className="block text-sm font-medium text-gray-700 text-left">
+                        <label className="block text-sm font-medium text-gray-700 text-left">
                             Address
                         </label>
-                        <div className="flex space-x-4">
-                            <input
-                                type="text"
-                                id="houseNo"
-                                value={Address.houseNo}
-                                onChange={(e) => setAddress({ ...Address, houseNo: e.target.value })}
-                                required
-                                placeholder="House No"
-                                className="w-1/4 p-2 border rounded-md border-gray-300 bg-white text-black focus:ring-green-500 focus:border-green-500"
-                            />
-                            <input
-                                type="text"
-                                id="streetName"
-                                value={Address.streetName}
-                                onChange={(e) => setAddress({ ...Address, streetName: e.target.value })}
-                                required
-                                placeholder="Street Name"
-                                className="w-1/2 p-2 border rounded-md border-gray-300 bg-white text-black focus:ring-green-500 focus:border-green-500"
-                            />
-                            <input
-                                type="text"
-                                id="city"
-                                value={Address.city}
-                                onChange={(e) => setAddress({ ...Address, city: e.target.value })}
-                                required
-                                placeholder="City"
-                                className="w-1/4 p-2 border rounded-md border-gray-300 bg-white text-black focus:ring-green-500 focus:border-green-500"
-                            />
+                        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+                            <div>
+                                <label htmlFor="houseNo" className="block text-sm font-medium text-gray-700">
+                                    House No
+                                </label>
+                                <input
+                                    type="text"
+                                    id="houseNo"
+                                    value={Address.houseNo}
+                                    onChange={(e) => setAddress(prev => ({ ...prev, houseNo: e.target.value }))}
+                                    required
+                                    className="mt-1 block w-full p-2 border rounded-md border-gray-300 bg-white text-black focus:ring-green-500 focus:border-green-500"
+                                    placeholder="House No"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="streetName" className="block text-sm font-medium text-gray-700">
+                                    Street Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="streetName"
+                                    value={Address.streetName}
+                                    onChange={(e) => setAddress(prev => ({ ...prev, streetName: e.target.value }))}
+                                    required
+                                    className="mt-1 block w-full p-2 border rounded-md border-gray-300 bg-white text-black focus:ring-green-500 focus:border-green-500"
+                                    placeholder="Street Name"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                                    City
+                                </label>
+                                <input
+                                    type="text"
+                                    id="city"
+                                    value={Address.city}
+                                    onChange={(e) => setAddress(prev => ({ ...prev, city: e.target.value }))}
+                                    required
+                                    className="mt-1 block w-full p-2 border rounded-md border-gray-300 bg-white text-black focus:ring-green-500 focus:border-green-500"
+                                    placeholder="City"
+                                />
+                            </div>
                         </div>
                     </div>
 
@@ -311,7 +342,7 @@ const Register = () => {
                             type="password"
                             id="confirmPassword"
                             value={confirmPassword}
-                            onChange={(e) => handleInputChange(e, () => (confirmPassword !== password ? 'Passwords do not match' : ''), 'confirmPassword')}
+                            onChange={(e) => handleInputChange(e, null, 'confirmPassword')}
                             required
                             className={`mt-1 block w-full p-2 border rounded-md ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} bg-white text-black focus:ring-green-500 focus:border-green-500`}
                             placeholder="Confirm your password"
@@ -323,20 +354,19 @@ const Register = () => {
                     <div className="mb-4">
                         <button
                             type="submit"
-                            className="w-full p-2 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            className="w-full bg-green-600 text-white p-2 rounded-md hover:bg-green-700"
                         >
                             Register
                         </button>
                     </div>
+
+                    {/* Redirect link */}
+                    <div className="text-center">
+                        <p className="text-sm text-gray-600">
+                            Already have an account? <Link to="/login" className="text-green-600 hover:underline">Login here</Link>
+                        </p>
+                    </div>
                 </form>
-                <div className="text-center mt-4">
-                    <p className="text-sm text-gray-600">
-                        Already have an account?{' '}
-                        <Link to="/login" className="text-green-600 hover:underline">
-                            Login
-                        </Link>
-                    </p>
-                </div>
             </div>
         </div>
     );

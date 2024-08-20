@@ -76,7 +76,8 @@ const ProfilePage = () => {
       await axios.put('/farmers/profile', formData, config);
       alert('Profile updated successfully');
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error('Error updating profile:', error.response?.data || error.message);
+      alert('An error occurred while updating the profile. Please try again.');
     }
   };
 
@@ -138,15 +139,16 @@ const ProfilePage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 text-left">Phone Number</label>
+                  <label className="block text-gray-700 text-left">Birthday</label>
                   <input
-                    type="tel"
-                    name="contactNumber"
+                    type="date"
+                    name="BirthDay"
                     className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-                    value={formData.contactNumber}
+                    value={formData.BirthDay.substring(0, 10)}
                     onChange={handleChange}
                   />
                 </div>
+                <div>
                 <div>
                   <label className="block text-gray-700 text-left">NIC</label>
                   <input
@@ -157,13 +159,12 @@ const ProfilePage = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div>
-                  <label className="block text-gray-700 text-left">Birthday</label>
+                  <label className="block text-gray-700 text-left">Phone Number</label>
                   <input
-                    type="date"
-                    name="BirthDay"
+                    type="tel"
+                    name="contactNumber"
                     className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-                    value={formData.BirthDay.substring(0, 10)}
+                    value={formData.contactNumber}
                     onChange={handleChange}
                   />
                 </div>
