@@ -15,6 +15,7 @@ import VerifyEmail from './Pages/VerifyEmail'
 import CheckEmail from './Pages/CheckEmail'
 import ForgotPassword from './Pages/ForgotPassword'
 import ResetPassword from './Pages/PasswordReset'
+import UserDetailForm from './Pages/Details'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
             <Route path="/profile" element={<PrivateRoute />}>
                 <Route path="" element={<UserProfile />} />
             </Route>
+            <Route path='/details' element={<UserDetailForm />} />
             <Route path="*" element={<NotFound />} />
         </Route>
     )
