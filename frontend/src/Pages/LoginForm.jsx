@@ -28,13 +28,13 @@ const Login = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border-2 border-green-600">
                 <img
-                src={farmcartLogo} // Replace with the path to your logo image
-                alt="Logo"
-                className="h-5 w-auto mb-2" // Adjust the height as needed
-            />
+                    src={farmcartLogo} // Replace with the path to your logo image
+                    alt="Logo"
+                    className="h-5 w-auto mb-2" // Adjust the height as needed
+                />
                 <div className="text-left mb-5">
                     <h2 className="text-3xl font-bold">Welcome Back...</h2>
-                </div> 
+                </div>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700">
@@ -47,7 +47,7 @@ const Login = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            placeholder='Enter your email address'
+                            placeholder="Enter your email address"
                         />
                     </div>
                     <div className="mb-6">
@@ -64,7 +64,7 @@ const Login = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            placeholder='Enter Password'
+                            placeholder="Enter Password"
                         />
                     </div>
                     <button
@@ -109,11 +109,8 @@ const Login = () => {
                     </Link>
                 </div>
                 <div className="mt-4">
-                    If you dont have an account..?  
-                    <Link
-                        to="/login"
-                        className="text-blue-600 hover:underline"
-                    >
+                    If you dont have an account..?
+                    <Link to="/login" className="text-blue-600 hover:underline">
                         Register Now.
                     </Link>
                 </div>

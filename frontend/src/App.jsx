@@ -15,7 +15,10 @@ import VerifyEmail from './Pages/VerifyEmail'
 import CheckEmail from './Pages/CheckEmail'
 import ForgotPassword from './Pages/ForgotPassword'
 import ResetPassword from './Pages/PasswordReset'
-import UserDetailForm from './Pages/Details'
+import UserDashboard from './Pages/UserDashboard'
+import Settings from './Pages/Settings'
+import OrderHistory from './Components/OrderTable'
+import UserAllOrders from './Pages/UserAllOrders'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -24,13 +27,18 @@ const router = createBrowserRouter(
             <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-pass" element={<ResetPassword />} />
+            <Route path="/orderhistory" element={<OrderHistory />} />
+            {/* <Route path="/order/:orderId" element={<OrderDetails />} /> */}
             <Route path="/register" element={<Register />} />
-            <Route path="/check-email" element={<CheckEmail />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/checkEmail" element={<CheckEmail />} />
+            <Route path="/verifyEmail" element={<VerifyEmail />} />
             <Route path="/profile" element={<PrivateRoute />}>
                 <Route path="" element={<UserProfile />} />
             </Route>
-            <Route path='/details' element={<UserDetailForm />} />
+            <Route path="/userDashboard" element={<UserDashboard />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/userAllOrders" element={<UserAllOrders />} />
+            
             <Route path="*" element={<NotFound />} />
         </Route>
     )
