@@ -29,7 +29,7 @@ export const registerUser = async (req, res, next) => {
 
         if (user) {
             // generateToken(res, user._id)
-            await sendVerifyEmail(user, res)
+            await sendVerifyEmail(req, user, res)
             // res.json({
             //     _id: user._id,
             //     name: user.name,
@@ -59,6 +59,10 @@ export const authUser = async (req, res, next) => {
         }
         const user = await User.findOne({ email })
 
+        if (user.isVerified === false) {
+            return res.status(401).json({ message: 'User Email Not Verified' })
+        }
+
         if (user && (await user.matchPassword(password))) {
             generateToken(res, user._id)
 
@@ -67,6 +71,7 @@ export const authUser = async (req, res, next) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                pic: user.pic,
                 defaultAddress: user.defaultAddress,
                 contactNumber: user.contactNumber,
             })
@@ -168,8 +173,8 @@ export const getUserProfile = async (req, res) => {
 // @desc    Send Verify Email
 // @route   GET /api/users/verify
 // @access  Private
-export const sendVerifyEmail = async (req, res) => {
-        const isAdded = await User.findOne({ email: req.body.email })
+export const sendVerifyEmail = async (req, user, res) => {
+        const isAdded = await User.findOne({ email: req.body.email || user.email })
         if (!isAdded) {
             return res
                 .status(404)
@@ -202,7 +207,7 @@ const emailVerify = async (user, token) => {
                     <p>Thank you for signing up with <strong>FarmCart</strong>. Please verify your email address to complete your registration.</p>
                     <p>This link will expire in <strong>2 minutes</strong>.</p>
                     <p style="margin-bottom: 20px;">Click the button below to activate your account:</p>
-                    <a href="${process.env.SITE_URL}/verify-email?token=${token}"
+                    <a href="${process.env.SITE_URL}/verifEmail?token=${token}"
                         style="background: #22c55e; color: white; border: 1px solid #22c55e; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Verify Account</a>
                     <p style="margin-top: 35px;">If you did not initiate this request, please contact us immediately at support@farmcart.com</p>
                     <p style="margin-bottom: 0;">Thank you,</p>

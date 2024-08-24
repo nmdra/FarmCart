@@ -32,7 +32,9 @@ const userSchema = new mongoose.Schema(
         },
         pic: {
             type: String,
-            default: 'default_user_pic.jpg',
+            default: function () {
+                return `https://avatar.iran.liara.run/username?username=${this.name}`;
+            },
             required: false,
         },
         defaultAddress: {
@@ -62,6 +64,14 @@ const userSchema = new mongoose.Schema(
         timestamps: true,
     }
 )
+
+// Pre-save hook to set the `pic` field dynamically
+userSchema.pre('save', function (next) {
+    if (!this.pic || this.pic === `https://avatar.iran.liara.run/username?username=Scot`) {
+        this.pic = `https://avatar.iran.liara.run/username?username=${this.name}`;
+    }
+    next();
+});
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
