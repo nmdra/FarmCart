@@ -3,6 +3,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
 import userRoute from './routes/userRoute.js'
+import orderRoute from './routes/orderRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
 // load environment variables
@@ -27,6 +28,7 @@ app.get('/', (_req, res) => {
 
 // User API routes
 app.use('/api/users', userRoute)
+app.use('/api/orders', orderRoute)
 
 // Shop API routes
 // app.use('/api/shops', shopRoute);
