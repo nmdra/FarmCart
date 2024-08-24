@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from '../../../axios';
-import Sidebar from '../../Components/farmer/shopsidebar';
+import Sidebar from '../../Components/farmer/shop_sidebar';
 import shopCover from '../../assets/shop.png';
 
 const Shop = () => {
@@ -40,10 +40,6 @@ const Shop = () => {
       </div>
 
       <div className="flex-1 p-8">
-        {/* Breadcrumb */}
-        <div className="text-sm text-gray-600 mb-4">
-          <span className="text-gray-500">Shops</span> &gt; <span className="text-green-500">{shop.name}</span>
-        </div>
 
         {/* Shop Name and Cover Image Card */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-6 w-2/3 ">
@@ -68,7 +64,12 @@ const Shop = () => {
             <p className="text-gray-600">{shop.address.houseNo}, {shop.address.streetName}, {shop.address.city}</p>
             <p className="text-gray-600">{shop.email}</p>
             <p className="text-gray-600">{shop.contactNumber}</p>
-            <a href="#" className="text-green-500 mt-2 inline-block">Edit Details</a>
+            <Link
+             to="/shop/profile" 
+             className="text-green-500 mt-2 inline-block">
+              Edit Details
+             </Link>
+            
           </div>
           <div className="w-1/2 pl-4">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">About</h3>

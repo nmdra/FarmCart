@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../Components/farmer/sidebar';
-import shop from '../../assets/shop.png'; // Placeholder image
+import Sidebar from '../../Components/farmer/Farmer_sidebar';
+import shop from '../../assets/shop.png'; 
 import axios from '../../../axios';
+import { useDistricts } from '../../hook/district_City';
 
 const CreateShopPage = () => {
   const navigate = useNavigate();
+  const { 
+    districts, 
+    cities, 
+    handleDistrictChange, 
+    handleCityChange 
+  } = useDistricts();
+
   const [formData, setFormData] = useState({
     name: '',
     district: '',
@@ -14,18 +22,42 @@ const CreateShopPage = () => {
       streetName: '',
       city: '',
     },
-    category: '',
+    category: '',  // No default value, empty string
     email: '',
     contactNumber: '',
     description: '',
   });
   const [shopImage, setShopImage] = useState(null);
   const [error, setError] = useState(null);
-
+  const [validationErrors, setValidationErrors] = useState({
+    name: '',
+    email: '',
+    contactNumber: '',
+  });
+  
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+    let errorMessage = '';
+
+    if (name === 'name') {
+      if (!/^[A-Za-z\s]+$/.test(value)) {
+        errorMessage = 'Shop name should contain only letters and spaces.';
+      }
+    }
+
+    if (name === 'email') {
+      if (!/^.*@gmail\.com$/.test(value)) {
+        errorMessage = 'Email must be a valid @gmail.com address.';
+      }
+    }
+
+    if (name === 'contactNumber') {
+      if (!/^0\d{9}$/.test(value)) {
+        errorMessage = 'Contact number must be 10 digits and start with 0.';
+      }
+    }
+
     if (name.startsWith('address.')) {
       const addressField = name.split('.')[1];
       setFormData({
@@ -35,8 +67,22 @@ const CreateShopPage = () => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+
+    setValidationErrors({
+      ...validationErrors,
+      [name]: errorMessage,
+    });
   };
 
+  const handleDistrictChangeWrapper = (e) => {
+    handleDistrictChange(e);
+    setFormData({ ...formData, district: e.target.value, address: { ...formData.address, city: '' } });
+  };
+
+  const handleCityChangeWrapper = (e) => {
+    handleCityChange(e);
+    setFormData({ ...formData, address: { ...formData.address, city: e.target.value } });
+  };
   // Handle image input change
   const handleImageChange = (e) => {
     setShopImage(URL.createObjectURL(e.target.files[0]));
@@ -45,6 +91,11 @@ const CreateShopPage = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (validationErrors.name || validationErrors.email || validationErrors.contactNumber) {
+      setError('Please fix the validation errors before submitting.');
+      return;
+    }
 
     try {
       const token = localStorage.getItem('token');
@@ -59,7 +110,7 @@ const CreateShopPage = () => {
       });
 
       alert('Shop created successfully');
-      navigate('/myshop');
+      navigate('/myshops');
     } catch (err) {
       setError(err.response?.data?.message || 'Error creating shop. Please try again.');
       console.error('Error creating shop:', err);
@@ -68,7 +119,7 @@ const CreateShopPage = () => {
 
   // Handle cancel action
   const handleCancel = () => {
-    navigate('/shops'); // Redirect to the shops list or any other desired route
+    navigate('/myshops'); // Redirect to the shops list or any other desired route
   };
 
   return (
@@ -80,11 +131,6 @@ const CreateShopPage = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-8">
-        {/* Breadcrumb */}
-        <div className="text-sm text-gray-600 mb-4">
-          <span className="text-gray-500">Shop Owner</span> &gt; <span className="text-green-500">Create Shop</span>
-        </div>
-
         {/* Create Shop Form */}
         <form onSubmit={handleSubmit} className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Create Shop</h3>
@@ -103,17 +149,24 @@ const CreateShopPage = () => {
                     onChange={handleChange}
                     required
                   />
+                  {validationErrors.name && (
+                    <p className="text-red-500 text-sm mt-1">{validationErrors.name}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">District</label>
-                  <input
-                    type="text"
+                  <select
                     name="district"
                     className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                     value={formData.district}
-                    onChange={handleChange}
+                    onChange={handleDistrictChangeWrapper}
                     required
-                  />
+                  >
+                    <option value="" disabled>Select a district</option>
+                    {districts.map((district, index) => (
+                      <option key={index} value={district.name}>{district.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex space-x-4">
                   <div className="flex-1">
@@ -138,28 +191,36 @@ const CreateShopPage = () => {
                       required
                     />
                   </div>
-                  <div className="flex-1">
-                    <label className="block text-gray-700 text-left">City</label>
-                    <input
-                      type="text"
-                      name="address.city"
-                      className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-                      value={formData.address.city}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
+                  <div>
+                  <label className="block text-gray-700 text-left">City</label>
+                  <select
+                    name="address.city"
+                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                    value={formData.address.city}
+                    onChange={handleCityChangeWrapper}
+                    required
+                  >
+                    <option value="" disabled>Select a city</option>
+                    {cities.map((city, index) => (
+                      <option key={index} value={city}>{city}</option>
+                    ))}
+                  </select>
+                </div>
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Category</label>
-                  <input
-                    type="text"
+                  <select
                     name="category"
                     className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                     value={formData.category}
                     onChange={handleChange}
                     required
-                  />
+                  >
+                    <option value="" disabled hidden>Select Category</option>
+                    <option value="Vegetables">Vegetables</option>
+                    <option value="Fruits">Fruits</option>
+                    <option value="Spices">Spices</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Email</label>
@@ -171,6 +232,9 @@ const CreateShopPage = () => {
                     onChange={handleChange}
                     required
                   />
+                  {validationErrors.email && (
+                    <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Contact Number</label>
@@ -182,6 +246,9 @@ const CreateShopPage = () => {
                     onChange={handleChange}
                     required
                   />
+                  {validationErrors.contactNumber && (
+                    <p className="text-red-500 text-sm mt-1">{validationErrors.contactNumber}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Description</label>
@@ -233,6 +300,11 @@ const CreateShopPage = () => {
               Cancel
             </button>
           </div>
+
+          {/* Display general form error */}
+          {error && (
+            <p className="text-red-500 text-sm mt-4">{error}</p>
+          )}
         </form>
       </div>
     </div>

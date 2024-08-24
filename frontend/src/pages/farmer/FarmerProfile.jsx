@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from '../../../axios';
-import Sidebar from '../../Components/farmer/sidebar';
+import Sidebar from '../../Components/farmer/Farmer_sidebar';
 import profilepic from '../../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +17,13 @@ const ProfilePage = () => {
       city: '',
     },
   });
-
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    contactNumber: '',
+    BirthDay: '',
+    NIC: '',
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,8 +52,45 @@ const ProfilePage = () => {
     fetchFarmerDetails();
   }, []);
 
+  // Function to calculate age from birth date
+  const calculateAge = (birthDate) => {
+    const today = new Date();
+    const birthDateObj = new Date(birthDate);
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDifference = today.getMonth() - birthDateObj.getMonth();
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const validateName = (name) => {
+    return /^[A-Za-z\s]+$/.test(name); // Only letters and spaces
+  };
+
+  const validateEmail = (email) => {
+    return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email); // Must be a Gmail address
+  };
+
+  const validateContactNumber = (contactNumber) => {
+    return /^[0-9]{10}$/.test(contactNumber) && contactNumber.startsWith('0'); // Must be 10 digits and start with 0
+  };
+
+  const validateNIC = (NIC, BirthDay) => {
+    const nicRegex = /^\d{11}[0-9XV]$/;
+    const birthYear = BirthDay.substring(0, 4);
+
+    return nicRegex.test(NIC) && NIC.substring(0, 4) === birthYear; // NIC must match the birth year
+  };
+
+  const validateAge = (birthDate) => {
+    const age = calculateAge(birthDate);
+    return age >= 18; // Must be at least 18 years old
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     if (['houseNo', 'streetName', 'city'].includes(name)) {
       setFormData((prevData) => ({
         ...prevData,
@@ -62,10 +105,42 @@ const ProfilePage = () => {
         [name]: value,
       }));
     }
+
+    let error = '';
+    switch (name) {
+      case 'name':
+        error = validateName(value) ? '' : 'Name must contain only letters and spaces';
+        break;
+      case 'email':
+        error = validateEmail(value) ? '' : 'Email must be a valid Gmail address.';
+        break;
+      case 'contactNumber':
+        error = validateContactNumber(value) ? '' : 'Contact number must be 10 digits long and start with 0.';
+        break;
+      case 'BirthDay':
+        error = validateAge(value) ? '' : 'You must be at least 18 years old';
+        break;
+      case 'NIC':
+        error = validateNIC(value, formData.BirthDay) ? '' : 'Please enter a valid NIC';
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (Object.values(errors).some((error) => error)) {
+      alert('Please fix the errors in the form before submitting.');
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
       const config = {
@@ -75,6 +150,7 @@ const ProfilePage = () => {
       };
       await axios.put('/farmers/profile', formData, config);
       alert('Profile updated successfully');
+      navigate('/farmerdashboard');
     } catch (error) {
       console.error('Error updating profile:', error.response?.data || error.message);
       alert('An error occurred while updating the profile. Please try again.');
@@ -107,13 +183,9 @@ const ProfilePage = () => {
         <Sidebar />
       </div>
 
-      <div className="flex-1 p-8">
-        <div className="text-sm text-gray-600 mb-4">
-          <span className="text-gray-500">Shop Owner</span> &gt; <span className="text-green-500">Settings</span>
-        </div>
-
-        {/* Account Settings Card */}
-        <form onSubmit={handleSubmit} className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12">
+      <div className="flex-1 p-8 pt-16">
+         {/* Account Settings Card */}
+         <form onSubmit={handleSubmit} className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Account Settings</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
@@ -127,6 +199,7 @@ const ProfilePage = () => {
                     value={formData.name}
                     onChange={handleChange}
                   />
+                  {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Email</label>
@@ -137,6 +210,7 @@ const ProfilePage = () => {
                     value={formData.email}
                     onChange={handleChange}
                   />
+                  {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Birthday</label>
@@ -147,8 +221,8 @@ const ProfilePage = () => {
                     value={formData.BirthDay.substring(0, 10)}
                     onChange={handleChange}
                   />
+                  {errors.BirthDay && <p className="text-red-500 text-sm">{errors.BirthDay}</p>}
                 </div>
-                <div>
                 <div>
                   <label className="block text-gray-700 text-left">NIC</label>
                   <input
@@ -158,15 +232,18 @@ const ProfilePage = () => {
                     value={formData.NIC}
                     onChange={handleChange}
                   />
+                  {errors.NIC && <p className="text-red-500 text-sm">{errors.NIC}</p>}
                 </div>
-                  <label className="block text-gray-700 text-left">Phone Number</label>
+                <div>
+                  <label className="block text-gray-700 text-left">Contact Number</label>
                   <input
-                    type="tel"
+                    type="text"
                     name="contactNumber"
                     className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                     value={formData.contactNumber}
                     onChange={handleChange}
                   />
+                  {errors.contactNumber && <p className="text-red-500 text-sm">{errors.contactNumber}</p>}
                 </div>
               </div>
             </div>
@@ -222,15 +299,6 @@ const ProfilePage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-            <div>
-              <label className="block text-gray-700 text-left">District</label>
-              <input
-                type="text"
-                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-                value={'Polonnaruwa'}
-                readOnly
-              />
-            </div>
             <div>
               <label className="block text-gray-700 text-left">Country</label>
               <input

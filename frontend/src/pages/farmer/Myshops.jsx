@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from '../../../axios';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../Components/farmer/sidebar';
+import Sidebar from '../../Components/farmer/Farmer_sidebar';
 import shopCover from '../../assets/shop.png';
 import addShopIcon from '../../assets/addshop.png';
 
@@ -43,11 +43,7 @@ const MyShop = () => {
         <Sidebar />
       </div>
 
-      <div className="flex-1 p-8">
-        <div className="text-sm text-gray-600 mb-6">
-          <span className="text-gray-500">Shop Owner</span> &gt; <span className="text-green-500">Shops</span>
-        </div>
-
+      <div className="flex-1 p-8 pt-16">
         <div className="grid grid-cols-4 gap-x-1 gap-y-8">
           {/* Render shops */}
           {shops.map((shop) => (

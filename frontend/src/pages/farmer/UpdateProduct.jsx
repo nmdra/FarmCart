@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate} from 'react-router-dom';
-import Sidebar from '../../Components/farmer/shopsidebar';
+import Sidebar from '../../Components/farmer/shop_sidebar';
 import vege from '../../assets/vege.png';
 import axios from '../../../axios';
 
@@ -14,7 +14,10 @@ const UpdateProduct = () => {
     description: '',
   });
   const [productImage, setProductImage] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({
+    name: '',
+    pricePerKg: '',
+  });
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -40,10 +43,33 @@ const UpdateProduct = () => {
     fetchProduct();
   }, [shopId, productId]); // Depend on both shopId and productId
 
+  const validateName = (name) => {
+    return /^[A-Za-z\s]+$/.test(name); // Only letters and at least 3 characters long
+  };
+
+  const validateprice = (pricePerKg) => {
+    return /^\d+(\.\d{1,2})?$/.test(pricePerKg); // Validates a double value with up to two decimal places
+  };
+
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    let error = "";
+    switch (name) {
+      case 'name':
+        error = validateName(value) ? '' : 'Name must contain only letters and spaces';
+        break;
+      case 'pricePerKg':
+        error = validateprice(value) ? '' : 'please enter valid price.';
+        break;
+      default:  
+    }
     setFormData({ ...formData, [name]: value });
+    setError((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }));
   };
 
   // Handle image input change
@@ -54,13 +80,18 @@ const UpdateProduct = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (Object.values(error).some((error) => error)) {
+      alert('Please fix the errors in the form before submitting.');
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('No token found');
       }
 
-      const response = await axios.put(`/shops/${shopId}/products/${productId}`, formData, {
+      await axios.put(`/shops/${shopId}/products/${productId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,11 +119,6 @@ const UpdateProduct = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-8">
-        {/* Breadcrumb */}
-        <div className="text-sm text-gray-600 mb-4">
-          <span className="text-gray-500">Shop Owner</span> &gt; <span className="text-green-500">Update Product</span>
-        </div>
-
         {/* Update Product Form */}
         <form onSubmit={handleSubmit} className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Update Product</h3>
@@ -111,6 +137,7 @@ const UpdateProduct = () => {
                     onChange={handleChange}
                     required
                   />
+                  {error.name && <p className="text-red-500 text-sm">{error.name}</p>}
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Price per Kg</label>
@@ -122,6 +149,7 @@ const UpdateProduct = () => {
                     onChange={handleChange}
                     required
                   />
+                  {error.pricePerKg && <p className="text-red-500 text-sm">{error.pricePerKg}</p>}
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Description</label>

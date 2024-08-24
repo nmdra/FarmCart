@@ -4,14 +4,14 @@ import './index.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 //import Header from './Components/Header';
 //import Footer from './Components/Footer';
-import Login from './pages/farmer/Login';
-import Dashboard from './pages/farmer/Dashbaord';
-import ProfilePage from './pages/farmer/onwerProfile';
+import Login from './pages/farmer/FarmerLogin';
+import Dashboard from './pages/farmer/FarmerDashbaord';
+import ProfilePage from './pages/farmer/FarmerProfile';
 import Logout from './pages/farmer/LogOut';
-import Register from './pages/farmer/Registaration';
-import MyShop from './pages/farmer/Myshop';
+import Register from './pages/farmer/FarmerRegistaration';
+import MyShop from './pages/farmer/Myshops';
 import AddShop from './pages/farmer/shopcreate';
-import Shop from './pages/farmer/Shop';
+import Shop from './pages/farmer/ShopDashboard';
 import ShopProfile from './pages/farmer/shopProfile';
 import Products from './pages/farmer/products';
 import AddProduct from './pages/farmer/addProduct';
@@ -24,10 +24,10 @@ const App = () => {
            <div className="container mx-auto">
              <Routes>
                <Route path="/" element={<Login />} />
-               <Route path="/register" element={<Register />} />
-               <Route path="/dashboard" element={<Dashboard />} />
-               <Route path="/ownerprofile" element={<ProfilePage />} />
-               <Route path="/myshop" element={<MyShop />} />
+               <Route path="/farmerRegister" element={<Register />} />
+               <Route path="/farmerdashboard" element={<Dashboard />} />
+               <Route path="/farmerprofile" element={<ProfilePage />} />
+               <Route path="/myshops" element={<MyShop />} />
                <Route path="/shopcreate" element={<AddShop />} />
                <Route path="/shop/:id" element={<Shop />} />
                <Route path="/shop/profile" element={<ShopProfile />} />

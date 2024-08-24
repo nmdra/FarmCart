@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from '../../../axios';
-import Sidebar from '../../Components/farmer/sidebar';
-import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../Components/farmer/Farmer_sidebar';
+import { useNavigate, Link } from 'react-router-dom';
 import profilepic from '../../assets/profile.png';
 
 const Dashboard = () => {
@@ -36,14 +36,6 @@ const Dashboard = () => {
     fetchFarmerDetails();
   }, []); // Empty dependency array ensures this effect runs only once when the component mounts
 
-  // Handler functions for navigating to the edit pages
-  const handleEditProfile = () => {
-    navigate('/ownerprofile'); // Adjust the path if needed
-  };
-
-  const handleEditAddress = () => {
-    navigate('/ownerprofile'); // Adjust the path if needed
-  };
 
   // Render a loading state until farmer details are fetched
   if (!farmer) {
@@ -57,14 +49,10 @@ const Dashboard = () => {
           <Sidebar />
       </div>
        {/* Main Content */}
-      <div className="flex-1 p-8">
-        {/* Breadcrumb Navigation */}
-        <div className="text-sm text-gray-600 mb-4">
-          <span className="text-gray-500">Shop Owner</span> &gt; <span className="text-green-500">Dashboard</span>
-        </div>
+      <div className="flex-1 p-8 pt-16">
 
-        {/* Profile and Details Section */}
-        <div className="flex space-x-8 mb-8">
+      {/* Profile and Details Section */}
+      <div className="flex space-x-8 mb-8">
       {/* Profile Card */}
       <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
         <div className="flex flex-col items-center">
@@ -75,12 +63,9 @@ const Dashboard = () => {
           />
           <h2 className="text-xl font-semibold mt-4 text-gray-800">{farmer.name}</h2>
           <span className="text-gray-600">Shop Owner</span>
-          <button
-            onClick={handleEditProfile}
-            className="mt-4 bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded"
-          >
-            Edit Profile
-          </button>
+          <Link to="/farmerprofile" className="text-green-500 mt-2 inline-block">
+                  Edit details
+          </Link>
         </div>
       </div>
 
@@ -93,12 +78,9 @@ const Dashboard = () => {
           {`${farmer.Address.city}`} <br/>
           {`${farmer.email}`}
         </p>
-        <button
-          onClick={handleEditAddress}
-          className="mt-4 bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded"
-        >
-          Edit Address
-        </button>
+        <Link to="/farmerprofile" className="text-green-500 mt-2 inline-block">
+                  Edit Address
+          </Link>
       </div>
     </div>
 
@@ -106,9 +88,9 @@ const Dashboard = () => {
         <div className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-gray-800">My Orders</h3>
-            <button className="bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded">
-              View All
-            </button>
+            <Link to="#" className="text-green-500 mt-2 inline-block">
+                  View All
+            </Link>
           </div>
           <table className="w-full text-left">
             <thead>
@@ -126,9 +108,9 @@ const Dashboard = () => {
                 <td className="py-2 text-gray-700">8 Sep, 2020</td>
                 <td className="py-2 text-gray-700">Rs. 135.00 (5 Products)</td>
                 <td className="py-2">
-                  <button className="bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded">
-                    View Details
-                  </button>
+                  <Link to="#" className="text-green-500 mt-2 inline-block">
+                  View Details
+                  </Link>
                 </td>
               </tr>
               {/* Add more order rows as needed */}

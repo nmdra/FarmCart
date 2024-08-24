@@ -1,24 +1,44 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../Components/farmer/shopsidebar';
+import Sidebar from '../../Components/farmer/shop_sidebar';
 import vege from '../../assets/vege.png';
 import axios from '../../../axios';
 
 const AddProduct = () => {
   const shopId = localStorage.getItem('shopId');  
-  const navigate = useNavigate();  // Import and initialize the useNavigate hook
+  const navigate = useNavigate();  
   const [formData, setFormData] = useState({
     name: '',
     pricePerKg: '',
     description: '',
   });
   const [productImage, setProductImage] = useState(null);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({
+    name: '',
+    pricePerKg: '',
+  });
 
-  // Handle form input changes
+  // Handle form input changes with validation
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let error = '';
+
+    if (name === 'name') {
+      const nameRegex = /^[A-Za-z\s]+$/;
+      if (!nameRegex.test(value)) {
+        error = 'Product name can only contain letters and spaces.';
+      }
+    }
+
+    if (name === 'pricePerKg') {
+      const priceRegex = /^\d+(\.\d{1,2})?$/; // Validates a double value with up to two decimal places
+      if (!priceRegex.test(value)) {
+        error = 'Price per Kg must be a valid number with up to two decimal places.';
+      }
+    }
+
     setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: error });
   };
 
   // Handle image input change
@@ -29,6 +49,11 @@ const AddProduct = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (errors.name || errors.pricePerKg) {
+      alert('Please fix the validation errors before submitting.');
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -63,10 +88,6 @@ const AddProduct = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-8">
-        {/* Breadcrumb */}
-        <div className="text-sm text-gray-600 mb-4">
-          <span className="text-gray-500">Shop Owner</span> &gt; <span className="text-green-500">Add Product</span>
-        </div>
 
         {/* Add Product Form */}
         <form onSubmit={handleSubmit} className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12">
@@ -86,18 +107,26 @@ const AddProduct = () => {
                     onChange={handleChange}
                     required
                   />
+                  {errors.name && (
+                    <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-gray-700 text-left">Price per Kg</label>
                   <input
                     type="number"
                     name="pricePerKg"
+                    step="0.01" // Allows decimal values
                     className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                     value={formData.pricePerKg}
                     onChange={handleChange}
                     required
                   />
+                  {errors.pricePerKg && (
+                    <p className="text-red-500 text-xs mt-1">{errors.pricePerKg}</p>
+                  )}
                 </div>
+                
                 <div>
                   <label className="block text-gray-700 text-left">Description</label>
                   <textarea
@@ -111,11 +140,12 @@ const AddProduct = () => {
               </div>
             </div>
 
+
             {/* Image Upload */}
             <div className="flex flex-col items-center mt-12">
               <img
                 className="w-48 h-32 object-cover border rounded-md"
-                src={vege || placeholderImage} // Display uploaded image or placeholder
+                src={productImage || vege}
                 alt="Product"
               />
               <label

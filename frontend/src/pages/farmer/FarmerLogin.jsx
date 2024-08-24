@@ -17,7 +17,7 @@ const Login = () => {
             const token = response.data.token;
             if (token) {
                 localStorage.setItem('token', token);
-                navigate('/dashboard');
+                navigate('/farmerdashboard');
             } else {
                 setError('Failed to retrieve token');
             }
@@ -74,7 +74,7 @@ const Login = () => {
                 <div className="mt-4 text-center">
                     <p className="text-sm text-gray-600">
                         If you don’t have an account,{' '}
-                        <Link to="/register" className="text-green-600 hover:text-green-700">
+                        <Link to="/farmerRegister" className="text-green-600 hover:text-green-700">
                             Register now
                         </Link>
                     </p>
