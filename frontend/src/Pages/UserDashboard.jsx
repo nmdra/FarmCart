@@ -63,7 +63,7 @@ function Dashboard() {
                     <h2 className="text-lg font-semibold text-gray-900 mb-4">
                         Recent Orders
                     </h2>
-                    <OrderTable rowsPerPage={4} paginateOn={true} />
+                    <OrderTable rowsPerPage={4} paginateOn={false} />
                 </div>
             </div>
         </div>

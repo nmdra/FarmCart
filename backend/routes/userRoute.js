@@ -6,6 +6,7 @@ import {
     logoutUser,
     registerUser,
     resetPassword,
+    sendVerifyEmail,
     updateUserProfile,
     verifyEmail,
 } from '../controllers/userController.js'
@@ -19,6 +20,7 @@ router.route('/logout').post(protect, logoutUser)
 router.route('/verify').get(verifyEmail)
 router.route('/forgot-password').post(forgotPassword)
 router.route('/reset-pass').post(resetPassword)
+router.route('/resendEmail').post(sendVerifyEmail)
 
 router.route('/:id').get(protect, getUserById)
 

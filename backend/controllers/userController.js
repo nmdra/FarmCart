@@ -168,38 +168,57 @@ export const getUserProfile = async (req, res) => {
 // @desc    Send Verify Email
 // @route   GET /api/users/verify
 // @access  Private
-export const sendVerifyEmail = async (user, res) => {
+export const sendVerifyEmail = async (req, res) => {
+        const isAdded = await User.findOne({ email: req.body.email })
+        if (!isAdded) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message: 'No user found with this email',
+                })
+        }
+
+        // Generate the verification token using the user's email
+        const token = await tokenToVerify(isAdded.email)
+        const result = await emailVerify(isAdded, token);
+    if (result.success) {
+        res.status(200).json(result);
+    } else {
+        res.status(500).json(result);
+    }
+};
+
+const emailVerify = async (user, token) => {
     try {
-        const token = tokenToVerify(user.email)
+        // Prepare the email body
         const body = {
             from: `'FarmCart 🌱' <${process.env.EMAIL_USER}>`,
             to: `${user.email}`,
             subject: 'FarmCart: Email Activation',
             html: `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-      <h2 style="color: #22c55e;">Hello ${user.name},</h2>
-      <p>Thank you for signing up with <strong>FarmCart</strong>. Please verify your email address to complete your registration.</p>
-      <p>This link will expire in <strong>2 minutes</strong>.</p>
-      <p style="margin-bottom: 20px;">Click the button below to activate your account:</p>
-      <a href="${process.env.SITE_URL}/verify-email?token=${token}"
-         style="background: #22c55e; color: white; border: 1px solid #22c55e; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Verify Account</a>
-      <p style="margin-top: 35px;">If you did not initiate this request, please contact us immediately at support@farmcart.com</p>
-      <p style="margin-bottom: 0;">Thank you,</p>
-      <p style="font-weight: bold;">The FarmCart Team</p>
-    </div>
-  `,
-        }
+                <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                    <h2 style="color: #22c55e;">Hello ${user.name},</h2>
+                    <p>Thank you for signing up with <strong>FarmCart</strong>. Please verify your email address to complete your registration.</p>
+                    <p>This link will expire in <strong>2 minutes</strong>.</p>
+                    <p style="margin-bottom: 20px;">Click the button below to activate your account:</p>
+                    <a href="${process.env.SITE_URL}/verify-email?token=${token}"
+                        style="background: #22c55e; color: white; border: 1px solid #22c55e; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Verify Account</a>
+                    <p style="margin-top: 35px;">If you did not initiate this request, please contact us immediately at support@farmcart.com</p>
+                    <p style="margin-bottom: 0;">Thank you,</p>
+                    <p style="font-weight: bold;">The FarmCart Team</p>
+                </div>
+            `,
+        };
 
-        const message = 'Please check your email to verify!'
-        await sendEmail(body, message)
-        return res.status(200).json({ success: true, message })
+        const message = 'Please check your email to verify!';
+        await sendEmail(body, message);
+        return { success: true, message: 'Please check your email to verify!' };
     } catch (error) {
-        // console.error(`Error in sending verification email: ${error.message}`);
-        return res
-            .status(500)
-            .json(`Error in sending verification email: ${error.message}`)
+        console.error(`Error in sending verification email: ${error.message}`);
+        return { success: false, error: `Error in sending verification email: ${error.message}` };
     }
-}
+};
 
 export const verifyEmail = async (req, res) => {
     const token = req.query.token
