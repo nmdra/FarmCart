@@ -3,7 +3,11 @@ import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema(
     {
-        name: {
+        firstname: {
+            type: String,
+            required: true,
+        },
+        lastname: {
             type: String,
             required: true,
         },
@@ -32,14 +36,16 @@ const userSchema = new mongoose.Schema(
         },
         pic: {
             type: String,
-            default: 'default_user_pic.jpg',
+            default: function () {
+                return `https://avatar.iran.liara.run/username?username=${this.firstname}+${this.lastname}}`;
+            },
             required: false,
         },
         defaultAddress: {
             address: { type: String, required: false },
             city: { type: String, required: false },
             postalCode: { type: String, required: false },
-            country: { type: String, required: false },
+            district: { type: String, required: false },
         },
         contactNumber: {
             type: String,

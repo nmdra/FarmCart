@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
-import farmcartLogo from '../assets/logo.png'
+import farmcartLogo from '../../assets/logo.png'
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('')

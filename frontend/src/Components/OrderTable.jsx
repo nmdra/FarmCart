@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTable, usePagination } from 'react-table';
 import axios from 'axios';
 import { OrderColumns } from '../lib/OrderColumns';
-import farmcartLogo from '../assets/logo.png';
+import Loading from './Loading';
 
 const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
     const [data, setData] = useState([]);
@@ -13,7 +13,6 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
             try {
                 const response = await axios.get('/api/orders');
                 setData(response.data); // Set the fetched data to the state
-                console.log('Fetched data:', response.data); // Log the fetched data
             } catch (error) {
                 console.error('Error fetching the orders:', error);
             } finally {
@@ -23,9 +22,6 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
 
         fetchData();
     }, []);
-
-    // Log the data variable to see if it's being updated correctly
-    console.log('Stored data:', data);
 
     const {
         getTableProps,
@@ -50,23 +46,7 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-1/2">
-                <div className="flex flex-col items-center">
-                    <img
-                        src={farmcartLogo}
-                        alt="Site Logo"
-                        className="mb-4 h-8"
-                    />
-                    <div
-                        className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-green-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                        role="status"
-                    >
-                        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                            Loading...
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <Loading />
         );
     }
 

@@ -7,18 +7,19 @@ import {
 import MainLayout from './Layouts/MainLayout'
 import HomePage from './Pages/HomePage'
 import NotFound from './Pages/NotFound'
-import Login from './Pages/LoginForm'
-import Register from './Pages/RegisterForm'
-import UserProfile from './Pages/UserProfile'
+import Login from './Pages/Customer/LoginForm'
+import Register from './Pages/Customer/RegisterForm'
+import UserProfile from './Pages/Customer/UserProfile'
 import PrivateRoute from './Components/PrivateRoute'
-import VerifyEmail from './Pages/VerifyEmail'
-import CheckEmail from './Pages/CheckEmail'
-import ForgotPassword from './Pages/ForgotPassword'
-import ResetPassword from './Pages/PasswordReset'
-import UserDashboard from './Pages/UserDashboard'
-import Settings from './Pages/Settings'
+import VerifyEmail from './Pages/Customer/VerifyEmail'
+import CheckEmail from './Pages/Customer/CheckEmail'
+import ForgotPassword from './Pages/Customer/ForgotPassword'
+import ResetPassword from './Pages/Customer/PasswordReset'
+import UserDashboard from './Pages/Customer/UserDashboard'
+import Settings from './Pages/Customer/Settings'
 import OrderHistory from './Components/OrderTable'
-import UserAllOrders from './Pages/UserAllOrders'
+import UserAllOrders from './Pages/Customer/UserAllOrders'
+import FileUploadTest from './Pages/Temp_FileUploadTest'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -38,7 +39,8 @@ const router = createBrowserRouter(
             <Route path="/userDashboard" element={<UserDashboard />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/userAllOrders" element={<UserAllOrders />} />
-            
+            <Route path="/fileUploadTest" element={<FileUploadTest />} />
+
             <Route path="*" element={<NotFound />} />
         </Route>
     )
