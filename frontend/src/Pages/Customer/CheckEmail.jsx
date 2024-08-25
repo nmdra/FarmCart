@@ -1,6 +1,6 @@
 import React from 'react';
-import emailGif from '../assets/email.gif'
-import farmcartLogo from '../assets/logo.png'
+import emailGif from '../../assets/email.gif'
+import farmcartLogo from '../../assets/logo.png'
 
 const CheckEmail = () => {
   const handleResendEmail = () => {

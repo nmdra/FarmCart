@@ -7,7 +7,7 @@ import {
     registerUser,
     resetPassword,
     sendVerifyEmail,
-    updateUserProfile,
+    updateUser,
     verifyEmail,
 } from '../controllers/userController.js'
 import protect from '../middlewares/authMiddleware.js'
@@ -15,7 +15,7 @@ import { uploadImage } from '../middlewares/uploadController.js'
 
 const router = express.Router()
 
-router.route('').post(registerUser).put(protect, updateUserProfile)
+router.route('').post(registerUser).put(protect, updateUser)
 router.route('/auth').post(authUser)
 router.route('/logout').post(protect, logoutUser)
 router.route('/verify').get(verifyEmail)

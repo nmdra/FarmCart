@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import farmcartLogo from '../assets/logo.png'
+import farmcartLogo from '../../assets/logo.png'
 
-const ResendEmail = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -17,11 +15,10 @@ const ResendEmail = () => {
         setLoading(true)
 
         try {
-            const { data } = await axios.post('/api/users/resendEmail', {
-                email: email,
+            const { data } = await axios.post('/api/users/forgot-password', {
+                verifyEmail: email,
             })
             setMessage(data.message)
-            navigate('/checkEmail')
         } catch (error) {
             setError(
                 error.response?.data?.message ||
@@ -40,7 +37,7 @@ const ResendEmail = () => {
                     alt="Logo"
                     className="h-5 w-auto mb-2" // Adjust the height as needed
                 />
-                <h2 className="text-2xl font-semibold mb-6">Resend Verification Email</h2>
+                <h2 className="text-2xl font-semibold mb-6">Forgot Password</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block text-gray-700">
@@ -51,7 +48,7 @@ const ResendEmail = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-600 focus:border-transparent"
-                            placeholder="Enter your registered email"
+                            placeholder="Enter your email"
                             required
                         />
                     </div>
@@ -97,4 +94,4 @@ const ResendEmail = () => {
     )
 }
 
-export default ResendEmail 
+export default ForgotPassword

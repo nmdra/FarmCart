@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 // @route   POST /api/users
 // @access  Public
 export const registerUser = async (req, res, next) => {
-    const { name, email, password, role, defaultAddress, contactNumber, pic } =
+    const { firstname,lastname, email, password, role, defaultAddress, contactNumber, pic } =
         req.body
 
     try {
@@ -18,7 +18,8 @@ export const registerUser = async (req, res, next) => {
         }
 
         const user = await User.create({
-            name,
+            firstname,
+            lastname,
             email,
             password,
             role,
@@ -28,16 +29,7 @@ export const registerUser = async (req, res, next) => {
         })
 
         if (user) {
-            // generateToken(res, user._id)
             await sendVerifyEmail(req, user, res)
-            // res.json({
-            //     _id: user._id,
-            //     name: user.name,
-            //     email: user.email,
-            //     role: user.role,
-            //     defaultAddress: user.defaultAddress,
-            //     contactNumber: user.contactNumber,
-            // })
         } else {
             res.status(500)
             throw new Error('User creation failed')
@@ -46,6 +38,55 @@ export const registerUser = async (req, res, next) => {
         return next(error)
     }
 }
+
+export const updateUser = async (req, res, next) => {
+    const { firstname,lastname, email, password, role, defaultAddress, contactNumber, pic } = req.body;
+
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            res.status(404);
+            throw new Error('User not found');
+        }
+
+        // Update user details
+        user.firstname = firstname || user.firstname;
+        user.lastname = lastname || user.lastname;
+        user.email = email || user.email;
+        if (password) user.password = password; // Only update if password is provided
+        user.role = role || user.role;
+        user.defaultAddress = defaultAddress || user.defaultAddress;
+        user.contactNumber = contactNumber || user.contactNumber;
+        user.pic = pic || user.pic;
+
+        // Save updated user
+        const updatedUser = await user.save();
+
+        if (updatedUser) {
+            res.status(200).json({
+                message: 'User updated successfully',
+                user: {
+                    _id: updatedUser._id,
+                    name: updatedUser.name,
+                    firstname: updatedUser.firstname,
+                    lastname: updatedUser.lastname,
+                    email: updatedUser.email,
+                    role: updatedUser.role,
+                    defaultAddress: updatedUser.defaultAddress,
+                    contactNumber: updatedUser.contactNumber,
+                    pic: updatedUser.pic,
+                }
+            });
+        } else {
+            res.status(500);
+            throw new Error('User update failed');
+        }
+    } catch (error) {
+        return next(error);
+    }
+};
+
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -68,7 +109,8 @@ export const authUser = async (req, res, next) => {
 
             res.json({
                 _id: user._id,
-                name: user.name,
+                firstname: user.firstname,
+                lastname: user.lastname, 
                 email: user.email,
                 role: user.role,
                 pic: user.pic,
@@ -92,43 +134,6 @@ export const logoutUser = (_req, res) => {
         expires: new Date(0),
     })
     res.status(200).json({ message: 'Logged out successfully' })
-}
-
-export const updateUserProfile = async (req, res, next) => {
-    try {
-        const user = await User.findById(req.user._id)
-
-        if (user) {
-            user.name = req.body.name || user.name
-            user.email = req.body.email || user.email
-            user.password = req.body.password || user.password
-            user.defaultAddress = req.body.defaultAddress || user.defaultAddress
-            user.contactNumber = req.body.contactNumber || user.contact
-            // user.picture = req.body.picture || user.picture
-            // user.role = user.role;
-            // user.password = req.body.password || user.password
-
-            if (req.body.password) {
-                user.password = req.body.password
-            }
-
-            const updatedUser = await user.save()
-
-            res.status(201).json({
-                message: 'User updated successfully',
-                _id: updatedUser._id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                role: updatedUser.role,
-                contactNumber: updatedUser.contactNumber,
-            })
-        } else {
-            res.status(404)
-            throw new Error('User not found')
-        }
-    } catch (error) {
-        return next(error)
-    }
 }
 
 // @desc    Get user by ID

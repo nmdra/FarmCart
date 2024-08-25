@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import verified from '../assets/verified.gif'
-import failed from '../assets/failed.gif'
-import farmcartLogo from '../assets/logo.png'
+import verified from '../../assets/verified.gif'
+import failed from '../../assets/failed.gif'
+import farmcartLogo from '../../assets/logo.png'
 
 const VerifyEmail = () => {
     const navigate = useNavigate()

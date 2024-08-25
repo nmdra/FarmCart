@@ -3,7 +3,11 @@ import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema(
     {
-        name: {
+        firstname: {
+            type: String,
+            required: true,
+        },
+        lastname: {
             type: String,
             required: true,
         },
@@ -33,7 +37,7 @@ const userSchema = new mongoose.Schema(
         pic: {
             type: String,
             default: function () {
-                return `https://avatar.iran.liara.run/username?username=${this.name}`;
+                return `https://avatar.iran.liara.run/username?username=${this.firstname}+${this.lastname}}`;
             },
             required: false,
         },
@@ -41,7 +45,7 @@ const userSchema = new mongoose.Schema(
             address: { type: String, required: false },
             city: { type: String, required: false },
             postalCode: { type: String, required: false },
-            country: { type: String, required: false },
+            district: { type: String, required: false },
         },
         contactNumber: {
             type: String,
@@ -64,14 +68,6 @@ const userSchema = new mongoose.Schema(
         timestamps: true,
     }
 )
-
-// Pre-save hook to set the `pic` field dynamically
-userSchema.pre('save', function (next) {
-    if (!this.pic || this.pic === `https://avatar.iran.liara.run/username?username=Scot`) {
-        this.pic = `https://avatar.iran.liara.run/username?username=${this.name}`;
-    }
-    next();
-});
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {

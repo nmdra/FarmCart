@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ImageUploadHandler from '../Components/ImageUpload';
+import ImageUploadHandler from '../Components/Temp_ImageUpload';
 
 const ImageUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);

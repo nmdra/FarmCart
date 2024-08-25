@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useRegister } from '../Hooks/useRegister'
+import { useRegister } from '../../Hooks/CustomerHooks/useRegister'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Link } from 'react-router-dom'
-import farmcartLogo from '../assets/logo.png'
+import farmcartLogo from '../../assets/logo.png'
 
 const Register = () => {
     const [email, setEmail] = useState('')
@@ -46,18 +46,23 @@ const Register = () => {
         if (!isLongEnough) {
             setPasswordError('Password must be at least 8 characters long.')
         } else if (!hasUpperCase) {
-            setPasswordError('Password must contain at least one uppercase letter.')
+            setPasswordError(
+                'Password must contain at least one uppercase letter.'
+            )
         } else if (!hasLowerCase) {
-            setPasswordError('Password must contain at least one lowercase letter.')
+            setPasswordError(
+                'Password must contain at least one lowercase letter.'
+            )
         } else if (!hasNumbers) {
             setPasswordError('Password must contain at least one number.')
         } else if (!hasSpecialChars) {
-            setPasswordError('Password must contain at least one special character.')
+            setPasswordError(
+                'Password must contain at least one special character.'
+            )
         } else {
             setPasswordError('') // Clear any error if password is strong
         }
     }
-
 
     // Validate confirm password
     const validateConfirmPassword = (confirmPwd) => {
@@ -72,17 +77,17 @@ const Register = () => {
     useEffect(() => {
         validateConfirmPassword(confirmPassword)
         validatePassword(password)
-    }, [confirmPassword, password]) 
+    }, [confirmPassword, password])
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-green-600 max-w-md w-full">
-            {/* Image logo */}
-            <img
-                src={farmcartLogo} // Replace with the path to your logo image
-                alt="Logo"
-                className="h-5 w-auto mb-2" // Adjust the height as needed
-            />
+                {/* Image logo */}
+                <img
+                    src={farmcartLogo} // Replace with the path to your logo image
+                    alt="Logo"
+                    className="h-5 w-auto mb-2" // Adjust the height as needed
+                />
                 <div className="text-left mb-5">
                     <h2 className="text-3xl font-bold">Create Account</h2>
                 </div>
@@ -112,11 +117,14 @@ const Register = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            placeholder='Enter your email'
+                            placeholder="Enter your email"
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-700">
+                        <label
+                            htmlFor="password"
+                            className="block text-gray-700"
+                        >
                             Password
                         </label>
                         <input
@@ -126,12 +134,20 @@ const Register = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            placeholder="Create a strong password" 
+                            placeholder="Create a strong password"
                         />
-                        {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>} {/* Display password error message */}
+                        {passwordError && (
+                            <p className="text-red-500 text-sm">
+                                {passwordError}
+                            </p>
+                        )}{' '}
+                        {/* Display password error message */}
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="confirmPassword" className="block text-gray-700">
+                        <label
+                            htmlFor="confirmPassword"
+                            className="block text-gray-700"
+                        >
                             Confirm Password
                         </label>
                         <input
@@ -141,9 +157,14 @@ const Register = () => {
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
-                            placeholder="Re-enter your password" 
+                            placeholder="Re-enter your password"
                         />
-                        {confirmPasswordError && <p className="text-red-500 text-sm">{confirmPasswordError}</p>} {/* Display confirm password error message */}
+                        {confirmPasswordError && (
+                            <p className="text-red-500 text-sm">
+                                {confirmPasswordError}
+                            </p>
+                        )}{' '}
+                        {/* Display confirm password error message */}
                     </div>
                     <button
                         disabled={isLoading}
@@ -179,11 +200,8 @@ const Register = () => {
                     <ToastContainer />
                 </form>
                 <div className="mt-4">
-                    Already have an account?  
-                    <Link
-                        to="/login"
-                        className="text-blue-600 hover:underline"
-                    >
+                    Already have an account?
+                    <Link to="/login" className="text-blue-600 hover:underline">
                         Login here.
                     </Link>
                 </div>

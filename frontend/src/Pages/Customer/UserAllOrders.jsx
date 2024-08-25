@@ -1,6 +1,6 @@
 import React from 'react'
-import Sidebar from '../Components/Sidebar' // Import the Sidebar component
-import OrderTable from '../Components/OrderTable'
+import Sidebar from '../../Components/Sidebar' // Import the Sidebar component
+import OrderTable from '../../Components/OrderTable'
 
 function UserAllOrders() {
     return (
