@@ -1,15 +1,58 @@
 import { useState } from 'react';
 import Sidebar from '../Components/Sidebar'; // Import the Sidebar component
+import axios from 'axios';
 
 function Settings() {
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [uploadMessage, setUploadMessage] = useState('');
+    const [uploadUrl, setUploadUrl] = useState('');
     const [phoneError, setPhoneError] = useState('');
+    const [loading, setLoading] = useState(false); // State to track loading status
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setSelectedImage(URL.createObjectURL(file));
+            setSelectedFile(file);
+            setPreviewUrl(URL.createObjectURL(file));
         }
+    };
+
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            setUploadMessage('No file selected');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+        formData.append('folder', 'avatars'); // Adjust folder if needed
+
+        setLoading(true); // Start loading
+
+        try {
+            const response = await axios.post(
+                '/api/users/upload',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
+            setUploadMessage(response.data.message);
+            setUploadUrl(response.data.url); // Set the uploaded image URL
+            console.log(response.data)
+        } catch (error) {
+            setUploadMessage('Upload failed: ' + error.message);
+        } finally {
+            setLoading(false); // Stop loading
+        }
+    };
+
+    const handleSaveChanges = () => {
+        handleUpload(); // Call the handleUpload function when saving changes
     };
 
     const handlePhoneChange = (e) => {
@@ -40,9 +83,9 @@ function Settings() {
                             {/* Avatar Upload */}
                             <div className="flex flex-col items-center col-span-2 md:col-span-1">
                                 <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100">
-                                    {selectedImage ? (
+                                    {previewUrl ? (
                                         <img
-                                            src={selectedImage}
+                                            src={previewUrl}
                                             alt="Selected Avatar"
                                             className="w-full h-full object-cover"
                                         />
@@ -61,11 +104,42 @@ function Settings() {
                                         className="hidden"
                                     />
                                 </label>
+                                {loading && (
+                                    <div className="mt-4">
+                                        <svg
+                                            className="animate-spin h-5 w-5 mr-3"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"
+                                            ></path>
+                                        </svg>
+                                    </div>
+                                )}
+                                {uploadMessage && (
+                                    <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                                        {uploadMessage}
+                                    </p>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2 md:col-span-1">
                                 <div>
-                                    <label className="block text-gray-700">First Name</label>
+                                    <label className="block text-gray-700">
+                                        First Name
+                                    </label>
                                     <input
                                         type="text"
                                         placeholder="First Name"
@@ -73,15 +147,19 @@ function Settings() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Last Name</label>
+                                    <label className="block text-gray-700">
+                                        Last Name
+                                    </label>
                                     <input
                                         type="text"
                                         placeholder="Last Name"
                                         className="border p-2 rounded-md w-full"
                                     />
                                 </div>
-                                <div className='col-span-2'>
-                                    <label className="block text-gray-700">Email</label>
+                                <div className="col-span-2">
+                                    <label className="block text-gray-700">
+                                        Email
+                                    </label>
                                     <input
                                         type="email"
                                         placeholder="Email"
@@ -89,7 +167,9 @@ function Settings() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Phone Number</label>
+                                    <label className="block text-gray-700">
+                                        Phone Number
+                                    </label>
                                     <input
                                         type="text"
                                         placeholder="Phone Number"
@@ -103,7 +183,9 @@ function Settings() {
                                     )}
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Birthday</label>
+                                    <label className="block text-gray-700">
+                                        Birthday
+                                    </label>
                                     <input
                                         type="date"
                                         className="border p-2 rounded-md w-full"
@@ -112,7 +194,10 @@ function Settings() {
                                     />
                                 </div>
                             </div>
-                            <button className="mt-4 bg-green-500 text-white p-2 rounded-md col-span-2 w-1/5">
+                            <button 
+                                onClick={handleSaveChanges} // Call handleSaveChanges on button click
+                                className="mt-4 bg-green-500 text-white p-2 rounded-md col-span-2 w-1/5"
+                            >
                                 Save Changes
                             </button>
                         </div>
@@ -125,7 +210,9 @@ function Settings() {
                         </h2>
                         <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
                             <div>
-                                <label className="block text-gray-700">Current Password</label>
+                                <label className="block text-gray-700">
+                                    Current Password
+                                </label>
                                 <input
                                     type="password"
                                     placeholder="Current Password"
@@ -133,7 +220,9 @@ function Settings() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700">New Password</label>
+                                <label className="block text-gray-700">
+                                    New Password
+                                </label>
                                 <input
                                     type="password"
                                     placeholder="New Password"
@@ -141,7 +230,9 @@ function Settings() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700">Confirm Password</label>
+                                <label className="block text-gray-700">
+                                    Confirm Password
+                                </label>
                                 <input
                                     type="password"
                                     placeholder="Confirm Password"
@@ -167,4 +258,3 @@ function Settings() {
 }
 
 export default Settings;
-

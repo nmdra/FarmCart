@@ -19,6 +19,7 @@ import UserDashboard from './Pages/UserDashboard'
 import Settings from './Pages/Settings'
 import OrderHistory from './Components/OrderTable'
 import UserAllOrders from './Pages/UserAllOrders'
+import FileUploadTest from './Pages/FileUploadTest'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -38,6 +39,7 @@ const router = createBrowserRouter(
             <Route path="/userDashboard" element={<UserDashboard />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/userAllOrders" element={<UserAllOrders />} />
+            <Route path="/fileUploadTest" element={<FileUploadTest />} />
             
             <Route path="*" element={<NotFound />} />
         </Route>
