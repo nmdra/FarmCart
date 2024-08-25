@@ -121,10 +121,7 @@ const Register = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label
-                            htmlFor="password"
-                            className="block text-gray-700"
-                        >
+                        <label htmlFor="password" className="block text-gray-700">
                             Password
                         </label>
                         <input
@@ -144,10 +141,7 @@ const Register = () => {
                         {/* Display password error message */}
                     </div>
                     <div className="mb-6">
-                        <label
-                            htmlFor="confirmPassword"
-                            className="block text-gray-700"
-                        >
+                        <label htmlFor="confirmPassword" className="block text-gray-700">
                             Confirm Password
                         </label>
                         <input
