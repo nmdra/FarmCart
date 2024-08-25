@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import farmcartLogo from '../assets/logo.png'
+import farmcartLogo from '../../assets/logo.png'
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('')

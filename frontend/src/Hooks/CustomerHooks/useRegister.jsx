@@ -28,7 +28,7 @@ export const useRegister = () => {
             dispatch({ type: 'REGISTER', payload: json })
 
             setIsLoading(false)
-            navigate('/check-email')
+            navigate('/checkEmail')
         } catch (error) {
             console.error(error)
             if (
