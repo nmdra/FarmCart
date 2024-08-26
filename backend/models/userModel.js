@@ -3,14 +3,18 @@ import bcrypt from 'bcryptjs'
 
 const userSchema = new mongoose.Schema(
     {
-        name: {
+        firstname: {
+            type: String,
+            required: true,
+        },
+        lastname: {
             type: String,
             required: true,
         },
         email: {
             type: String,
             lowercase: true,
-            required: [true, 'Email not Provided`'],
+            required: [true, 'Email not Provided'],
             unique: [true, 'Email already exists'],
             validate: {
                 validator: function (v) {
@@ -30,21 +34,33 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Password not provided'],
         },
+        pic: {
+            type: String,
+            default: function () {
+                return `https://avatar.iran.liara.run/username?username=${this.firstname}+${this.lastname}}`
+            },
+            required: false,
+        },
         defaultAddress: {
-            address: { type: String, required: false, default: '' },
-            city: { type: String, required: false, default: '' },
-            postalCode: { type: Number, required: false, default: '' },
-            country: { type: String, required: false, default: '' },
+            address: { type: String, required: false },
+            city: { type: String, required: false },
+            postalCode: { type: String, required: false },
+            district: { type: String, required: false },
         },
         contactNumber: {
             type: String,
-            required: true,
+            required: false,
             validate: {
                 validator: function (v) {
-                    return /^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$/.test(v);
+                    return /^[0]{1}[7]{1}[01245678]{1}[0-9]{7}$/.test(v)
                 },
                 message: '{VALUE} is not a valid contact number!',
             },
+        },
+        isVerified: {
+            type: Boolean,
+            default: false,
+            required: false,
         },
     },
 
