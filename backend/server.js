@@ -5,8 +5,8 @@ import connectDB from './config/db.js'
 import userRoute from './routes/userRoute.js'
 import orderRoute from './routes/orderRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
-import farmerRoutes from './route/farmerRoute.js'
-import shopRoute from './route/shop_productRoute.js'
+import farmerRoutes from './routes/farmerRoute.js'
+import shopRoute from './routes/shop_productRoute.js'
 // load environment variables
 const PORT = process.env.PORT || 8000
 
