@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useTable, usePagination } from 'react-table';
-import axios from 'axios';
-import { OrderColumns } from '../lib/OrderColumns';
-import Loading from './Loading';
+import React, { useEffect, useState } from 'react'
+import { useTable, usePagination } from 'react-table'
+import axios from 'axios'
+import { OrderColumns } from '../lib/OrderColumns'
+import Loading from './Loading'
 
 const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('/api/orders');
-                setData(response.data); // Set the fetched data to the state
+                const response = await axios.get('/api/orders')
+                setData(response.data) // Set the fetched data to the state
             } catch (error) {
-                console.error('Error fetching the orders:', error);
+                console.error('Error fetching the orders:', error)
             } finally {
-                setLoading(false);
+                setLoading(false)
             }
-        };
+        }
 
-        fetchData();
-    }, []);
+        fetchData()
+    }, [])
 
     const {
         getTableProps,
@@ -42,21 +42,21 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
             initialState: { pageIndex: 0, pageSize: rowsPerPage || 5 },
         },
         usePagination
-    );
+    )
 
     if (loading) {
-        return (
-            <Loading />
-        );
+        return <Loading />
     }
 
     // Check if data is empty and render a message if it is
     if (data.length === 0) {
         return (
             <div className="flex justify-center items-center h-1/2">
-                <p className="text-gray-600">{emptyRowMsg || 'Not available. 😿'}</p>
+                <p className="text-gray-600">
+                    {emptyRowMsg || 'Not available. 😿'}
+                </p>
             </div>
-        );
+        )
     }
 
     return (
@@ -84,7 +84,7 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
                     className="bg-white divide-y divide-gray-200"
                 >
                     {page.map((row) => {
-                        prepareRow(row);
+                        prepareRow(row)
                         return (
                             <tr
                                 {...row.getRowProps()}
@@ -99,7 +99,7 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
                                     </td>
                                 ))}
                             </tr>
-                        );
+                        )
                     })}
                 </tbody>
             </table>
@@ -141,8 +141,8 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
                                 onChange={(e) => {
                                     const pageNumber = e.target.value
                                         ? Number(e.target.value) - 1
-                                        : 0;
-                                    gotoPage(pageNumber);
+                                        : 0
+                                    gotoPage(pageNumber)
                                 }}
                                 id="PaginationPage"
                             />
@@ -172,7 +172,7 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
                 </div>
             ) : null}
         </div>
-    );
-};
+    )
+}
 
-export default OrderTable;
+export default OrderTable

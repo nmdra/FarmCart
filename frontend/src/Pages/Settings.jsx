@@ -1,27 +1,27 @@
-import { useState } from 'react';
-import Sidebar from '../Components/Sidebar'; // Import the Sidebar component
+import { useState } from 'react'
+import Sidebar from '../Components/Sidebar' // Import the Sidebar component
 
 function Settings() {
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [phoneError, setPhoneError] = useState('');
+    const [selectedImage, setSelectedImage] = useState(null)
+    const [phoneError, setPhoneError] = useState('')
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
+        const file = e.target.files[0]
         if (file) {
-            setSelectedImage(URL.createObjectURL(file));
+            setSelectedImage(URL.createObjectURL(file))
         }
-    };
+    }
 
     const handlePhoneChange = (e) => {
-        const phoneNumber = e.target.value;
-        const sriLankanPhoneRegex = /^(?:\+94|0)?(?:7[0125678]\d)\d{7}$/;
+        const phoneNumber = e.target.value
+        const sriLankanPhoneRegex = /^(?:\+94|0)?(?:7[0125678]\d)\d{7}$/
 
         if (!sriLankanPhoneRegex.test(phoneNumber)) {
-            setPhoneError('Invalid Sri Lankan phone number');
+            setPhoneError('Invalid Sri Lankan phone number')
         } else {
-            setPhoneError('');
+            setPhoneError('')
         }
-    };
+    }
 
     return (
         <div className="relative min-h-screen bg-gray-50 flex justify-center">
@@ -65,7 +65,9 @@ function Settings() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2 md:col-span-1">
                                 <div>
-                                    <label className="block text-gray-700">First Name</label>
+                                    <label className="block text-gray-700">
+                                        First Name
+                                    </label>
                                     <input
                                         type="text"
                                         placeholder="First Name"
@@ -73,15 +75,19 @@ function Settings() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Last Name</label>
+                                    <label className="block text-gray-700">
+                                        Last Name
+                                    </label>
                                     <input
                                         type="text"
                                         placeholder="Last Name"
                                         className="border p-2 rounded-md w-full"
                                     />
                                 </div>
-                                <div className='col-span-2'>
-                                    <label className="block text-gray-700">Email</label>
+                                <div className="col-span-2">
+                                    <label className="block text-gray-700">
+                                        Email
+                                    </label>
                                     <input
                                         type="email"
                                         placeholder="Email"
@@ -89,7 +95,9 @@ function Settings() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Phone Number</label>
+                                    <label className="block text-gray-700">
+                                        Phone Number
+                                    </label>
                                     <input
                                         type="text"
                                         placeholder="Phone Number"
@@ -103,7 +111,9 @@ function Settings() {
                                     )}
                                 </div>
                                 <div>
-                                    <label className="block text-gray-700">Birthday</label>
+                                    <label className="block text-gray-700">
+                                        Birthday
+                                    </label>
                                     <input
                                         type="date"
                                         className="border p-2 rounded-md w-full"
@@ -125,7 +135,9 @@ function Settings() {
                         </h2>
                         <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
                             <div>
-                                <label className="block text-gray-700">Current Password</label>
+                                <label className="block text-gray-700">
+                                    Current Password
+                                </label>
                                 <input
                                     type="password"
                                     placeholder="Current Password"
@@ -133,7 +145,9 @@ function Settings() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700">New Password</label>
+                                <label className="block text-gray-700">
+                                    New Password
+                                </label>
                                 <input
                                     type="password"
                                     placeholder="New Password"
@@ -141,7 +155,9 @@ function Settings() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700">Confirm Password</label>
+                                <label className="block text-gray-700">
+                                    Confirm Password
+                                </label>
                                 <input
                                     type="password"
                                     placeholder="Confirm Password"
@@ -163,8 +179,7 @@ function Settings() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default Settings;
-
+export default Settings

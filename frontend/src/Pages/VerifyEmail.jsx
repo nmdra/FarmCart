@@ -133,9 +133,9 @@ const VerifyEmail = () => {
                                 </svg>
                             </a>
                         </div>
-              <p className="text-gray-500 mt-6 text-sm">
-                  You can reach us at if you have any questions.
-              </p>
+                        <p className="text-gray-500 mt-6 text-sm">
+                            You can reach us at if you have any questions.
+                        </p>
                     </>
                 ) : (
                     <h1 className="text-2xl font-semibold text-lime-600">
