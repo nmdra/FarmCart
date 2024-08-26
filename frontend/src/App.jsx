@@ -24,7 +24,7 @@ import FarmerLogin from './Pages/farmer/FarmerLogin'
 import Dashboard from './Pages/farmer/FarmerDashbaord'
 import ProfilePage from './Pages/farmer/FarmerProfile'
 import FarmerLogout from './Pages/farmer/LogOut'
-import Register from './Pages/farmer/FarmerRegistaration'
+import FarmerRegister from './Pages/farmer/FarmerRegistaration'
 import MyShop from './Pages/farmer/Myshops'
 import AddShop from './Pages/farmer/shopcreate'
 import Shop from './Pages/farmer/ShopDashboard'
@@ -53,8 +53,8 @@ const router = createBrowserRouter(
             <Route path="/userAllOrders" element={<UserAllOrders />} />
             <Route path="/fileUploadTest" element={<FileUploadTest />} />
 
-            <Route path="/" element={<FarmerLogin />} />
-            <Route path="/farmerRegister" element={<Register />} />
+            <Route path="/farmerLogin" element={<FarmerLogin />} />
+            <Route path="/farmerRegister" element={<FarmerRegister />} />
             <Route path="/farmerdashboard" element={<Dashboard />} />
             <Route path="/farmerprofile" element={<ProfilePage />} />
             <Route path="/myshops" element={<MyShop />} />

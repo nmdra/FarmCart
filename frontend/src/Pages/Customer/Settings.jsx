@@ -61,7 +61,7 @@ function Settings() {
         setLoading(true) // Start loading
 
         try {
-            const response = await axios.post('/api/users/upload', formData, {
+            const response = await axios.post('/api/images', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
