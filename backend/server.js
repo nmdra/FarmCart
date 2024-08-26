@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
 import userRoute from './routes/userRoute.js'
 import orderRoute from './routes/orderRoute.js'
+import imageHandler from './routes/imageHandlerRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
 // load environment variables
@@ -29,6 +30,8 @@ app.get('/', (_req, res) => {
 // User API routes
 app.use('/api/users', userRoute)
 app.use('/api/orders', orderRoute)
+
+app.use('/api/images', imageHandler)
 
 // Shop API routes
 // app.use('/api/shops', shopRoute);

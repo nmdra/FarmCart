@@ -11,7 +11,7 @@ import {
     verifyEmail,
 } from '../controllers/userController.js'
 import protect from '../middlewares/authMiddleware.js'
-import { uploadImage } from '../middlewares/uploadController.js'
+import { uploadImage } from '../controllers/uploadController.js'
 
 const router = express.Router()
 

@@ -40,7 +40,9 @@ const ResendEmail = () => {
                     alt="Logo"
                     className="h-5 w-auto mb-2" // Adjust the height as needed
                 />
-                <h2 className="text-2xl font-semibold mb-6">Resend Verification Email</h2>
+                <h2 className="text-2xl font-semibold mb-6">
+                    Resend Verification Email
+                </h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block text-gray-700">
@@ -97,4 +99,4 @@ const ResendEmail = () => {
     )
 }
 
-export default ResendEmail 
+export default ResendEmail

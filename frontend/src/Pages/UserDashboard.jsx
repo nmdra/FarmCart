@@ -1,7 +1,7 @@
-import React from 'react';
-import Sidebar from '../Components/Sidebar'; // Import the Sidebar component
-import OrderHistory from '../Components/OrderTable';
-import OrderTable from '../Components/OrderTable';
+import React from 'react'
+import Sidebar from '../Components/Sidebar' // Import the Sidebar component
+import OrderHistory from '../Components/OrderTable'
+import OrderTable from '../Components/OrderTable'
 
 function Dashboard() {
     return (
@@ -70,4 +70,4 @@ function Dashboard() {
     )
 }
 
-export default Dashboard;
+export default Dashboard
