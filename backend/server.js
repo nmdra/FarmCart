@@ -5,7 +5,8 @@ import connectDB from './config/db.js'
 import userRoute from './routes/userRoute.js'
 import orderRoute from './routes/orderRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
-
+import farmerRoutes from './route/farmerRoute.js'
+import shopRoute from './route/shop_productRoute.js'
 // load environment variables
 const PORT = process.env.PORT || 8000
 
@@ -31,13 +32,12 @@ app.use('/api/users', userRoute)
 app.use('/api/orders', orderRoute)
 
 // Shop API routes
-// app.use('/api/shops', shopRoute);
-// app.use('/api/shops', productRoutes)
+app.use('/api/farmers', farmerRoutes);
+app.use('/api/shops', shopRoute);
+
+app.use(notFound);
 
 // Middleware to handle 404 errors (route not found)
-app.use(notFound)
-
-// Middleware to handle errors and send appropriate responses
 app.use(errorHandler)
 
 // Start the server and listen on the specified port
