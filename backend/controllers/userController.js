@@ -7,8 +7,16 @@ import jwt from 'jsonwebtoken'
 // @route   POST /api/users
 // @access  Public
 export const registerUser = async (req, res, next) => {
-    const { firstname,lastname, email, password, role, defaultAddress, contactNumber, pic } =
-        req.body
+    const {
+        firstname,
+        lastname,
+        email,
+        password,
+        role,
+        defaultAddress,
+        contactNumber,
+        pic,
+    } = req.body
 
     try {
         const isUserExist = await User.findOne({ email })
@@ -40,28 +48,37 @@ export const registerUser = async (req, res, next) => {
 }
 
 export const updateUser = async (req, res, next) => {
-    const { firstname,lastname, email, password, role, defaultAddress, contactNumber, pic } = req.body;
+    const {
+        firstname,
+        lastname,
+        email,
+        password,
+        role,
+        defaultAddress,
+        contactNumber,
+        pic,
+    } = req.body
 
     try {
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.user._id)
 
         if (!user) {
-            res.status(404);
-            throw new Error('User not found');
+            res.status(404)
+            throw new Error('User not found')
         }
 
         // Update user details
-        user.firstname = firstname || user.firstname;
-        user.lastname = lastname || user.lastname;
-        user.email = email || user.email;
-        if (password) user.password = password; // Only update if password is provided
-        user.role = role || user.role;
-        user.defaultAddress = defaultAddress || user.defaultAddress;
-        user.contactNumber = contactNumber || user.contactNumber;
-        user.pic = pic || user.pic;
+        user.firstname = firstname || user.firstname
+        user.lastname = lastname || user.lastname
+        user.email = email || user.email
+        if (password) user.password = password // Only update if password is provided
+        user.role = role || user.role
+        user.defaultAddress = defaultAddress || user.defaultAddress
+        user.contactNumber = contactNumber || user.contactNumber
+        user.pic = pic || user.pic
 
         // Save updated user
-        const updatedUser = await user.save();
+        const updatedUser = await user.save()
 
         if (updatedUser) {
             res.status(200).json({
@@ -76,17 +93,16 @@ export const updateUser = async (req, res, next) => {
                     defaultAddress: updatedUser.defaultAddress,
                     contactNumber: updatedUser.contactNumber,
                     pic: updatedUser.pic,
-                }
-            });
+                },
+            })
         } else {
-            res.status(500);
-            throw new Error('User update failed');
+            res.status(500)
+            throw new Error('User update failed')
         }
     } catch (error) {
-        return next(error);
+        return next(error)
     }
-};
-
+}
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -110,7 +126,7 @@ export const authUser = async (req, res, next) => {
             res.json({
                 _id: user._id,
                 firstname: user.firstname,
-                lastname: user.lastname, 
+                lastname: user.lastname,
                 email: user.email,
                 role: user.role,
                 pic: user.pic,
@@ -179,25 +195,23 @@ export const getUserProfile = async (req, res) => {
 // @route   GET /api/users/verify
 // @access  Private
 export const sendVerifyEmail = async (req, user, res) => {
-        const isAdded = await User.findOne({ email: req.body.email || user.email })
-        if (!isAdded) {
-            return res
-                .status(404)
-                .json({
-                    success: false,
-                    message: 'No user found with this email',
-                })
-        }
-
-        // Generate the verification token using the user's email
-        const token = await tokenToVerify(isAdded.email)
-        const result = await emailVerify(isAdded, token);
-    if (result.success) {
-        res.status(200).json(result);
-    } else {
-        res.status(500).json(result);
+    const isAdded = await User.findOne({ email: req.body.email || user.email })
+    if (!isAdded) {
+        return res.status(404).json({
+            success: false,
+            message: 'No user found with this email',
+        })
     }
-};
+
+    // Generate the verification token using the user's email
+    const token = await tokenToVerify(isAdded.email)
+    const result = await emailVerify(isAdded, token)
+    if (result.success) {
+        res.status(200).json(result)
+    } else {
+        res.status(500).json(result)
+    }
+}
 
 const emailVerify = async (user, token) => {
     try {
@@ -219,16 +233,19 @@ const emailVerify = async (user, token) => {
                     <p style="font-weight: bold;">The FarmCart Team</p>
                 </div>
             `,
-        };
+        }
 
-        const message = 'Please check your email to verify!';
-        await sendEmail(body, message);
-        return { success: true, message: 'Please check your email to verify!' };
+        const message = 'Please check your email to verify!'
+        await sendEmail(body, message)
+        return { success: true, message: 'Please check your email to verify!' }
     } catch (error) {
-        console.error(`Error in sending verification email: ${error.message}`);
-        return { success: false, error: `Error in sending verification email: ${error.message}` };
+        console.error(`Error in sending verification email: ${error.message}`)
+        return {
+            success: false,
+            error: `Error in sending verification email: ${error.message}`,
+        }
     }
-};
+}
 
 export const verifyEmail = async (req, res) => {
     const token = req.query.token
@@ -244,12 +261,10 @@ export const verifyEmail = async (req, res) => {
         const user = await User.findOne({ email: decoded.email })
 
         if (!user) {
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    message: 'Invalid token or user does not exist',
-                })
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid token or user does not exist',
+            })
         }
 
         user.isVerified = true
@@ -271,12 +286,10 @@ export const forgotPassword = async (req, res) => {
     try {
         const isAdded = await User.findOne({ email: req.body.verifyEmail })
         if (!isAdded) {
-            return res
-                .status(404)
-                .json({
-                    success: false,
-                    message: 'No user found with this email',
-                })
+            return res.status(404).json({
+                success: false,
+                message: 'No user found with this email',
+            })
         }
 
         const token = await tokenToVerify(isAdded.email)
@@ -331,12 +344,10 @@ export const resetPassword = async (req, res) => {
         user.password = password
         await user.save()
 
-        return res
-            .status(200)
-            .json({
-                success: true,
-                message: 'Password has been reset successfully',
-            })
+        return res.status(200).json({
+            success: true,
+            message: 'Password has been reset successfully',
+        })
     } catch (error) {
         console.error('Error in resetPassword:', error.message)
         return res

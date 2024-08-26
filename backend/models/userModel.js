@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
         pic: {
             type: String,
             default: function () {
-                return `https://avatar.iran.liara.run/username?username=${this.firstname}+${this.lastname}}`;
+                return `https://avatar.iran.liara.run/username?username=${this.firstname}+${this.lastname}}`
             },
             required: false,
         },

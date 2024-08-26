@@ -1,26 +1,29 @@
-import asyncHandler from '../middlewares/asyncHandler.js';
-import Shop from '../models/shopModel.js';
+import asyncHandler from '../middlewares/asyncHandler.js'
+import Shop from '../models/shopModel.js'
 
 // Fetch all shops (might need to limit this based on farmer)
 // @description   Fetch all shops
 // @route         GET /api/shops
 const getShops = asyncHandler(async (req, res) => {
-    const shops = await Shop.find({ farmer: req.user._id }); // Fetch only the shops belonging to the logged-in farmer
-    res.json(shops);
-});
+    const shops = await Shop.find({ farmer: req.user._id }) // Fetch only the shops belonging to the logged-in farmer
+    res.json(shops)
+})
 
 // @description   Fetch a single shop by ID
 // @route         GET /api/shops/:id
 const getShopById = asyncHandler(async (req, res) => {
-    const shop = await Shop.findOne({ _id: req.params.id, farmer: req.user._id }); // Ensure the shop belongs to the farmer
+    const shop = await Shop.findOne({
+        _id: req.params.id,
+        farmer: req.user._id,
+    }) // Ensure the shop belongs to the farmer
 
     if (shop) {
-        res.json(shop);
+        res.json(shop)
     } else {
-        res.status(404);
-        throw new Error('Shop not found');
+        res.status(404)
+        throw new Error('Shop not found')
     }
-});
+})
 
 // @description   Create a new shop
 // @route         POST /api/shops
@@ -33,8 +36,8 @@ const createShop = asyncHandler(async (req, res) => {
         email,
         contactNumber,
         description,
-        products = []
-    } = req.body;
+        products = [],
+    } = req.body
 
     const shop = new Shop({
         name,
@@ -45,57 +48,63 @@ const createShop = asyncHandler(async (req, res) => {
         contactNumber,
         description,
         products,
-        farmer: req.user._id // Associate the shop with the logged-in farmer
-    });
+        farmer: req.user._id, // Associate the shop with the logged-in farmer
+    })
 
-    const createdShop = await shop.save();
-    res.status(201).json(createdShop);
-});
+    const createdShop = await shop.save()
+    res.status(201).json(createdShop)
+})
 
 // @description   Update a shop by ID
 // @route         PUT /api/shops/:id
 const updateShop = asyncHandler(async (req, res) => {
-    const { name, address, district, category, email, contactNumber, description } = req.body;
+    const {
+        name,
+        address,
+        district,
+        category,
+        email,
+        contactNumber,
+        description,
+    } = req.body
 
-    const shop = await Shop.findOne({ _id: req.params.id, farmer: req.user._id }); // Ensure the shop belongs to the farmer
+    const shop = await Shop.findOne({
+        _id: req.params.id,
+        farmer: req.user._id,
+    }) // Ensure the shop belongs to the farmer
 
     if (shop) {
-        shop.name = name || shop.name;
-        shop.address = address || shop.address;
-        shop.district = district || shop.district;
-        shop.category = category || shop.category;
-        shop.email = email || shop.email;
-        shop.contactNumber = contactNumber || shop.contactNumber;
-        shop.description = description || shop.description;
+        shop.name = name || shop.name
+        shop.address = address || shop.address
+        shop.district = district || shop.district
+        shop.category = category || shop.category
+        shop.email = email || shop.email
+        shop.contactNumber = contactNumber || shop.contactNumber
+        shop.description = description || shop.description
 
-        const updatedShop = await shop.save();
-        res.json(updatedShop);
+        const updatedShop = await shop.save()
+        res.json(updatedShop)
     } else {
-        res.status(404);
-        throw new Error('Shop not found');
+        res.status(404)
+        throw new Error('Shop not found')
     }
-});
-
+})
 
 // @description   Delete a shop by ID
 // @route         DELETE /api/shops/:id
 const deleteShop = asyncHandler(async (req, res) => {
-    const shop = await Shop.findOne({ _id: req.params.id, farmer: req.user._id }); // Ensure the shop belongs to the farmer
+    const shop = await Shop.findOne({
+        _id: req.params.id,
+        farmer: req.user._id,
+    }) // Ensure the shop belongs to the farmer
 
     if (shop) {
-        await shop.deleteOne();
-        res.json({ message: 'Shop removed' });
+        await shop.deleteOne()
+        res.json({ message: 'Shop removed' })
     } else {
-        res.status(404);
-        throw new Error('Shop not found');
+        res.status(404)
+        throw new Error('Shop not found')
     }
-});
+})
 
-export { 
-    getShops, 
-    getShopById, 
-    createShop, 
-    updateShop, 
-    deleteShop
-};
-
+export { getShops, getShopById, createShop, updateShop, deleteShop }
