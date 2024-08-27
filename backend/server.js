@@ -22,8 +22,8 @@ app.use(cookieParser())
 
 // routes
 // app.use('/api/users', userRoute)
-app.use('/api/farmers', farmerRoutes);
-app.use('/api/shops', shopRoute);
+app.use('/api/farmers', farmerRoutes)
+app.use('/api/shops', shopRoute)
 
 app.all('*', (_req, res) => {
     res.status(404).json({
@@ -31,7 +31,7 @@ app.all('*', (_req, res) => {
         statusCode: 404,
     })
 })
-app.use(notFound);
+app.use(notFound)
 app.use(errorHandler)
 
 app.listen(PORT, () => {

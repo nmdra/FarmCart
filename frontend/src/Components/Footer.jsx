@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Footer = () => {
     return (
@@ -7,9 +7,8 @@ const Footer = () => {
                 <hr className="w-full border-t border-gray-700 mb-4" />
                 <h1 className="text-lg font-semibold">Footer</h1>
             </div>
-            
         </footer>
-    );
-};
+    )
+}
 
-export default Footer;
+export default Footer
