@@ -32,13 +32,11 @@ app.use('/api/users', userRoute)
 app.use('/api/orders', orderRoute)
 
 // Shop API routes
-app.use('/api/farmers', farmerRoutes);
-app.use('/api/shops', shopRoute);
+// app.use('/api/farmers', farmerRoutes);
+// app.use('/api/shops', shopRoute);
 app.use('/api/images', imageHandler)
 
 app.use(notFound);
-
-app.use(notFound)
 
 // Middleware to handle errors and send appropriate responses
 app.use(errorHandler)
