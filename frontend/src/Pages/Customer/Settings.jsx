@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Sidebar from '../../Components/Sidebar' // Import the Sidebar component
 import axios from 'axios'
 
 function Settings() {
@@ -166,15 +165,12 @@ function Settings() {
 
     return (
         <div className="relative min-h-screen bg-gray-50 flex justify-center">
-            {/* Floating Sidebar */}
-            <Sidebar />
-
             {/* Main Content */}
-            <div className="pl-72 p-6 max-w-6xl w-full">
+            <div className="pl-18 p-8 max-w-6xl w-full">
                 <div className="grid grid-cols-2 md:grid-cols-1 gap-6">
                     {/* Account Settings */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm col-span-2 border-2">
-                        <h2 className="text-lg font-semibold text-gray-700 mb-4">
+                    <div className="bg-white p-6 rounded-lg shadow-sm col-span-2 border-2 border-green-600">
+                        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
                             Account Settings
                         </h2>
                         <div className="grid grid-cols-2 md:grid-cols-1 gap-4">

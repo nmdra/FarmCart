@@ -1,16 +1,12 @@
 import React from 'react'
-import Sidebar from '../../Components/Sidebar' // Import the Sidebar component
 import OrderTable from '../../Components/OrderTable'
 
 function Dashboard() {
     return (
-        <div className="relative min-h-screen bg-neutral-100 pr-36 pl-36">
-            {/* Floating Sidebar */}
-            <Sidebar />
-
+        <div className="relative min-h-screen bg-neutral-100 pr-8 pl-8">
             {/* Main Content */}
-            <div className="pl-72 p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div className="pl-36 p-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 min-w-fit max-w-full">
                     {/* Profile Section */}
                     <div className="flex col-span-1 bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-700">
                         <div className="flex items-center">
