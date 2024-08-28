@@ -38,12 +38,13 @@ const MyShop = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+        <div className="flex min-h-screen bg-gray-50">
+            {/* Fixed Sidebar */}
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md p-8 pt-32">
                 <Sidebar />
-            </div>
+            </aside>
 
-            <div className="flex-1 p-8 pt-16">
+            <div className="flex-1 p-8 pt-32 overflow-y-auto ml-64">
                 <div className="grid grid-cols-4 gap-x-1 gap-y-8">
                     {/* Render shops */}
                     {shops.map((shop) => (
@@ -57,7 +58,7 @@ const MyShop = () => {
                                 className="object-cover h-full w-full"
                             />
                             <div className="absolute inset-0 flex flex-col justify-between p-4 bg-black bg-opacity-50">
-                                <h2 className="text-xl font-semibold text-white">
+                                <h2 className="text-3xl font-semibold text-white text-center pt-8">
                                     {shop.name}
                                 </h2>
                                 <div className="flex justify-center">

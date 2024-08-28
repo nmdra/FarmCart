@@ -6,7 +6,7 @@ export default {
   ],
   theme: {
     extend: {colors: {
-      'green-light':'#99DD05',
+      'green-light':'#F5FCE6',
       'custom-green': '#36753D',
     },},
   },

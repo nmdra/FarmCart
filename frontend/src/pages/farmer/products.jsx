@@ -84,12 +84,12 @@ const Products = () => {
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+        <div className="flex min-h-screen bg-gray-50 ">
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
                 <Sidebar />
-            </div>
+            </aside>
 
-            <div className="flex-1 p-8 pt-2">
+            <div className="flex-1 ml-64 p-8 pt-24 overflow-y-auto">
                 {/* Search Bar */}
                 <div className="flex justify-end mb-6">
                     <input
@@ -100,12 +100,12 @@ const Products = () => {
                         className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
                 </div>
-                <div className="grid grid-cols-5 gap-x-1 gap-y-8">
+                <div className="grid grid-cols-5  gap-x-36 gap-y-12">
                     {/* Render products */}
                     {products.map((product) => (
                         <div
                             key={product._id}
-                            className="relative bg-white rounded-lg shadow-md h-65 w-60 flex flex-col"
+                            className="relative bg-white rounded-lg shadow-md h-70 w-60 flex flex-col"
                         >
                             {/* Upper half - Product Image */}
                             <div className="h-1/2">
@@ -151,7 +151,7 @@ const Products = () => {
 
                     {/* Add New Product */}
                     <div className="relative flex items-center justify-center bg-white rounded-lg shadow-md h-65 w-60">
-                        <div className="absolute inset-0 flex flex-col justify-center items-center p-4">
+                        <div className="absolute inset-0 flex flex-col justify-center items-center p-12">
                             <img
                                 src={addShopIcon}
                                 alt="Add Product"

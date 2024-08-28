@@ -139,18 +139,18 @@ const CreateShopPage = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
+        <div className="flex  min-h-screen bg-gray-50">
             {/* Sidebar */}
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+            <aside className="fixed top-0 pt-32 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
                 <Sidebar />
-            </div>
+            </aside>
 
             {/* Main Content */}
-            <div className="flex-1 p-36 pt-16">
+            <div className="flex-1 top-0 ml-64 p-32 pt-32 overflow-y-auto">
                 {/* Create Shop Form */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Create Shop
@@ -344,11 +344,11 @@ const CreateShopPage = () => {
                             </label>
                         </div>
                     </div>
-                    {/* Bank details*/}
+                    {/* Bank details */}
                     <h3 className="text-lg font-semibold text-gray-800 pt-8 mb-4 text-left">
                         Bank Details
                     </h3>
-                    <div className="grid grid-cols-1  gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="flex flex-col">
                             <label className="block text-gray-700 text-left">
                                 Account Name
@@ -356,7 +356,7 @@ const CreateShopPage = () => {
                             <input
                                 type="text"
                                 name="account_name"
-                                className="w-2/3 mt-1 p-2 border border-gray-300 rounded bg-white text-black "
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                 value={formData.account_name}
                                 onChange={handleChange}
                                 required
@@ -369,7 +369,7 @@ const CreateShopPage = () => {
                             <input
                                 type="text"
                                 name="account_number"
-                                className="w-2/3 mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                 value={formData.account_number}
                                 onChange={handleChange}
                                 required
@@ -382,7 +382,7 @@ const CreateShopPage = () => {
                             <input
                                 type="text"
                                 name="bank"
-                                className="w-2/3 mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                 value={formData.bank}
                                 onChange={handleChange}
                                 required
@@ -395,13 +395,14 @@ const CreateShopPage = () => {
                             <input
                                 type="text"
                                 name="branch"
-                                className="w-2/3 mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                 value={formData.branch}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
                     </div>
+
                     {/* Buttons */}
                     <div className="flex gap-x-5 pt-12 mt-2">
                         <button

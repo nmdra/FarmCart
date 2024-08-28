@@ -42,136 +42,115 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
-            {/* Sidebar Component */}
-            <div className=" p-6 pt-16 pl-8 rounded-lg shadow-md ">
-                <Sidebar />
-            </div>
-            {/* Main Content */}
-            <div className="flex-1 p-16 pt-16">
-                {/* Profile and Details Section */}
-                <div className="flex space-x-8 mb-8">
-                    {/* Profile Card */}
-                    <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
-                        <div className="flex flex-col items-center">
-                            <img
-                                className="w-24 h-24 rounded-full object-cover"
-                                src={profilepic} // Placeholder for the profile image path
-                                alt="Profile"
-                            />
-                            <h2 className="text-xl font-semibold mt-4 text-gray-800">
-                                {farmer.name}
-                            </h2>
-                            <span className="text-gray-600">Shop Owner</span>
-                            <Link
-                                to="/farmerprofile"
-                                className="text-green-500 mt-2 inline-block"
-                            >
-                                Edit details
-                            </Link>
+        <div className="flex flex-col min-h-screen bg-gray-50">
+            {/* Main Content Container */}
+            <div className="flex flex-1 mt-16">
+                {/* Fixed Sidebar */}
+                <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
+                    <Sidebar />
+                </aside>
+
+                {/* Main Content */}
+                <main className="flex-1 ml-64 p-24 overflow-y-auto">
+                    <div className="mb-8">
+                        {/* Profile and Details Section */}
+                        <div className="flex space-x-8 mb-8">
+                            {/* Profile Card */}
+                            <div className="bg-white p-6 rounded-lg shadow-md w-2/3">
+                                <div className="flex flex-col items-center">
+                                    <img
+                                        className="w-24 h-24 rounded-full object-cover"
+                                        src={profilepic}
+                                        alt="Profile"
+                                    />
+                                    <h2 className="text-xl font-semibold mt-4 text-gray-800">
+                                        {farmer.name}
+                                    </h2>
+                                    <span className="text-gray-800">
+                                        Shop Owner
+                                    </span>
+                                    <Link
+                                        to="/farmerprofile"
+                                        className="text-green-500 mt-2 inline-block"
+                                    >
+                                        Edit details
+                                    </Link>
+                                </div>
+                            </div>
+
+                            {/* Details Card */}
+                            <div className="bg-white p-6 rounded-lg shadow-md w-2/3 flex flex-col items-center">
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                                    Address
+                                </h3>
+                                <p className="text-gray-800 text-center mb-4">
+                                    {`${farmer.Address.houseNo}`} <br />
+                                    {`${farmer.Address.streetName}`} <br />
+                                    {`${farmer.Address.city}`} <br />
+                                    {`${farmer.email}`}
+                                </p>
+                                <Link
+                                    to="/farmerprofile"
+                                    className="text-green-500"
+                                >
+                                    Edit Address
+                                </Link>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Details Card */}
-                    <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                            Address
-                        </h3>
-                        <br />
-                        <p className="text-gray-600">
-                            {`${farmer.Address.houseNo}`} <br />
-                            {`${farmer.Address.streetName}`} <br />
-                            {`${farmer.Address.city}`} <br />
-                            {`${farmer.email}`}
-                        </p>
-                        <Link
-                            to="/farmerprofile"
-                            className="text-green-500 mt-2 inline-block"
-                        >
-                            Edit Address
-                        </Link>
+                    {/* Orders Section */}
+                    <div className="bg-white p-6 rounded-lg shadow-md w-full">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg font-semibold text-gray-800">
+                                My Orders
+                            </h3>
+                            <Link
+                                to="#"
+                                className="text-green-500 mt-2 inline-block"
+                            >
+                                View All
+                            </Link>
+                        </div>
+                        <table className="w-full text-left">
+                            <thead>
+                                <tr className="border-b">
+                                    <th className="pb-2 text-gray-600">
+                                        ORDER ID
+                                    </th>
+                                    <th className="pb-2 text-gray-600">DATE</th>
+                                    <th className="pb-2 text-gray-600">
+                                        TOTAL
+                                    </th>
+                                    <th className="pb-2 text-gray-600">
+                                        STATUS
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/* Example Order Rows */}
+                                <tr className="border-t">
+                                    <td className="py-2 text-gray-700">#738</td>
+                                    <td className="py-2 text-gray-700">
+                                        8 Sep, 2020
+                                    </td>
+                                    <td className="py-2 text-gray-700">
+                                        Rs. 135.00 (5 Products)
+                                    </td>
+                                    <td className="py-2">
+                                        <Link
+                                            to="#"
+                                            className="text-green-500 mt-2 inline-block"
+                                        >
+                                            View Details
+                                        </Link>
+                                    </td>
+                                </tr>
+                                {/* Add more order rows as needed */}
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-
-                {/* Orders Section */}
-                <div className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3">
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                            My Orders
-                        </h3>
-                        <Link
-                            to="#"
-                            className="text-green-500 mt-2 inline-block"
-                        >
-                            View All
-                        </Link>
-                    </div>
-                    <table className="w-full text-left">
-                        <thead>
-                            <tr className="border-b">
-                                <th className="pb-2 text-gray-600">ORDER ID</th>
-                                <th className="pb-2 text-gray-600">DATE</th>
-                                <th className="pb-2 text-gray-600">TOTAL</th>
-                                <th className="pb-2 text-gray-600">STATUS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* Example Order Rows */}
-                            <tr className="border-t">
-                                <td className="py-2 text-gray-700">#738</td>
-                                <td className="py-2 text-gray-700">
-                                    8 Sep, 2020
-                                </td>
-                                <td className="py-2 text-gray-700">
-                                    Rs. 135.00 (5 Products)
-                                </td>
-                                <td className="py-2">
-                                    <Link
-                                        to="#"
-                                        className="text-green-500 mt-2 inline-block"
-                                    >
-                                        View Details
-                                    </Link>
-                                </td>
-                            </tr>
-                            <tr className="border-t">
-                                <td className="py-2 text-gray-700">#738</td>
-                                <td className="py-2 text-gray-700">
-                                    8 Sep, 2020
-                                </td>
-                                <td className="py-2 text-gray-700">
-                                    Rs. 135.00 (5 Products)
-                                </td>
-                                <td className="py-2">
-                                    <Link
-                                        to="#"
-                                        className="text-green-500 mt-2 inline-block"
-                                    >
-                                        View Details
-                                    </Link>
-                                </td>
-                            </tr>
-                            <tr className="border-t">
-                                <td className="py-2 text-gray-700">#738</td>
-                                <td className="py-2 text-gray-700">
-                                    8 Sep, 2020
-                                </td>
-                                <td className="py-2 text-gray-700">
-                                    Rs. 135.00 (5 Products)
-                                </td>
-                                <td className="py-2">
-                                    <Link
-                                        to="#"
-                                        className="text-green-500 mt-2 inline-block"
-                                    >
-                                        View Details
-                                    </Link>
-                                </td>
-                            </tr>
-                            {/* Add more order rows as needed */}
-                        </tbody>
-                    </table>
-                </div>
+                </main>
             </div>
         </div>
     )

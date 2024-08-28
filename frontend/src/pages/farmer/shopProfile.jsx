@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from '../../../axios'
 import Sidebar from '../../Components/farmer/shop_sidebar'
-import placeholderImage from '../../assets/shop.png' 
+import placeholderImage from '../../assets/shop.png'
 import { useNavigate } from 'react-router-dom'
 import { useDistricts } from '../../hook/district_City'
 
@@ -204,21 +204,21 @@ const ShopProfile = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+        <div className="flex min-h-screen  bg-gray-50">
+            <aside className="fixed top-0 pt-16 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
                 <Sidebar />
-            </div>
+            </aside>
 
-            <div className="flex-1 p-8 pt-16">
+            <div className="flex-1 top-0 ml-64 p-6 pt-16 overflow-y-auto">
                 {/* Shop Details Card */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Shop Details
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid  md:grid-cols-2 gap-6">
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-gray-700 text-left">
@@ -303,7 +303,7 @@ const ShopProfile = () => {
                         {/* Shop Image Upload */}
                         <div className="flex flex-col items-center mt-4">
                             <img
-                                className="w-48 h-32 object-cover border rounded-md"
+                                className="w-60 h-50 object-cover border rounded-md"
                                 src={shopImage || placeholderImage}
                                 alt="Shop"
                             />
@@ -331,7 +331,7 @@ const ShopProfile = () => {
                 {/* Shop Address Card */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-8 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Shop Address
@@ -431,7 +431,7 @@ const ShopProfile = () => {
                 {/*Bank Details Card */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-8 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Bank Details
@@ -501,7 +501,7 @@ const ShopProfile = () => {
                 </form>
 
                 {/* Delete Shop Card */}
-                <div className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3">
+                <div className="bg-white p-8 pl-8 rounded-lg shadow-md w-full">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Delete Shop
                     </h3>

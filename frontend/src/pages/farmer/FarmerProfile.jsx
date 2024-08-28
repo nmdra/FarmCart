@@ -3,7 +3,6 @@ import axios from '../../../axios'
 import Sidebar from '../../Components/farmer/Farmer_sidebar'
 import profilepic from '../../assets/profile.png'
 import { useNavigate } from 'react-router-dom'
-
 const ProfilePage = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -205,16 +204,17 @@ const ProfilePage = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+        <div className="flex min-h-screen bg-gray-50">
+            {/* Fixed Sidebar */}
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
                 <Sidebar />
-            </div>
+            </aside>
 
-            <div className="flex-1 p-8 pt-16">
+            <div className="flex-1  ml-64 p-24 overflow-y-auto">
                 {/* Account Settings Card */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Account Settings
@@ -314,7 +314,7 @@ const ProfilePage = () => {
                         </div>
                         <div className="flex flex-col items-center mt-4">
                             <img
-                                className="w-24 h-24 rounded-full object-cover"
+                                className="w-32 h-32 rounded-full object-cover"
                                 src={profilepic}
                                 alt="Profile"
                             />
@@ -337,7 +337,7 @@ const ProfilePage = () => {
                 {/* Address Settings Card */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Farmer Address
@@ -402,7 +402,7 @@ const ProfilePage = () => {
                 </form>
 
                 {/* Delete Account Card */}
-                <div className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3">
+                <div className="bg-white p-6 pl-8 rounded-lg shadow-md w-full">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Delete Account
                     </h3>

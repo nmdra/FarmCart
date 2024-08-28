@@ -34,14 +34,14 @@ const Shop = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100 p-6">
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+        <div className="flex  min-h-screen bg-gray-50">
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
                 <Sidebar />
-            </div>
+            </aside>
 
-            <div className="flex-1 p-16">
+            <div className="flex-1 ml-64 p-24 pt-32 overflow-y-auto">
                 {/* Shop Name and Cover Image Card */}
-                <div className="bg-white p-6 rounded-lg shadow-md mb-6 w-2/3 ">
+                <div className="bg-white p-6 rounded-lg shadow-md mb-6 w-full ">
                     <div className="relative">
                         <img
                             src={shop.image || shopCover}
@@ -55,19 +55,19 @@ const Shop = () => {
                 </div>
 
                 {/* Shop Details Card */}
-                <div className="bg-white p-6 rounded-lg shadow-md mb-6 flex w-2/3">
-                    <div className="w-1/2 pr-4 text-left">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                <div className="bg-white p-6 rounded-lg shadow-md mb-6 flex w-full">
+                    <div className="w-1/2 pr-4 text-left pl-8">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             Details
                         </h3>
-                        <p className="text-gray-600">{shop.name}</p>
-                        <p className="text-gray-600">{shop.district}</p>
-                        <p className="text-gray-600">
+                        <p className="text-gray-900">{shop.name}</p>
+                        <p className="text-gray-900">{shop.district}</p>
+                        <p className="text-gray-900">
                             {shop.address.houseNo}, {shop.address.streetName},{' '}
                             {shop.address.city}
                         </p>
-                        <p className="text-gray-600">{shop.email}</p>
-                        <p className="text-gray-600">{shop.contactNumber}</p>
+                        <p className="text-gray-900">{shop.email}</p>
+                        <p className="text-gray-900">{shop.contactNumber}</p>
                         <Link
                             to="/shop/profile"
                             className="text-green-500 mt-2 inline-block"
@@ -76,7 +76,7 @@ const Shop = () => {
                         </Link>
                     </div>
                     <div className="w-1/2 pl-4">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">
                             About
                         </h3>
                         <p className="text-gray-700">{shop.description}</p>
@@ -85,15 +85,15 @@ const Shop = () => {
 
                 {/* Order Stats Cards */}
                 <div className="flex gap-x-10">
-                    <div className="bg-custom-green p-6 rounded-lg shadow-md w-1/5 text-center">
+                    <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
                         <h3 className="text-2xl font-bold text-white">220</h3>
                         <p className="text-white">Total Orders</p>
                     </div>
-                    <div className="bg-custom-green p-6 rounded-lg shadow-md w-1/5 text-center">
+                    <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
                         <h3 className="text-2xl font-bold text-white">20</h3>
                         <p className="text-white">Ongoing Orders</p>
                     </div>
-                    <div className="bg-custom-green p-6 rounded-lg shadow-md w-1/5 text-center">
+                    <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
                         <h3 className="text-2xl font-bold text-white">200</h3>
                         <p className="text-white">Completed Orders</p>
                     </div>
