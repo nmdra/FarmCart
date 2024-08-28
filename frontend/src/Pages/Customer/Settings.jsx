@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import Address from '../../Components/Address'
 
 function Settings() {
     const [previewUrl, setPreviewUrl] = useState(null)
@@ -16,7 +17,7 @@ function Settings() {
     console.log(user)
 
     // State for updating user details
-    const [firstname, setfirstname] = useState('name')
+    const [firstname, setfirstname] = useState('')
     const [lastname, setlastname] = useState('')
     const [email, setEmail] = useState('')
     const [contactNumber, setcontactNumber] = useState('')
@@ -164,12 +165,12 @@ function Settings() {
     }
 
     return (
-        <div className="relative min-h-screen bg-gray-50 flex justify-center">
+        <div className="relative min-h-screen bg-gray-50 grid grid-cols-1 justify-center">
             {/* Main Content */}
             <div className="pl-18 p-8 max-w-6xl w-full">
                 <div className="grid grid-cols-2 md:grid-cols-1 gap-6">
                     {/* Account Settings */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm col-span-2 border-2 border-green-600">
+                    <div className="bg-white py-4 px-8 mx-8 rounded-lg shadow-sm col-span-2 border-2 border-green-600">
                         <h2 className="text-2xl font-semibold text-gray-700 mb-4">
                             Account Settings
                         </h2>
@@ -323,21 +324,21 @@ function Settings() {
                                 </div>
                             </div>
                         </div>
-                        <button
-                            className="mt-4 bg-green-500 text-white p-2 rounded-md"
-                            onClick={handleSaveChanges}
-                        >
-                            Save Changes
-                        </button>
-                    </div>
 
-                    {/* Delete Account */}
-                    <div className="col-span-2 text-right">
-                        <button className="bg-red-500 text-white p-2 rounded-md">
-                            Delete My Account
-                        </button>
+                        <div className="flex justify-between mt-4">
+                            <button
+                                className="bg-green-500 text-white p-2 rounded-md"
+                                onClick={handleSaveChanges}
+                            >
+                                Save Changes
+                            </button>
+                            <button className="bg-red-500 text-white p-2 rounded-md">
+                                Delete My Account
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <Address />
             </div>
         </div>
     )

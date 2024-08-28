@@ -1,7 +1,9 @@
 import User from '../models/userModel.js'
 import { generateToken, tokenToVerify } from '../utils/generateToken.js'
 import { sendEmail } from '../utils/sendEmail.js'
+import { addDays } from 'date-fns' // Use this for adding days to the current date
 import jwt from 'jsonwebtoken'
+import crypto from 'crypto-js'
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -11,7 +13,7 @@ export const registerUser = async (req, res, next) => {
         firstname,
         email,
         password,
-        role,
+        membershipType,
         defaultAddress,
         contactNumber,
         pic,
@@ -28,7 +30,7 @@ export const registerUser = async (req, res, next) => {
             firstname,
             email,
             password,
-            role,
+            membershipType,
             defaultAddress,
             contactNumber,
             pic,
@@ -51,7 +53,7 @@ export const updateUser = async (req, res, next) => {
         lastname,
         email,
         password,
-        role,
+        membershipType,
         defaultAddress,
         contactNumber,
         pic,
@@ -70,7 +72,7 @@ export const updateUser = async (req, res, next) => {
         user.lastname = lastname || user.lastname
         user.email = email || user.email
         if (password) user.password = password // Only update if password is provided
-        user.role = role || user.role
+        user.membershipType = membershipType || user.membershipType
         user.defaultAddress = defaultAddress || user.defaultAddress
         user.contactNumber = contactNumber || user.contactNumber
         user.pic = pic || user.pic
@@ -87,7 +89,8 @@ export const updateUser = async (req, res, next) => {
                     firstname: updatedUser.firstname,
                     lastname: updatedUser.lastname,
                     email: updatedUser.email,
-                    role: updatedUser.role,
+                    membershipType: updatedUser.membershipType,
+                    membershipExpires: user.membershipExpires,
                     defaultAddress: updatedUser.defaultAddress,
                     contactNumber: updatedUser.contactNumber,
                     pic: updatedUser.pic,
@@ -126,16 +129,70 @@ export const authUser = async (req, res, next) => {
                 firstname: user.firstname,
                 lastname: user.lastname,
                 email: user.email,
-                role: user.role,
+                membershipType: user.membershipType,
                 pic: user.pic,
                 defaultAddress: user.defaultAddress,
                 contactNumber: user.contactNumber,
+                membershipExpires: user.membershipExpires,
             })
         } else {
             res.status(401).json({ message: 'Invalid Password or Email' })
         }
     } catch (error) {
         return next(error)
+    }
+}
+
+// @desc    Upgrade user membership
+// @route   POST /api/users/upgrade
+// @access  Private
+export const upgradeMembership = async (req, res, next) => {
+    const { membershipType, billingCycle } = req.body
+
+    try {
+        const user = await User.findById(req.user._id)
+
+        if (!user) {
+            res.status(404)
+            throw new Error('User not found')
+        }
+
+        if (!['silver', 'gold'].includes(membershipType)) {
+            res.status(400)
+            throw new Error('Invalid membership type')
+        }
+
+        let membershipExpires
+        if (billingCycle === 'monthly') {
+            membershipExpires = addDays(new Date(), 30) // expires in 30 days
+        } else if (billingCycle === 'yearly') {
+            membershipExpires = addDays(new Date(), 365) //  expires in 365 days
+        } else {
+            res.status(400)
+            throw new Error('Invalid billing cycle')
+        }
+
+        user.membershipType = membershipType
+        user.membershipExpires = membershipExpires
+
+        const updatedUser = await user.save()
+
+        res.status(200).json({
+            message: `Membership upgraded to ${membershipType}`,
+            user: {
+                _id: updatedUser._id,
+                firstname: updatedUser.firstname,
+                lastname: updatedUser.lastname,
+                email: updatedUser.email,
+                membershipType: updatedUser.membershipType,
+                pic: updatedUser.pic,
+                defaultAddress: updatedUser.defaultAddress,
+                contactNumber: updatedUser.contactNumber,
+                membershipExpires: updatedUser.membershipExpires,
+            },
+        })
+    } catch (error) {
+        next(error)
     }
 }
 
@@ -154,7 +211,7 @@ export const logoutUser = (_req, res) => {
 // @route   GET /api/users/:id
 // @access  Private/Admin
 export const getUserById = async (req, res, next) => {
-    if (req.user.role !== 'admin') {
+    if (req.user.membershipType !== 'admin') {
         return res.status(403).json('Unauthorized')
     }
 
@@ -352,4 +409,35 @@ export const resetPassword = async (req, res) => {
             .status(400)
             .json({ success: false, message: 'Invalid or expired token' })
     }
+}
+
+export const generateHash = async (req, res) => {
+    const { amount } = req.body;
+
+    // Replace with your actual Merchant ID and Secret
+    const merchantId = process.env.PAYHERE_MERCHANT_ID;
+    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
+
+    // Generate a unique order ID
+    const orderId = Math.random().toString(36).substring(2, 11);
+
+    // Format the amount
+    const formattedAmount = parseFloat(amount).toFixed(2);
+
+    const currency = 'LKR'
+
+    // Generate the hash
+    const hash = crypto.MD5(
+        merchantId +
+        orderId +
+        formattedAmount +
+        currency +
+        crypto.MD5(merchantSecret).toString().toUpperCase()
+    ).toString().toUpperCase();
+
+    // Return the hash and order ID
+    res.json({
+        orderId,
+        hash
+    });
 }

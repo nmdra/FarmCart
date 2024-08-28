@@ -23,7 +23,6 @@ import ResetPassword from './Pages/Customer/PasswordReset'
 import UserDashboard from './Pages/Customer/UserDashboard'
 import Settings from './Pages/Customer/Settings'
 import UserAllOrders from './Pages/Customer/UserAllOrders'
-import BillingAddress from './Pages/Customer/address'
 
 // Shop/Farmer Pages
 import FarmerLogin from './Pages/farmer/FarmerLogin'
@@ -38,6 +37,11 @@ import ShopProfile from './Pages/farmer/shopProfile'
 import Products from './Pages/farmer/products'
 import AddProduct from './Pages/farmer/addProduct'
 import UpdateProduct from './Pages/farmer/UpdateProduct'
+import MembershipUpgrade from './Pages/Customer/MembershipUpgrade'
+import OrderStatus from './Pages/Customer/OrderStatus'
+import Address from './Components/Address'
+import PaymentConfirmation from './Pages/Customer/PaymentConfirmation'
+import PaymentComplete from './Pages/Customer/PaymentComplete'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -51,15 +55,27 @@ const router = createBrowserRouter(
             <Route path="/reset-pass" element={<ResetPassword />} />
             <Route path="/checkEmail" element={<CheckEmail />} />
             <Route path="/verifyEmail" element={<VerifyEmail />} />
+            <Route path="/address" element={<Address />} />
 
-            {/* Customer Routes with Sidebar */}
-            <Route element={<SidebarLayout />}>
-                <Route path="/userDashboard" element={<UserDashboard />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/orderhistory" element={<UserAllOrders />} />
-                <Route path="/address" element={<BillingAddress />} />
+            <Route element={<PrivateRoute />}>
+                {/* Customer Routes with Sidebar */}
+                <Route element={<SidebarLayout />}>
+                    <Route path="/userDashboard" element={<UserDashboard />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/orderhistory" element={<UserAllOrders />} />
+                    <Route path="/orderStatus" element={<OrderStatus />} />
+                    {/* <Route path="/address" element={<BillingAddress />} /> */}
+                    <Route path="/membership" element={<MembershipUpgrade />} />
+                    <Route
+                        path="/payment-confirmation"
+                        element={<PaymentConfirmation />}
+                    />
+                    <Route
+                        path="/paymentComplete"
+                        element={<PaymentComplete />}
+                    />
+                </Route>
             </Route>
-
             {/* Shop & Farmer Routes */}
             <Route path="/farmerLogin" element={<FarmerLogin />} />
             <Route path="/farmerRegister" element={<FarmerRegister />} />
