@@ -9,13 +9,14 @@ export const useRegister = () => {
     const { dispatch } = useAuthContext()
     const navigate = useNavigate()
 
-    const register = async (name, email, password) => {
+    const register = async (firstname, lastname, email, password) => {
         setIsLoading(true)
         setError(null)
 
         try {
             const response = await axios.post('/api/users', {
-                name,
+                firstname,
+                lastname,
                 email,
                 password,
             })

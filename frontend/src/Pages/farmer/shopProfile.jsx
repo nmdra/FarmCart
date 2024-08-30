@@ -3,7 +3,7 @@ import axios from '../../../axios'
 import Sidebar from '../../Components/farmer/shop_sidebar'
 import placeholderImage from '../../assets/shop.png' // Placeholder image
 import { useNavigate } from 'react-router-dom'
-import { useDistricts } from '../../hook/district_City'
+import { useDistricts } from '../../Hooks/Farmer/district_City'
 const ShopProfile = () => {
     const id = localStorage.getItem('shopId')
     const [formData, setFormData] = useState({

@@ -5,11 +5,11 @@ const userSchema = new mongoose.Schema(
     {
         firstname: {
             type: String,
-            required: true,
+            required: false,
         },
         lastname: {
             type: String,
-            required: true,
+            required: false,
         },
         email: {
             type: String,
@@ -23,13 +23,6 @@ const userSchema = new mongoose.Schema(
                 message: '{VALUE} is not a valid email!',
             },
         },
-        role: {
-            type: String,
-            lowercase: true,
-            enum: ['regular', 'vip'],
-            default: 'regular',
-            required: [true, 'Please specify user role'],
-        },
         password: {
             type: String,
             required: [true, 'Password not provided'],
@@ -42,9 +35,9 @@ const userSchema = new mongoose.Schema(
             required: false,
         },
         defaultAddress: {
-            address: { type: String, required: false },
+            streetAddress: { type: String, required: false },
             city: { type: String, required: false },
-            postalCode: { type: String, required: false },
+            zipCode: { type: String, required: false },
             district: { type: String, required: false },
         },
         contactNumber: {
@@ -62,6 +55,12 @@ const userSchema = new mongoose.Schema(
             default: false,
             required: false,
         },
+        membershipType: {
+            type: String,
+            enum: ['regular', 'silver', 'gold'],
+            default: 'regular',
+        },
+        membershipExpires: { type: Date, default: null },
     },
 
     {
