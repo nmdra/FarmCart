@@ -32,16 +32,53 @@ import ShopProfile from './Pages/farmer/shopProfile'
 import Products from './Pages/farmer/products'
 import AddProduct from './Pages/farmer/addProduct'
 import UpdateProduct from './Pages/farmer/UpdateProduct'
+import DLDriverRegistrationForm from './Pages/delivery/DLDriverRegistrationForm';
+
+
+
+
+
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<MainLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="/login" element={<Login />} />
+             <Route index element={<HomePage />} />
+             <Route path="/register-driver" element={<DLDriverRegistrationForm />} />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {/*<Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-pass" element={<ResetPassword />} />
             <Route path="/orderhistory" element={<OrderHistory />} />
-            {/* <Route path="/order/:orderId" element={<OrderDetails />} /> */}
+            <Route path="/order/:orderId" element={<OrderDetails />} /> 
             <Route path="/register" element={<Register />} />
             <Route path="/checkEmail" element={<CheckEmail />} />
             <Route path="/verifyEmail" element={<VerifyEmail />} />
@@ -64,7 +101,7 @@ const router = createBrowserRouter(
             <Route path="/shop/:id/productpage" element={<Products />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/updateproduct" element={<UpdateProduct />} />
-            <Route path="/logout" element={<FarmerLogout />} />
+            <Route path="/logout" element={<FarmerLogout />} />*/}
             <Route path="*" element={<NotFound />} />
         </Route>
     )
