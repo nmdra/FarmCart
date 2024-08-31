@@ -11,6 +11,7 @@ import crypto from 'crypto-js'
 export const registerUser = async (req, res, next) => {
     const {
         firstname,
+        lastname,
         email,
         password,
         membershipType,
@@ -28,6 +29,7 @@ export const registerUser = async (req, res, next) => {
 
         const user = await User.create({
             firstname,
+            lastname,
             email,
             password,
             membershipType,
