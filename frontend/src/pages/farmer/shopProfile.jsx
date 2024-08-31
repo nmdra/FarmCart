@@ -3,7 +3,7 @@ import axios from '../../../axios'
 import Sidebar from '../../Components/farmer/shop_sidebar'
 import placeholderImage from '../../assets/shop.png'
 import { useNavigate } from 'react-router-dom'
-import { useDistricts } from '../../hook/district_City'
+import { useDistricts } from '../../Hooks/district_City'
 import Swal from 'sweetalert2'
 
 // Function to decrypt text (if needed)
