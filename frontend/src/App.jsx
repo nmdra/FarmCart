@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Login from './pages/farmer/FarmerLogin'
 import Dashboard from './pages/farmer/FarmerDashbaord'
 import ProfilePage from './pages/farmer/FarmerProfile'
-import Logout from './pages/farmer/LogOut'
+import Logout from './pages/farmer/FarmerLogOut'
 import Register from './pages/farmer/FarmerRegistaration'
 import MyShop from './pages/farmer/Myshops'
 import AddShop from './pages/farmer/shopcreate'
@@ -22,7 +22,7 @@ const App = () => {
                 <main className="flex-grow py-3">
                     <div className="container mx-auto">
                         <Routes>
-                            <Route path="/" element={<Login />} />
+                            <Route path="/farmerlogin" element={<Login />} />
                             <Route
                                 path="/farmerRegister"
                                 element={<Register />}
@@ -54,7 +54,7 @@ const App = () => {
                                 path="/updateproduct"
                                 element={<UpdateProduct />}
                             />
-                            <Route path="/logout" element={<Logout />} />
+                            <Route path="/farmerlogout" element={<Logout />} />
                         </Routes>
                     </div>
                 </main>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from '../../../axios'
-
+import logo from '../../assets/logo.png'
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -34,11 +34,7 @@ const Login = () => {
         <div className="flex min-h-screen w-screen items-center justify-center bg-gray-50">
             <div className="bg-white p-8 rounded-lg shadow-md w-sm min-w-md">
                 <div className="text-center mb-8">
-                    <img
-                        src="/path-to-your-logo.png"
-                        alt="Logo"
-                        className="mx-auto w-12 h-12"
-                    />
+                    <img src={logo} alt="Logo" className="mx-auto w-24" />
                     <h1 className="text-2xl font-semibold text-gray-800 mt-4">
                         Welcome back!
                     </h1>

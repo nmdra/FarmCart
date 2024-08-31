@@ -99,6 +99,13 @@ const farmerSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Password is required'],
         },
+        image: {
+            type: String,
+            default: function () {
+                return `https://avatar.iran.liara.run/username?username=${this.name}}`
+            },
+            required: false,
+        },
     },
     {
         timestamps: true, // Automatically manage createdAt and updatedAt fields

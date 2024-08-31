@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import productSchema from './ProductModel.js' // Import productSchema directly
-import bcrypt from 'bcryptjs'
+import CryptoJS from 'crypto-js'
 
 // Define the schema for a Shop
 const shopSchema = new mongoose.Schema(
@@ -14,7 +14,7 @@ const shopSchema = new mongoose.Schema(
         // Name of the shop
         name: {
             type: String,
-            required: [true, 'Name is required'], // Ensure name is provided
+            required: [true, 'Name is required'],
             validate: {
                 validator: function (v) {
                     // Validate that the name contains only letters and spaces
@@ -52,7 +52,7 @@ const shopSchema = new mongoose.Schema(
         // Email address for contact
         email: {
             type: String,
-            required: [true, 'Email is required'], // Ensure email is provided
+            required: [true, 'Email is required'],
             validate: {
                 validator: function (v) {
                     // Validate email format
@@ -79,7 +79,7 @@ const shopSchema = new mongoose.Schema(
             required: true,
         },
         // Embedded products array
-        products: [productSchema], // Embedded products array
+        products: [productSchema],
         account_name: {
             type: String,
             required: true,
@@ -91,10 +91,30 @@ const shopSchema = new mongoose.Schema(
         bank: {
             type: String,
             required: true,
+            validate: {
+                validator: function (v) {
+                    // Validate that the bank contains only letters and spaces
+                    return /^[a-zA-Z\s]+$/.test(v)
+                },
+                message: ' Only letters and spaces are allowed.',
+            },
         },
         branch: {
             type: String,
             required: true,
+            validate: {
+                validator: function (v) {
+                    // Validate that the branch contains only letters and spaces
+                    return /^[a-zA-Z\s]+$/.test(v)
+                },
+                message:
+                    '{VALUE} is not a valid name! Only letters and spaces are allowed.',
+            },
+        },
+        // Image URL or path representing the product
+        image: {
+            type: String,
+            required: false,
         },
     },
     {
@@ -102,32 +122,47 @@ const shopSchema = new mongoose.Schema(
     }
 )
 
-// Hash the account_name and account_number before saving to the database
 shopSchema.pre('save', async function (next) {
-    // Check if either account_name or account_number has been modified
-    if (
-        !this.isModified('account_name') &&
-        !this.isModified('account_number')
-    ) {
-        return next() // Skip if neither is modified
-    }
-
     try {
-        const salt = await bcrypt.genSalt(10) // Generate salt
-
         if (this.isModified('account_name')) {
-            this.account_name = await bcrypt.hash(this.account_name, salt) // Hash the account name
+            // Encrypt account_name before saving
+            this.account_name = CryptoJS.AES.encrypt(
+                this.account_name,
+                process.env.CRYPTO_SECRET_KEY
+            ).toString()
         }
 
         if (this.isModified('account_number')) {
-            this.account_number = await bcrypt.hash(this.account_number, salt) // Hash the account number
+            // Encrypt account_number before saving
+            this.account_number = CryptoJS.AES.encrypt(
+                this.account_number,
+                process.env.CRYPTO_SECRET_KEY
+            ).toString()
         }
 
-        next() // Proceed to the next middleware
+        // Continue with the save operation
+        next()
     } catch (error) {
-        next(error) // Pass any errors to the next middleware
+        console.error('Error in pre-save hook:', error)
+        next(error)
     }
 })
+// Decrypt fields
+shopSchema.methods.decryptAccountName = function () {
+    const bytes = CryptoJS.AES.decrypt(
+        this.account_name,
+        process.env.CRYPTO_SECRET_KEY
+    )
+    return bytes.toString(CryptoJS.enc.Utf8)
+}
+
+shopSchema.methods.decryptAccountNumber = function () {
+    const bytes = CryptoJS.AES.decrypt(
+        this.account_number,
+        process.env.CRYPTO_SECRET_KEY
+    )
+    return bytes.toString(CryptoJS.enc.Utf8)
+}
 
 // Create and export the Shop model using the schema
 const Shop = mongoose.model('Shop', shopSchema)

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../../Components/farmer/shop_sidebar'
-import vege from '../../assets/vege.png'
 import axios from '../../../axios'
+import Swal from 'sweetalert2'
 
 const UpdateProduct = () => {
     const shopId = localStorage.getItem('shopId')
@@ -13,11 +13,14 @@ const UpdateProduct = () => {
         pricePerKg: '',
         description: '',
     })
-    const [productImage, setProductImage] = useState(null)
+    const [productImage, setProductImage] = useState(null) // Image preview URL
+    const [selectedFile, setSelectedFile] = useState(null)
+    const [uploadMessage, setUploadMessage] = useState('')
     const [error, setError] = useState({
         name: '',
         pricePerKg: '',
     })
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -37,7 +40,7 @@ const UpdateProduct = () => {
                     pricePerKg: data.pricePerKg,
                     description: data.description,
                 })
-                setProductImage(data.imageUrl || vege)
+                setProductImage(data.image)
             } catch (error) {
                 console.error('Error fetching Product details:', error)
             }
@@ -46,47 +49,88 @@ const UpdateProduct = () => {
         fetchProduct()
     }, [shopId, productId]) // Depend on both shopId and productId
 
-    const validateName = (name) => {
-        return /^[A-Za-z\s]+$/.test(name) // Only letters and at least 3 characters long
-    }
-
-    const validateprice = (pricePerKg) => {
-        return /^\d+(\.\d{1,2})?$/.test(pricePerKg) // Validates a double value with up to two decimal places
-    }
-
     // Handle form input changes
     const handleChange = (e) => {
         const { name, value } = e.target
-
         let error = ''
-        switch (name) {
-            case 'name':
-                error = validateName(value)
-                    ? ''
-                    : 'Name must contain only letters and spaces'
-                break
-            case 'pricePerKg':
-                error = validateprice(value) ? '' : 'please enter valid price.'
-                break
-            default:
+
+        // Restrict input directly in handleChange
+        if (name === 'name') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
         }
-        setFormData({ ...formData, [name]: value })
+        // Validates a double value with up to two decimal places
+        if (name == 'pricePerKg') {
+            if (!/^\d+(\.\d{1,2})?$/.test(value)) {
+                error = 'Please enter a valid price.'
+            }
+        }
+
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }))
+
         setError((prevErrors) => ({
             ...prevErrors,
             [name]: error,
         }))
     }
 
-    // Handle image input change
+    // Handle image selection and preview
     const handleImageChange = (e) => {
-        setProductImage(URL.createObjectURL(e.target.files[0]))
+        const file = e.target.files[0]
+        if (file) {
+            setSelectedFile(file)
+            setProductImage(URL.createObjectURL(file))
+        }
+    }
+
+    // Handle image upload
+    const handleUpload = async () => {
+        console.log('upload')
+        if (!selectedFile) {
+            setUploadMessage('No file selected')
+            return null
+        }
+        const formData = new FormData()
+        formData.append('image', selectedFile)
+        formData.append('folder', 'products') // Specify folder if needed
+
+        setLoading(true)
+
+        try {
+            const response = await axios.post('/images', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            setUploadMessage('Image uploaded successfully')
+            return response.data.url // Return the image URL
+        } catch (error) {
+            setUploadMessage('Image upload failed')
+            console.error(error)
+            return null
+        } finally {
+            setLoading(false)
+        }
     }
 
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (Object.values(error).some((error) => error)) {
-            alert('Please fix the errors in the form before submitting.')
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please fix the errors in the form before submitting.',
+                customClass: {
+                    confirmButton:
+                        'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
+                },
+            })
             return
         }
 
@@ -95,9 +139,18 @@ const UpdateProduct = () => {
             if (!token) {
                 throw new Error('No token found')
             }
+            // First, upload the image and get the URL
+            const imageUrl = await handleUpload()
+
+            // Include imageUrl in formData
+            const productData = {
+                ...formData,
+                image: imageUrl, // Use `image` to match backend schema
+            }
 
             await axios.put(
                 `/shops/${shopId}/products/${productId}`,
+                productData,
                 formData,
                 {
                     headers: {
@@ -105,8 +158,15 @@ const UpdateProduct = () => {
                     },
                 }
             )
-
-            alert('Product updated successfully')
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Product updated successfully',
+                customClass: {
+                    confirmButton:
+                        'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                },
+            })
             navigate(`/shop/${shopId}/productpage`)
         } catch (err) {
             setError(
@@ -125,12 +185,12 @@ const UpdateProduct = () => {
     return (
         <div className="flex min-h-screen w-screen bg-gray-100">
             {/* Sidebar */}
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
                 <Sidebar />
-            </div>
+            </aside>
 
             {/* Main Content */}
-            <div className="flex-1 p-8">
+            <div className="flex-1 ml-64 p-24 overflow-y-auto">
                 {/* Update Product Form */}
                 <form
                     onSubmit={handleSubmit}
@@ -156,11 +216,6 @@ const UpdateProduct = () => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    {error.name && (
-                                        <p className="text-red-500 text-sm">
-                                            {error.name}
-                                        </p>
-                                    )}
                                 </div>
                                 <div>
                                     <label className="block text-gray-700 text-left">
@@ -186,6 +241,7 @@ const UpdateProduct = () => {
                                     </label>
                                     <textarea
                                         name="description"
+                                        maxLength={100}
                                         className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                         value={formData.description}
                                         onChange={handleChange}
@@ -197,11 +253,19 @@ const UpdateProduct = () => {
 
                         {/* Image Upload */}
                         <div className="flex flex-col items-center mt-12">
-                            <img
-                                className="w-48 h-32 object-cover border rounded-md"
-                                src={productImage || vege} // Display uploaded image or placeholder
-                                alt="Product"
-                            />
+                            <div className="w-40 h-40 border border-dashed border-gray-400 rounded-md overflow-hidden">
+                                {productImage ? (
+                                    <img
+                                        className="w-full h-full object-cover"
+                                        src={productImage}
+                                        alt="Product Preview"
+                                    />
+                                ) : (
+                                    <p className="text-gray-500 text-center mt-20">
+                                        No image selected
+                                    </p>
+                                )}
+                            </div>
                             <label className="mt-4 bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded cursor-pointer">
                                 Choose Image
                                 <input

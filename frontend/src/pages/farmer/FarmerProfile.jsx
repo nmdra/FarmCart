@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import axios from '../../../axios'
 import Sidebar from '../../Components/farmer/Farmer_sidebar'
-import profilepic from '../../assets/profile.png'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+
 const ProfilePage = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -23,7 +24,11 @@ const ProfilePage = () => {
         BirthDay: '',
         NIC: '',
     })
+    const [farmerImage, setfarmerImage] = useState()
+    const [selectedFile, setSelectedFile] = useState(null)
+    const [uploadMessage, setUploadMessage] = useState('')
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchFarmerDetails = async () => {
@@ -43,6 +48,8 @@ const ProfilePage = () => {
                     BirthDay: data.BirthDay,
                     Address: data.Address,
                 })
+                console.log(data.image)
+                setfarmerImage(data.image)
             } catch (error) {
                 console.error('Error fetching farmer details:', error)
             }
@@ -66,80 +73,93 @@ const ProfilePage = () => {
         return age
     }
 
-    const validateName = (name) => {
-        return /^[A-Za-z\s]+$/.test(name) // Only letters and spaces
-    }
-
-    const validateEmail = (email) => {
-        return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email) // Must be a Gmail address
-    }
-
-    const validateContactNumber = (contactNumber) => {
-        return (
-            /^[0-9]{10}$/.test(contactNumber) && contactNumber.startsWith('0')
-        ) // Must be 10 digits and start with 0
-    }
-
-    const validateNIC = (NIC, BirthDay) => {
-        const nicRegex = /^\d{11}[0-9XV]$/
-        const birthYear = BirthDay.substring(0, 4)
-
-        return nicRegex.test(NIC) && NIC.substring(0, 4) === birthYear // NIC must match the birth year
-    }
-
-    const validateAge = (birthDate) => {
-        const age = calculateAge(birthDate)
-        return age >= 18 // Must be at least 18 years old
+    const seperateYear = (birthDate) => {
+        const birthDateObj = new Date(birthDate)
+        let birthyear = birthDateObj.getFullYear()
+        return birthyear
     }
 
     const handleChange = (e) => {
         const { name, value } = e.target
-
-        if (['houseNo', 'streetName', 'city'].includes(name)) {
-            setFormData((prevData) => ({
-                ...prevData,
-                Address: {
-                    ...prevData.Address,
-                    [name]: value,
-                },
-            }))
-        } else {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }))
-        }
-
         let error = ''
-        switch (name) {
-            case 'name':
-                error = validateName(value)
-                    ? ''
-                    : 'Name must contain only letters and spaces'
-                break
-            case 'email':
-                error = validateEmail(value)
-                    ? ''
-                    : 'Email must be a valid Gmail address.'
-                break
-            case 'contactNumber':
-                error = validateContactNumber(value)
-                    ? ''
-                    : 'Contact number must be 10 digits long and start with 0.'
-                break
-            case 'BirthDay':
-                error = validateAge(value)
-                    ? ''
-                    : 'You must be at least 18 years old'
-                break
-            case 'NIC':
-                error = validateNIC(value, formData.BirthDay)
-                    ? ''
-                    : 'Please enter a valid NIC'
-                break
-            default:
-                break
+        let year = ''
+
+        if (name === 'name') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return
+            }
         }
+
+        if (name === 'email') {
+            if (!/^.*@gmail\.com$/.test(value)) {
+                error = 'Email must be a valid @gmail.com address.'
+            }
+        }
+
+        if (name === 'contactNumber') {
+            if (!/^0\d{9}$/.test(value)) {
+                error = 'Contact number must be 10 digits and start with 0.'
+            }
+        }
+
+        // Validate BirthDay
+        if (name === 'BirthDay') {
+            const age = calculateAge(value)
+            year = seperateYear(value)
+            if (age < 18) {
+                error = 'You must be at least 18 years old to register.'
+            }
+            // Update NIC validation if necessary
+            if (formData.NIC) {
+                const nicYear = formData.NIC.slice(0, 4)
+                if (year !== nicYear) {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        NIC: 'please enter valid NIC.',
+                    }))
+                } else {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        NIC: '',
+                    }))
+                }
+            }
+        }
+
+        if (name === 'NIC') {
+            const nicRegex = /^\d{11}[0-9Vv]$/
+            if (!nicRegex.test(value)) {
+                error = 'Please enter a valid NIC.'
+            }
+        }
+
+        if (name === 'password') {
+            const passwordRegex =
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            if (!passwordRegex.test(value)) {
+                error =
+                    'Password must be at least 8 characters long and include at least one special character and one number.'
+            }
+        }
+        if (name === 'confirmPassword') {
+            if (value !== formData.password) {
+                error = 'Passwords do not match.'
+            }
+        }
+        // Handle changes for nested address fields
+        if (name.startsWith('Address.')) {
+            const addressField = name.split('.')[1]
+            setFormData((prevData) => ({
+                ...prevData,
+                Address: { ...prevData.Address, [addressField]: value },
+            }))
+            return
+        }
+
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }))
 
         setErrors((prevErrors) => ({
             ...prevErrors,
@@ -147,23 +167,85 @@ const ProfilePage = () => {
         }))
     }
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            setSelectedFile(file)
+            setfarmerImage(URL.createObjectURL(file))
+        }
+    }
+
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            setUploadMessage('No file selected')
+            return null
+        }
+        const formData = new FormData()
+        formData.append('image', selectedFile)
+        formData.append('folder', 'farmers')
+
+        setLoading(true)
+
+        try {
+            const response = await axios.post('/images', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            setUploadMessage('Image uploaded successfully')
+            return response.data.url
+        } catch (error) {
+            setUploadMessage('Image upload failed')
+            console.error(error)
+            return null
+        } finally {
+            setLoading(false)
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        // Check for any validation errors
         if (Object.values(errors).some((error) => error)) {
-            alert('Please fix the errors in the form before submitting.')
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please fix the validation errors before submitting.',
+                customClass: {
+                    confirmButton:
+                        'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
+                },
+            })
             return
         }
 
         try {
             const token = localStorage.getItem('token')
-            const config = {
+            const imageUrl = await handleUpload()
+
+            // Create the farmer data with the new image URL
+            const farmerData = {
+                ...formData,
+                image: imageUrl, // include the uploaded image URL
+            }
+
+            // Send the farmerData to the backend
+            await axios.put('/farmers/profile', farmerData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            }
-            await axios.put('/farmers/profile', formData, config)
-            alert('Profile updated successfully')
+            })
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Profile updated successfully',
+                customClass: {
+                    confirmButton:
+                        'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                },
+            })
             navigate('/farmerdashboard')
         } catch (error) {
             console.error(
@@ -177,10 +259,24 @@ const ProfilePage = () => {
     }
 
     const handleDeleteAccount = async () => {
-        const confirmDelete = window.confirm(
-            'Are you sure you want to delete your account? This action cannot be undone.'
-        )
-        if (confirmDelete) {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete the Account? This process cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'cancel!',
+            customClass: {
+                confirmButton:
+                    'bg-red-500 text-white font-bold py-2 px-8 rounded hover:bg-red-600 mr-8',
+                cancelButton:
+                    'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 ',
+            },
+            buttonsStyling: false,
+        })
+
+        // Check if the user confirmed
+        if (result.isConfirmed) {
             try {
                 const token = localStorage.getItem('token')
                 const config = {
@@ -189,18 +285,36 @@ const ProfilePage = () => {
                     },
                 }
                 await axios.delete('/farmers/profile', config)
-                alert('Account deleted successfully')
-                navigate('/')
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Account deleted successfully',
+                    customClass: {
+                        confirmButton:
+                            'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                    },
+                })
+                navigate('/farmerlogin')
             } catch (error) {
                 console.error(
                     'Error deleting account:',
                     error.response?.data?.message || error.message
                 )
-                alert(
-                    'An error occurred while deleting the account. Please try again.'
-                )
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while deleting the account. Please try again.',
+                    customClass: {
+                        confirmButton:
+                            'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
+                    },
+                })
             }
         }
+    }
+    // Handle cancel action
+    const handleCancel = () => {
+        navigate('/farmerdashboard') // Redirect to the shops list or any other desired route
     }
 
     return (
@@ -313,25 +427,49 @@ const ProfilePage = () => {
                             </div>
                         </div>
                         <div className="flex flex-col items-center mt-4">
-                            <img
-                                className="w-32 h-32 rounded-full object-cover"
-                                src={profilepic}
-                                alt="Profile"
-                            />
-                            <button
-                                type="button"
-                                className="mt-4 bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded"
-                            >
-                                Choose Image
-                            </button>
+                            {/* Image Upload */}
+                            <div className="flex flex-col items-center mt-12">
+                                <div className="w-40 h-40 border border-dashed border-gray-400 rounded-full overflow-hidden">
+                                    {farmerImage ? (
+                                        <img
+                                            className="w-full h-full object-cover"
+                                            src={farmerImage}
+                                            alt="Product Preview"
+                                        />
+                                    ) : (
+                                        <p className="text-gray-500 text-center mt-20">
+                                            No image selected
+                                        </p>
+                                    )}
+                                </div>
+                                <label className="mt-4 bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded cursor-pointer">
+                                    Choose Image
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={handleImageChange}
+                                    />
+                                </label>
+                            </div>
                         </div>
                     </div>
-                    <button
-                        type="submit"
-                        className="flex justify-start mt-6 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-                    >
-                        Save Changes
-                    </button>
+
+                    <div className="flex gap-x-5 pt-12 mt-2">
+                        <button
+                            type="submit"
+                            className="flex justify-start mt-6 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                        >
+                            Save Changes
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleCancel}
+                            className="flex justify-start mt-6 bg-red-500 text-white py-2 px-8 rounded hover:bg-red-600"
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </form>
 
                 {/* Address Settings Card */}
@@ -349,7 +487,7 @@ const ProfilePage = () => {
                             </label>
                             <input
                                 type="text"
-                                name="houseNo"
+                                name="Address.houseNo"
                                 className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                 value={formData.Address.houseNo}
                                 onChange={handleChange}
@@ -361,7 +499,7 @@ const ProfilePage = () => {
                             </label>
                             <input
                                 type="text"
-                                name="streetName"
+                                name="Address.streetName"
                                 className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                 value={formData.Address.streetName}
                                 onChange={handleChange}
@@ -373,7 +511,7 @@ const ProfilePage = () => {
                             </label>
                             <input
                                 type="text"
-                                name="city"
+                                name="Address.city"
                                 className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                 value={formData.Address.city}
                                 onChange={handleChange}
@@ -393,12 +531,21 @@ const ProfilePage = () => {
                             />
                         </div>
                     </div>
-                    <button
-                        type="submit"
-                        className="flex justify-start mt-6 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-                    >
-                        Save Changes
-                    </button>
+                    <div className="flex gap-x-5 pt-12 mt-2">
+                        <button
+                            type="submit"
+                            className="flex justify-start mt-6 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                        >
+                            Save Changes
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleCancel}
+                            className="flex justify-start mt-6 bg-red-500 text-white py-2 px-8 rounded hover:bg-red-600"
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </form>
 
                 {/* Delete Account Card */}

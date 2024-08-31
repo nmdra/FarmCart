@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import axios from '../../../axios'
 import Sidebar from '../../Components/farmer/Farmer_sidebar'
 import { useNavigate, Link } from 'react-router-dom'
-import profilepic from '../../assets/profile.png'
 
 const Dashboard = () => {
     // State to store farmer details fetched from the backend
@@ -51,7 +50,7 @@ const Dashboard = () => {
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 ml-64 p-24 overflow-y-auto">
+                <main className="flex-1 ml-64 p-24 pt-16 overflow-y-auto">
                     <div className="mb-8">
                         {/* Profile and Details Section */}
                         <div className="flex space-x-8 mb-8">
@@ -60,7 +59,7 @@ const Dashboard = () => {
                                 <div className="flex flex-col items-center">
                                     <img
                                         className="w-24 h-24 rounded-full object-cover"
-                                        src={profilepic}
+                                        src={farmer.image}
                                         alt="Profile"
                                     />
                                     <h2 className="text-xl font-semibold mt-4 text-gray-800">
