@@ -23,6 +23,11 @@ import ResetPassword from './Pages/Customer/PasswordReset'
 import UserDashboard from './Pages/Customer/UserDashboard'
 import Settings from './Pages/Customer/Settings'
 import UserAllOrders from './Pages/Customer/UserAllOrders'
+import MembershipUpgrade from './Pages/Customer/MembershipUpgrade'
+import OrderStatus from './Pages/Customer/OrderStatus'
+import Address from './Components/Address'
+import PaymentConfirmation from './Pages/Customer/PaymentConfirmation'
+import PaymentComplete from './Pages/Customer/PaymentComplete'
 
 // Shop/Farmer Pages
 import FarmerLogin from './Pages/farmer/FarmerLogin'
@@ -37,11 +42,6 @@ import ShopProfile from './Pages/farmer/shopProfile'
 import Products from './Pages/farmer/products'
 import AddProduct from './Pages/farmer/addProduct'
 import UpdateProduct from './Pages/farmer/UpdateProduct'
-import MembershipUpgrade from './Pages/Customer/MembershipUpgrade'
-import OrderStatus from './Pages/Customer/OrderStatus'
-import Address from './Components/Address'
-import PaymentConfirmation from './Pages/Customer/PaymentConfirmation'
-import PaymentComplete from './Pages/Customer/PaymentComplete'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -88,12 +88,11 @@ const router = createBrowserRouter(
             <Route path="/shop/:id/productpage" element={<Products />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/updateproduct" element={<UpdateProduct />} />
-            <Route path="/logout" element={<FarmerLogout />} />
+            <Route path="/farmerlogout" element={<FarmerLogout />} />
             <Route path="*" element={<NotFound />} />
         </Route>
     )
 )
-
 const App = () => {
     return <RouterProvider router={router}></RouterProvider>
 }

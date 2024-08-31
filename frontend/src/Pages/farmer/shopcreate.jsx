@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../../Components/farmer/Farmer_sidebar'
 import shop from '../../assets/shop.png'
 import axios from '../../../axios'
-import { useDistricts } from '../../Hooks/Farmer/district_City'
+import { useDistricts } from '../../Hooks/district_City'
+import Swal from 'sweetalert2'
 
 const CreateShopPage = () => {
     const navigate = useNavigate()
@@ -22,24 +23,30 @@ const CreateShopPage = () => {
         email: '',
         contactNumber: '',
         description: '',
+        account_name: '',
+        account_number: '',
+        bank: '',
+        branch: '',
     })
-    const [shopImage, setShopImage] = useState(null)
+    const [shopImage, setshopImage] = useState(null) // Image preview URL
+    const [selectedFile, setSelectedFile] = useState(null)
+    const [uploadMessage, setUploadMessage] = useState('')
     const [error, setError] = useState(null)
     const [validationErrors, setValidationErrors] = useState({
-        name: '',
         email: '',
         contactNumber: '',
     })
+    const [loading, setLoading] = useState(false)
 
     // Handle form input changes
     const handleChange = (e) => {
         const { name, value } = e.target
         let errorMessage = ''
 
+        // Restrict input directly in handleChange
         if (name === 'name') {
-            if (!/^[A-Za-z\s]+$/.test(value)) {
-                errorMessage =
-                    'Shop name should contain only letters and spaces.'
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
             }
         }
 
@@ -53,6 +60,30 @@ const CreateShopPage = () => {
             if (!/^0\d{9}$/.test(value)) {
                 errorMessage =
                     'Contact number must be 10 digits and start with 0.'
+            }
+        }
+
+        if (name === 'account_name') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+        }
+
+        if (name === 'account_number') {
+            if (!/^\d*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+        }
+
+        if (name === 'bank') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+        }
+
+        if (name === 'branch') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
             }
         }
 
@@ -71,7 +102,6 @@ const CreateShopPage = () => {
             [name]: errorMessage,
         })
     }
-
     const handleDistrictChangeWrapper = (e) => {
         handleDistrictChange(e)
         setFormData({
@@ -88,9 +118,44 @@ const CreateShopPage = () => {
             address: { ...formData.address, city: e.target.value },
         })
     }
-    // Handle image input change
+    // Handle image selection and preview
     const handleImageChange = (e) => {
-        setShopImage(URL.createObjectURL(e.target.files[0]))
+        const file = e.target.files[0]
+        if (file) {
+            setSelectedFile(file)
+            setshopImage(URL.createObjectURL(file))
+        }
+    }
+
+    // Handle image upload
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            setUploadMessage('No file selected')
+            return null
+        }
+
+        const formData = new FormData()
+        formData.append('image', selectedFile)
+        formData.append('folder', 'shops') // Specify folder if needed
+
+        setLoading(true)
+
+        try {
+            const response = await axios.post('/images', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            setUploadMessage('Image uploaded successfully')
+            return response.data.url // Return the image URL
+        } catch (error) {
+            setUploadMessage('Image upload failed')
+            console.error(error)
+            return null
+        } finally {
+            setLoading(false)
+        }
     }
 
     // Handle form submission
@@ -100,7 +165,11 @@ const CreateShopPage = () => {
         if (
             validationErrors.name ||
             validationErrors.email ||
-            validationErrors.contactNumber
+            validationErrors.contactNumber ||
+            validationErrors.account_name ||
+            validationErrors.account_number ||
+            validationErrors.bank ||
+            validationErrors.branch
         ) {
             setError('Please fix the validation errors before submitting.')
             return
@@ -111,14 +180,42 @@ const CreateShopPage = () => {
             if (!token) {
                 throw new Error('No token found')
             }
+            // First, upload the image and get the URL
+            const imageUrl = await handleUpload()
+            if (!imageUrl) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Upload Error',
+                    text: 'Image upload failed, please try again.',
+                    customClass: {
+                        confirmButton:
+                            'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
+                    },
+                })
+                return
+            }
 
-            await axios.post('/shops', formData, {
+            // Include imageUrl in formData
+            const shopData = {
+                ...formData,
+                image: imageUrl, // Use `image` to match backend schema
+            }
+
+            await axios.post('/shops', shopData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             })
 
-            alert('Shop created successfully')
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Shop created successfully',
+                customClass: {
+                    confirmButton:
+                        'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                },
+            })
             navigate('/myshops')
         } catch (err) {
             setError(
@@ -135,24 +232,24 @@ const CreateShopPage = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
+        <div className="flex  min-h-screen bg-gray-50">
             {/* Sidebar */}
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+            <aside className="fixed top-0 pt-32 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
                 <Sidebar />
-            </div>
+            </aside>
 
             {/* Main Content */}
-            <div className="flex-1 p-8">
+            <div className="flex-1 top-0 ml-64 p-32 pt-32 overflow-y-auto">
                 {/* Create Shop Form */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Create Shop
                     </h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
                         {/* Form Fields */}
                         <div className="md:col-span-2">
                             <div className="space-y-4">
@@ -168,11 +265,6 @@ const CreateShopPage = () => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    {validationErrors.name && (
-                                        <p className="text-red-500 text-sm mt-1">
-                                            {validationErrors.name}
-                                        </p>
-                                    )}
                                 </div>
                                 <div>
                                     <label className="block text-gray-700 text-left">
@@ -313,6 +405,7 @@ const CreateShopPage = () => {
                                     </label>
                                     <textarea
                                         name="description"
+                                        maxLength={1000}
                                         className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                         value={formData.description}
                                         onChange={handleChange}
@@ -324,11 +417,19 @@ const CreateShopPage = () => {
 
                         {/* Image Upload */}
                         <div className="flex flex-col items-center mt-12">
-                            <img
-                                className="w-48 h-32 object-cover border rounded-md"
-                                src={shopImage || shop} // Display uploaded image or placeholder
-                                alt="Shop"
-                            />
+                            <div className="w-40 h-40 border border-dashed border-gray-400 rounded-md overflow-hidden">
+                                {shopImage ? (
+                                    <img
+                                        className="w-full h-full object-cover"
+                                        src={shopImage}
+                                        alt="Product Preview"
+                                    />
+                                ) : (
+                                    <p className="text-gray-500 text-center mt-20">
+                                        No image selected
+                                    </p>
+                                )}
+                            </div>
                             <label className="mt-4 bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded cursor-pointer">
                                 Choose Image
                                 <input
@@ -340,9 +441,67 @@ const CreateShopPage = () => {
                             </label>
                         </div>
                     </div>
+                    {/* Bank details */}
+                    <h3 className="text-lg font-semibold text-gray-800 pt-8 mb-4 text-left">
+                        Bank Details
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className="flex flex-col">
+                            <label className="block text-gray-700 text-left">
+                                Account Name
+                            </label>
+                            <input
+                                type="text"
+                                name="account_name"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={formData.account_name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="block text-gray-700 text-left">
+                                Account Number
+                            </label>
+                            <input
+                                type="text"
+                                name="account_number"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={formData.account_number}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="block text-gray-700 text-left">
+                                Bank
+                            </label>
+                            <input
+                                type="text"
+                                name="bank"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={formData.bank}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col">
+                            <label className="block text-gray-700 text-left">
+                                Branch
+                            </label>
+                            <input
+                                type="text"
+                                name="branch"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={formData.branch}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                    </div>
 
                     {/* Buttons */}
-                    <div className="flex gap-x-5 mt-2">
+                    <div className="flex gap-x-5 pt-12 mt-2">
                         <button
                             type="submit"
                             className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 w-30 "
