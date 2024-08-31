@@ -23,7 +23,7 @@ const Logout = () => {
                 // Remove token from local storage
                 localStorage.removeItem('token')
                 // Redirect to the login page
-                navigate('/')
+                navigate('/farmerlogin')
                 console.log('Successfully logged out')
             } catch (err) {
                 console.error('Logout failed:', err)

@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import axios from '../../../axios'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../../Components/farmer/shop_sidebar'
-import vege from '../../assets/vege.png'
-import addShopIcon from '../../assets/addshop.png'
+import addproduct from '../../assets/addpoduct.png'
+import Swal from 'sweetalert2'
 
 const Products = () => {
     const [products, setProducts] = useState([])
     const shopId = localStorage.getItem('shopId')
     const navigate = useNavigate()
+    const [searchTerm, setSearchTerm] = useState('') // State for the search term
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -38,12 +39,26 @@ const Products = () => {
     }
 
     const handleDeleteProduct = async (productID) => {
-        if (window.confirm('Are you sure you want to delete this product?')) {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete this product? This process cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'cancel!',
+            customClass: {
+                confirmButton:
+                    'bg-red-500 text-white font-bold py-2 px-8 rounded hover:bg-red-600 mr-8',
+                cancelButton:
+                    'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 ',
+            },
+            buttonsStyling: false,
+        })
+
+        // Check if the user confirmed
+        if (result.isConfirmed) {
             try {
                 const token = localStorage.getItem('token')
-                const shopId = localStorage.getItem('shopId') // Ensure this is valid
-                console.log('Deleting product:', productID)
-                console.log('Shop ID:', shopId) // Log the shop ID
                 if (!token) {
                     throw new Error('No token found')
                 }
@@ -59,7 +74,15 @@ const Products = () => {
                     config
                 )
                 console.log('Product deleted:', response.data)
-                alert('Product deleted successfully')
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Product deleted successfully',
+                    customClass: {
+                        confirmButton:
+                            'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                    },
+                })
 
                 // Refresh the product list after deletion
                 const updatedProducts = products.filter(
@@ -71,39 +94,80 @@ const Products = () => {
                     'Error deleting product:',
                     error.response?.data?.message || error.message
                 )
-                alert('Error deleting product. Please try again.')
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error deleting product. Please try again.',
+                    customClass: {
+                        confirmButton:
+                            'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
+                    },
+                })
             }
         }
     }
+
     const handleAddNewProduct = () => {
         navigate('/addproduct')
     }
 
-    return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
-                <Sidebar />
-            </div>
+    // Filter products based on search term
+    const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
-            <div className="flex-1 p-8 pt-16">
-                <div className="grid grid-cols-5 gap-x-1 gap-y-8">
+    return (
+        <div className="flex min-h-screen bg-gray-50 ">
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
+                <Sidebar />
+            </aside>
+
+            <div className="flex-1 ml-64 p-8 pt-24 overflow-y-auto">
+                {/* Search Bar */}
+                <div className="flex justify-end pe-16 mb-6">
+                    <input
+                        type="text"
+                        placeholder="Search products..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="border border-gray-600 rounded-lg p-2 w-80 h-10 focus:outline-none focus:ring-2 focus:ring-green-500 text-center"
+                    />
+                </div>
+
+                <div className="grid grid-cols-4 gap-x-8 gap-y-12">
+                    {/* Add New Product */}
+                    <div className="relative flex items-center justify-center bg-white rounded-lg shadow-md h-65 w-60">
+                        <div className="absolute inset-0 flex flex-col justify-center items-center p-12">
+                            <img
+                                src={addproduct}
+                                alt="Add Product"
+                                className="w-32 h-32 mb-4"
+                            />
+                            <button
+                                onClick={handleAddNewProduct}
+                                className="bg-green-500 text-white hover:bg-green-600 font-semibold py-2 px-4 rounded text-center"
+                            >
+                                Add New Product
+                            </button>
+                        </div>
+                    </div>
                     {/* Render products */}
-                    {products.map((product) => (
+                    {filteredProducts.map((product) => (
                         <div
                             key={product._id}
-                            className="relative bg-white rounded-lg shadow-md h-65 w-60 flex flex-col"
+                            className="relative bg-white rounded-lg shadow-md w-60 h-70 flex flex-col fixed"
                         >
                             {/* Upper half - Product Image */}
-                            <div className="h-1/2">
+                            <div className="flex-shrink-0 w-full h-1/2 overflow-hidden">
                                 <img
-                                    src={vege}
+                                    src={product.image}
                                     alt="Product"
-                                    className="object-cover h-full w-full"
+                                    className="object-cover w-full h-full"
                                 />
                             </div>
 
                             {/* Lower half - Product details */}
-                            <div className="h-1/2 p-2 bg-white">
+                            <div className="flex-1 p-2 bg-white">
                                 <h2 className="text-lg font-semibold text-gray-800 text-left">
                                     {product.name}
                                 </h2>
@@ -113,7 +177,7 @@ const Products = () => {
                                 <h4 className="text-sm font-semibold text-gray-600 text-left">
                                     RS. {product.pricePerKg} - 1Kg
                                 </h4>
-                                <div className="flex justify-between mt-1">
+                                <div className="flex justify-between mt-2">
                                     <button
                                         onClick={() =>
                                             handleUpdateProduct(product._id)
@@ -134,23 +198,6 @@ const Products = () => {
                             </div>
                         </div>
                     ))}
-
-                    {/* Add New Product */}
-                    <div className="relative flex items-center justify-center bg-white rounded-lg shadow-md h-65 w-60">
-                        <div className="absolute inset-0 flex flex-col justify-center items-center p-4">
-                            <img
-                                src={addShopIcon}
-                                alt="Add Product"
-                                className="w-32 h-32 mb-4"
-                            />
-                            <button
-                                onClick={handleAddNewProduct}
-                                className="bg-green-500 text-white hover:bg-green-600 font-semibold py-2 px-4 rounded text-center"
-                            >
-                                Add New Product
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

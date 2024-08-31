@@ -99,6 +99,13 @@ const farmerSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Password is required'],
         },
+        image: {
+            type: String,
+            default: function () {
+                return `https://avatar.iran.liara.run/username?username=${this.name}}`
+            },
+            required: false,
+        },
     },
     {
         timestamps: true, // Automatically manage createdAt and updatedAt fields
@@ -107,13 +114,16 @@ const farmerSchema = new mongoose.Schema(
 
 // Hash the password before saving to the database
 farmerSchema.pre('save', async function (next) {
+    // If the password is not modified, move to the next middleware
     if (!this.isModified('password')) {
-        return next() // Skip hashing if password is not modified
+        return next()
     }
 
     try {
         const salt = await bcrypt.genSalt(10) // Generate salt
         this.password = await bcrypt.hash(this.password, salt) // Hash the password
+
+        next() // Proceed to the next middleware after successful hashing
     } catch (error) {
         next(error) // Pass any errors to the next middleware
     }
