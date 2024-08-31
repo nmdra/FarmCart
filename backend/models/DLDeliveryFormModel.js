@@ -56,9 +56,21 @@ const DLDeliveryFormSchema = mongoose.Schema(
             enum: ['Pending', 'Approved', 'Rejected'],
             default: 'Pending',
         },
+        idCardImageUrl: {
+            type: String,
+            required: true,
+        },
+        licenseImageUrl: {
+            type: String,
+            required: true,
+        },
+        personalImageUrl: {
+            type: String,
+            required: true,
+        },
     },
     {
-        timestamps: true,  // Automatically adds createdAt and updatedAt fields
+        timestamps: true, // Automatically adds createdAt and updatedAt fields
     }
 );
 

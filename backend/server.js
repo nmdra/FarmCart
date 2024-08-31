@@ -1,51 +1,44 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import userRoute from './routes/userRoute.js';
 import orderRoute from './routes/orderRoute.js';
+import farmerRoutes from './routes/farmerRoute.js';
+import shopRoute from './routes/shop_productRoute.js';
 import imageHandler from './routes/imageHandlerRoute.js';
-import DLDeliveryRoutes from './routes/DLDeliveryRoutes.js';
+import DLFormRoutes from './routes/DLFormRoutes.js';
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
 
 // Load environment variables
-dotenv.config();
-
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 // Connect to MongoDB
 connectDB();
 
 const app = express();
 
+// Middleware
 app.use(cors());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cookieParser());
+app.use('/uploads', express.static('uploads')); // Serve uploaded images statically
 
 // Routes
 app.get('/', (_req, res) => {
     res.send('FarmCart API is Running...');
 });
 
-// User API routes
 app.use('/api/users', userRoute);
 app.use('/api/orders', orderRoute);
-
-// Delivery API route
-app.use('/api/delivery', DLDeliveryRoutes);
-
-// Shop API routes
-// app.use('/api/farmers', farmerRoutes);
-// app.use('/api/shops', shopRoute);
+app.use('/api/farmers', farmerRoutes);
+app.use('/api/shops', shopRoute);
 app.use('/api/images', imageHandler);
+app.use('/api/d_forms', DLFormRoutes);
 
+// Error Handling Middleware
 app.use(notFound);
-
-// Middleware to handle errors and send appropriate responses
 app.use(errorHandler);
 
 // Start the server and listen on the specified port

@@ -33,6 +33,9 @@ import Products from './Pages/farmer/products'
 import AddProduct from './Pages/farmer/addProduct'
 import UpdateProduct from './Pages/farmer/UpdateProduct'
 import DLDriverRegistrationForm from './Pages/delivery/DLDriverRegistrationForm';
+import DLApproveDriver from './Pages/delivery/DLApproveDriver'; // Ensure the path is correct
+import DLDriverAccept from './Pages/delivery/DLDriverAccept';
+import DLImageUpload from './DLImageUpload';
 
 
 
@@ -44,6 +47,9 @@ const router = createBrowserRouter(
         <Route path="/" element={<MainLayout />}>
              <Route index element={<HomePage />} />
              <Route path="/register-driver" element={<DLDriverRegistrationForm />} />
+                <Route path="/upload-image" element={<DLImageUpload />} />
+             <Route path="/manager/approve-driver" element={<DLApproveDriver />} />
+             <Route path="/manager/approve-driver/:id" element={<DLDriverAccept />} />
 
 
 
