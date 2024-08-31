@@ -19,7 +19,7 @@ export const protect = async (req, res, next) => {
             req.user = await Farmer.findById(decoded.userId).select('-password')
             next()
         } catch (err) {
-            console.error('Token verification failed:', err)
+            console.error('Token verification failed:', error)
             res.status(401)
             throw new Error('Not authorized, token failed')
         }

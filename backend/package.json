@@ -20,7 +20,7 @@
     "apicache": "^1.6.3",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
-    "cloudinary": "^2.2.0",
+    "cloudinary": "^2.4.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",

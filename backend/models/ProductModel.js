@@ -35,10 +35,10 @@ const productSchema = new mongoose.Schema(
             required: true,
         },
         // Image URL or path representing the product
-        /* image: {
-        type: String,
-        required: true,
-    }, */
+        image: {
+            type: String,
+            required: false,
+        },
     },
     {
         timestamps: true,
