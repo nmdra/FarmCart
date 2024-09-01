@@ -9,8 +9,18 @@ import farmerRoutes from './routes/farmerRoute.js';
 import shopRoute from './routes/shop_productRoute.js';
 import imageHandler from './routes/imageHandlerRoute.js';
 import DLFormRoutes from './routes/DLFormRoutes.js';
+import driverRoutes from './routes/DLDriverRoutes.js';
 import { fileURLToPath } from 'url';
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
+import DLEmailRoutes from './routes/DLEmailRoutes.js';
+import dotenv from 'dotenv'; 
+
+dotenv.config();
+
+
+
+
+
 
 // Load environment variables
 const PORT = process.env.PORT || 8000;
@@ -43,6 +53,8 @@ app.use('/api/farmers', farmerRoutes);
 app.use('/api/shops', shopRoute);
 app.use('/api/images', imageHandler);
 app.use('/api/d_forms', DLFormRoutes);
+app.use('/api/drivers', driverRoutes); // Added driver routes
+app.use('/api/email', DLEmailRoutes); // Use the email routes
 
 // Error Handling Middleware
 app.use(notFound);

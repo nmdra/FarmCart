@@ -20,12 +20,35 @@ const DLDriverAccept = () => {
         fetchDriverDetails();
     }, [id]);
 
-    const handleStatusUpdate = async (newStatus) => {
+    const handleApprove = async () => {
         try {
-            await axios.put(`/d_forms/${id}/status`, { status: newStatus });
+            // Add the driver to the system
+            await axios.post(`/drivers/addDriver/${id}`);
+    
+            // Update the status of the delivery form to "Approved"
+            await axios.put(`/d_forms/${id}/status`, { status: 'Approved' });
+    
+              // Send approval email
+              await axios.post(`/email/send-approval-email/${id}`);
+    
+              alert('Driver approved, added to the system, and email sent');
+              navigate('/manager/approve-driver');
+            
+
+            
+        } catch (error) {
+            console.error('Error approving driver:', error);
+            alert('Failed to approve the driver.');
+        }
+    };
+    
+
+    const handleReject = async () => {
+        try {
+            await axios.put(`/d_forms/${id}/status`, { status: 'Rejected' });
             navigate('/manager/approve-driver');
         } catch (error) {
-            console.error(`Error updating form status to ${newStatus}:`, error);
+            console.error('Error rejecting driver:', error);
         }
     };
 
@@ -72,7 +95,7 @@ const DLDriverAccept = () => {
                             </tr>
                             <tr>
                                 <th className="px-4 py-2 text-left border">Date of Birth</th>
-                                <td className="px-4 py-2 border">{driverDetails.dateOfBirth}</td>
+                                <td className="px-4 py-2 border">{new Date(driverDetails.dateOfBirth).toLocaleDateString()}</td>
                             </tr>
                             <tr>
                                 <th className="px-4 py-2 text-left border">ID Card Number</th>
@@ -113,13 +136,13 @@ const DLDriverAccept = () => {
                 {/* Action Buttons */}
                 <div className="mt-6 flex justify-between">
                     <button
-                        onClick={() => handleStatusUpdate('Approved')}
+                        onClick={handleApprove}
                         className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
                     >
                         Approve
                     </button>
                     <button
-                        onClick={() => handleStatusUpdate('Rejected')}
+                        onClick={handleReject}
                         className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
                     >
                         Reject

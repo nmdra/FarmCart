@@ -226,7 +226,7 @@ const emailVerify = async (user, token) => {
                     <p>Thank you for signing up with <strong>FarmCart</strong>. Please verify your email address to complete your registration.</p>
                     <p>This link will expire in <strong>2 minutes</strong>.</p>
                     <p style="margin-bottom: 20px;">Click the button below to activate your account:</p>
-                    <a href="${process.env.SITE_URL}/verifEmail?token=${token}"
+                    <a href="${process.env.SITE_URL}/verifyEmail?token=${token}"
                         style="background: #22c55e; color: white; border: 1px solid #22c55e; padding: 10px 15px; border-radius: 4px; text-decoration: none; display: inline-block;">Verify Account</a>
                     <p style="margin-top: 35px;">If you did not initiate this request, please contact us immediately at support@farmcart.com</p>
                     <p style="margin-bottom: 0;">Thank you,</p>

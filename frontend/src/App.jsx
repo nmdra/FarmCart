@@ -36,6 +36,7 @@ import DLDriverRegistrationForm from './Pages/delivery/DLDriverRegistrationForm'
 import DLApproveDriver from './Pages/delivery/DLApproveDriver'; // Ensure the path is correct
 import DLDriverAccept from './Pages/delivery/DLDriverAccept';
 import DLImageUpload from './DLImageUpload';
+import DLSendEmail from './Pages/delivery/DLSendEmail'; // Import the DLSendEmail component
 
 
 
@@ -50,6 +51,7 @@ const router = createBrowserRouter(
                 <Route path="/upload-image" element={<DLImageUpload />} />
              <Route path="/manager/approve-driver" element={<DLApproveDriver />} />
              <Route path="/manager/approve-driver/:id" element={<DLDriverAccept />} />
+             <Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />
 
 
 
