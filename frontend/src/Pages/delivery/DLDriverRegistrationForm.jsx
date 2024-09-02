@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react'
+import axios from '../../../axios' // Import your axios instance with baseURL and interceptor
+import { useNavigate } from 'react-router-dom'
 
-const DLDriverRegistrationForm = () => {
+const RegisterDriverForm = () => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -14,178 +14,231 @@ const DLDriverRegistrationForm = () => {
         licenseCardNumber: '',
         address: '',
         vehicleNumber: '',
-        vehicleType: 'Bike',  // Default to 'Bike'
-    });
+        vehicleType: '',
+    })
+    const [idCardImage, setIdCardImage] = useState(null)
+    const [licenseImage, setLicenseImage] = useState(null)
+    const [personalImage, setPersonalImage] = useState(null)
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [successMessage, setSuccessMessage] = useState('')
+    const navigate = useNavigate()
 
-    const navigate = useNavigate();
+    // Handle form input changes
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        })
+    }
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: value,
-        }));
-    };
+    // Handle file input changes
+    const handleFileChange = (e, setImageFunction) => {
+        setImageFunction(e.target.files[0])
+    }
 
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        setError('')
+        setLoading(true)
 
         try {
-            const response = await axios.post('/api/delivery', formData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
+            const formDataObj = new FormData()
+            Object.keys(formData).forEach((key) =>
+                formDataObj.append(key, formData[key])
+            )
+            formDataObj.append('idCardImage', idCardImage)
+            formDataObj.append('licenseImage', licenseImage)
+            formDataObj.append('personalImage', personalImage)
 
-            if (response.status === 201) {
-                alert('Form submitted successfully!');
-                navigate('/register-driver/success'); // Redirect or show a success message
-            } else {
-                alert('Failed to submit the form. Please try again.');
-            }
+            const response = await axios.post('/d_forms', formDataObj, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            setSuccessMessage('Registration successful!')
+            setLoading(false)
+            navigate('/checkEmail')
         } catch (error) {
-            console.error('Error submitting form:', error);
-            alert('An error occurred while submitting the form. Please try again.');
+            setError(
+                error.response?.data?.message ||
+                    'Failed to submit the form. Please try again.'
+            )
+            setLoading(false)
         }
-    };
+    }
 
     return (
-        <div className="max-w-lg mx-auto p-6 bg-gray-100 shadow-md rounded-md">
-            <h2 className="text-xl font-semibold mb-4 text-center">Driver Registration Form</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">First Name</label>
-                    <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Last Name</label>
-                    <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input
-                        type="text"
-                        name="fullName"
-                        value={formData.fullName}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input
-                        type="text"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
-                    <input
-                        type="date"
-                        name="dateOfBirth"
-                        value={formData.dateOfBirth}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">ID Card Number</label>
-                    <input
-                        type="text"
-                        name="idCardNumber"
-                        value={formData.idCardNumber}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">License Card Number</label>
-                    <input
-                        type="text"
-                        name="licenseCardNumber"
-                        value={formData.licenseCardNumber}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Address</label>
-                    <input
-                        type="text"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Vehicle Number</label>
-                    <input
-                        type="text"
-                        name="vehicleNumber"
-                        value={formData.vehicleNumber}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700">Vehicle Type</label>
-                    <select
-                        name="vehicleType"
-                        value={formData.vehicleType}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        required
+        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+                <h2 className="text-2xl font-bold mb-6">
+                    Driver Registration Form
+                </h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input
+                            type="text"
+                            name="firstName"
+                            placeholder="First Name"
+                            value={formData.firstName}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="lastName"
+                            placeholder="Last Name"
+                            value={formData.lastName}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="fullName"
+                            placeholder="Full Name"
+                            value={formData.fullName}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        />
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="phone"
+                            placeholder="Phone Number"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        />
+                        <input
+                            type="date"
+                            name="dateOfBirth"
+                            placeholder="Date of Birth"
+                            value={formData.dateOfBirth}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="idCardNumber"
+                            placeholder="ID Card Number"
+                            value={formData.idCardNumber}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="licenseCardNumber"
+                            placeholder="License Card Number"
+                            value={formData.licenseCardNumber}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="address"
+                            placeholder="Address"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="vehicleNumber"
+                            placeholder="Vehicle Number"
+                            value={formData.vehicleNumber}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        />
+                        <select
+                            name="vehicleType"
+                            value={formData.vehicleType}
+                            onChange={handleInputChange}
+                            className="border p-2 rounded-md col-span-2"
+                            required
+                        >
+                            <option value="">Select Vehicle Type</option>
+                            <option value="Bike">Bike</option>
+                            <option value="Three-Wheel">Three-Wheel</option>
+                            <option value="Lorry">Lorry</option>
+                        </select>
+                    </div>
+                    <div className="mt-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            ID Card Image
+                        </label>
+                        <input
+                            type="file"
+                            onChange={(e) =>
+                                handleFileChange(e, setIdCardImage)
+                            }
+                            className="border p-2 rounded-md w-full"
+                            required
+                        />
+                    </div>
+                    <div className="mt-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            License Image
+                        </label>
+                        <input
+                            type="file"
+                            onChange={(e) =>
+                                handleFileChange(e, setLicenseImage)
+                            }
+                            className="border p-2 rounded-md w-full"
+                            required
+                        />
+                    </div>
+                    <div className="mt-4">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Personal Image
+                        </label>
+                        <input
+                            type="file"
+                            onChange={(e) =>
+                                handleFileChange(e, setPersonalImage)
+                            }
+                            className="border p-2 rounded-md w-full"
+                            required
+                        />
+                    </div>
+                    {error && (
+                        <p className="text-red-500 text-sm mt-2">{error}</p>
+                    )}
+                    {successMessage && (
+                        <p className="text-green-500 text-sm mt-2">
+                            {successMessage}
+                        </p>
+                    )}
+                    <button
+                        type="submit"
+                        className="mt-6 bg-green-500 text-white p-2 rounded-md w-full"
+                        disabled={loading}
                     >
-                        <option value="Bike">Bike</option>
-                        <option value="Three-Wheel">Three-Wheel</option>
-                        <option value="Lorry">Lorry</option>
-                    </select>
-                </div>
-                <button
-                    type="submit"
-                    className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring focus:ring-indigo-200"
-                >
-                    Submit
-                </button>
-            </form>
+                        {loading ? 'Submitting...' : 'Submit'}
+                    </button>
+                </form>
+            </div>
         </div>
-    );
-};
+    )
+}
 
-export default DLDriverRegistrationForm;
+export default RegisterDriverForm

@@ -1,41 +1,33 @@
 import multer from 'multer';
 import path from 'path';
 
-// Configure storage options for multer
+// Set up storage engine
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Uploads will be stored in the 'uploads' directory
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Save files to the 'uploads' folder
     },
-    filename: function (req, file, cb) {
-        cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
     },
 });
 
-// File type validation
+// Set up file filter to only allow image uploads
 const fileFilter = (req, file, cb) => {
-    const fileTypes = /jpeg|jpg|png/;
-    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = fileTypes.test(file.mimetype);
+    const filetypes = /jpeg|jpg|png|gif/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
 
-    if (extname && mimetype) {
+    if (mimetype && extname) {
         return cb(null, true);
     } else {
-        cb('Error: Images Only!');
+        cb('Error: Images only!');
     }
 };
 
-// Initialize upload with specified settings
-const DLUpload = multer({
+const upload = multer({
     storage,
     fileFilter,
-    limits: { fileSize: 1024 * 1024 * 5 }, // 5MB file size limit
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
 });
 
-// Middleware for handling multiple file uploads
-const DLUploadMultipleFiles = DLUpload.fields([
-    { name: 'idCardPhoto', maxCount: 1 },
-    { name: 'licensePhoto', maxCount: 1 },
-    { name: 'personalPhoto', maxCount: 1 },
-]);
-
-export { DLUploadMultipleFiles };
+export default upload;

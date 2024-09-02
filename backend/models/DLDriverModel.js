@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const DLDeliveryFormSchema = mongoose.Schema(
+const DLDriverSchema = mongoose.Schema(
     {
         firstName: {
             type: String,
@@ -18,12 +18,10 @@ const DLDeliveryFormSchema = mongoose.Schema(
             type: String,
             required: true,
             unique: true,
-            match: [/.+@.+\..+/, 'Please enter a valid email address'],
         },
         phone: {
             type: String,
             required: true,
-            match: [/^\d{10}$/, 'Please enter a valid phone number'],
         },
         dateOfBirth: {
             type: Date,
@@ -50,11 +48,13 @@ const DLDeliveryFormSchema = mongoose.Schema(
             required: true,
             enum: ['Bike', 'Three-Wheel', 'Lorry'],
         },
-        status: {
+        password: {
             type: String,
             required: true,
-            enum: ['Pending', 'Approved', 'Rejected'],
-            default: 'Pending',
+        },
+        isAvailable: {
+            type: Boolean,
+            default: false, // Set availability to unavailable by default
         },
         idCardImageUrl: {
             type: String,
@@ -70,10 +70,10 @@ const DLDeliveryFormSchema = mongoose.Schema(
         },
     },
     {
-        timestamps: true, // Automatically adds createdAt and updatedAt fields
+        timestamps: true,
     }
 );
 
-const DLDeliveryForm = mongoose.model('DLDeliveryForm', DLDeliveryFormSchema);
+const DLDriver = mongoose.model('DLDriver', DLDriverSchema);
 
-export default DLDeliveryForm;
+export default DLDriver;
