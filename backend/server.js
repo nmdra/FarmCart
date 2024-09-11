@@ -6,6 +6,7 @@ import userRoute from './routes/userRoute.js'
 import orderRoute from './routes/orderRoute.js'
 import farmerRoutes from './routes/farmerRoute.js'
 import shopRoute from './routes/shop_productRoute.js'
+import userShop from './routes/userShopRoute.js'
 import imageHandler from './routes/imageHandlerRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
@@ -36,6 +37,7 @@ app.use('/api/orders', orderRoute)
 // Shop API routes
 app.use('/api/farmers', farmerRoutes);
 app.use('/api/shops', shopRoute);
+app.use('/api/userShops', userShop);
 app.use('/api/images', imageHandler)
 
 app.use(notFound)
