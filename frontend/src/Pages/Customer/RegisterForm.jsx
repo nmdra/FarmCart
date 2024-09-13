@@ -4,13 +4,18 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Link } from 'react-router-dom'
 import farmcartLogo from '../../assets/logo.png'
+import { FaInfoCircle } from 'react-icons/fa'
 
 const Register = () => {
     const [email, setEmail] = useState('')
-    const [name, setName] = useState('')
+    const [firstname, setFirstName] = useState('')
+    const [lastname, setLastName] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const [lastNameError, setLastNameError] = useState('')
+    const [firstNameError, setFirstNameError] = useState('')
+    const [emailError, setEmailError] = useState('')
     const [confirmPasswordError, setConfirmPasswordError] = useState('')
     const { register, error, isLoading } = useRegister()
 
@@ -20,22 +25,58 @@ const Register = () => {
             toast.error('Passwords do not match')
             return
         }
-        await register(name, email, password)
-        // Perform registration logic here
-        // toast.success('Registration successful!');
+        await register(firstname, lastname, email, password)
     }
 
     useEffect(() => {
         if (error) {
             toast.error(error)
             setEmail('')
-            setName('')
+            setFirstName('')
+            setLastName('')
             setPassword('')
             setConfirmPassword('')
         }
     }, [error])
 
-    // Strong password check function
+    const validateFirstName = (name) => {
+        const namePattern = /^[a-zA-Z\s]+$/
+        if (!namePattern.test(name)) {
+            setFirstNameError('First Name can only contain letters and spaces.')
+            return false
+        }
+        if (name.length < 2) {
+            setFirstNameError('First Name must be at least 2 characters long.')
+            return false
+        }
+        setFirstNameError('')
+        return true
+    }
+
+    const validateLastName = (name) => {
+        const namePattern = /^[a-zA-Z\s]+$/
+        if (!namePattern.test(name)) {
+            setLastNameError('Last Name can only contain letters and spaces.')
+            return false
+        }
+        if (name.length < 2) {
+            setLastNameError('Last Name must be at least 2 characters long.')
+            return false
+        }
+        setLastNameError('')
+        return true
+    }
+
+    const validateEmail = (email) => {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailPattern.test(email)) {
+            setEmailError('Invalid email format.')
+            return false
+        }
+        setEmailError('')
+        return true
+    }
+
     const validatePassword = (pwd) => {
         const hasUpperCase = /[A-Z]/.test(pwd)
         const hasLowerCase = /[a-z]/.test(pwd)
@@ -45,67 +86,108 @@ const Register = () => {
 
         if (!isLongEnough) {
             setPasswordError('Password must be at least 8 characters long.')
+            return false
         } else if (!hasUpperCase) {
             setPasswordError(
                 'Password must contain at least one uppercase letter.'
             )
+            return false
         } else if (!hasLowerCase) {
             setPasswordError(
                 'Password must contain at least one lowercase letter.'
             )
+            return false
         } else if (!hasNumbers) {
             setPasswordError('Password must contain at least one number.')
+            return false
         } else if (!hasSpecialChars) {
             setPasswordError(
                 'Password must contain at least one special character.'
             )
-        } else {
-            setPasswordError('') // Clear any error if password is strong
+            return false
         }
+        setPasswordError('')
+        return true
     }
 
-    // Validate confirm password
     const validateConfirmPassword = (confirmPwd) => {
         if (confirmPwd !== password) {
             setConfirmPasswordError('Passwords do not match.')
-        } else {
-            setConfirmPasswordError('') // Clear error if passwords match
+            return false
         }
+        setConfirmPasswordError('')
+        return true
     }
 
-    // Check confirm password on every change
     useEffect(() => {
-        validateConfirmPassword(confirmPassword)
-        validatePassword(password)
-    }, [confirmPassword, password])
+        if (firstname) validateFirstName(firstname)
+        if (email) validateEmail(email)
+        if (password) validatePassword(password)
+        if (lastname) validateLastName(lastname)
+        if (confirmPassword) validateConfirmPassword(confirmPassword)
+    }, [firstname, lastname, email, password, confirmPassword])
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-green-600 max-w-md w-full">
-                {/* Image logo */}
                 <img
-                    src={farmcartLogo} // Replace with the path to your logo image
+                    src={farmcartLogo}
                     alt="Logo"
-                    className="h-5 w-auto mb-2" // Adjust the height as needed
+                    className="h-5 w-auto mb-2"
                 />
                 <div className="text-left mb-5">
                     <h2 className="text-3xl font-bold">Create Account</h2>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="name" className="block text-gray-700">
-                            Name
-                        </label>
-                        <input
-                            type="text" // Changed from 'name' to 'text' for correct input type
-                            id="name"
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            placeholder="Enter your full name"
-                        />
+                    <div className="mb-1 flex space-x-4">
+                        <div className="w-1/2">
+                            <label
+                                htmlFor="firstname"
+                                className="block text-gray-700"
+                            >
+                                First Name
+                            </label>
+                            <input
+                                type="text"
+                                id="firstname"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                value={firstname}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                                placeholder="Enter your first name"
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <label
+                                htmlFor="lastname"
+                                className="block text-gray-700"
+                            >
+                                Last Name
+                            </label>
+                            <input
+                                type="text"
+                                id="lastname"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                value={lastname}
+                                onChange={(e) => setLastName(e.target.value)}
+                                required
+                                placeholder="Enter your last name"
+                            />
+                        </div>
                     </div>
+                    {firstNameError && (
+                        <p className="text-red-500 text-sm flex items-center">
+                            {' '}
+                            <FaInfoCircle className="mr-1" /> {firstNameError}
+                        </p>
+                    )}
+                    {lastNameError && (
+                        <p className="text-red-500 text-sm flex items-center">
+                            {' '}
+                            <FaInfoCircle className="mr-1" /> {lastNameError}
+                        </p>
+                    )}
+
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700">
                             Email
@@ -119,6 +201,11 @@ const Register = () => {
                             required
                             placeholder="Enter your email"
                         />
+                        {emailError && (
+                            <p className="text-red-500 text-sm flex items-center">
+                                <FaInfoCircle className="mr-1" /> {emailError}
+                            </p>
+                        )}
                     </div>
                     <div className="mb-4">
                         <label
@@ -137,11 +224,11 @@ const Register = () => {
                             placeholder="Create a strong password"
                         />
                         {passwordError && (
-                            <p className="text-red-500 text-sm">
+                            <p className="text-red-500 text-sm flex items-center">
+                                <FaInfoCircle className="mr-1" />{' '}
                                 {passwordError}
                             </p>
-                        )}{' '}
-                        {/* Display password error message */}
+                        )}
                     </div>
                     <div className="mb-6">
                         <label
@@ -160,11 +247,11 @@ const Register = () => {
                             placeholder="Re-enter your password"
                         />
                         {confirmPasswordError && (
-                            <p className="text-red-500 text-sm">
+                            <p className="text-red-500 text-sm flex items-center">
+                                <FaInfoCircle className="mr-1" />{' '}
                                 {confirmPasswordError}
                             </p>
-                        )}{' '}
-                        {/* Display confirm password error message */}
+                        )}
                     </div>
                     <button
                         disabled={isLoading}
@@ -197,15 +284,18 @@ const Register = () => {
                             'Register'
                         )}
                     </button>
-                    <ToastContainer />
                 </form>
-                <div className="mt-4">
-                    Already have an account?
-                    <Link to="/login" className="text-blue-600 hover:underline">
-                        Login here.
+                <p className="text-sm mt-2 text-gray-600">
+                    Already have an account?{' '}
+                    <Link
+                        to="/login"
+                        className="font-medium text-lime-600 hover:underline"
+                    >
+                        Login
                     </Link>
-                </div>
+                </p>
             </div>
+            <ToastContainer />
         </div>
     )
 }

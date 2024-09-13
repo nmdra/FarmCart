@@ -1,10 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { useTable, usePagination } from 'react-table'
+import React, { useEffect, useState, useMemo } from 'react'
+import { useTable, usePagination, useGlobalFilter } from 'react-table'
 import axios from 'axios'
 import { OrderColumns } from '../lib/OrderColumns'
 import Loading from './Loading'
 
-const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
+// A simple global filter component
+const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
+    return (
+        <span>
+            Search:{' '}
+            <input
+                value={globalFilter || ''}
+                onChange={(e) => setGlobalFilter(e.target.value)}
+                className="border rounded-md p-1 text-sm"
+                placeholder="Type to search..."
+            />
+        </span>
+    )
+}
+
+const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg, enableSearch }) => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -34,14 +49,16 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
         pageOptions,
         nextPage,
         previousPage,
-        state: { pageIndex },
+        state: { pageIndex, globalFilter },
+        setGlobalFilter,
     } = useTable(
         {
             columns: OrderColumns,
             data,
             initialState: { pageIndex: 0, pageSize: rowsPerPage || 5 },
         },
-        usePagination
+        useGlobalFilter, // Use global filtering
+        usePagination // Use pagination
     )
 
     if (loading) {
@@ -61,6 +78,15 @@ const OrderTable = ({ rowsPerPage, paginateOn, emptyRowMsg }) => {
 
     return (
         <div className="w-full overflow-x-auto rounded-lg border border-gray-300">
+            {/* Conditionally render the search bar */}
+            {enableSearch && (
+                <div className="flex justify-center p-2">
+                    <GlobalFilter
+                        globalFilter={globalFilter}
+                        setGlobalFilter={setGlobalFilter}
+                    />
+                </div>
+            )}
             <table
                 {...getTableProps()}
                 className="min-w-full divide-y divide-gray-200"
