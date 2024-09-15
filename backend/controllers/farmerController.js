@@ -2,9 +2,8 @@ import asyncHandler from '../middlewares/asyncHandler.js'
 import Farmer from '../models/farmerModel.js'
 import { generateToken } from '../utils/genrateToken.js'
 
-// @desc    Register a new farmer
-// @route   POST /api/farmers/register
-// @access  Public
+//  Register a new farmer
+//  route  POST /api/farmers/register
 const registerFarmer = asyncHandler(async (req, res) => {
     const { name, BirthDay, NIC, Address, email, contactNumber, password } =
         req.body
@@ -53,65 +52,22 @@ const registerFarmer = asyncHandler(async (req, res) => {
     }
 
     // Create a new Farmer
-    const farmer = await Farmer.create({
-        name,
-        BirthDay,
-        NIC,
-        Address,
-        email,
-        contactNumber,
-        password,
-    })
-
-    // Generate and set token in cookie
-    generateToken(res, farmer._id)
-
-    // Respond with the farmer details and token
-    res.status(201).json({
-        _id: farmer._id,
-        name: farmer.name,
-        BirthDay: farmer.BirthDay,
-        NIC: farmer.NIC,
-        Address: farmer.Address,
-        email: farmer.email,
-        contactNumber: farmer.contactNumber,
-        token: generateToken(res, farmer._id), // Include token in the response
-    })
-})
-
-// @desc    Authenticate farmer & get token
-// @route   POST /api/farmers/login
-// @access  Public
-const authFarmer = asyncHandler(async (req, res) => {
-    const { email, password } = req.body
-
-    // Find farmer by email
-    const farmer = await Farmer.findOne({ email })
-
-    // Check if farmer exists and passwords match
-    if (farmer && (await farmer.matchPassword(password))) {
-        const token = generateToken(res, farmer._id)
-        res.json({
-            _id: farmer._id,
-            name: farmer.name,
-            email: farmer.email,
-            token, // Send the token in the response body
+    try {
+        const farmer = await Farmer.create({
+            name,
+            BirthDay,
+            NIC,
+            Address,
+            email,
+            contactNumber,
+            password,
         })
-    } else {
-        res.status(401)
-        throw new Error('Invalid email or password')
-    }
-})
 
-// @desc    Get farmer profile
-// @route   GET /api/farmers/profile
-// @access  Private (or Public if no auth check is required)
-const getFarmerProfile = asyncHandler(async (req, res) => {
-    // Find farmer by ID from the request (req.user._id should be set by authentication middleware)
-    const farmer = await Farmer.findById(req.user._id)
+        // Generate and set token in cookie
+        generateToken(res, farmer._id)
 
-    if (farmer) {
-        res.json({
+        // Respond with the farmer details and token
+        res.status(201).json({
             _id: farmer._id,
             name: farmer.name,
             BirthDay: farmer.BirthDay,
@@ -119,16 +75,81 @@ const getFarmerProfile = asyncHandler(async (req, res) => {
             Address: farmer.Address,
             email: farmer.email,
             contactNumber: farmer.contactNumber,
+            token: generateToken(res, farmer._id), // Include token in the response
         })
-    } else {
-        res.status(404)
-        throw new Error('Farmer not found')
+    } catch (error) {
+        console.error('Error creating farmer:', error)
+        res.status(500).json({
+            message: 'Error creating farmer',
+            error: error.message,
+        })
     }
 })
 
-// @desc    Update farmer profile
-// @route   PUT /api/farmers/profile
-// @access  Private (or Public if no auth check is required)
+// Authenticate farmer & get token
+// route   POST /api/farmers/login
+const authFarmer = asyncHandler(async (req, res) => {
+    const { email, password } = req.body
+
+    try {
+        // Find farmer by email
+        const farmer = await Farmer.findOne({ email })
+
+        // Check if farmer exists and passwords match
+        if (farmer && (await farmer.matchPassword(password))) {
+            const token = generateToken(res, farmer._id)
+            res.json({
+                _id: farmer._id,
+                name: farmer.name,
+                email: farmer.email,
+                token, // Send the token in the response body
+            })
+        } else {
+            res.status(401)
+            throw new Error('Invalid email or password')
+        }
+    } catch (error) {
+        console.error('Error authenticating farmer:', error)
+        res.status(500).json({
+            message: 'Error authenticating farmer',
+            error: error.message,
+        })
+    }
+})
+
+// Get farmer profile
+// route   GET /api/farmers/profile
+const getFarmerProfile = asyncHandler(async (req, res) => {
+    try {
+        // Find farmer by ID from the request (req.user._id should be set by authentication middleware)
+        const farmer = await Farmer.findById(req.user._id)
+
+        if (farmer) {
+            res.json({
+                _id: farmer._id,
+                name: farmer.name,
+                BirthDay: farmer.BirthDay,
+                NIC: farmer.NIC,
+                Address: farmer.Address,
+                email: farmer.email,
+                contactNumber: farmer.contactNumber,
+                image: farmer.image,
+            })
+        } else {
+            res.status(404)
+            throw new Error('Farmer not found')
+        }
+    } catch (error) {
+        console.error('Error getting farmer profile:', error)
+        res.status(500).json({
+            message: 'Error getting farmer profile',
+            error: error.message,
+        })
+    }
+})
+
+// Update farmer profile
+// route   PUT /api/farmers/profile
 const updateFarmerProfile = asyncHandler(async (req, res) => {
     try {
         const farmer = await Farmer.findById(req.user._id)
@@ -160,6 +181,7 @@ const updateFarmerProfile = asyncHandler(async (req, res) => {
         farmer.Address = req.body.Address || farmer.Address
         farmer.email = req.body.email || farmer.email
         farmer.contactNumber = req.body.contactNumber || farmer.contactNumber
+        farmer.image = req.body.image || farmer.image
 
         const updatedFarmer = await farmer.save()
 
@@ -182,22 +204,28 @@ const updateFarmerProfile = asyncHandler(async (req, res) => {
     }
 })
 
-// @desc    Logout farmer
-// @route   POST /api/farmers/logout
-// @access  Private (or Public if no auth check is required)
+// Logout farmer
+// route   POST /api/farmers/logout
 const logoutFarmer = asyncHandler(async (req, res) => {
-    // Clear the token cookie
-    res.cookie('token', '', {
-        httpOnly: true,
-        expires: new Date(0), // Set the cookie expiration to a past date
-    })
+    try {
+        // Clear the token cookie
+        res.cookie('token', '', {
+            httpOnly: true,
+            expires: new Date(0), // Set the cookie expiration to a past date
+        })
 
-    res.status(200).json({ message: 'Farmer logged out successfully' })
+        res.status(200).json({ message: 'Farmer logged out successfully' })
+    } catch (error) {
+        console.error('Error logging out farmer:', error)
+        res.status(500).json({
+            message: 'Error logging out farmer',
+            error: error.message,
+        })
+    }
 })
 
-// @desc    Delete farmer account
-// @route   DELETE /api/farmers/profile
-// @access  Private (or Public if no auth check is required)
+// Delete farmer account
+// route   DELETE /api/farmers/profile
 const deleteFarmerAccount = asyncHandler(async (req, res) => {
     try {
         // Find and delete farmer by ID
@@ -218,26 +246,33 @@ const deleteFarmerAccount = asyncHandler(async (req, res) => {
     }
 })
 
-// @desc    Get farmer by ID
-// @route   GET /api/farmers/:id
-// @access  Private (or Public if no auth check is required)
+// Get farmer by ID
+// route   GET /api/farmers/:id
 const getFarmerById = asyncHandler(async (req, res) => {
-    // Find farmer by ID from the request parameters
-    const farmer = await Farmer.findById(req.params.id)
+    try {
+        // Find farmer by ID from the request parameters
+        const farmer = await Farmer.findById(req.params.id)
 
-    if (farmer) {
-        res.json({
-            _id: farmer._id,
-            name: farmer.name,
-            BirthDay: farmer.BirthDay,
-            NIC: farmer.NIC,
-            Address: farmer.Address,
-            email: farmer.email,
-            contactNumber: farmer.contactNumber,
+        if (farmer) {
+            res.json({
+                _id: farmer._id,
+                name: farmer.name,
+                BirthDay: farmer.BirthDay,
+                NIC: farmer.NIC,
+                Address: farmer.Address,
+                email: farmer.email,
+                contactNumber: farmer.contactNumber,
+            })
+        } else {
+            res.status(404)
+            throw new Error('Farmer not found')
+        }
+    } catch (error) {
+        console.error('Error getting farmer by ID:', error)
+        res.status(500).json({
+            message: 'Error getting farmer by ID',
+            error: error.message,
         })
-    } else {
-        res.status(404)
-        throw new Error('Farmer not found')
     }
 })
 

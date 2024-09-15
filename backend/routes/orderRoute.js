@@ -1,9 +1,21 @@
 import express from 'express'
-import { getAllOrders } from '../controllers/orderController.js'
-import { get } from 'http'
+import {
+    getAllOrders,
+    createOrder,
+    createPaymentIntent,
+    getOrdersByUserId,
+    updateOrderStatus,
+    DeleteOrder,
+    getShopByFarmerId,
+} from '../controllers/orderController.js'
+const orderRouter = express.Router()
 
-const router = express.Router()
+orderRouter.get('/', getAllOrders)
+orderRouter.post('/', createOrder)
+orderRouter.post('/create-payment-intent', createPaymentIntent)
+orderRouter.get('/get-user-orders/:id', getOrdersByUserId)
+orderRouter.put('/:id', updateOrderStatus)
+orderRouter.delete('/:id', DeleteOrder)
+orderRouter.get('/get-shop/:id', getShopByFarmerId)
 
-router.route('/').get(getAllOrders)
-
-export default router
+export default orderRouter

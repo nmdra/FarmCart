@@ -25,6 +25,12 @@ const Homepage = () => {
                     >
                         Register
                     </Link>
+                    <Link
+                        to="/shops"
+                        className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    >
+                        Shops
+                    </Link>
                 </div>
             </div>
         </div>

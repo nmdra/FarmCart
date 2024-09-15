@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from '../../../axios'
 import Sidebar from '../../Components/farmer/shop_sidebar'
-import placeholderImage from '../../assets/shop.png' // Placeholder image
+import placeholderImage from '../../assets/shop.png'
 import { useNavigate } from 'react-router-dom'
-import { useDistricts } from '../../hook/district_City'
+import { useDistricts } from '../../Hooks/district_City'
+import Swal from 'sweetalert2'
+
+// Function to decrypt text (if needed)
+
 const ShopProfile = () => {
     const id = localStorage.getItem('shopId')
     const [formData, setFormData] = useState({
@@ -18,6 +22,10 @@ const ShopProfile = () => {
         email: '',
         contactNumber: '',
         description: '',
+        account_name: '',
+        account_number: '',
+        bank: '',
+        branch: '',
     })
     const [errors, setErrors] = useState({
         name: '',
@@ -25,8 +33,11 @@ const ShopProfile = () => {
         contactNumber: '',
         category: '',
     })
-    const [shopImage, setShopImage] = useState(null)
+    const [shopImage, setshopImage] = useState(placeholderImage)
+    const [selectedFile, setSelectedFile] = useState(null)
+    const [uploadMessage, setUploadMessage] = useState('')
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
 
     const { districts, cities, handleDistrictChange, handleCityChange } =
         useDistricts()
@@ -53,9 +64,13 @@ const ShopProfile = () => {
                     email: data.email,
                     contactNumber: data.contactNumber,
                     description: data.description,
+                    account_name: data.account_name,
+                    account_number: data.account_number,
+                    bank: data.bank,
+                    branch: data.branch,
                 })
-                setShopImage(data.imageUrl || placeholderImage)
-                // Fetch and set cities based on shop's district
+                setshopImage(data.image)
+
                 if (data.district) {
                     handleDistrictChange({ target: { value: data.district } })
                 }
@@ -67,48 +82,59 @@ const ShopProfile = () => {
         fetchShop()
     }, [id])
 
-    const validateName = (name) => {
-        return /^[A-Za-z\s]+$/.test(name) // Only letters and at least 3 characters long
-    }
-    const validateEmail = (email) => {
-        return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email) // Must be a Gmail address
-    }
-
-    const validateContactNumber = (contactNumber) => {
-        return (
-            /^[0-9]{10}$/.test(contactNumber) && contactNumber.startsWith('0')
-        ) // Must be 10 digits and start with 0
-    }
-
     const handleChange = (e) => {
         const { name, value } = e.target
-
         let error = ''
-        switch (name) {
-            case 'name':
-                error = validateName(value)
-                    ? ''
-                    : 'Name must contain only letters and spaces'
-                break
-            case 'email':
-                error = validateEmail(value)
-                    ? ''
-                    : 'Email must be a valid Gmail address.'
-                break
-            case 'contactNumber':
-                error = validateContactNumber(value)
-                    ? ''
-                    : 'Contact number must be 10 digits long and start with 0.'
-                break
-            default:
-                if (name.startsWith('address.')) {
-                    const addressField = name.split('.')[1]
-                    setFormData((prevData) => ({
-                        ...prevData,
-                        address: { ...prevData.address, [addressField]: value },
-                    }))
-                    return
-                }
+
+        // Restrict input directly in handleChange
+        if (name === 'name') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+        }
+
+        if (name === 'email') {
+            if (!/^.*@gmail\.com$/.test(value)) {
+                error = 'Email must be a valid @gmail.com address.'
+            }
+        }
+
+        if (name === 'contactNumber') {
+            if (!/^0\d{9}$/.test(value)) {
+                error = 'Contact number must be 10 digits and start with 0.'
+            }
+        }
+
+        if (name === 'account_name') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+        }
+
+        if (name === 'account_number') {
+            if (!/^\d*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+        }
+
+        if (name === 'bank') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+        }
+
+        if (name === 'branch') {
+            if (!/^[A-Za-z\s]*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+        }
+        if (name.startsWith('address.')) {
+            const addressField = name.split('.')[1]
+            setFormData((prevData) => ({
+                ...prevData,
+                address: { ...prevData.address, [addressField]: value },
+            }))
+            return
         }
 
         setFormData((prevData) => ({
@@ -121,57 +147,132 @@ const ShopProfile = () => {
             [name]: error,
         }))
     }
-    const DistrictChange = async (e) => {
-        const selectedDistrict = e.target.value
+
+    const DistrictChange = (e) => {
+        handleDistrictChange(e)
         setFormData((prevData) => ({
             ...prevData,
-            district: selectedDistrict,
-            address: {
-                ...prevData.address,
-                city: '', // Reset city when district changes
-            },
+            district: e.target.value,
+            address: { ...prevData.address, city: '' },
         }))
+    }
 
-        try {
-            const response = await axios.get(
-                `/districts/${selectedDistrict}/cities`
-            )
-            cities(response.data.cities)
-        } catch (error) {
-            console.error('Error fetching cities:', error)
-        }
+    const CityChange = (e) => {
+        handleCityChange(e)
+        setFormData((prevData) => ({
+            ...prevData,
+            address: { ...prevData.address, city: e.target.value },
+        }))
     }
 
     const handleImageChange = (e) => {
-        setShopImage(URL.createObjectURL(e.target.files[0]))
+        const file = e.target.files[0]
+        if (file) {
+            setSelectedFile(file)
+            setshopImage(URL.createObjectURL(file))
+        }
+    }
+
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            setUploadMessage('No file selected')
+            return null
+        }
+        const formData = new FormData()
+        formData.append('image', selectedFile)
+        formData.append('folder', 'shops')
+
+        setLoading(true)
+
+        try {
+            const response = await axios.post('/images', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            setUploadMessage('Image uploaded successfully')
+            return response.data.url
+        } catch (error) {
+            setUploadMessage('Image upload failed')
+            console.error(error)
+            return null
+        } finally {
+            setLoading(false)
+        }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (Object.values(errors).some((error) => error)) {
-            alert('Please fix the errors in the form before submitting.')
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please fix the validation errors before submitting.',
+                customClass: {
+                    confirmButton:
+                        'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
+                },
+            })
             return
         }
+
+        setLoading(true)
+
         try {
             const token = localStorage.getItem('token')
-            const config = {
+            if (!token) throw new Error('No token found')
+
+            const imageUrl = await handleUpload()
+
+            const shopData = {
+                ...formData,
+                image: imageUrl,
+            }
+
+            await axios.put(`/shops/${id}`, shopData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            }
-            await axios.put(`/shops/${id}`, formData, config)
-            alert('Shop details updated successfully')
+            })
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Shop details updated successfully',
+                customClass: {
+                    confirmButton:
+                        'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                },
+            })
             navigate(`/shop/${id}`)
         } catch (error) {
             console.error('Error updating shop details:', error)
+        } finally {
+            setLoading(false)
         }
     }
 
     const handleDeleteShop = async () => {
-        const confirmDelete = window.confirm(
-            'Are you sure you want to delete your shop? This action cannot be undone.'
-        )
-        if (confirmDelete) {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete the Shop? This process cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'cancel!',
+            customClass: {
+                confirmButton:
+                    'bg-red-500 text-white font-bold py-2 px-8 rounded hover:bg-red-600 mr-8',
+                cancelButton:
+                    'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 ',
+            },
+            buttonsStyling: false,
+        })
+
+        // Check if the user confirmed
+        if (result.isConfirmed) {
+            setLoading(true)
             try {
                 const token = localStorage.getItem('token')
                 const config = {
@@ -180,36 +281,52 @@ const ShopProfile = () => {
                     },
                 }
                 await axios.delete(`/shops/${id}`, config)
-                alert('Shop deleted successfully')
-                navigate('/myshops') // Redirect to shops list page
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Shop deleted successfully',
+                    customClass: {
+                        confirmButton:
+                            'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                    },
+                })
+                navigate('/myshops')
             } catch (error) {
-                console.error(
-                    'Error deleting shop:',
-                    error.response?.data?.message || error.message
-                )
-                alert(
-                    'An error occurred while deleting the shop. Please try again.'
-                )
+                console.error('Error deleting shop:', error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while deleting the shop. Please try again.',
+                    customClass: {
+                        confirmButton:
+                            'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
+                    },
+                })
+            } finally {
+                setLoading(false)
             }
         }
     }
-
+    // Handle cancel action
+    const handleCancel = () => {
+        navigate(`/shop/${id}`)
+    }
     return (
-        <div className="flex min-h-screen w-screen bg-gray-100">
-            <div className="p-6 pt-16 pl-8 rounded-lg shadow-md">
+        <div className="flex min-h-screen  bg-gray-50">
+            <aside className="fixed top-0 pt-16 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
                 <Sidebar />
-            </div>
+            </aside>
 
-            <div className="flex-1 p-8 pt-16">
+            <div className="flex-1 top-0 ml-64 p-24 pt-16 overflow-y-auto">
                 {/* Shop Details Card */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Shop Details
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid  md:grid-cols-2 gap-6">
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-gray-700 text-left">
@@ -222,11 +339,6 @@ const ShopProfile = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                 />
-                                {errors.name && (
-                                    <p className="text-red-500 text-sm">
-                                        {errors.name}
-                                    </p>
-                                )}
                             </div>
                             <div>
                                 <label className="block text-gray-700 text-left">
@@ -277,6 +389,11 @@ const ShopProfile = () => {
                                     value={formData.contactNumber}
                                     onChange={handleChange}
                                 />
+                                {errors.contactNumber && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.contactNumber}
+                                    </p>
+                                )}
                             </div>
                             <div>
                                 <label className="block text-gray-700 text-left">
@@ -291,13 +408,21 @@ const ShopProfile = () => {
                             </div>
                         </div>
 
-                        {/* Shop Image Upload */}
-                        <div className="flex flex-col items-center mt-4">
-                            <img
-                                className="w-48 h-32 object-cover border rounded-md"
-                                src={shopImage || placeholderImage}
-                                alt="Shop"
-                            />
+                        {/* Image Upload */}
+                        <div className="flex flex-col items-center mt-12">
+                            <div className="w-40 h-40 border border-dashed border-gray-400 rounded-md overflow-hidden">
+                                {shopImage ? (
+                                    <img
+                                        className="w-full h-full object-cover"
+                                        src={shopImage}
+                                        alt="Product Preview"
+                                    />
+                                ) : (
+                                    <p className="text-gray-500 text-center mt-20">
+                                        No image selected
+                                    </p>
+                                )}
+                            </div>
                             <label className="mt-4 bg-white text-green-500 hover:text-green-600 font-semibold py-2 px-4 border border-green-500 rounded cursor-pointer">
                                 Choose Image
                                 <input
@@ -316,13 +441,20 @@ const ShopProfile = () => {
                         >
                             Save Changes
                         </button>
+                        <button
+                            type="button"
+                            onClick={handleCancel}
+                            className="bg-red-500 text-white py-2 px-8 rounded hover:bg-red-600"
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </form>
 
                 {/* Shop Address Card */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-8 pl-8 rounded-lg shadow-md w-full mb-12"
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Shop Address
@@ -398,7 +530,7 @@ const ShopProfile = () => {
                                 value={formData.address.city}
                                 onChange={(e) => {
                                     handleChange(e)
-                                    handleCityChange(e)
+                                    CityChange(e)
                                 }}
                             >
                                 <option value="">Select City</option>
@@ -417,11 +549,96 @@ const ShopProfile = () => {
                         >
                             Save Changes
                         </button>
+                        <button
+                            type="button"
+                            onClick={handleCancel}
+                            className="bg-red-500 text-white py-2 px-8 rounded hover:bg-red-600"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+                {/*Bank Details Card */}
+                <form
+                    onSubmit={handleSubmit}
+                    className="bg-white p-8 pl-8 rounded-lg shadow-md w-full mb-12"
+                >
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                        Bank Details
+                    </h3>
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-gray-700 text-left">
+                                    Account Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="account_name"
+                                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                    value={formData.account_name}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 text-left">
+                                    Account Number
+                                </label>
+                                <input
+                                    type="text"
+                                    name="account_number"
+                                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                    value={formData.account_number}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-gray-700 text-left">
+                                    Bank
+                                </label>
+                                <input
+                                    type="text"
+                                    name="bank"
+                                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                    value={formData.bank}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-gray-700 text-left">
+                                    Branch
+                                </label>
+                                <input
+                                    type="text"
+                                    name="branch"
+                                    className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                    value={formData.branch}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex space-x-4 mt-6">
+                        <button
+                            type="submit"
+                            className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                        >
+                            Save Changes
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleCancel}
+                            className="bg-red-500 text-white py-2 px-8 rounded hover:bg-red-600"
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </form>
 
                 {/* Delete Shop Card */}
-                <div className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3">
+                <div className="bg-white p-8 pl-8 rounded-lg shadow-md w-full">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Delete Shop
                     </h3>
