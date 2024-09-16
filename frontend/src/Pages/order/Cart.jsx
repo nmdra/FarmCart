@@ -34,6 +34,8 @@ const Cart = () => {
     }
     // console.log('cart', cart)
 
+    //special handling for kg test
+
     useEffect(() => {
         const calculateOriginalPrice = () => {
             const originalPrice = cart.reduce((acc, item) => {
