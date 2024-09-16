@@ -18,4 +18,5 @@ router.put('/update/:id', updateDriverById);
 // Route to delete a driver by ID
 router.delete('/delete/:id', deleteDriverById);
 
+
 export default router;
