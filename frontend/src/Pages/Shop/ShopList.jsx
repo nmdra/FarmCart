@@ -32,6 +32,7 @@ const ShopList = () => {
     fetchShops();
   }, []);
 
+  // Fetch bug fix
   // Filtering and Sorting Logic
   const filteredShops = shops
     .filter((shop) =>
