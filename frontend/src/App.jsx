@@ -42,6 +42,9 @@ import ShopProfile from './Pages/farmer/shopProfile'
 import Products from './Pages/farmer/products'
 import AddProduct from './Pages/farmer/addProduct'
 import UpdateProduct from './Pages/farmer/UpdateProduct'
+import ShopList from './Pages/Shop/ShopList'
+import ShopPage from './Pages/Shop/ShopPage'
+import ProductPage from './Pages/Shop/ProductPage'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -66,29 +69,40 @@ const router = createBrowserRouter(
                     <Route path="/orderStatus" element={<OrderStatus />} />
                     {/* <Route path="/address" element={<BillingAddress />} /> */}
                     <Route path="/membership" element={<MembershipUpgrade />} />
-                    <Route
+                    {/* <Route
                         path="/payment-confirmation"
                         element={<PaymentConfirmation />}
-                    />
+                    /> */}
                     <Route
                         path="/paymentComplete"
                         element={<PaymentComplete />}
                     />
                 </Route>
             </Route>
+
+            {/* Product Listing */}
+            <Route path="/shops" element={<ShopList />} />
+        <Route path="/shop/:id" element={<ShopPage />} />
+        <Route
+          path="/shop/:id/product/:productId"
+          element={<ProductPage />}
+        />
+
+
             {/* Shop & Farmer Routes */}
             <Route path="/farmerLogin" element={<FarmerLogin />} />
             <Route path="/farmerRegister" element={<FarmerRegister />} />
             <Route path="/farmerdashboard" element={<FarmerDashboard />} />
             <Route path="/farmerprofile" element={<ProfilePage />} />
             <Route path="/myshops" element={<MyShop />} />
-            <Route path="/shopcreate" element={<AddShop />} />
-            <Route path="/shop/:id" element={<Shop />} />
-            <Route path="/shop/profile" element={<ShopProfile />} />
-            <Route path="/shop/:id/productpage" element={<Products />} />
+            <Route path="/farmerShopcreate" element={<AddShop />} />
+            <Route path="/farmerShop/:id" element={<Shop />} />
+            <Route path="/farmerShop/profile" element={<ShopProfile />} />
+            <Route path="/farmerShop/:id/productpage" element={<Products />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/updateproduct" element={<UpdateProduct />} />
             <Route path="/farmerlogout" element={<FarmerLogout />} />
+
             <Route path="*" element={<NotFound />} />
         </Route>
     )
