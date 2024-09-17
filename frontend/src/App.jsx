@@ -37,6 +37,8 @@ import DLApproveDriver from './Pages/delivery/DLApproveDriver'; // Ensure the pa
 import DLDriverAccept from './Pages/delivery/DLDriverAccept';
 import DLImageUpload from './DLImageUpload';
 import DLSendEmail from './Pages/delivery/DLSendEmail'; // Import the DLSendEmail component
+import DLLogin from './Pages/delivery/DLLogin' // Added DLLogin import
+import DeliveryDashboard from './Pages/delivery/DLDriverDashboard';
 
 
 
@@ -52,6 +54,9 @@ const router = createBrowserRouter(
              <Route path="/manager/approve-driver" element={<DLApproveDriver />} />
              <Route path="/manager/approve-driver/:id" element={<DLDriverAccept />} />
              <Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />
+             <Route path="/driver/login" element={<DLLogin />} />  {/* Driver Login Route */}
+             <Route path="/driver/dashboard" element={<DeliveryDashboard />} />
+
 
 
 
