@@ -37,6 +37,11 @@ import DLApproveDriver from './Pages/delivery/DLApproveDriver'; // Ensure the pa
 import DLDriverAccept from './Pages/delivery/DLDriverAccept';
 import DLImageUpload from './DLImageUpload';
 import DLSendEmail from './Pages/delivery/DLSendEmail'; // Import the DLSendEmail component
+import DLLogin from './Pages/delivery/DLLogin' // Added DLLogin import
+import DeliveryDashboard from './Pages/delivery/DLDriverDashboard';
+import DLDriverProfile from './Pages/delivery/DLDriverProfile' // Import the driver profile component
+import DLEditProfile from './Pages/delivery/Dleditprofile';
+import DLDeleteConfirm from './Pages/delivery/DLdeleteconfirm';
 
 
 
@@ -53,6 +58,11 @@ const router = createBrowserRouter(
              <Route path="/manager/approve-driver/:id" element={<DLDriverAccept />} />
              <Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />
 
+             <Route path="/driver/login" element={<DLLogin />} />  {/* Driver Login Route */}
+             <Route path="/driver/dashboard" element={<DeliveryDashboard />} />
+             <Route path="/driver/profile" element={<DLDriverProfile />} /> {/* Add profile route */}
+             <Route path="/driver/profile/edit" element={<DLEditProfile />} />
+             <Route path="/driver/delete-confirmation" element={<DLDeleteConfirm />} />
 
 
 
