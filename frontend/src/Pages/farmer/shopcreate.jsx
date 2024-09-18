@@ -234,12 +234,12 @@ const CreateShopPage = () => {
     return (
         <div className="flex  min-h-screen bg-gray-50">
             {/* Sidebar */}
-            <aside className="fixed top-0 pt-32 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
+            <aside className="fixed top-0 pt-16 mt-16 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
                 <Sidebar />
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 top-0 ml-64 p-32 pt-32 overflow-y-auto">
+            <div className="flex-1 top-0 ml-64 p-32 pt-24 overflow-y-auto">
                 {/* Create Shop Form */}
                 <form
                     onSubmit={handleSubmit}
