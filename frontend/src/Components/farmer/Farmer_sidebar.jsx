@@ -10,7 +10,7 @@ import {
 
 const Sidebar = () => {
     return (
-        <div className="bg-white p-4 w-48 shadow-md rounded-lg">
+        <div className="bg-white mt-8 p-4 w-48 shadow-md rounded-lg">
             <nav>
                 <ul className="space-y-4">
                     <li>

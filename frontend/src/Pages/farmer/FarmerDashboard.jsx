@@ -45,12 +45,12 @@ const Dashboard = () => {
             {/* Main Content Container */}
             <div className="flex flex-1 mt-16">
                 {/* Fixed Sidebar */}
-                <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
+                <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
                     <Sidebar />
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 ml-64 p-24 pt-16 overflow-y-auto">
+                <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
                     <div className="mb-8">
                         {/* Profile and Details Section */}
                         <div className="flex space-x-8 mb-8">
