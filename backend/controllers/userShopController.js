@@ -2,16 +2,29 @@ import Shop from '../models/shopModel.js';
 import asyncHandler from '../middlewares/asyncHandler.js'
 import mongoose from 'mongoose';
 
-
 export const getShops = asyncHandler(async (req, res) => {
+    const page = parseInt(req.query.page) || 1; // Default to page 1
+    const limit = parseInt(req.query.limit) || 10; // Default to 10 shops per page
+    const skip = (page - 1) * limit; // Calculate the number of shops to skip
+
     try {
-        const shops = await Shop.find() // Fetch only the shops belonging to the logged-in farmer
-        res.json(shops)
+        const shops = await Shop.find()
+            .skip(skip) // Skip the first `skip` number of shops
+            .limit(limit); // Limit to `limit` number of shops
+
+        const totalShops = await Shop.countDocuments(); // Count total number of shops
+
+        res.json({
+            shops,
+            totalPages: Math.ceil(totalShops / limit), // Total pages
+            currentPage: page, // Current page number
+            totalShops, // Total shops count
+        });
     } catch (error) {
-        res.status(500)
-        throw new Error('Failed to fetch shops: ' + error.message)
+        res.status(500);
+        throw new Error('Failed to fetch shops: ' + error.message);
     }
-})
+});
 
 // Fetch shop details and its products
 export const getShopById = asyncHandler(async (req, res) => {
