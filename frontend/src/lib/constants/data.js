@@ -17,16 +17,20 @@ export const process = [
   },
   {
     id: "03",
+    title: "Making your own box",
+    desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a t",
+  },
+  {
+    id: "04",
     title: "Delivering",
     desc: "Your order is on the way! We ensure timely and careful delivery to make sure your products arrive in perfect condition.",
   },
   {
-    id: "04",
+    id: "05",
     title: "In Your Hands",
     desc: "Receive your order right at your doorstep. Unbox and enjoy your products, knowing they’ve been delivered with care.",
   },
 ];
-
 
 export const sampleShopData = [
   {

@@ -34,7 +34,11 @@ const Login = () => {
         <div className="flex min-h-screen w-screen items-center justify-center bg-gray-50">
             <div className="bg-white p-8 rounded-lg shadow-md w-sm min-w-md">
                 <div className="text-center mb-8">
-                    <img src={logo} alt="Logo" className="mx-auto w-24" />
+                    <img
+                        src="/"
+                        alt="Logo"
+                        className="mx-auto w-12 h-12"
+                    />
                     <h1 className="text-2xl font-semibold text-gray-800 mt-4">
                         Welcome back!
                     </h1>
