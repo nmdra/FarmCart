@@ -6,8 +6,13 @@ import {
     deleteDriverById,
     loginDriver,
     getDriverProfile,
-    updateAvailability,
-    logoutDriver,        // Add logout driver function
+    updateDriverAvailability,
+    logoutDriver, 
+    updateDriverProfile,
+    updateDriverPassword,
+    deleteDriverAccount,
+
+    // Add logout driver function
 } from '../controllers/DLDriverController.js';
 
 import { protectDriver } from '../middlewares/DLauthMiddleware.js';
@@ -27,13 +32,20 @@ router.put('/update/:id', updateDriverById);
 // Route to delete a driver by ID
 router.delete('/delete/:id', deleteDriverById);
 
-router.get('/profile', protectDriver, getDriverProfile);
+router.route('/profile')
+    .get(protectDriver, getDriverProfile) // GET profile
+    .put(protectDriver, updateDriverProfile) // PUT (update) profile
 
+    
 // Route to logout the driver
 router.post('/logout', logoutDriver);  // Add logout route
 
 // Route to toggle the driver's availability
-router.put('/availability', protectDriver, updateAvailability);  // Add toggle availability route
+router.put('/:id/availability', protectDriver, updateDriverAvailability);
+
+router.put('/profile/password', protectDriver, updateDriverPassword);
+
+router.delete('/delete', protectDriver, deleteDriverAccount);
 
 
 export default router;
