@@ -82,12 +82,11 @@ const router = createBrowserRouter(
 
             {/* Product Listing */}
             <Route path="/shops" element={<ShopList />} />
-        <Route path="/shop/:id" element={<ShopPage />} />
-        <Route
-          path="/shop/:id/product/:productId"
-          element={<ProductPage />}
-        />
-
+            <Route path="/shop/:id" element={<ShopPage />} />
+            <Route
+                path="/shop/:id/product/:productId"
+                element={<ProductPage />}
+            />
 
             {/* Shop & Farmer Routes */}
             <Route path="/farmerLogin" element={<FarmerLogin />} />

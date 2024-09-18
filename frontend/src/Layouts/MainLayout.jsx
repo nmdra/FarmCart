@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom'
-import CategoryBar from "../Components/Home/CategoryBar";
-import Footer from "../Components/Home/Footer";
-import Header from "../Components/Home/Header";
-import NewsBar from "../Components/Home/NewsBar";
+import CategoryBar from '../Components/Home/CategoryBar'
+import Footer from '../Components/Home/Footer'
+import Header from '../Components/Home/Header'
+import NewsBar from '../Components/Home/NewsBar'
 // import CTABar from "./Components/CTABar";
 // import Hero from "./Components/Hero";
 // import ProcessCTA from "./Components/ProcessCTA";
@@ -13,15 +13,15 @@ import NewsBar from "../Components/Home/NewsBar";
 function MainLayout() {
     return (
         <>
-      <div className="sticky top-0 bg-white shadow-md bg-opacity-70 backdrop-blur-md z-50">
-        {/* <NewsBar /> */}
-        <Header />
-        <CategoryBar />
-      </div>
+            <div className="sticky top-0 bg-white shadow-md bg-opacity-70 backdrop-blur-md z-50">
+                {/* <NewsBar /> */}
+                <Header />
+                <CategoryBar />
+            </div>
             <Outlet />
-                  <div>
-        <Footer />
-      </div>
+            <div>
+                <Footer />
+            </div>
         </>
     )
 }

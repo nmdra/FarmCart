@@ -10,7 +10,6 @@ const PaymentComplete = () => {
     }
 
     return (
-
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full text-center border-2 border-green-500">
                 <HiOutlineCheckCircle className="text-green-500 w-16 h-16 mx-auto mb-4" />
