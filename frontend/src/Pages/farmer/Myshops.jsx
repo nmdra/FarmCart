@@ -40,11 +40,11 @@ const MyShop = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Fixed Sidebar */}
-            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md p-8 pt-32">
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md p-8 pt-16 mt-16">
                 <Sidebar />
             </aside>
 
-            <div className="flex-1 p-8 pt-32 overflow-y-auto ml-64">
+            <div className="flex-1 p-8 pt-24 overflow-y-auto ml-64">
                 {/* Add New Shop Section */}
                 <div className="flex items-start space-x-4 mb-12">
                     {/* Add New Shop Card */}
@@ -60,7 +60,7 @@ const MyShop = () => {
                                     onClick={handleAddNewShop}
                                     className="bg-green-500 text-white hover:bg-green-600 font-semibold py-2 px-4 rounded w-40 text-center"
                                 >
-                                    Add New Shop
+                                    Create New Shop
                                 </button>
                             </div>
                         </div>

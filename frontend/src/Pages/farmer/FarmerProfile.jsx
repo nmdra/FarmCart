@@ -320,7 +320,7 @@ const ProfilePage = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Fixed Sidebar */}
-            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
                 <Sidebar />
             </aside>
 
@@ -377,6 +377,12 @@ const ProfilePage = () => {
                                     <input
                                         type="date"
                                         name="BirthDay"
+                                        max={
+                                            new Date()
+                                                .toISOString()
+                                                .split('T')[0]
+                                        } // Ensures only past dates can be selected
+                                        min="1930-01-01" // Ensures the earliest selectable date is 1930-01-01
                                         className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                         value={formData.BirthDay.substring(
                                             0,

@@ -313,7 +313,7 @@ const ShopProfile = () => {
     }
     return (
         <div className="flex min-h-screen  bg-gray-50">
-            <aside className="fixed top-0 pt-16 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
+            <aside className="fixed top-0 pt-16 mt-16 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
                 <Sidebar />
             </aside>
 

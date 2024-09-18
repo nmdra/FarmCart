@@ -177,7 +177,7 @@ const AddProduct = () => {
     return (
         <div className="flex min-h-screen bg-gray-50 ">
             {/* Sidebar */}
-            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-32">
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-24 mt-16">
                 <Sidebar />
             </aside>
 
