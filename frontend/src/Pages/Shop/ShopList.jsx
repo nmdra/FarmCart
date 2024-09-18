@@ -107,6 +107,17 @@ const ShopList = () => {
           <h2 className="text-xl font-bold">Special Promotion: 20% off on all products!</h2>
         </div> */}
 
+
+        {/* Test Button */}
+        <div className="mb-4">
+            <Link
+              to="/" // Adjust the route to where you want this button to navigate
+              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors duration-200"
+            >
+              Contact Shop Manager
+            </Link>
+          </div>
+
         {/* Search Bar */}
         <input
           type="text"
@@ -115,6 +126,8 @@ const ShopList = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="border p-2 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+
+       
 
 {/* Loading Message */}
           {loading ? (
@@ -152,6 +165,9 @@ const ShopList = () => {
       </div>
     </div>
   );
+
+
+
 };
 
 export default ShopList;
