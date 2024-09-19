@@ -72,7 +72,7 @@ const ShopList = () => {
         </div>
         
         <div className="mb-4">
-          <label className="block mb-2">Category:</label>
+          <label className="block mb-2">Categorys:</label>
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
@@ -82,6 +82,8 @@ const ShopList = () => {
             <option value="Vegetables">Vegetables</option>
             <option value="fruits">Fruits</option>
             <option value="Spices">Spices</option>
+            <option value="Spices">Meat</option>
+            <option value="Spices">Fish</option>
           </select>
         </div>
 
@@ -152,7 +154,7 @@ const ShopList = () => {
                       to={`/shop/${shop._id}`}
                       className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-200"
                     >
-                      View Shop
+                      Visit Shop
                     </Link>
                   </div>
                 ))
