@@ -41,7 +41,9 @@ import DLLogin from './Pages/delivery/DLLogin' // Added DLLogin import
 import DeliveryDashboard from './Pages/delivery/DLDriverDashboard';
 import DLDriverProfile from './Pages/delivery/DLDriverProfile' // Import the driver profile component
 import DLEditProfile from './Pages/delivery/Dleditprofile';
-import DLDeleteConfirm from './Pages/delivery/DLdeleteconfirm';
+import DLALLdrivers from './Pages/delivery/DLALLdrivers'; // Import the DLALLdrivers component
+import DLmanageDash from './Pages/delivery/DLmangeDash'; // Adjust the path if necessary
+import DLViewDriver from './Pages/delivery/DLViewDriver';  // Adjust the path according to your project structure
 
 
 
@@ -62,7 +64,9 @@ const router = createBrowserRouter(
              <Route path="/driver/dashboard" element={<DeliveryDashboard />} />
              <Route path="/driver/profile" element={<DLDriverProfile />} /> {/* Add profile route */}
              <Route path="/driver/profile/edit" element={<DLEditProfile />} />
-             <Route path="/driver/delete-confirmation" element={<DLDeleteConfirm />} />
+             <Route path="/alldrivers" element={<DLALLdrivers />} />
+             <Route path="/manager/dashboard" element={<DLmanageDash />} />
+             <Route path="/manager/view-driver/:id" element={<DLViewDriver />} />
 
 
 

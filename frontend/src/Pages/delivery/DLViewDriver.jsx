@@ -1,114 +1,69 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import DeliverySidebar from '../../Components/delivery/DeliverySidebar';
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from '../../../axios'; // Ensure correct path to axios
+import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar'; // Sidebar component
 
-const DLDriverProfile = () => {
-    const [driverDetails, setDriverDetails] = useState({
-        fullName: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        dateOfBirth: '',
-        address: '',
-        vehicleNumber: '',
-        vehicleType: '',
-        idCardNumber: '',
-        licenseCardNumber: '',
-        idCardImageUrl: '',
-        licenseImageUrl: '',
-        personalImageUrl: '',
-    });
-    const [loading, setLoading] = useState(true);
+const DLViewDriver = () => {
+    const { id } = useParams(); // Get the driver ID from the URL
+    const [driverDetails, setDriverDetails] = useState(null);
     const navigate = useNavigate();
 
-    // Fetch driver details on component mount
+    // Fetch driver details on component load
     useEffect(() => {
         const fetchDriverDetails = async () => {
-            const driverToken = localStorage.getItem('driverToken');
-            if (!driverToken) {
-                navigate('/driver/login'); // Redirect to login if token is missing
-                return;
-            }
-
             try {
-                const { data } = await axios.get('/api/drivers/profile', {
-                    headers: {
-                        Authorization: `Bearer ${driverToken}`,
-                    },
-                });
-
-                setDriverDetails({
-                    fullName: data.fullName,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    email: data.email,
-                    phone: data.phone,
-                    dateOfBirth: data.dateOfBirth.substring(0, 10), // Format date
-                    address: data.address,
-                    vehicleNumber: data.vehicleNumber,
-                    vehicleType: data.vehicleType,
-                    idCardNumber: data.idCardNumber,
-                    licenseCardNumber: data.licenseCardNumber,
-                    idCardImageUrl: data.idCardImageUrl,
-                    licenseImageUrl: data.licenseImageUrl,
-                    personalImageUrl: data.personalImageUrl,
-                });
-                setLoading(false); // Data has been loaded
+                const { data } = await axios.get(`/drivers/get/${id}`); // Fetch driver details by ID
+                setDriverDetails(data);
             } catch (error) {
-                console.error('Error fetching driver profile:', error);
-                localStorage.removeItem('driverToken'); // Remove token if invalid
-                navigate('/driver/login'); // Redirect to login on error
+                console.error('Error fetching driver details:', error);
+                // Handle error or navigate to an error page
             }
         };
 
         fetchDriverDetails();
-    }, [navigate]);
+    }, [id]);
 
-    const handleEditProfile = () => {
-        navigate('/driver/profile/edit'); // Navigate to the edit profile page
-    };
+    if (!driverDetails) {
+        return <div className="text-center mt-10">Loading...</div>;
+    }
 
+    // Construct the full URL for each image
     const baseUrl = 'http://localhost:3000/';
     const idCardImageUrl = `${baseUrl}${driverDetails.idCardImageUrl}`;
     const licenseImageUrl = `${baseUrl}${driverDetails.licenseImageUrl}`;
     const personalImageUrl = `${baseUrl}${driverDetails.personalImageUrl}`;
 
-    if (loading) return <div>Loading...</div>;
-
     return (
         <div className="flex min-h-screen bg-gray-50">
-            {/* Fixed Sidebar */}
+            {/* Sidebar */}
             <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
-                <DeliverySidebar driver={driverDetails} />
+                <DLmanageSidebar />
             </aside>
 
             {/* Main content */}
-            <div className="flex-1 ml-64 p-16 overflow-y-auto">
+            <main className="flex-1 ml-64 p-16 overflow-y-auto">
                 <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-md">
-                    <h2 className="text-3xl font-bold mb-6 text-center">Driver Profile</h2>
-
+                    <h2 className="text-3xl font-bold mb-6 text-center">Driver Details</h2>
+                    
                     {/* Profile Image and Details */}
                     <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
                         <div className="flex flex-col items-center mb-8">
                             <img
                                 src={personalImageUrl}
                                 alt="Profile"
-                                className="h-32 w-32 rounded-full object-cover mb-4"
+                                className="h-32 w-32 rounded-full object-cover mb-4 shadow-md"
                             />
-                            <h3 className="text-lg font-semibold mb-1">{driverDetails.fullName}</h3>
+                            <h3 className="text-xl font-bold mb-1">{driverDetails.fullName}</h3>
                             <p className="text-gray-600">{driverDetails.email}</p>
                             <p className="text-gray-600">{driverDetails.phone}</p>
                             <p className="text-gray-600">{driverDetails.vehicleType}</p>
                         </div>
 
                         {/* Driver Details Table */}
-                        <div className="mt-8">
+                        <div className="overflow-x-auto">
                             <table className="min-w-full bg-white border border-gray-200">
                                 <tbody>
-                                    <tr>
+                                    <tr className="bg-gray-50">
                                         <th className="px-4 py-2 text-left border">Full Name</th>
                                         <td className="px-4 py-2 border">{driverDetails.fullName}</td>
                                     </tr>
@@ -150,30 +105,30 @@ const DLDriverProfile = () => {
 
                         {/* Uploaded Images */}
                         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h4 className="text-center mb-2">ID Card Image</h4>
-                                <img src={idCardImageUrl} alt="ID Card" className="w-full h-64 object-cover border rounded-md" />
-                            </div>
-                            <div>
-                                <h4 className="text-center mb-2">License Image</h4>
-                                <img src={licenseImageUrl} alt="License" className="w-full h-64 object-cover border rounded-md" />
-                            </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="mt-6 flex justify-between">
-                            <button
-                                onClick={handleEditProfile}
-                                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                            >
-                                Edit Profile
-                            </button>
-                        </div>
+    <div className="shadow-md">
+        <h4 className="text-center mb-2 font-semibold">ID Card Image</h4>
+        <img
+            src={idCardImageUrl}
+            alt="ID Card"
+            className="w-full h-auto max-h-64 object-contain border rounded-md shadow-md cursor-pointer"
+            onClick={() => window.open(idCardImageUrl, '_blank')} // Opens image in new tab on click
+        />
+    </div>
+    <div className="shadow-md">
+        <h4 className="text-center mb-2 font-semibold">License Image</h4>
+        <img
+            src={licenseImageUrl}
+            alt="License"
+            className="w-full h-auto max-h-64 object-contain border rounded-md shadow-md cursor-pointer"
+            onClick={() => window.open(licenseImageUrl, '_blank')} // Opens image in new tab on click
+        />
+    </div>
+</div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 };
 
-export default DLDriverProfile;
+export default DLViewDriver;

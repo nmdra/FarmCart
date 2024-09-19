@@ -62,36 +62,52 @@ const DLDriverDashboard = () => {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div className="flex">
-            <DeliverySidebar driver={driver} handleLogout={handleLogout} /> {/* Pass handleLogout to sidebar */}
-            
-            <div className="p-6 w-full">
-            <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold">Welcome, {driver.fullName}</h1>
-                <div className="flex space-x-2">
-                    <button
-                        onClick={toggleAvailability}
-                        className={`px-4 py-2 text-white rounded ${
-                            isAvailable ? 'bg-green-500' : 'bg-red-500'
-                        }`}
-                    >
-                        {isAvailable ? 'Available' : 'Unavailable'}
-                    </button>
-                    <button
-                        onClick={handleLogout}
-                        className="px-4 py-2 bg-red-500 text-white rounded"
-                    >
-                        Logout
-                    </button>
+        <div className="flex min-h-screen bg-gray-50">
+            {/* Sidebar */}
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
+                <DeliverySidebar driver={driver} handleLogout={handleLogout} />
+            </aside>
+
+            {/* Main content */}
+            <main className="flex-1 ml-64 p-16 overflow-y-auto">
+                <div className="max-w-5xl mx-auto p-6 bg-white shadow-md rounded-md">
+                    <h1 className="text-3xl font-bold mb-6 text-center">Welcome, {driver.fullName}</h1>
+                    
+                    {/* Profile Info */}
+                    <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
+                        <div className="flex justify-between items-center mb-8">
+                            <div>
+                                <p className="text-gray-600">Email: {driver.email}</p>
+                                <p className="text-gray-600">Vehicle: {driver.vehicleType}</p>
+                                <p className="text-gray-600">Phone: {driver.phone}</p>
+                            </div>
+                            <div className="flex space-x-2">
+                                <button
+                                    onClick={toggleAvailability}
+                                    className={`px-4 py-2 text-white rounded-md ${
+                                        isAvailable ? 'bg-green-500' : 'bg-red-500'
+                                    }`}
+                                >
+                                    {isAvailable ? 'Available' : 'Unavailable'}
+                                </button>
+                                <button
+                                    onClick={handleLogout}
+                                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Availability Info */}
+                        <p className="text-gray-700 font-semibold">
+                            Availability: {isAvailable ? 'Available' : 'Not Available'}
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <p>Email: {driver.email}</p>
-            <p>Vehicle: {driver.vehicleType}</p>
-            <p>Phone: {driver.phone}</p>
-            <p>Availability: {isAvailable ? 'Available' : 'Not Available'}</p>
+            </main>
         </div>
-    </div>
-);
+    );
 };
 
 export default DLDriverDashboard;

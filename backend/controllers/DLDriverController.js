@@ -101,6 +101,20 @@ const deleteDriverById = asyncHandler(async (req, res) => {
 });
 
 
+
+// getting all the drivers 
+
+const getAllDrivers = asyncHandler(async (req, res) => {
+    const drivers = await DLDriver.find({}); // Find all drivers
+    res.json(drivers);
+});
+
+
+
+
+
+
+
 // Driver Login
 // Driver Login
 const loginDriver = asyncHandler(async (req, res) => {
@@ -270,4 +284,5 @@ export { addDriver,
       loginDriver, 
       getDriverProfile,
        logoutDriver ,
-       updateDriverProfile};
+       updateDriverProfile,
+       getAllDrivers};

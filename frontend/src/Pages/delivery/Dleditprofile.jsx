@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import DeliverySidebar from '../../Components/delivery/DeliverySidebar';
+import Swal from 'sweetalert2';
 
 const DLEditProfile = () => {
     const [currentPassword, setCurrentPassword] = useState('');
@@ -43,9 +44,23 @@ const DLEditProfile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Confirm before submitting
-        const confirmChange = window.confirm('Are you sure you want to change your password?');
-        if (!confirmChange) return;
+        const confirmChange = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Are you sure you want to change your password?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, change it!',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                confirmButton:
+                    'bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600',
+                cancelButton:
+                    'bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-gray-600',
+            },
+            buttonsStyling: false,
+        });
+
+        if (!confirmChange.isConfirmed) return;
 
         const driverToken = localStorage.getItem('driverToken');
         try {
@@ -58,7 +73,15 @@ const DLEditProfile = () => {
                     },
                 }
             );
-            alert('Password updated successfully');
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Password updated successfully',
+                customClass: {
+                    confirmButton:
+                        'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                },
+            });
             navigate('/driver/profile');
         } catch (error) {
             setMessage(error.response.data.message || 'Error updating password');
@@ -67,9 +90,23 @@ const DLEditProfile = () => {
 
     // Handle account deletion
     const handleDeleteAccount = async () => {
-        const confirmDelete = window.confirm('Are you sure you want to delete your account? This action cannot be undone.');
+        const confirmDelete = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete your account? This process cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                confirmButton:
+                    'bg-red-500 text-white font-bold py-2 px-8 rounded hover:bg-red-600 mr-8',
+                cancelButton:
+                    'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+            },
+            buttonsStyling: false,
+        });
 
-        if (confirmDelete) {
+        if (confirmDelete.isConfirmed) {
             const driverToken = localStorage.getItem('driverToken');
             try {
                 await axios.delete('/api/drivers/delete', {
@@ -77,7 +114,15 @@ const DLEditProfile = () => {
                         Authorization: `Bearer ${driverToken}`,
                     },
                 });
-                alert('Account deleted successfully.');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Account deleted successfully',
+                    customClass: {
+                        confirmButton:
+                            'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                    },
+                });
                 localStorage.removeItem('driverToken');
                 navigate('/');
             } catch (error) {
@@ -90,54 +135,65 @@ const DLEditProfile = () => {
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            <DeliverySidebar driver={driver} />
-            <div className="flex-grow p-6">
-                <h2 className="text-3xl font-bold mb-6">Edit Profile</h2>
-                {message && <p className="text-red-500 mb-4">{message}</p>}
+            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
+                <DeliverySidebar driver={driver} />
+            </aside>
+            <div className="flex-grow ml-64 p-24">
+                <div className="bg-white p-6 rounded-md shadow-md w-full mb-12">
+                    <h2 className="text-2xl font-semibold text-center mb-6">Edit Profile</h2>
+                    {message && <p className="text-red-500 mb-4">{message}</p>}
 
-                <form onSubmit={handleSubmit} className="bg-white p-6 rounded-md shadow-md">
-                    <div className="mb-4">
-                        <label className="block mb-2 font-semibold">Current Password</label>
-                        <input
-                            type="password"
-                            className="w-full p-2 border border-gray-300 rounded"
-                            value={currentPassword}
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-4">
+                            <label className="block mb-2 text-gray-700 text-left font-semibold">Current Password</label>
+                            <input
+                                type="password"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    <div className="mb-4">
-                        <label className="block mb-2 font-semibold">New Password</label>
-                        <input
-                            type="password"
-                            className="w-full p-2 border border-gray-300 rounded"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+                        <div className="mb-4">
+                            <label className="block mb-2 text-gray-700 text-left font-semibold">New Password</label>
+                            <input
+                                type="password"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    <div className="mb-4">
-                        <label className="block mb-2 font-semibold">Confirm New Password</label>
-                        <input
-                            type="password"
-                            className="w-full p-2 border border-gray-300 rounded"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                    </div>
+                        <div className="mb-4">
+                            <label className="block mb-2 text-gray-700 text-left font-semibold">Confirm New Password</label>
+                            <input
+                                type="password"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    <button
-                        type="submit"
-                        className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                        Change Password
-                    </button>
-                </form>
+                        <button
+                            type="submit"
+                            className="w-full py-2 mt-6 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+                        >
+                            Change Password
+                        </button>
+                    </form>
+                </div>
 
-                <div className="mt-6">
+                <div className="mt-6 bg-white p-6 rounded-md shadow-md w-full">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                        Delete Account
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                        Deleting your account is a permanent action and cannot
+                        be undone. Please be sure before proceeding.
+                    </p>
                     <button
                         onClick={handleDeleteAccount}
                         className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
@@ -145,7 +201,6 @@ const DLEditProfile = () => {
                         Delete My Account
                     </button>
                 </div>
-                
             </div>
         </div>
     );
