@@ -108,16 +108,6 @@ const ShopList = () => {
         </div> */}
 
 
-        {/* Test Button */}
-        <div className="mb-4">
-            <Link
-              to="/" // Adjust the route to where you want this button to navigate
-              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors duration-200"
-            >
-              Contact Shop Manager
-            </Link>
-          </div>
-
         {/* Search Bar */}
         <input
           type="text"
