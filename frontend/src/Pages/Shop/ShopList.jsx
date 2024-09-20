@@ -32,7 +32,6 @@ const ShopList = () => {
     fetchShops();
   }, []);
 
-  // Fetch bug fix
   // Filtering and Sorting Logic
   const filteredShops = shops
     .filter((shop) =>
@@ -107,7 +106,6 @@ const ShopList = () => {
           <h2 className="text-xl font-bold">Special Promotion: 20% off on all products!</h2>
         </div> */}
 
-
         {/* Search Bar */}
         <input
           type="text"
@@ -116,8 +114,6 @@ const ShopList = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="border p-2 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-
-       
 
 {/* Loading Message */}
           {loading ? (
@@ -155,9 +151,6 @@ const ShopList = () => {
       </div>
     </div>
   );
-
-
-
 };
 
 export default ShopList;

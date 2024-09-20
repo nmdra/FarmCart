@@ -15,3 +15,15 @@ export const validCoupon = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+
+export const createCoupon = async (req, res) => {
+    try {
+        const { couponCode, discount, expiryDate } = req.body
+
+        const coupon = await Coupon.create({ couponCode, discount, expiryDate })
+
+        res.status(201).json({ coupon })
+    } catch (error) {
+        res.status(409).json({ message: error.message })
+    }
+}

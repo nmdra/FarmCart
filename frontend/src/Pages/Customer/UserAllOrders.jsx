@@ -1,6 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import OrderTable from '../../Components/OrderTable'
-import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import {
+    Pagination,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+} from '@nextui-org/react'
 
 function UserAllOrders() {
     const [page, setPage] = useState(1)
@@ -132,14 +140,26 @@ function UserAllOrders() {
                                         <span
                                             className={
                                                 item.orderStatus === 'Pending'
-                                                    ? 'text-yellow-500 p-1 rounded-md font-bold ring-0'
+                                                    ? 'bg-yellow-500 p-1 rounded-md text-white ring-0'
                                                     : item.orderStatus ===
                                                         'Delivered'
-                                                      ? 'text-green-500 p-1 rounded-md font-bold ring-0'
+                                                      ? 'bg-green-500 p-1 rounded-md text-white ring-0'
                                                       : item.orderStatus ===
                                                           'Accept'
-                                                        ? 'text-blue-500 p-1 rounded-md font-bold ring-0'
-                                                        : 'text-red-500 p-1 rounded-md font-bold ring-0'
+                                                        ? 'bg-blue-500 p-1 rounded-md text-white ring-0'
+                                                        : item.orderStatus ===
+                                                            'Ready'
+                                                          ? 'bg-purple-500 p-1 rounded-md text-white ring-0'
+                                                          : item.orderStatus ===
+                                                              'Pickup'
+                                                            ? 'bg-orange-500 p-1 rounded-md text-white ring-0'
+                                                            : item.orderStatus ===
+                                                                'OnTheWay'
+                                                              ? 'bg-indigo-500 p-1 rounded-md text-white ring-0'
+                                                              : item.orderStatus ===
+                                                                  'Rejected'
+                                                                ? 'bg-red-500 p-1 rounded-md text-white ring-0'
+                                                                : 'bg-gray-500 p-1 rounded-md text-white ring-0'
                                             }
                                         >
                                             {item.orderStatus}

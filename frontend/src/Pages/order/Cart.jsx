@@ -2,7 +2,6 @@ import { useDisclosure } from '@nextui-org/react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 // import CheckOutModal from './CheckOutModal'
-// test
 // import { useGlobalRefetch } from '../Context/GlobalRefetch'
 import axios from 'axios'
 import toast from 'react-hot-toast'
@@ -14,6 +13,7 @@ const Cart = () => {
     const [originalPrice, setOriginalPrice] = useState(0)
     // const { globalRefetch, setGlobalRefetch } = useGlobalReefetch()
     const [couponDiscount, setCouponDiscount] = useState(0)
+    const [disabledCouponButton, setDisabledCouponButton] = useState(false)
 
     useEffect(() => {
         const getCart = async () => {
@@ -33,8 +33,6 @@ const Cart = () => {
         // setGlobalRefetch(!globalRefetch);
     }
     // console.log('cart', cart)
-
-    //special handling for kg test
 
     useEffect(() => {
         const calculateOriginalPrice = () => {
@@ -79,6 +77,7 @@ const Cart = () => {
                         JSON.stringify((total * couponDiscount) / 100)
                     )
                     toast.success('Coupon Applied Successfully')
+                    setDisabledCouponButton(true)
                 }
             }
         } catch (error) {
@@ -313,9 +312,13 @@ const Cart = () => {
                                     </div>
                                     <button
                                         type="submit"
-                                        disabled={cart.length === 0}
+                                        disabled={
+                                            cart.length === 0 ||
+                                            disabledCouponButton
+                                        }
                                         className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium ${
-                                            cart.length === 0
+                                            cart.length === 0 ||
+                                            disabledCouponButton
                                                 ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
                                                 : 'bg-primary-700 text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
                                         }`}

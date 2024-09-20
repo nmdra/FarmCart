@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { type } from 'os'
 
 const orderSchema = new mongoose.Schema({
     farmer: {
@@ -38,6 +39,18 @@ const orderSchema = new mongoose.Schema({
     },
     deliveryDate: {
         type: Date,
+    },
+    deliveredAt: {
+        type: Date,
+        default: null,
+    },
+    deliverId: {
+        type: String,
+        default: null,
+    },
+    deliverName: {
+        type: String,
+        default: null,
     },
 })
 

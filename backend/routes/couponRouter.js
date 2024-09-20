@@ -1,8 +1,9 @@
 import express from 'express'
-import { validCoupon } from '../controllers/couponController.js'
+import { createCoupon, validCoupon } from '../controllers/couponController.js'
 
 const couponRouter = express.Router()
 
 couponRouter.post('/valid-coupon', validCoupon)
+couponRouter.post('/create', createCoupon)
 
 export default couponRouter

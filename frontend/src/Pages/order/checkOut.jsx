@@ -57,96 +57,103 @@ const CheckOut = () => {
         setTotal(originalPrice - couponDiscount)
     }, [originalPrice, couponDiscount])
 
-    const onSubmit = async () => {
-        const nameError = validateName(name)
-        const emailError = validateEmail(email)
-        const cityError = validateCity(city)
-        const phoneError = validatePhone(phone)
-        const addressError = validateAddress(address)
+ const onSubmit = async () => {
+     const nameError = validateName(name)
+     const emailError = validateEmail(email)
+     const cityError = validateCity(city)
+     const phoneError = validatePhone(phone)
+     const addressError = validateAddress(address)
 
-        setErrors({
-            name: nameError,
-            email: emailError,
-            city: cityError,
-            phone: phoneError,
-            address: addressError,
-        })
+     setErrors({
+         name: nameError,
+         email: emailError,
+         city: cityError,
+         phone: phoneError,
+         address: addressError,
+     })
 
-        if (
-            nameError ||
-            emailError ||
-            cityError ||
-            phoneError ||
-            addressError
-        ) {
-            toast.error('Please correct the errors before proceeding.')
-            return
-        }
+     if (nameError || emailError || cityError || phoneError || addressError) {
+         toast.error('Please correct the errors before proceeding.')
+         return
+     }
 
-        if (!stripe || !elements) {
-            toast.error('Stripe.js has not loaded yet.')
-            return
-        }
+     if (!stripe || !elements) {
+         toast.error('Stripe.js has not loaded yet.')
+         return
+     }
 
-        const data = {
-            farmer: {
-                shopId: cart[0].shopId,
-            },
-            user: user,
-            orderItems: cart,
-            shippingAddress: {
-                name,
-                email,
-                city,
-                phone,
-                address,
-            },
-            totalPrice: total,
-            deliveryDateObj: date,
-        }
+     const groupedOrders = cart.reduce((acc, item) => {
+         if (!acc[item.shopId]) {
+             acc[item.shopId] = []
+         }
+         acc[item.shopId].push(item)
+         return acc
+     }, {})
 
-        console.log(data)
+     try {
+         for (const [shopId, orderItems] of Object.entries(groupedOrders)) {
+             const data = {
+                 farmer: { shopId },
+                 user: user,
+                 orderItems: orderItems,
+                 shippingAddress: {
+                     name,
+                     email,
+                     city,
+                     phone,
+                     address,
+                 },
+                 totalPrice: orderItems.reduce(
+                     (acc, item) => acc + item.price * item.quantity,
+                     0
+                 ),
+                 deliveryDateObj: date,
+             }
 
-        try {
-            const response = await axios.post(
-                'http://localhost:5000/api/orders/create-payment-intent',
-                {
-                    totalPrice: (data.totalPrice / 300).toFixed(2),
-                    user: data.user,
-                }
-            )
+             const response = await axios.post(
+                 'http://localhost:5000/api/orders/create-payment-intent',
+                 {
+                     totalPrice: (data.totalPrice / 300).toFixed(2),
+                     user: data.user,
+                 }
+             )
 
-            const clientSecret = response.data.clientSecret
+             const clientSecret = response.data.clientSecret
 
-            const paymentResult = await stripe.confirmCardPayment(
-                clientSecret,
-                {
-                    payment_method: {
-                        type: 'card',
-                        card: elements.getElement(CardNumberElement),
-                        billing_details: {
-                            name: data.shippingAddress.name,
-                            email: data.shippingAddress.email,
-                        },
-                    },
-                }
-            )
-            console.log(paymentResult)
-            if (paymentResult.error) {
-                toast.error(paymentResult.error.message)
-            } else if (paymentResult.paymentIntent.status === 'succeeded') {
-                await axios.post('http://localhost:5000/api/orders', data)
-                toast.success('Payment successful, order placed!')
-                localStorage.removeItem('cart')
-                localStorage.removeItem('coupon')
-                navigate('/orderhistory')
-            }
-        } catch (error) {
-            toast.error('Failed to place order')
-            console.error(error)
-        }
-    }
+             const paymentResult = await stripe.confirmCardPayment(
+                 clientSecret,
+                 {
+                     payment_method: {
+                         type: 'card',
+                         card: elements.getElement(CardNumberElement),
+                         billing_details: {
+                             name: data.shippingAddress.name,
+                             email: data.shippingAddress.email,
+                         },
+                     },
+                 }
+             )
 
+             if (paymentResult.error) {
+                 toast.error(paymentResult.error.message)
+                 return
+             } else if (paymentResult.paymentIntent.status === 'succeeded') {
+                 await axios.post('http://localhost:5000/api/orders', data)
+                 toast.success(
+                     `Payment successful for farmer ${shopId}, order placed!`
+                 )
+             }
+         }
+
+         localStorage.removeItem('cart')
+         localStorage.removeItem('coupon')
+         navigate('/orderhistory')
+     } catch (error) {
+         toast.error('Failed to place order')
+         console.error(error)
+     }
+ }
+   
     useEffect(() => {
         const getCart = async () => {
             const cart = JSON.parse(localStorage.getItem('cart')) || []
