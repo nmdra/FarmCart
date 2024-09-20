@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 const DLDriverSchema = mongoose.Schema(
     {
+        driverID: {
+            type: String,
+            required: true,
+            unique: true, // Ensure the driverID is unique
+        },
         firstName: {
             type: String,
             required: true,
@@ -68,13 +73,16 @@ const DLDriverSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+
+        xxxName: {
+            type: String,
+            default: null,
+        },
     },
     {
         timestamps: true,
     }
 );
-
-
 
 const DLDriver = mongoose.model('DLDriver', DLDriverSchema);
 

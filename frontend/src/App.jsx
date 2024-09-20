@@ -44,7 +44,10 @@ import DLEditProfile from './Pages/delivery/Dleditprofile';
 import DLALLdrivers from './Pages/delivery/DLALLdrivers'; // Import the DLALLdrivers component
 import DLmanageDash from './Pages/delivery/DLmangeDash'; // Adjust the path if necessary
 import DLViewDriver from './Pages/delivery/DLViewDriver';  // Adjust the path according to your project structure
-
+import DLlogout from './Pages/delivery/DLlogout'; // Import the DLlogout component
+import DLeditdriver from './Pages/delivery/DLeditdriver'; // Import the new DLeditdriver page
+import OrderForm from './Pages/delivery/DLoooo'; // Assuming OrderForm component is in 'components' folder
+import OrderTable from './Pages/delivery/DLOtable'; // Assuming you store it in the components folder
 
 
 
@@ -67,6 +70,10 @@ const router = createBrowserRouter(
              <Route path="/alldrivers" element={<DLALLdrivers />} />
              <Route path="/manager/dashboard" element={<DLmanageDash />} />
              <Route path="/manager/view-driver/:id" element={<DLViewDriver />} />
+             <Route path="/driver/logout" element={<DLlogout />} />
+             <Route path="/driver/edit/:id" element={<DLeditdriver />} />
+             <Route path="/a" element={<OrderForm />} />
+             <Route path="/b" element={<OrderTable />} />
 
 
 

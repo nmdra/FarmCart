@@ -6,13 +6,39 @@ import { generateToken } from '../utils/dlgenerateToken.js';
 
 
 
+// Function to generate a unique driverID starting with "D" and followed by a 6-digit number
+const generateDriverID = async () => {
+    let isUnique = false;
+    let driverID;
+
+    while (!isUnique) {
+        // Generate a random 6-digit number
+        const randomID = Math.floor(100000 + Math.random() * 900000); // Ensures a 6-digit number
+        driverID = `D${randomID}`; // Prefix the number with "D"
+
+        // Check if the generated driverID already exists in the database
+        const existingDriver = await DLDriver.findOne({ driverID });
+
+        // If no existing driver is found, the driverID is unique
+        if (!existingDriver) {
+            isUnique = true;
+        }
+    }
+
+    return driverID;
+};
+
 const addDriver = asyncHandler(async (req, res) => {
     const deliveryForm = await DLDeliveryForm.findById(req.params.id);
 
     if (deliveryForm) {
         const hashedPassword = await bcrypt.hash(deliveryForm.idCardNumber, 10);
 
+        // Generate the unique driverID
+        const driverID = await generateDriverID();
+
         const driver = new DLDriver({
+            driverID, // Add the unique driverID
             firstName: deliveryForm.firstName,
             lastName: deliveryForm.lastName,
             fullName: deliveryForm.fullName,
@@ -32,7 +58,7 @@ const addDriver = asyncHandler(async (req, res) => {
 
         await driver.save();
 
-        res.status(201).json({ message: 'Driver approved and added to the system' });
+        res.status(201).json({ message: 'Driver approved and added to the system', driverID });
     } else {
         res.status(404).json({ message: 'Delivery form not found' });
     }
@@ -147,6 +173,7 @@ const getDriverProfile = asyncHandler(async (req, res) => {
     if (driver) {
         res.json({
             _id: driver._id,
+            driverID: driver.driverID,
             firstName: driver.firstName,
             lastName: driver.lastName,
             fullName: driver.fullName,  // Ensure fullName is returned
@@ -202,6 +229,7 @@ const updateDriverProfile = asyncHandler(async (req, res) => {
 
         res.json({
             _id: updatedDriver._id,
+            driverID: updatedDriver.driverID,
             firstName: updatedDriver.firstName,
             lastName: updatedDriver.lastName,
             email: updatedDriver.email,
@@ -274,6 +302,28 @@ const deleteDriverAccount = asyncHandler(async (req, res) => {
     }
 });
 
+//verify the password
+const verifyPassword = async (req, res) => {
+    try {
+        const driver = await DLDriver.findById(req.driver._id); // Assuming driver is authenticated
+
+        if (!driver) {
+            res.status(404).json({ message: 'Driver not found' });
+            return;
+        }
+
+        const isMatch = await bcrypt.compare(req.body.password, driver.password); // Compare the password
+
+        if (isMatch) {
+            res.json({ isValid: true }); // Password is valid
+        } else {
+            res.status(400).json({ message: 'Invalid password' }); // Password does not match
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 export { addDriver,
     deleteDriverAccount,
     updateDriverPassword,
@@ -285,4 +335,5 @@ export { addDriver,
       getDriverProfile,
        logoutDriver ,
        updateDriverProfile,
+       verifyPassword,
        getAllDrivers};

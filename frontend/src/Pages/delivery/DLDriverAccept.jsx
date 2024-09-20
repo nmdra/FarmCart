@@ -7,7 +7,16 @@ import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar'; // Impo
 const DLDriverAccept = () => {
     const { id } = useParams(); // Get the form ID from the URL
     const [driverDetails, setDriverDetails] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
     const navigate = useNavigate();
+
+    const handleImageClick = (imageUrl) => {
+        setSelectedImage(imageUrl) // Open the modal with the selected image
+    }
+
+    const handleCloseModal = () => {
+        setSelectedImage(null) // Close the modal
+    }
 
     useEffect(() => {
         const fetchDriverDetails = async () => {
@@ -107,84 +116,130 @@ const DLDriverAccept = () => {
                     <h2 className="text-3xl font-bold mb-8 text-center">Review Driver</h2>
 
                     <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
-                        {/* Profile Image */}
-                        <div className="flex flex-col items-center mb-8">
-                            <img
-                                src={personalImageUrl}
-                                alt="Profile"
-                                className="h-32 w-32 rounded-full object-cover mb-4 shadow-md"
-                            />
-                            <h3 className="text-xl font-bold mb-1">{driverDetails.fullName}</h3>
-                            <p className="text-gray-600">{driverDetails.email}</p>
-                            <p className="text-gray-600">{driverDetails.phone}</p>
-                            <p className="text-gray-600">{driverDetails.vehicleType}</p>
-                        </div>
-
-                        {/* Driver Details Table */}
-                        <div className="mt-8">
-                            <table className="min-w-full bg-white border border-gray-200">
-                                <tbody>
-                                    <tr className="bg-gray-50">
-                                        <th className="px-4 py-2 text-left border">Full Name</th>
-                                        <td className="px-4 py-2 border">{driverDetails.fullName}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="px-4 py-2 text-left border">Email</th>
-                                        <td className="px-4 py-2 border">{driverDetails.email}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="px-4 py-2 text-left border">Phone</th>
-                                        <td className="px-4 py-2 border">{driverDetails.phone}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="px-4 py-2 text-left border">Date of Birth</th>
-                                        <td className="px-4 py-2 border">{new Date(driverDetails.dateOfBirth).toLocaleDateString()}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="px-4 py-2 text-left border">ID Card Number</th>
-                                        <td className="px-4 py-2 border">{driverDetails.idCardNumber}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="px-4 py-2 text-left border">License Card Number</th>
-                                        <td className="px-4 py-2 border">{driverDetails.licenseCardNumber}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="px-4 py-2 text-left border">Address</th>
-                                        <td className="px-4 py-2 border">{driverDetails.address}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="px-4 py-2 text-left border">Vehicle Number</th>
-                                        <td className="px-4 py-2 border">{driverDetails.vehicleNumber}</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="px-4 py-2 text-left border">Vehicle Type</th>
-                                        <td className="px-4 py-2 border">{driverDetails.vehicleType}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {/* Uploaded Images */}
-                        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div className="shadow-md">
-        <h4 className="text-center mb-2 font-semibold">ID Card Image</h4>
+                        {/* Profile Image and Details */}
+<div className="bg-gray-100 p-6 rounded-lg shadow-lg">
+<div className="flex flex-col items-center mb-8 cursor-pointer" onClick={() => handleImageClick(personalImageUrl)}>
         <img
-            src={idCardImageUrl}
-            alt="ID Card"
-            className="w-full h-auto max-h-64 object-contain border rounded-md shadow-md cursor-pointer"
-            onClick={() => window.open(idCardImageUrl, '_blank')} // Opens image in new tab on click
+            src={personalImageUrl}
+            alt="Driver Profile"
+            className="h-40 w-40 rounded-full object-cover shadow-lg mb-4"
         />
+        <h3 className="text-2xl font-bold mb-1">{driverDetails.firstName} {driverDetails.lastName}</h3>
+        <p className="text-gray-600">{driverDetails.email}</p>
+        <p className="text-gray-600">{driverDetails.phone}</p>
+        <p className="text-gray-600">{driverDetails.vehicleType}</p>
+        <p className="text-gray-600">{driverDetails.driverID}</p>
+
     </div>
-    <div className="shadow-md">
-        <h4 className="text-center mb-2 font-semibold">License Image</h4>
-        <img
-            src={licenseImageUrl}
-            alt="License"
-            className="w-full h-auto max-h-64 object-contain border rounded-md shadow-md cursor-pointer"
-            onClick={() => window.open(licenseImageUrl, '_blank')} // Opens image in new tab on click
-        />
+
+    {/* Professional Two-Column Layout */}
+    <div className="bg-white p-6 rounded-lg shadow-md space-y-6">
+        <h2 className="text-2xl font-bold text-center mb-8">Driver Information</h2>
+
+        {/* Full Name */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">Full Name:</div>
+            <div className="text-gray-600">{driverDetails.fullName}</div>
+        </div>
+
+        {/* Email */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">Email:</div>
+            <div className="text-gray-600">{driverDetails.email}</div>
+        </div>
+
+        {/* Phone */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">Phone:</div>
+            <div className="text-gray-600">{driverDetails.phone}</div>
+        </div>
+
+        {/* Date of Birth */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">Date of Birth:</div>
+            <div className="text-gray-600">{new Date(driverDetails.dateOfBirth).toLocaleDateString()}</div>
+        </div>
+
+        {/* ID Card Number */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">ID Card Number:</div>
+            <div className="text-gray-600">{driverDetails.idCardNumber}</div>
+        </div>
+
+        {/* License Card Number */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">License Card Number:</div>
+            <div className="text-gray-600">{driverDetails.licenseCardNumber}</div>
+        </div>
+
+        {/* Address */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">Address:</div>
+            <div className="text-gray-600">{driverDetails.address}</div>
+        </div>
+
+        {/* Vehicle Number */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">Vehicle Number:</div>
+            <div className="text-gray-600">{driverDetails.vehicleNumber}</div>
+        </div>
+
+        {/* Vehicle Type */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div className="text-gray-700 font-semibold">Vehicle Type:</div>
+            <div className="text-gray-600">{driverDetails.vehicleType}</div>
+        </div>
     </div>
+
+    {/* Uploaded Images with Clickable Modal */}
+    <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div
+            className="shadow-md p-4 bg-white rounded-lg cursor-pointer"
+            onClick={() => handleImageClick(idCardImageUrl)}
+        >
+            <h4 className="text-center mb-2 font-semibold">ID Card Image</h4>
+            <img
+                src={idCardImageUrl}
+                alt="ID Card"
+                className="w-full h-64 object-cover rounded-md shadow-lg transition-transform transform hover:scale-105"
+            />
+        </div>
+
+        <div
+            className="shadow-md p-4 bg-white rounded-lg cursor-pointer"
+            onClick={() => handleImageClick(licenseImageUrl)}
+        >
+            <h4 className="text-center mb-2 font-semibold">License Image</h4>
+            <img
+                src={licenseImageUrl}
+                alt="License"
+                className="w-full h-64 object-cover rounded-md shadow-lg transition-transform transform hover:scale-105"
+            />
+        </div>
+    </div>
+
+    
+
+    {/* Image Modal */}
+    {selectedImage && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-4 rounded-lg shadow-lg relative max-w-xl max-h-[90vh]">
+            <button
+                className="absolute top-2 right-2 bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600"
+                onClick={handleCloseModal}
+            >
+                X
+            </button>
+            <img
+                src={selectedImage}
+                alt="Full View"
+                className="max-w-full max-h-full object-contain"
+            />
+        </div>
+    </div>
+    )}
 </div>
+
 
                         {/* Action Buttons */}
                         <div className="mt-6 flex justify-between">

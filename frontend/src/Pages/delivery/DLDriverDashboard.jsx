@@ -36,10 +36,11 @@ const DLDriverDashboard = () => {
         fetchDriverProfile(); // Fetch the driver profile on component load
     }, [navigate]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('driverToken'); // Remove the token
-        navigate('/driver/login'); // Redirect to login page
-    };
+   
+        const handleLogout = () => {
+            navigate('/driver/logout'); // Navigate to the DLlogout page
+        };
+    
 
     const toggleAvailability = async () => {
         const driverToken = localStorage.getItem('driverToken');
