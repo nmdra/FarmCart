@@ -67,8 +67,8 @@ export const getAllOrders = async (req, res) => {
     console.log('shopId', shopId)
     try {
         const orders = shopId
-            ? await Order.find({ 'farmer.shopId': shopId })
-            : await Order.find()
+            ? await Order.find({ 'farmer.shopId': shopId }).sort({ _id: 1 })
+            : await Order.find().sort({ _id: 1 })
 
         res.status(200).json(orders)
     } catch (error) {

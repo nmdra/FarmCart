@@ -373,7 +373,19 @@ const Dashboard = () => {
                                                           : item.orderStatus ===
                                                               'Accept'
                                                             ? 'bg-blue-500 p-1 rounded-md text-white ring-0'
-                                                            : 'bg-red-500 p-1 rounded-md text-white ring-0'
+                                                            : item.orderStatus ===
+                                                                'Ready'
+                                                              ? 'bg-purple-500 p-1 rounded-md text-white ring-0'
+                                                              : item.orderStatus ===
+                                                                  'Pickup'
+                                                                ? 'bg-orange-500 p-1 rounded-md text-white ring-0'
+                                                                : item.orderStatus ===
+                                                                    'OnTheWay'
+                                                                  ? 'bg-indigo-500 p-1 rounded-md text-white ring-0'
+                                                                  : item.orderStatus ===
+                                                                      'Rejected'
+                                                                    ? 'bg-red-500 p-1 rounded-md text-white ring-0'
+                                                                    : 'bg-gray-500 p-1 rounded-md text-white ring-0'
                                                 }
                                                 value={item.orderStatus}
                                                 onChange={(e) =>
@@ -385,6 +397,15 @@ const Dashboard = () => {
                                                 </option>
                                                 <option value="Accept">
                                                     Accept
+                                                </option>
+                                                <option value="Ready">
+                                                    Ready
+                                                </option>
+                                                <option value="Pickup">
+                                                    Pickup
+                                                </option>
+                                                <option value="OnTheWay">
+                                                    On the way
                                                 </option>
                                                 <option value="Delivered">
                                                     Delivered

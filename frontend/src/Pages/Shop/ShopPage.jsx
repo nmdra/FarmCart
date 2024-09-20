@@ -26,10 +26,10 @@ const ShopPage = () => {
     setSearchTerm(e.target.value);
   };
 
-   //Filter products based on search term
+  // Filter products based on search term
   const filteredProducts = shop.products?.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );  
+  );
 
   return (
     
