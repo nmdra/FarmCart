@@ -84,11 +84,11 @@ const router = createBrowserRouter(
 
             {/* Product Listing */}
             <Route path="/shops" element={<ShopList />} />
-        <Route path="/shops/:id" element={<ShopPage />} />
-        <Route
-          path="/shops/:id/product/:productId"
-          element={<ProductPage />}
-        />
+            <Route path="/shops/:id" element={<ShopPage />} />
+            <Route
+                path="/shops/:id/product/:productId"
+                element={<ProductPage />}
+            />
 
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkOut" element={<CheckOut />} />
