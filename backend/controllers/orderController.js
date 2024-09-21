@@ -125,28 +125,27 @@ export const getShopByFarmerId = async (req, res) => {
 }
 
 export const getOrderById = async (req, res) => {
-    const { id: orderId } = req.params; // Destructure orderId from request query
-    console.log('Fetching order with ID:', orderId); // Log the orderId
-    
+    const { id: orderId } = req.params // Destructure orderId from request query
+    console.log('Fetching order with ID:', orderId) // Log the orderId
+
     try {
         // Validate ObjectId
         if (!mongoose.isValidObjectId(orderId)) {
-            return res.status(400).json({ message: 'Invalid order ID format.' });
+            return res.status(400).json({ message: 'Invalid order ID format.' })
         }
 
         // Find the order by ID and populate any necessary references
         const order = await Order.findById(orderId)
-            .populate('farmer.shopId', 'name') 
-            .populate('user', 'firstname email');
+            .populate('farmer.shopId', 'name')
+            .populate('user', 'firstname email')
 
         if (!order) {
-            return res.status(404).json({ message: 'Order not found' });
+            return res.status(404).json({ message: 'Order not found' })
         }
 
-        res.status(200).json(order);
+        res.status(200).json(order)
     } catch (error) {
-        console.error('Error fetching order:', error); // Log the error for debugging
-        res.status(500).json({ message: error.message });
+        console.error('Error fetching order:', error) // Log the error for debugging
+        res.status(500).json({ message: error.message })
     }
-};
-
+}

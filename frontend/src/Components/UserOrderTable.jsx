@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
     Table,
     TableBody,
@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
     Pagination,
-} from '@nextui-org/react';
+} from '@nextui-org/react'
 import { Link } from 'react-router-dom'
 
 const UserOrderTable = ({ items, page, pages, setPage }) => {
@@ -108,4 +108,4 @@ const UserOrderTable = ({ items, page, pages, setPage }) => {
     )
 }
 
-export default UserOrderTable;
+export default UserOrderTable

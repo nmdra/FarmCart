@@ -20,9 +20,11 @@ const Header = () => {
     }, [user])
 
     useEffect(() => {
-        
         // Calculate total item count
-        const totalItemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
+        const totalItemCount = cartItems.reduce(
+            (total, item) => total + item.quantity,
+            0
+        )
 
         // Set cart item count
         setCartItemCount(totalItemCount)
@@ -31,7 +33,10 @@ const Header = () => {
     useEffect(() => {
         // Close dropdown if click outside of it
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
                 setIsDropdownOpen(false)
             }
         }
@@ -49,7 +54,11 @@ const Header = () => {
         e.preventDefault()
         if (window.confirm('Are you sure you want to log out?')) {
             try {
-                await axios.post('/api/users/logout', {}, { withCredentials: true })
+                await axios.post(
+                    '/api/users/logout',
+                    {},
+                    { withCredentials: true }
+                )
                 localStorage.removeItem('user')
                 setIsLoggedIn(false)
                 setIsDropdownOpen(false)
@@ -77,7 +86,10 @@ const Header = () => {
                     {isLoggedIn ? (
                         <div className="flex items-center gap-4 text-sm">
                             <CartButton cartItemCount={cartItemCount} />
-                            <button className="flex items-center gap-2" onClick={() => navigate('/userDashboard')}>
+                            <button
+                                className="flex items-center gap-2"
+                                onClick={() => navigate('/userDashboard')}
+                            >
                                 {user?.firstname} {user?.lastname}
                             </button>
 
@@ -90,7 +102,9 @@ const Header = () => {
                                     aria-expanded={isDropdownOpen}
                                     onClick={toggleDropdown}
                                 >
-                                    <span className="sr-only">Open user menu</span>
+                                    <span className="sr-only">
+                                        Open user menu
+                                    </span>
                                     <img
                                         className="w-8 h-8 rounded-full ring-green-700 ring-2"
                                         src={user.pic}
@@ -100,33 +114,53 @@ const Header = () => {
 
                                 {/* Dropdown menu */}
                                 {isDropdownOpen && (
-                                    <div className="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+                                    <div
+                                        className="absolute right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                                        id="user-dropdown"
+                                    >
                                         <div className="px-4 py-3">
                                             <span className="block text-sm text-gray-900 dark:text-white">
-                                                {user?.firstname} {user?.lastname}
+                                                {user?.firstname}{' '}
+                                                {user?.lastname}
                                             </span>
                                             <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
                                                 {user?.email}
                                             </span>
                                         </div>
-                                        <ul className="py-2" aria-labelledby="user-menu-button">
+                                        <ul
+                                            className="py-2"
+                                            aria-labelledby="user-menu-button"
+                                        >
                                             <li>
-                                                <Link to="/userDashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                                <Link
+                                                    to="/userDashboard"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                >
                                                     Dashboard
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                                <Link
+                                                    to="/settings"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                >
                                                     Settings
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="/orderHistory" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                                                <Link
+                                                    to="/orderHistory"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                >
                                                     Orders
                                                 </Link>
                                             </li>
                                             <li>
-                                                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={handleLogout}>
+                                                <a
+                                                    href="#"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                    onClick={handleLogout}
+                                                >
                                                     Sign out
                                                 </a>
                                             </li>
@@ -138,13 +172,22 @@ const Header = () => {
                     ) : (
                         <div className="flex items-center gap-4 text-sm">
                             <div className="flex items-center gap-4">
-                                <Link to="/farmerRegister" className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm">
+                                <Link
+                                    to="/farmerRegister"
+                                    className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm"
+                                >
                                     Become a Seller
                                 </Link>
-                                <Link to="/become-a-driver" className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm">
+                                <Link
+                                    to="/become-a-driver"
+                                    className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm"
+                                >
                                     Become a Driver
                                 </Link>
-                                <Link to="/help" className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm">
+                                <Link
+                                    to="/help"
+                                    className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm"
+                                >
                                     Help & Support
                                 </Link>
                             </div>
