@@ -9,6 +9,7 @@ import shopRoute from './routes/shop_productRoute.js'
 import userShop from './routes/userShopRoute.js'
 import imageHandler from './routes/imageHandlerRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
+import couponRouter from './routes/couponRouter.js'
 
 // load environment variables
 const PORT = process.env.PORT || 8000
@@ -39,7 +40,7 @@ app.use('/api/farmers', farmerRoutes);
 app.use('/api/shops', shopRoute);
 app.use('/api/userShops', userShop);
 app.use('/api/images', imageHandler)
-
+app.use('/api/coupon', couponRouter)
 app.use(notFound)
 
 // Middleware to handle errors and send appropriate responses

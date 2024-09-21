@@ -45,6 +45,8 @@ import UpdateProduct from './Pages/farmer/UpdateProduct'
 import ShopList from './Pages/Shop/ShopList'
 import ShopPage from './Pages/Shop/ShopPage'
 import ProductPage from './Pages/Shop/ProductPage'
+import Cart from './Pages/order/Cart'
+import CheckOut from './Pages/order/checkOut'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -84,10 +86,12 @@ const router = createBrowserRouter(
             <Route path="/shops" element={<ShopList />} />
         <Route path="/shops/:id" element={<ShopPage />} />
         <Route
-          path="/shop/:id/product/:productId"
+          path="/shops/:id/product/:productId"
           element={<ProductPage />}
         />
 
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkOut" element={<CheckOut />} />
 
             {/* Shop & Farmer Routes */}
             <Route path="/farmerLogin" element={<FarmerLogin />} />
@@ -95,14 +99,13 @@ const router = createBrowserRouter(
             <Route path="/farmerdashboard" element={<FarmerDashboard />} />
             <Route path="/farmerprofile" element={<ProfilePage />} />
             <Route path="/myshops" element={<MyShop />} />
-            <Route path="/shopcreate" element={<AddShop />} />
-            <Route path="/shop/:id" element={<Shop />} />
-            <Route path="/shop/profile" element={<ShopProfile />} />
-            <Route path="/shop/:id/productpage" element={<Products />} />
+            <Route path="/farmerShopcreate" element={<AddShop />} />
+            <Route path="/farmerShop/:id" element={<Shop />} />
+            <Route path="/farmerShop/profile" element={<ShopProfile />} />
+            <Route path="/farmerShop/:id/productpage" element={<Products />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/updateproduct" element={<UpdateProduct />} />
             <Route path="/farmerlogout" element={<FarmerLogout />} />
-
             <Route path="*" element={<NotFound />} />
         </Route>
     )

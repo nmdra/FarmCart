@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Loading from '../../Components/Loading';
+<<<<<<< HEAD
 import DistrictsData from '../../lib/DistrictData'
+=======
+>>>>>>> fa7484e5a0ad4b1f704000267d8148447381bd33
 
 const ShopList = () => {
   const [shops, setShops] = useState([]);
@@ -16,8 +19,18 @@ const ShopList = () => {
   useEffect(() => {
     const fetchShops = async () => {
       try {
+<<<<<<< HEAD
         const { data } = await axios.get('/api/userShops');
         setShops(data.shops);
+=======
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        };
+        const { data } = await axios.get('/api/userShops', config);
+        setShops(data);
+>>>>>>> fa7484e5a0ad4b1f704000267d8148447381bd33
       } catch (error) {
         console.error('Error fetching shops:', error);
       } finally {
@@ -88,11 +101,17 @@ const ShopList = () => {
             className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All Districts</option>
+<<<<<<< HEAD
                             {Object.keys(DistrictsData).map((district) => (
                                 <option key={district} value={district}>
                                     {district}
                                 </option>
                             ))}
+=======
+            <option value="Gampaha">Gampaha</option>
+            <option value="Badulla">Badulla</option>
+            {/* Add more district options as needed */}
+>>>>>>> fa7484e5a0ad4b1f704000267d8148447381bd33
           </select>
         </div>
       </div>
@@ -151,4 +170,8 @@ const ShopList = () => {
   );
 };
 
+<<<<<<< HEAD
 export default ShopList;
+=======
+export default ShopList;
+>>>>>>> fa7484e5a0ad4b1f704000267d8148447381bd33
