@@ -414,32 +414,35 @@ export const resetPassword = async (req, res) => {
 }
 
 export const generateHash = async (req, res) => {
-    const { amount } = req.body;
+    const { amount } = req.body
 
     // Replace with your actual Merchant ID and Secret
-    const merchantId = process.env.PAYHERE_MERCHANT_ID;
-    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
+    const merchantId = process.env.PAYHERE_MERCHANT_ID
+    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET
 
     // Generate a unique order ID
-    const orderId = Math.random().toString(36).substring(2, 11);
+    const orderId = Math.random().toString(36).substring(2, 11)
 
     // Format the amount
-    const formattedAmount = parseFloat(amount).toFixed(2);
+    const formattedAmount = parseFloat(amount).toFixed(2)
 
     const currency = 'LKR'
 
     // Generate the hash
-    const hash = crypto.MD5(
-        merchantId +
-        orderId +
-        formattedAmount +
-        currency +
-        crypto.MD5(merchantSecret).toString().toUpperCase()
-    ).toString().toUpperCase();
+    const hash = crypto
+        .MD5(
+            merchantId +
+                orderId +
+                formattedAmount +
+                currency +
+                crypto.MD5(merchantSecret).toString().toUpperCase()
+        )
+        .toString()
+        .toUpperCase()
 
     // Return the hash and order ID
     res.json({
         orderId,
-        hash
-    });
+        hash,
+    })
 }

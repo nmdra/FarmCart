@@ -7,9 +7,11 @@ import CartButton from './CartButton'
 const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [cartItemCount, setCartItemCount] = useState(0) // Initialize cart item count as 0
     const navigate = useNavigate()
-    const [cartItemCount, setCartItemCount] = useState(3) // Example cart item count
     const user = JSON.parse(localStorage.getItem('user'))
+    // Fetch cart from local storage
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || []
 
     const dropdownRef = useRef(null) // Ref for dropdown menu
 
@@ -18,16 +20,30 @@ const Header = () => {
     }, [user])
 
     useEffect(() => {
+        // Calculate total item count
+        const totalItemCount = cartItems.reduce(
+            (total, item) => total + item.quantity,
+            0
+        )
+
+        // Set cart item count
+        setCartItemCount(totalItemCount)
+    }, [cartItems])
+
+    useEffect(() => {
         // Close dropdown if click outside of it
         const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
                 setIsDropdownOpen(false)
             }
         }
 
         // Add event listener to detect outside click
         document.addEventListener('mousedown', handleClickOutside)
-        
+
         // Clean up event listener when component unmounts
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
@@ -38,7 +54,11 @@ const Header = () => {
         e.preventDefault()
         if (window.confirm('Are you sure you want to log out?')) {
             try {
-                await axios.post('/api/users/logout', {}, { withCredentials: true })
+                await axios.post(
+                    '/api/users/logout',
+                    {},
+                    { withCredentials: true }
+                )
                 localStorage.removeItem('user')
                 setIsLoggedIn(false)
                 setIsDropdownOpen(false)
@@ -82,10 +102,12 @@ const Header = () => {
                                     aria-expanded={isDropdownOpen}
                                     onClick={toggleDropdown}
                                 >
-                                    <span className="sr-only">Open user menu</span>
+                                    <span className="sr-only">
+                                        Open user menu
+                                    </span>
                                     <img
                                         className="w-8 h-8 rounded-full ring-green-700 ring-2"
-                                        src={user.pic} // Replace with `user.pic` if available
+                                        src={user.pic}
                                         alt="User profile"
                                     />
                                 </button>
@@ -98,7 +120,8 @@ const Header = () => {
                                     >
                                         <div className="px-4 py-3">
                                             <span className="block text-sm text-gray-900 dark:text-white">
-                                                {user?.firstname} {user?.lastname}
+                                                {user?.firstname}{' '}
+                                                {user?.lastname}
                                             </span>
                                             <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
                                                 {user?.email}
