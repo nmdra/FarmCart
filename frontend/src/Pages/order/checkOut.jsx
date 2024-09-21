@@ -117,7 +117,7 @@ const CheckOut = () => {
                 }
 
                 const response = await axios.post(
-                    'http://localhost:5000/api/orders/create-payment-intent',
+                    '/api/orders/create-payment-intent',
                     {
                         totalPrice: (data.totalPrice / 300).toFixed(2),
                         user: data.user,
@@ -144,7 +144,7 @@ const CheckOut = () => {
                     toast.error(paymentResult.error.message)
                     return
                 } else if (paymentResult.paymentIntent.status === 'succeeded') {
-                    await axios.post('http://localhost:5000/api/orders', data)
+                    await axios.post('/api/orders', data)
                     toast.success(
                         `Payment successful for farmer ${shopId}, order placed!`
                     )
