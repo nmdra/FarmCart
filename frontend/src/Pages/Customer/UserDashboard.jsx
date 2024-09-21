@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import OrderTable from '../../Components/UserOrderTable'
 import Breadcrumbs from '../../Components/Breadcrumbs'
@@ -9,43 +9,41 @@ import axios from 'axios'
 import Loading from '../../Components/Loading'
 
 function Dashboard() {
-    const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(true);
-    const [orders, setOrders] = useState([]);
-    const user = JSON.parse(localStorage.getItem('user'));
+    const [page, setPage] = useState(1)
+    const [loading, setLoading] = useState(true)
+    const [orders, setOrders] = useState([])
+    const user = JSON.parse(localStorage.getItem('user'))
 
-    const rowsPerPage = 2;
-    const pages = Math.ceil(orders?.length / rowsPerPage);
+    const rowsPerPage = 2
+    const pages = Math.ceil(orders?.length / rowsPerPage)
 
     const items = useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        return Array.isArray(orders) ? orders.slice(start, end) : [];
-    }, [page, orders]);
+        const start = (page - 1) * rowsPerPage
+        const end = start + rowsPerPage
+        return Array.isArray(orders) ? orders.slice(start, end) : []
+    }, [page, orders])
 
     useEffect(() => {
         const fetchUserOrders = async () => {
             try {
                 const res = await axios.get(
                     `/api/orders/get-user-orders/66e40373f39290d8bbfd15bc` // user id
-                );
-                setOrders(res.data); // Set the orders with the fetched data
-                setLoading(false);
+                )
+                setOrders(res.data) // Set the orders with the fetched data
+                setLoading(false)
             } catch (error) {
-                console.error('Error fetching user orders:', error);
-                setLoading(false);
+                console.error('Error fetching user orders:', error)
+                setLoading(false)
             }
-        };
+        }
 
         if (user?._id) {
-            fetchUserOrders();
+            fetchUserOrders()
         }
-    }, [user]);
+    }, [user])
 
     if (loading) {
-        return (
-            <Loading/>
-        )
+        return <Loading />
     }
 
     return (
@@ -70,7 +68,6 @@ function Dashboard() {
                     </Link>
                 </div>
             </div>
-
             {/* Profile and Billing Section */}
             <div className="flex flex-row gap-4 mt-4">
                 {/* Profile Section */}
@@ -119,8 +116,8 @@ function Dashboard() {
                             {user.firstname} {user.lastname}
                         </p>
                         <p className="text-gray-500">
-                            {user.defaultAddress.streetAddress}, 
-                            {user.defaultAddress.city}, 
+                            {user.defaultAddress.streetAddress},
+                            {user.defaultAddress.city},
                             {user.defaultAddress.district} <br />
                             Postal Code: {user.defaultAddress.zipCode} <br />
                             {user.contactNumber}
@@ -134,18 +131,17 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
-
             {/* Recent Orders */}
             <div className="max-w-full mx-2 p-6 bg-white rounded-lg shadow-lg border-2 border-green-400 mt-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
                     Recent Orders
                 </h2>
-                    <OrderTable
-                        items={items}
-                        page={page}
-                        pages={pages}
-                        setPage={setPage}
-                    />
+                <OrderTable
+                    items={items}
+                    page={page}
+                    pages={pages}
+                    setPage={setPage}
+                />
             </div>
         </div>
     )

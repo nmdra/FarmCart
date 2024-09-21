@@ -1,48 +1,48 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
-import OrderTable from '../../Components/UserOrderTable';
-import Loading from '../../Components/Loading';
+import React, { useEffect, useMemo, useState } from 'react'
+import axios from 'axios'
+import OrderTable from '../../Components/UserOrderTable'
+import Loading from '../../Components/Loading'
 
 function UserAllOrders() {
-    const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(true);
-    const [orders, setOrders] = useState([]);
-    const user = JSON.parse(localStorage.getItem('user'));
+    const [page, setPage] = useState(1)
+    const [loading, setLoading] = useState(true)
+    const [orders, setOrders] = useState([])
+    const user = JSON.parse(localStorage.getItem('user'))
 
-    const rowsPerPage = 5;
-    const pages = Math.ceil(orders?.length / rowsPerPage);
+    const rowsPerPage = 5
+    const pages = Math.ceil(orders?.length / rowsPerPage)
 
     const items = useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        return Array.isArray(orders) ? orders.slice(start, end) : [];
-    }, [page, orders]);
+        const start = (page - 1) * rowsPerPage
+        const end = start + rowsPerPage
+        return Array.isArray(orders) ? orders.slice(start, end) : []
+    }, [page, orders])
 
     useEffect(() => {
         const fetchUserOrders = async () => {
             try {
                 const res = await axios.get(
                     `/api/orders/get-user-orders/66e40373f39290d8bbfd15bc` // change
-                );
-                setOrders(res.data); // Set the orders with the fetched data
-                setLoading(false);
+                )
+                setOrders(res.data) // Set the orders with the fetched data
+                setLoading(false)
             } catch (error) {
-                console.error('Error fetching user orders:', error);
-                setLoading(false);
+                console.error('Error fetching user orders:', error)
+                setLoading(false)
             }
-        };
+        }
 
         if (user?._id) {
-            fetchUserOrders();
+            fetchUserOrders()
         }
-    }, [user]);
+    }, [user])
 
     if (loading) {
         return (
             <div>
-                <Loading/>
+                <Loading />
             </div>
-        );
+        )
     }
 
     return (
@@ -61,7 +61,7 @@ function UserAllOrders() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default UserAllOrders;
+export default UserAllOrders

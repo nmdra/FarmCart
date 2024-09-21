@@ -4,38 +4,38 @@ import { Link, useLocation } from 'react-router-dom'
 import Loading from '../../Components/Loading'
 
 const OrderStatus = () => {
-    const [order, setOrder] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [order, setOrder] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
     // Create a URL object
-    const urlObj = new URL(window.location.href);
-    const orderID = urlObj.searchParams.get('id');
+    const urlObj = new URL(window.location.href)
+    const orderID = urlObj.searchParams.get('id')
 
     useEffect(() => {
         const fetchOrder = async () => {
             try {
-                console.log(orderID); // Log the orderID for debugging
-                const { data } = await axios.get(`/api/orders/${orderID}`);
-                setOrder(data); // Fetching the first order for now
-                console.log(data); // Log the fetched order
-                setLoading(false);
+                console.log(orderID) // Log the orderID for debugging
+                const { data } = await axios.get(`/api/orders/${orderID}`)
+                setOrder(data) // Fetching the first order for now
+                console.log(data) // Log the fetched order
+                setLoading(false)
             } catch (err) {
-                console.error(err); // Log the actual error
-                setError('Failed to fetch order details.');
-                setLoading(false);
+                console.error(err) // Log the actual error
+                setError('Failed to fetch order details.')
+                setLoading(false)
             }
-        };
+        }
 
         // Only fetch the order if orderID is available
         if (orderID) {
-            fetchOrder();
+            fetchOrder()
         } else {
-            setLoading(false); // No orderID means we can't fetch the order
-            setError('No order ID provided.');
+            setLoading(false) // No orderID means we can't fetch the order
+            setError('No order ID provided.')
         }
-    }, [orderID]); // Add orderID as a dependency
+    }, [orderID]) // Add orderID as a dependency
 
-    if (loading) return <Loading/>
+    if (loading) return <Loading />
     if (error)
         return <div className="text-center py-4 text-red-500">{error}</div>
     if (!order) return <div className="text-center py-4">No order found</div>
@@ -72,7 +72,9 @@ const OrderStatus = () => {
                 <div className="mb-4 border border-green-500 rounded-lg p-8 bg-slate-100">
                     <h3 className="font-semibold mb-2 text-center text-sm">
                         ORDER STATUS
-                        <h4 className='font-medium mb-1 text-xl'>{order.orderStatus}</h4>
+                        <h4 className="font-medium mb-1 text-xl">
+                            {order.orderStatus}
+                        </h4>
                     </h3>
                 </div>
             </div>
