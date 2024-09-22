@@ -41,9 +41,14 @@ import DLLogin from './Pages/delivery/DLLogin' // Added DLLogin import
 import DeliveryDashboard from './Pages/delivery/DLDriverDashboard';
 import DLDriverProfile from './Pages/delivery/DLDriverProfile' // Import the driver profile component
 import DLEditProfile from './Pages/delivery/Dleditprofile';
-import DLDeleteConfirm from './Pages/delivery/DLdeleteconfirm';
-
-
+import DLALLdrivers from './Pages/delivery/DLALLdrivers'; // Import the DLALLdrivers component
+import DLmanageDash from './Pages/delivery/DLmangeDash'; // Adjust the path if necessary
+import DLViewDriver from './Pages/delivery/DLViewDriver';  // Adjust the path according to your project structure
+import DLlogout from './Pages/delivery/DLlogout'; // Import the DLlogout component
+import DLeditdriver from './Pages/delivery/DLeditdriver'; // Import the new DLeditdriver page
+import OrderForm from './Pages/delivery/DLoooo'; // Assuming OrderForm component is in 'components' folder
+import OrderTable from './Pages/delivery/DLOtable'; // Assuming you store it in the components folder
+import Od from './Pages/delivery/or/orderdelete'; //
 
 
 
@@ -62,7 +67,14 @@ const router = createBrowserRouter(
              <Route path="/driver/dashboard" element={<DeliveryDashboard />} />
              <Route path="/driver/profile" element={<DLDriverProfile />} /> {/* Add profile route */}
              <Route path="/driver/profile/edit" element={<DLEditProfile />} />
-             <Route path="/driver/delete-confirmation" element={<DLDeleteConfirm />} />
+             <Route path="/alldrivers" element={<DLALLdrivers />} />
+             <Route path="/manager/dashboard" element={<DLmanageDash />} />
+             <Route path="/manager/view-driver/:id" element={<DLViewDriver />} />
+             <Route path="/driver/logout" element={<DLlogout />} />
+             <Route path="/driver/edit/:id" element={<DLeditdriver />} />
+             <Route path="/a" element={<OrderForm />} />
+             <Route path="/b" element={<OrderTable />} />
+            <Route path="/d" element={<Od/>} />
 
 
 

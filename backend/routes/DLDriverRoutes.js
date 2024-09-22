@@ -11,6 +11,8 @@ import {
     updateDriverProfile,
     updateDriverPassword,
     deleteDriverAccount,
+    getAllDrivers,
+    verifyPassword,
 
     // Add logout driver function
 } from '../controllers/DLDriverController.js';
@@ -46,6 +48,12 @@ router.put('/:id/availability', protectDriver, updateDriverAvailability);
 router.put('/profile/password', protectDriver, updateDriverPassword);
 
 router.delete('/delete', protectDriver, deleteDriverAccount);
+
+router.delete('/verifyPass', protectDriver, verifyPassword);
+
+router.get('/drivers', getAllDrivers);
+
+
 
 
 export default router;
