@@ -37,7 +37,7 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link
-                            to={`/shop/${id}`}
+                            to={`/farmerShop/${id}`}
                             className="flex items-center px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded text-left"
                         >
                             <FaTachometerAlt className="w-5 h-5 mr-3" />
@@ -55,7 +55,7 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link
-                            to={`/shop/${id}/productpage`}
+                            to={`/farmerShop/${id}/productpage`}
                             className="flex items-center px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded text-left"
                         >
                             <FaProductHunt className="w-5 h-5 mr-3" />
@@ -73,7 +73,7 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link
-                            to="/shop/profile"
+                            to="/farmerShop/profile"
                             className="flex items-center px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded text-left"
                         >
                             <FaCog className="w-5 h-5 mr-3" />

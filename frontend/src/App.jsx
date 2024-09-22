@@ -99,7 +99,7 @@ const router = createBrowserRouter(
             <Route path="/farmerdashboard" element={<FarmerDashboard />} />
             <Route path="/farmerprofile" element={<ProfilePage />} />
             <Route path="/myshops" element={<MyShop />} />
-            <Route path="/farmerShopcreate" element={<AddShop />} />
+            <Route path="/shopcreate" element={<AddShop />} />
             <Route path="/farmerShop/:id" element={<Shop />} />
             <Route path="/farmerShop/profile" element={<ShopProfile />} />
             <Route path="/farmerShop/:id/productpage" element={<Products />} />
