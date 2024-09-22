@@ -57,6 +57,22 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
     }
 });
 
+
+
+const deleteOrder = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        await order.deleteOne(); // Use deleteOne instead of remove
+        res.json({ message: 'Order deleted successfully' });
+    } else {
+        res.status(404).json({ message: 'Order not found' });
+    }
+});
+
+
+export { deleteOrder };
+
 export { getOrders, updateOrderStatus };
 
 export { addOrder };

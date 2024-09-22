@@ -15,9 +15,16 @@ import { errorHandler, notFound } from './middlewares/errorMiddleware.js';
 import DLEmailRoutes from './routes/DLEmailRoutes.js';
 import dotenv from 'dotenv'; 
 import oRoutes from './routes/DLORoutes.js'; // Importing order routes
+import { checkForAvailableDrivers } from './controllers/DLDeliveryController.js';
 
+//import deliveryRoute from './routes/DLDeliveryRoute.js'; // Importing delivery routes
 dotenv.config();
 
+
+
+
+
+checkForAvailableDrivers();
 
 
 
@@ -57,6 +64,7 @@ app.use('/api/d_forms', DLFormRoutes);
 app.use('/api/drivers', driverRoutes); // Added driver routes
 app.use('/api/email', DLEmailRoutes); // Use the email routes
 app.use('/api/od', oRoutes);
+//app.use('/api/delivery', deliveryRoute);
 
 // Error Handling Middleware
 app.use(notFound);

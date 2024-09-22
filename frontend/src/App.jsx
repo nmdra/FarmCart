@@ -48,7 +48,7 @@ import DLlogout from './Pages/delivery/DLlogout'; // Import the DLlogout compone
 import DLeditdriver from './Pages/delivery/DLeditdriver'; // Import the new DLeditdriver page
 import OrderForm from './Pages/delivery/DLoooo'; // Assuming OrderForm component is in 'components' folder
 import OrderTable from './Pages/delivery/DLOtable'; // Assuming you store it in the components folder
-
+import Od from './Pages/delivery/or/orderdelete'; //
 
 
 
@@ -74,6 +74,7 @@ const router = createBrowserRouter(
              <Route path="/driver/edit/:id" element={<DLeditdriver />} />
              <Route path="/a" element={<OrderForm />} />
              <Route path="/b" element={<OrderTable />} />
+            <Route path="/d" element={<Od/>} />
 
 
 

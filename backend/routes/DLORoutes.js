@@ -1,5 +1,5 @@
 import express from 'express';
-import { addOrder,getOrders ,updateOrderStatus} from '../controllers/DLOcontroller.js';
+import { addOrder,getOrders ,deleteOrder,updateOrderStatus} from '../controllers/DLOcontroller.js';
 
 const router = express.Router();
 
@@ -11,5 +11,8 @@ router.get('/g', getOrders);
 
 // Update order status
 router.put('/u/:id/status', updateOrderStatus);
+
+// Delete an order
+router.delete('/d/:id', deleteOrder);
 
 export default router;
