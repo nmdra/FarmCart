@@ -30,7 +30,7 @@ const MyShop = () => {
     }, [])
 
     const handleViewShop = (shopId) => {
-        navigate(`/shop/${shopId}`)
+        navigate(`/farmerShop/${shopId}`)
     }
 
     const handleAddNewShop = () => {

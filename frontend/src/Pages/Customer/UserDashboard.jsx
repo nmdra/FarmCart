@@ -27,7 +27,7 @@ function Dashboard() {
         const fetchUserOrders = async () => {
             try {
                 const res = await axios.get(
-                    `/api/orders/get-user-orders/66e40373f39290d8bbfd15bc` // user id
+                    `/api/orders/get-user-orders/${user._id}` // user id
                 )
                 setOrders(res.data) // Set the orders with the fetched data
                 setLoading(false)

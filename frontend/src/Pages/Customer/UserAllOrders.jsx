@@ -22,7 +22,7 @@ function UserAllOrders() {
         const fetchUserOrders = async () => {
             try {
                 const res = await axios.get(
-                    `/api/orders/get-user-orders/66e40373f39290d8bbfd15bc` // change
+                    `/api/orders/get-user-orders/${user._id}` // change
                 )
                 setOrders(res.data) // Set the orders with the fetched data
                 setLoading(false)

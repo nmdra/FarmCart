@@ -118,7 +118,7 @@ const Dashboard = () => {
             try {
                 farmersShop.forEach(async (shop) => {
                     const res = await axios.get(
-                        `http://localhost:5000/api/orders?shopId=${shop._id}`
+                        `http://localhost:3000/api/orders?shopId=${shop._id}`
                     )
 
                     setOrders((prevOrders) => {
@@ -152,7 +152,7 @@ const Dashboard = () => {
     }, [refetch, farmersShop])
 
     const handelChange = async (e, id) => {
-        const res = await axios.put(`http://localhost:5000/api/orders/${id}`, {
+        const res = await axios.put(`http://localhost:3000/api/orders/${id}`, {
             orderStatus: e.target.value,
         })
 
