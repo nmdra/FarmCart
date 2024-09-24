@@ -63,17 +63,20 @@ const ProductPage = ({ onAddToCart }) => {
         setQuantity((prevCount) => (prevCount > 0 ? prevCount - 1 : 0))
     }
     return (
-        <section className="text-gray-600 body-font overflow-hidden">
-            <div className="container px-5 py-24 mx-auto">
+        
+        <section className="text-gray-600 body-font overflow-hidden mb-0">
+            <div className="container px-5 py-24 mx-auto ml-0">
                 <div className="lg:w-4/5 mx-auto flex flex-wrap">
                     <img
                         alt={product.name}
-                        className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
+                        className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded-2xl"
                         src={product.image || 'https://dummyimage.com/400x400'} // Placeholder if no image
                     />
+
+
                     <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                            {product.brand || 'Brand Name'}
+                            {product.brand}
                         </h2>
                         <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
                             {product.name || 'Product Name'}
@@ -82,20 +85,23 @@ const ProductPage = ({ onAddToCart }) => {
                             {product.description ||
                                 'Product description goes here.'}
                         </p>
-                        <p className="text-lg font-semibold">
-                            Price: LKR{' '}
-                            {product.pricePerKg?.toFixed(2) || '0.00'}
+                        <span className="title-font font-medium text-2xl text-gray-900 mt-6 ">
+                            LKR{' '}
+                            {(product.pricePerKg * quantity)?.toFixed(2) || '0.00'}
+                        </span>
+                        <p className="text-xs font-normal ">
+                        Tax included, shipping and discounts calculated at checkout
                         </p>
                         <div className=" flex py-5">
                             <div className="flex  justify-center">
                                 <button
                                     onClick={decreaseCount}
-                                    className=" border text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                                    className=" border text-white px-4 py-2 rounded-lg hover:bg-green-500 transition-colors"
                                 >
                                     <img
-                                        width="20"
-                                        height="20"
-                                        src="https://img.icons8.com/ios/50/minus.png"
+                                        width="15"
+                                        height="15"
+                                        src="https://img.icons8.com/?size=100&id=85458&format=png&color=000000"
                                         alt="minus"
                                     />
                                 </button>
@@ -104,29 +110,31 @@ const ProductPage = ({ onAddToCart }) => {
                                 </span>
                                 <button
                                     onClick={increaseCount}
-                                    className="border text-white px-4 py-2 rounded-lg hover:bg-lime-700 transition-colors"
+                                    className="border text-white px-4 py-2 rounded-lg  hover:bg-green-600 transition-colors"
                                 >
                                     <img
-                                        width="20"
-                                        height="20"
-                                        src="https://img.icons8.com/ios/50/plus--v1.png"
+                                        width="15"
+                                        height="15"
+                                        src="https://img.icons8.com/?size=100&id=3220&format=png&color=000000"
                                         alt="plus--v1"
                                     />
                                 </button>
+
                             </div>
+                            
                         </div>
-                        <div className="flex">
-                            <span className="title-font font-medium text-2xl text-gray-900">
-                                LKR{' '}
-                                {product.pricePerKg?.toFixed(2) * quantity ||
-                                    '0.00'}
-                            </span>
+
+                        <p className="text-xs text-gray-500">
+                             You'll receive a pickup notification with all details once your order is ready.
+                        </p>
+                        <div className="flex mt-6" >
+                           
                             <button
                                 onClick={
                                     () => handleAddClick(product)
                                     // onAddToCart(product)
                                 }
-                                className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                                className="flex ml-auto text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 transition-colors rounded"
                             >
                                 Add to Cart
                             </button>
@@ -146,7 +154,37 @@ const ProductPage = ({ onAddToCart }) => {
                     </div>
                 </div>
             </div>
+
+
+            <div className="mt-1" style={{ marginLeft: '105px' }}>
+            <div >
+                    <h3 className="text-4xl font-semibold mb-6 ml-7">Customer Reviews</h3>
+
+                    {/* Review 1 */}
+                    <div className="border-b border-gray-300 pb-4 mb-4 ml-20">
+                        <p className="text-sm font-semibold">⭐⭐⭐⭐⭐</p>
+                        <p className="text-sm text-gray-700">"This product is amazing! Very fresh and top quality."</p>
+                        <p className="text-xs text-gray-500">- John Doe</p>
+                    </div>
+
+                    {/* Review 2 */}
+                    <div className="border-b border-gray-300 pb-4 mb-4  ml-20">
+                        <p className="text-sm font-semibold">⭐⭐⭐⭐</p>
+                        <p className="text-sm text-gray-700">"Good product but a bit pricey."</p>
+                        <p className="text-xs text-gray-500">- Jane Smith</p>
+                    </div>
+
+                    {/* Review 3 */}
+                    <div className="border-b border-gray-300 pb-4 mb-4  ml-20">
+                        <p className="text-sm font-semibold">⭐⭐⭐⭐⭐</p>
+                        <p className="text-sm text-gray-700">"Highly recommend! Will definitely buy again."</p>
+                        <p className="text-xs text-gray-500">- Alex Brown</p>
+                    </div>
+                </div>
+            </div>
         </section>
+
+                                
     )
 }
 
