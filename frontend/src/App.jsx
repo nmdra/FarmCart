@@ -115,7 +115,6 @@ const router = createBrowserRouter(
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/updateproduct" element={<UpdateProduct />} />
             <Route path="/farmerlogout" element={<FarmerLogout />} />
-            <Route path="*" element={<NotFound />} />
 
             <Route path="/Admindashboard" element={<DashboardLayout />}/>
             <Route path="/Admindashboard/customer" element={<CustomerPage />} />
@@ -124,6 +123,8 @@ const router = createBrowserRouter(
             <Route path="/Admindashboard/financial-analysis" element={<FinancialAnalysisPage />} />
             <Route path="/Admindashboard/staff/create" element={<CreateStaff />} /> {/* Updated path */}
             <Route path="/Admindashboard/Customer/create" element={<CreateCustomer />} />
+
+            <Route path="*" element={<NotFound />} />
         </Route>
     )
 )
