@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3000/api', // Adjust your API base URL
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api', // Adjust your API base URL
 });
 
 // Add a request interceptor to attach the token to requests

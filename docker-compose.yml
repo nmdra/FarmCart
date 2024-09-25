@@ -1,0 +1,38 @@
+name: FarmCart
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./backend/.env.docker
+    ports:
+      - 5001:5001
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - mern-app
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./frontend/.env.docker
+    ports:
+      - 3001:3001
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - mern-app
+    command: npm run dev -- --host
+    depends_on:
+      - api
+
+networks:
+  mern-app:
+    driver: bridge
+
