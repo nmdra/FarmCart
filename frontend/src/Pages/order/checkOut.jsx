@@ -178,7 +178,7 @@ const CheckOut = () => {
     }, [])
 
     const validateName = (name) => {
-        const nameRegex = /^[a-zA-Z\s]*$/; // Only allows letters and spaces
+        const nameRegex = /^[a-zA-Z\s]*$/; 
         if (!name) {
             return 'Name is required.';
         } else if (!nameRegex.test(name)) {
@@ -191,34 +191,32 @@ const CheckOut = () => {
     //Validate email
     const validateEmail = (email) => {
         
-        // Define a regular expression to validate the email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
-        // Check if the email input is empty
         if (!email) {
             return 'Email is required.';
         } 
-        // Check if the email format is valid
+
         else if (!emailRegex.test(email)) {
             return 'Invalid email address.';
         }
-        // Check if the email length is appropriate (e.g., max 256 characters)
+
         else if (email.length > 256) {
             return 'Email must be less than 256 characters.';
         }
-        // Check for common invalid domains (optional)
+
         const invalidDomains = ['example.com', 'test.com'];
         const emailDomain = email.split('@')[1];
         if (invalidDomains.includes(emailDomain)) {
             return 'This domain is not allowed.';
         }
-        // If the email is valid, return an empty string (no error)
+
         return '';
     }
     
 
     const validateCity = (city) => {
-        const cityRegex = /^[a-zA-Z\s]*$/; // Only allows letters and spaces
+        const cityRegex = /^[a-zA-Z\s]*$/; 
         if (!city) {
             return 'City is required.';
         } else if (!cityRegex.test(city)) {
@@ -261,11 +259,9 @@ const CheckOut = () => {
     const handleEmailChange = (e) => {
         const { value } = e.target;
     
-        // Check if the value contains '@gmail.com' and prevent further input
         const domain = '@gmail.com';
         const domainIndex = value.indexOf(domain);
     
-        // If the domain is found, restrict input after it
         const filteredValue = domainIndex !== -1 ? value.slice(0, domainIndex + domain.length) : value;
     
         setEmail(filteredValue);
@@ -276,7 +272,6 @@ const CheckOut = () => {
     const handleCityChange = (e) => {
         const { value } = e.target;
     
-        // Filter out invalid characters before setting the value
         const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
         setCity(filteredValue);
         setErrors((prev) => ({ ...prev, city: validateCity(filteredValue) }));
@@ -286,12 +281,10 @@ const CheckOut = () => {
     const handlePhoneChange = (e) => {
         const { value } = e.target;
     
-        // Allow only numeric input and restrict to a maximum of 10 digits
         if (/^[0-9]*$/.test(value) && value.length <= 10) {
             setPhone(value);
             setErrors((prev) => ({ ...prev, phone: validatePhone(value) }));
         } else {
-            // Clear error message if the input is invalid
             setErrors((prev) => ({ ...prev, phone: '' }));
         }
     };
@@ -301,10 +294,8 @@ const CheckOut = () => {
     const handleAddressChange = (e) => {
         const { value } = e.target;
     
-        // Regular expression to check for special characters
         const specialCharRegex = /^[a-zA-Z0-9\s,.]*$/;
     
-        // Check if the value contains only allowed characters (letters, numbers, and spaces)
         if (specialCharRegex.test(value) || value === '') {
             setAddress(value);
             setErrors((prev) => ({ ...prev, address: validateAddress(value) }));
