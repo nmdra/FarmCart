@@ -3,8 +3,7 @@ import Staff from '../../models/Admin/AdminStaff.js';  // Correct path to Staff 
 // Add a new staff member
 export const addStaff = async (req, res) => {
   try {
-    console.log("Received request to add staff:", req.body);
-    const { nic, name,birthday, email, phone, address } = req.body;
+    const { nic, name, birthday, email, phone, address } = req.body;
 
     // Check if the email or NIC is already in use
     const existingStaffByEmail = await Staff.findOne({ email });
@@ -40,7 +39,7 @@ export const addStaff = async (req, res) => {
 export const updateStaff = async (req, res) => {
   try {
     const { staffId } = req.params;
-    const { nic,name,  birthday, email, phone, address } = req.body;
+    const { nic, name, birthday, email, phone, address } = req.body;
 
     // Find the staff member by ID
     const staff = await Staff.findById(staffId);
@@ -79,7 +78,7 @@ export const updateStaff = async (req, res) => {
 export const getAllStaff = async (req, res) => {
   try {
     const staffMembers = await Staff.find();
-    res.status(200).json(staffMembers);  // Always send an array
+    res.status(200).json(staffMembers);
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving staff members', error });
   }
@@ -116,5 +115,18 @@ export const deleteStaff = async (req, res) => {
     res.status(200).json({ message: 'Staff member deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting staff member', error });
+  }
+};
+
+// Search staff members by name
+export const searchStaffByName = async (req, res) => {
+  try {
+    const { name } = req.query;
+
+    // Find staff members whose names contain the search term (case-insensitive)
+    const staffMembers = await Staff.find({ name: { $regex: name, $options: 'i' } });
+    res.status(200).json(staffMembers);
+  } catch (error) {
+    res.status(500).json({ message: 'Error searching staff members', error });
   }
 };

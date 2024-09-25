@@ -56,9 +56,13 @@ const AdminCreateStaffPage = () => {
   };
 
   const handleNICKeyPress = (e) => {
-    const allowedChars = /^[a-zA-Z0-9]*$/;
-    if (!allowedChars.test(e.key)) {
-      e.preventDefault(); // Prevent the keypress if it is not alphanumeric
+    const inputValue = e.target.value + e.key;
+  
+    // Regular expression for the first 11 characters as numbers and last character as a number or 'v'
+    const allowedPattern = /^[0-9]{0,11}[0-9v]?$/i;
+  
+    if (!allowedPattern.test(inputValue)) {
+      e.preventDefault(); // Prevent the keypress if it doesn't match the pattern
     }
   };
 
@@ -98,94 +102,121 @@ const AdminCreateStaffPage = () => {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">{editMode ? 'Edit Staff Member' : 'Add Staff Member'}</h2>
-      <form onSubmit={handleSubmit} className="mb-6">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border-2 border-green-600">
+      <div className="text-left mb-5">
+{/*       <img
+          src={../} // Replace this with the actual path to your logo
+          alt="FarmCart Logo"
+          className="h-10 w-auto mb-4 mx-auto" // Adjust the size and margins as needed
+        /> */}
+        <h2 className="text-3xl font-bold">{editMode ? 'Edit Staff Member' : 'Add Staff Member'}</h2>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        {/* NIC Field */}
         <div className="mb-4">
-          <label className="block mb-2">NIC</label>
+          <label className="block text-gray-700">NIC</label>
           <input
             type="text"
             name="nic"
             value={formData.nic}
             onChange={handleInputChange}
-            onKeyPress={handleNICKeyPress} // Restrict invalid characters in NIC field
-            className="border p-2 w-full"
+            onKeyPress={handleNICKeyPress}
+            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
             required
             maxLength="12"
+            placeholder="Enter NIC"
           />
           {errors.nic && <p className="text-red-500 text-sm">{errors.nic}</p>}
         </div>
+
+        {/* Name Field */}
         <div className="mb-4">
-          <label className="block mb-2">Name</label>
+          <label className="block text-gray-700">Name</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            onKeyPress={handleNameKeyPress} // Restrict invalid characters in Name field
-            className="border p-2 w-full"
+            onKeyPress={handleNameKeyPress}
+            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
             required
+            placeholder="Enter Name"
           />
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
         </div>
-        <div className="mb-4">
-  <label className="block mb-2">Birthday</label>
-  <input
-    type="date"
-    name="birthday"
-    value={formData.birthday}
-    onChange={handleInputChange}
-    className="border p-2 w-full"
-    required
-    min="1980-01-01" // Set the minimum allowed date
-    max="2006-12-31" // Set the maximum allowed date
-  />
-  {errors.birthday && <p className="text-red-500 text-sm">{errors.birthday}</p>}
-</div>
 
+        {/* Birthday Field */}
         <div className="mb-4">
-          <label className="block mb-2">Email</label>
+          <label className="block text-gray-700">Birthday</label>
+          <input
+            type="date"
+            name="birthday"
+            value={formData.birthday}
+            onChange={handleInputChange}
+            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+            required
+            min="1980-01-01"
+            max="2006-12-31"
+          />
+          {errors.birthday && <p className="text-red-500 text-sm">{errors.birthday}</p>}
+        </div>
+
+        {/* Email Field */}
+        <div className="mb-4">
+          <label className="block text-gray-700">Email</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            className="border p-2 w-full"
+            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
             required
+            placeholder="Enter Email"
           />
           {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
         </div>
+
+        {/* Phone Field */}
         <div className="mb-4">
-          <label className="block mb-2">Phone</label>
+          <label className="block text-gray-700">Phone</label>
           <input
             type="text"
             name="phone"
             value={formData.phone}
             onChange={handleInputChange}
-            onKeyPress={handlePhoneKeyPress} // Restrict invalid characters in Phone field
-            className="border p-2 w-full"
+            onKeyPress={handlePhoneKeyPress}
+            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
             required
             maxLength="10"
+            placeholder="Enter Phone Number"
           />
           {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
         </div>
+
+        {/* Address Field */}
         <div className="mb-4">
-          <label className="block mb-2">Address</label>
+          <label className="block text-gray-700">Address</label>
           <input
             type="text"
             name="address"
             value={formData.address}
             onChange={handleInputChange}
-            className="border p-2 w-full"
+            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
             required
+            placeholder="Enter Address"
           />
         </div>
-        <button type="submit" className="bg-lime-600 text-black p-2 rounded-md">
+
+        {/* Submit Button */}
+        <button type="submit" className="w-full px-4 py-2 bg-lime-500 text-black rounded-lg hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-400">
           {editMode ? 'Update Staff Member' : 'Create Staff Member'}
         </button>
       </form>
     </div>
-  );
+  </div>
+);
 };
 
 export default AdminCreateStaffPage;
