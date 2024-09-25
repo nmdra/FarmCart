@@ -43,7 +43,7 @@ const DeleteOrder = ({
                                     if (orderId) {
                                         try {
                                             await axios.delete(
-                                                `http://localhost:5000/api/orders/${orderId}`
+                                                `http://localhost:3000/api/orders/${orderId}`
                                             )
                                             setOrders((prevOrder) =>
                                                 prevOrder.filter(

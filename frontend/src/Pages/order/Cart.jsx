@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 // import { useGlobalRefetch } from '../Context/GlobalRefetch'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+
 const Cart = () => {
     const [cart, setCart] = useState([])
     const [total, setTotal] = useState(0)
@@ -58,7 +59,7 @@ const Cart = () => {
 
         try {
             const res = await axios.post(
-                'http://localhost:5000/api/coupon/valid-coupon',
+                'http://localhost:3000/api/coupon/valid-coupon',
                 {
                     couponCode: coupon,
                 }

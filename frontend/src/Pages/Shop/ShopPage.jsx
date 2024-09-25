@@ -68,7 +68,9 @@ const ShopPage = () => {
         {filteredProducts?.map(product => (
           <div 
           key={product._id} 
-          className="product-card border rounded-lg shadow-lg p-4 bg-white flex flex-col justify-between"
+
+           className="product-card border border-gray-300 rounded-lg shadow-lg p-4 bg-white flex flex-col justify-between hover:border-2 hover:border-green-500 transition duration-200"
+
           /* Using flex and justify-between for vertical spacing */
         >
           <img 

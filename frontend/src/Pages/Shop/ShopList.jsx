@@ -118,14 +118,16 @@ const ShopList = () => {
 
                     {/* Search Bar */}
                     <input
-                        type="text"
-                        placeholder="Search shops..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="border p-2 rounded w-full mb-4 focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500"
+
+    type="text"
+    placeholder="Search shops..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="mb-5 border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+  
+/>
 
 
-                    />
 
                     {/* Loading Message */}
                     {loading ? (
@@ -136,7 +138,7 @@ const ShopList = () => {
                                 filteredShops.map((shop) => (
                                     <div
                                         key={shop._id}
-                                        className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-200"
+                                        className="bg-white p-4 rounded-lg shadow hover:border-2 hover:border-green-500 transition duration-200"
                                     >
                                         {shop.image && (
                                             <img

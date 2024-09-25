@@ -5,6 +5,8 @@ import {
     Route,
 } from 'react-router-dom'
 
+
+
 // Layouts and Components
 import MainLayout from './Layouts/MainLayout'
 import SidebarLayout from './Layouts/SidebarLayout' // Layout with Sidebar
@@ -15,6 +17,8 @@ import HomePage from './Pages/HomePage'
 import NotFound from './Pages/NotFound'
 import Login from './Pages/Customer/LoginForm'
 import Register from './Pages/Customer/RegisterForm'
+import { Toaster } from 'react-hot-toast'; 
+
 // import UserProfile from './Pages/Customer/UserProfile';
 import VerifyEmail from './Pages/Customer/VerifyEmail'
 import CheckEmail from './Pages/Customer/CheckEmail'
@@ -71,10 +75,10 @@ const router = createBrowserRouter(
                     <Route path="/orderStatus" element={<OrderStatus />} />
                     {/* <Route path="/address" element={<BillingAddress />} /> */}
                     <Route path="/membership" element={<MembershipUpgrade />} />
-                    {/* <Route
+                    <Route
                         path="/payment-confirmation"
                         element={<PaymentConfirmation />}
-                    /> */}
+                    />
                     <Route
                         path="/paymentComplete"
                         element={<PaymentComplete />}
@@ -111,7 +115,12 @@ const router = createBrowserRouter(
     )
 )
 const App = () => {
-    return <RouterProvider router={router}></RouterProvider>
+    return (
+        <>
+            <RouterProvider router={router} />
+            <Toaster position="top-center" reverseOrder={false} /> 
+        </>
+    )
 }
 
 export default App
