@@ -57,7 +57,6 @@ const CheckOut = () => {
         setTotal(originalPrice - couponDiscount)
     }, [originalPrice, couponDiscount])
 
-
     const onSubmit = async () => {
         const nameError = validateName(name)
         const emailError = validateEmail(email)
@@ -179,35 +178,65 @@ const CheckOut = () => {
     }, [])
 
     const validateName = (name) => {
+        const nameRegex = /^[a-zA-Z\s]*$/; // Only allows letters and spaces
         if (!name) {
-            return 'Name is required.'
+            return 'Name is required.';
+        } else if (!nameRegex.test(name)) {
+            return 'Name can only contain letters and spaces.';
         }
-        return ''
-    }
+        return '';
+    };
+    
 
+    //Validate email
     const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        
+        // Define a regular expression to validate the email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        // Check if the email input is empty
         if (!email) {
-            return 'Email is required.'
-        } else if (!emailRegex.test(email)) {
-            return 'Invalid email address.'
+            return 'Email is required.';
+        } 
+        // Check if the email format is valid
+        else if (!emailRegex.test(email)) {
+            return 'Invalid email address.';
         }
-        return ''
+        // Check if the email length is appropriate (e.g., max 256 characters)
+        else if (email.length > 256) {
+            return 'Email must be less than 256 characters.';
+        }
+        // Check for common invalid domains (optional)
+        const invalidDomains = ['example.com', 'test.com'];
+        const emailDomain = email.split('@')[1];
+        if (invalidDomains.includes(emailDomain)) {
+            return 'This domain is not allowed.';
+        }
+        // If the email is valid, return an empty string (no error)
+        return '';
     }
+    
 
     const validateCity = (city) => {
+        const cityRegex = /^[a-zA-Z\s]*$/; // Only allows letters and spaces
         if (!city) {
-            return 'City is required.'
+            return 'City is required.';
+        } else if (!cityRegex.test(city)) {
+            return 'City can only contain letters and spaces.';
         }
-        return ''
-    }
+        return '';
+    };
+    
+    
+    
+    
 
     const validatePhone = (phone) => {
         const phoneRegex = /^[0-9]{10}$/
         if (!phone) {
             return 'Phone number is required.'
         } else if (!phoneRegex.test(phone)) {
-            return 'Invalid phone number.'
+            return 'Phone number must contain 10 numbers'
         }
         return ''
     }
@@ -220,42 +249,73 @@ const CheckOut = () => {
     }
 
     const handleNameChange = (e) => {
-        const { value } = e.target
-        setName(value)
-        setErrors((prev) => ({ ...prev, name: validateName(value) }))
-    }
+        const { value } = e.target;
+    
+        // Filter out invalid characters before setting the value
+        const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
+        setName(filteredValue);
+        setErrors((prev) => ({ ...prev, name: validateName(filteredValue) }));
+    };
+    
 
     const handleEmailChange = (e) => {
-        const { value } = e.target
-        setEmail(value)
-        setErrors((prev) => ({ ...prev, email: validateEmail(value) }))
-    }
+        const { value } = e.target;
+    
+        // Check if the value contains '@gmail.com' and prevent further input
+        const domain = '@gmail.com';
+        const domainIndex = value.indexOf(domain);
+    
+        // If the domain is found, restrict input after it
+        const filteredValue = domainIndex !== -1 ? value.slice(0, domainIndex + domain.length) : value;
+    
+        setEmail(filteredValue);
+        setErrors((prev) => ({ ...prev, email: validateEmail(filteredValue) }));
+    };
+    
 
     const handleCityChange = (e) => {
-        const { value } = e.target
-        setCity(value)
-        setErrors((prev) => ({ ...prev, city: validateCity(value) }))
-    }
+        const { value } = e.target;
+    
+        // Filter out invalid characters before setting the value
+        const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
+        setCity(filteredValue);
+        setErrors((prev) => ({ ...prev, city: validateCity(filteredValue) }));
+    };
+    
 
     const handlePhoneChange = (e) => {
-        const { value } = e.target
-        setPhone(value)
-        setErrors((prev) => ({ ...prev, phone: validatePhone(value) }))
-    }
+        const { value } = e.target;
+    
+        // Allow only numeric input and restrict to a maximum of 10 digits
+        if (/^[0-9]*$/.test(value) && value.length <= 10) {
+            setPhone(value);
+            setErrors((prev) => ({ ...prev, phone: validatePhone(value) }));
+        } else {
+            // Clear error message if the input is invalid
+            setErrors((prev) => ({ ...prev, phone: '' }));
+        }
+    };
+    
+    
 
     const handleAddressChange = (e) => {
-        const { value } = e.target
-        setAddress(value)
-        setErrors((prev) => ({ ...prev, address: validateAddress(value) }))
-    }
+        const { value } = e.target;
+    
+        // Regular expression to check for special characters
+        const specialCharRegex = /^[a-zA-Z0-9\s,.]*$/;
+    
+        // Check if the value contains only allowed characters (letters, numbers, and spaces)
+        if (specialCharRegex.test(value) || value === '') {
+            setAddress(value);
+            setErrors((prev) => ({ ...prev, address: validateAddress(value) }));
+        }
+    };
 
     return (
         <div className="flex w-full justify-center ">
             <div className=" flex w-3/4 justify-center p-2 mt-10 items-center border rounded-lg ">
-
                 <div className="w-1/2 bg-white ">
                     <div className=" flex justify-center items-center p-10 ">
-
                         <div className=" w-[600px]">
                             <form className="flex flex-col gap-2">
                                 <div className="flex gap-3">
@@ -312,6 +372,7 @@ const CheckOut = () => {
                                             getLocalTimeZone()
                                         ).subtract({ days: 3 })}
                                         onChange={(date) => setDate(date)}
+                                        
                                     />
                                 </div>
                                 <div className="flex gap-3">
