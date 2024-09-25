@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom'
 import notFoundImage from '../assets/notFound.png' // Make sure to replace this with the actual image path
 
 const NotFound = () => {
+    useEffect(() => {
+        document.title = 'FarmCart : Not Found'
+    }, [])
     return (
         <section className="flex flex-col justify-center items-center min-h-screen bg-white">
             <div className="text-center">
