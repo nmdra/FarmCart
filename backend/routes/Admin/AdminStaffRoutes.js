@@ -1,10 +1,14 @@
 import express from 'express';
+
+router.get('/search', searchStaffByName);  // Add this line
+
 import {
   addStaff,
   updateStaff,
   getAllStaff,
   getStaffById,
-  deleteStaff
+  deleteStaff,
+  searchStaffByName 
 } from '../../controllers/Admin/AdminStaffController.js';  // Correct path to Staff controller
 
 const router = express.Router();
@@ -23,5 +27,8 @@ router.get('/:staffId', getStaffById);
 
 // Route to delete a staff member by ID
 router.delete('/:staffId', deleteStaff);
+
+//search function
+router.get('/search', searchStaffByName);
 
 export default router;
