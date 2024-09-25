@@ -30,6 +30,10 @@ function Settings() {
     const nameRegex = /^[a-z ,.'-]+$/i
 
     useEffect(() => {
+        document.title = 'FarmCart : Settings'
+    }, [])
+
+    useEffect(() => {
         if (user) {
             setfirstname(user.firstname || '')
             setlastname(user.lastname || '')

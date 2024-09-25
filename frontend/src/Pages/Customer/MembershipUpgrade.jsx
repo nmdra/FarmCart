@@ -8,6 +8,10 @@ const MembershipUpgrade = () => {
     const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('user'))
 
+    useEffect(() => {
+        document.title = 'FarmCart : Membership'
+    }, [])
+
     const redirectToConfirmation = (membershipType) => {
         navigate('/payment-confirmation', {
             state: { billingCycle, membershipType },

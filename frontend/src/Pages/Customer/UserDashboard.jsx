@@ -24,6 +24,10 @@ function Dashboard() {
     }, [page, orders])
 
     useEffect(() => {
+        document.title = 'FarmCart : Dashboard'
+    }, [])
+
+    useEffect(() => {
         const fetchUserOrders = async () => {
             try {
                 const res = await axios.get(
