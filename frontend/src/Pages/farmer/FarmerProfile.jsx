@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import axios from '../../../axios'
+import axios from '../../axios'
+// import axios from 'axios'
 import Sidebar from '../../Components/farmer/Farmer_sidebar'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'

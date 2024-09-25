@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from '../../../axios'
+import axios from '../../axios'
 import Sidebar from '../../Components/farmer/shop_sidebar'
 import placeholderImage from '../../assets/shop.png'
 import { useNavigate } from 'react-router-dom'

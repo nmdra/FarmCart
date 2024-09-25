@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import axios from '../../../axios'
+import axios from '../../axios'
 import Swal from 'sweetalert2'
 import logo from '../../assets/logo.png'
 

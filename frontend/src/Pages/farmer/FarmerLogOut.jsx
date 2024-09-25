@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from '../../../axios' // Ensure this path is correct
+import axios from '../../axios' // Ensure this path is correct
 
 const Logout = () => {
     const [loading, setLoading] = useState(true)
