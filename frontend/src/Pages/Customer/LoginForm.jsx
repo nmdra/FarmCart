@@ -15,7 +15,11 @@ const Login = () => {
         await login(email, password)
         // toast.success('Login successful!')
     }
-
+        
+    useEffect(() => {
+        document.title = 'FarmCart : Login'
+    }, [])
+    
     useEffect(() => {
         if (error) {
             toast.error(error)

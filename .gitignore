@@ -27,3 +27,8 @@ dist-ssr
 *.sw?
 
 .editorconfig
+.directory
+
+# Docker 
+.env.docker
+

@@ -79,6 +79,10 @@ const PaymentConfirmation = ({ setPaymentSuccess, setOrderID }) => {
                 'Payment verified and recorded successfully',
                 response.data
             )
+
+            const json = response.data.user
+
+            localStorage.setItem('user', JSON.stringify(json))
             navigate('/paymentComplete')
         } catch (error) {
             console.error('Error verifying payment', error)

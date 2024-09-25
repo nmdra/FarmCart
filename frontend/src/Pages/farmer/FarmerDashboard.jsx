@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import axios from '../../../axios'
+import axios from '../../axios'
 import Sidebar from '../../Components/farmer/Farmer_sidebar'
 import { useNavigate, Link } from 'react-router-dom'
 import { useDisclosure } from '@nextui-org/react'
@@ -21,6 +21,7 @@ import { IoSearch } from 'react-icons/io5'
 import { MdDeleteSweep } from 'react-icons/md'
 import DeleteOrder from '../order/DeleteOrder'
 import OrderDetailsModal from '../order/OrderDetailsModal'
+import Loading from '../../Components/Loading'
 
 const Dashboard = () => {
     // State to store farmer details fetched from the backend
@@ -118,7 +119,7 @@ const Dashboard = () => {
             try {
                 farmersShop.forEach(async (shop) => {
                     const res = await axios.get(
-                        `http://localhost:3000/api/orders?shopId=${shop._id}`
+                        `/orders?shopId=${shop._id}`
                     )
 
                     setOrders((prevOrders) => {
@@ -152,7 +153,7 @@ const Dashboard = () => {
     }, [refetch, farmersShop])
 
     const handelChange = async (e, id) => {
-        const res = await axios.put(`http://localhost:3000/api/orders/${id}`, {
+        const res = await axios.put(`/orders/${id}`, {
             orderStatus: e.target.value,
         })
 
@@ -203,10 +204,8 @@ const Dashboard = () => {
 
     if (loading) {
         return (
-            <div>
-                <div className="flex justify-center items-center h-full mt-[100px]">
-                    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-                </div>
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
             </div>
         )
     }
