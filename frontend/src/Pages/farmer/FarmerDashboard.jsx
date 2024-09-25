@@ -164,7 +164,10 @@ const Dashboard = () => {
     const generatePDF = () => {
         const doc = new jsPDF()
 
+         doc.setFontSize(18);
         doc.text('Sales Report', 14, 10)
+
+        
 
         const tableColumn = [
             'Id',
@@ -270,12 +273,12 @@ const Dashboard = () => {
                     </div>
 
                     {/* Orders Section */}
-                    <div className="bg-white p-6 rounded-lg shadow-md w-full">
+                    <div className="bg-white p-6 rounded-lg shadow-md w-full border-2 border-green-400 focus:outline-none focus:ring-2 focus:ring-green-500">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold text-gray-800">
                                 My Orders
                             </h3>
-                            <div>
+                            <div className="w-96">
                                 <Input
                                     isClearable
                                     radius="full"
@@ -286,7 +289,7 @@ const Dashboard = () => {
                             </div>
                             <div
                                 onClick={generatePDF}
-                                className=" mt-2 inline-block cursor-pointer bg-red-500 p-2 rounded-md text-white ring-0"
+                                className=" mt-2 inline-block cursor-pointer hover:bg-red-600 bg-red-500 p-2 rounded-md text-white ring-0"
                             >
                                 download sales report
                             </div>
@@ -366,25 +369,25 @@ const Dashboard = () => {
                                                 className={
                                                     item.orderStatus ===
                                                     'Pending'
-                                                        ? 'bg-yellow-500 p-1 rounded-md text-white ring-0'
+                                                        ? 'bg-yellow-500  pr-5 p-1 rounded-md text-white ring-0'
                                                         : item.orderStatus ===
                                                             'Delivered'
-                                                          ? 'bg-green-500 p-1 rounded-md text-white ring-0'
+                                                          ? 'bg-green-500  pr-5 p-1 rounded-md text-white ring-0'
                                                           : item.orderStatus ===
                                                               'Accept'
-                                                            ? 'bg-blue-500 p-1 rounded-md text-white ring-0'
+                                                            ? 'bg-blue-500  pr-5 p-1 rounded-md text-white ring-0'
                                                             : item.orderStatus ===
                                                                 'Ready'
-                                                              ? 'bg-purple-500 p-1 rounded-md text-white ring-0'
+                                                              ? 'bg-purple-500  pr-5 p-1 rounded-md text-white ring-0'
                                                               : item.orderStatus ===
                                                                   'Pickup'
-                                                                ? 'bg-orange-500 p-1 rounded-md text-white ring-0'
+                                                                ? 'bg-orange-500  pr-5 p-1 rounded-md text-white ring-0'
                                                                 : item.orderStatus ===
                                                                     'OnTheWay'
-                                                                  ? 'bg-indigo-500 p-1 rounded-md text-white ring-0'
+                                                                  ? 'bg-indigo-500  pr-5 p-1 rounded-md text-white ring-0'
                                                                   : item.orderStatus ===
                                                                       'Rejected'
-                                                                    ? 'bg-red-500 p-1 rounded-md text-white ring-0'
+                                                                    ? 'bg-red-500 pr-5 p-1 rounded-md text-white ring-0'
                                                                     : 'bg-gray-500 p-1 rounded-md text-white ring-0'
                                                 }
                                                 value={item.orderStatus}
@@ -393,7 +396,7 @@ const Dashboard = () => {
                                                 }
                                             >
                                                 <option value="Pending">
-                                                    Pending
+                                                    Pending  
                                                 </option>
                                                 <option value="Accept">
                                                     Accept
@@ -411,7 +414,7 @@ const Dashboard = () => {
                                                     Delivered
                                                 </option>
                                                 <option value="Rejected">
-                                                    Rejected
+                                                    Rejected  
                                                 </option>
                                             </select>
                                         </TableCell>

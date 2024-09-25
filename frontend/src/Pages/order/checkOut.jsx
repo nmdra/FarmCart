@@ -115,11 +115,9 @@ const CheckOut = () => {
                     ),
                     deliveryDateObj: date,
                 }
-                
-                console.log(data.user)
 
                 const response = await axios.post(
-                 'http://localhost:3000/api/orders/create-payment-intent',
+                    'http://localhost:3000/api/orders/create-payment-intent',
                     {
                         totalPrice: (data.totalPrice / 300).toFixed(2),
                         user: data.user,
@@ -146,9 +144,9 @@ const CheckOut = () => {
                     toast.error(paymentResult.error.message)
                     return
                 } else if (paymentResult.paymentIntent.status === 'succeeded') {
-                    await axios.post('/api/orders', data)
+                    await axios.post('http://localhost:3000/api/orders', data)
                     toast.success(
-                        `Payment successful for farmer ${shopId}, order placed!`
+                        `Payment successful and order placed!`
                     )
                 }
             }
@@ -253,8 +251,8 @@ const CheckOut = () => {
     return (
         <div className="flex w-full justify-center ">
             <div className=" flex w-3/4 justify-center p-2 mt-10 items-center border rounded-lg ">
-                <div className="w-1/2 bg-white">
-                    <div className=" flex justify-center items-center p-10">
+                <div className="w-1/2 bg-white ">
+                    <div className=" flex justify-center items-center p-10 ">
                         <div className=" w-[600px]">
                             <form className="flex flex-col gap-2">
                                 <div className="flex gap-3">
@@ -373,7 +371,7 @@ const CheckOut = () => {
                                             }}
                                         />
                                     </div>
-                                    <div className="flex w-full gap-2">
+                                    <div className="flex w-full gap-2 ">
                                         <div className="flex-wrap w-full p-2 rounded-lg border-2">
                                             <CardExpiryElement
                                                 options={{
@@ -416,7 +414,7 @@ const CheckOut = () => {
                                                 }}
                                             />
                                         </div>
-                                        <div className="flex-wrap w-full p-2 rounded-lg border-2">
+                                        <div className="flex-wrap w-full p-2 rounded-lg border-2 ">
                                             <CardCvcElement
                                                 options={{
                                                     style: {
@@ -460,7 +458,11 @@ const CheckOut = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Button color="primary" onClick={onSubmit}>
+                                <Button
+                                    color="primary"
+                                    onClick={onSubmit}
+                                    className="hover:bg-green-600 bg-green-500"
+                                >
                                     Proceed to Checkout
                                 </Button>
                             </form>
@@ -468,50 +470,37 @@ const CheckOut = () => {
                     </div>
                 </div>
 
-                <div className="w-1/2 flex justify-center flex-col items-center">
+                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6">
+                    Order Summary
                     <div className="w-[400px] gap-2 ">
                         {cart.length > 0 ? (
                             cart.map((product) => (
                                 <div
                                     key={product.id}
-                                    className="mx-auto  flex-none mt-2"
+                                    className="mx-auto flex-none mt-2"
                                 >
-                                    <div className="">
-                                        <div className="rounded-lg border border-gray-200 bg-white p-2 shadow-sm ">
-                                            <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                                                <div className="shrink-0 md:order-1">
-                                                    <img
-                                                        src={product.image}
-                                                        alt=""
-                                                        className="w-16 h-16 rounded-lg object-cover"
-                                                    />
+                                    <div className="rounded-lg p-2">
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center space-x-4">
+                                                <img
+                                                    src={product.image}
+                                                    alt=""
+                                                    className="w-16 h-16 rounded-lg object-cover"
+                                                />
+                                                <div className="text-base font-medium text-gray-900">
+                                                    {product.name} x
+                                                    {product.quantity}
                                                 </div>
-                                                <div className="w-full min-w-0 flex-1 space-y-2 md:order-2 md:max-w-md">
-                                                    <div className="text-base font-medium text-gray-900 hover:underline ">
-                                                        {product.name}
-                                                    </div>
-                                                    <div className="text-base font-medium text-gray-900 hover:underline ">
-                                                        quantity :
-                                                        {product.quantity}
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center justify-between md:order-3 md:justify-end">
-                                                    <div className="text-end md:order-4 md:w-32">
-                                                        <p className="text-base font-bold text-gray-900 ">
-                                                            LKR.{' '}
-                                                            {(
-                                                                product.price *
-                                                                product.quantity
-                                                            ).toLocaleString(
-                                                                'en-US',
-                                                                {
-                                                                    minimumFractionDigits: 2,
-                                                                    maximumFractionDigits: 2,
-                                                                }
-                                                            )}{' '}
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                            </div>
+                                            <div className="text-base font-bold text-gray-900 text-right">
+                                                LKR.{' '}
+                                                {(
+                                                    product.price *
+                                                    product.quantity
+                                                ).toLocaleString('en-US', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                })}
                                             </div>
                                         </div>
                                     </div>
@@ -523,12 +512,13 @@ const CheckOut = () => {
                             </div>
                         )}
                     </div>
-                    <div className="mt-4 w-[350px] flex flex-col">
+                    {/* Price Summary */}
+                    <div className="mt-4 w-[400px] flex flex-col">
                         <dl className="flex items-center justify-between gap-4">
-                            <dt className="text-base font-normal text-gray-700 ">
-                                Original price
+                            <dt className="text-base font-normal text-gray-700">
+                                Subtotal:
                             </dt>
-                            <dd className="text-base font-medium text-gray-900 ">
+                            <dd className="text-base font-medium text-gray-900 text-right">
                                 LKR.{' '}
                                 {originalPrice.toLocaleString('en-US', {
                                     minimumFractionDigits: 2,
@@ -536,12 +526,13 @@ const CheckOut = () => {
                                 })}
                             </dd>
                         </dl>
+                        <br></br>
 
                         <dl className="flex items-center justify-between gap-4">
-                            <dt className="text-base font-normal text-gray-700 ">
-                                Coupon Discount
+                            <dt className="text-base font-normal text-gray-700">
+                                Coupon Discount:
                             </dt>
-                            <dd className="text-base font-medium text-green-600">
+                            <dd className="text-base font-medium text-green-600 text-right">
                                 LKR.{' '}
                                 {couponDiscount.toLocaleString('en-US', {
                                     minimumFractionDigits: 2,
@@ -549,12 +540,13 @@ const CheckOut = () => {
                                 })}
                             </dd>
                         </dl>
+                        <br></br>
 
-                        <dl className="flex items-center justify-between gap-4 border-t  border-gray-200 pt-2 dark:border-gray-700">
-                            <dt className="text-base font-bold text-gray-900 ">
-                                Total
+                        <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                            <dt className="text-base font-bold text-gray-900">
+                                Total:
                             </dt>
-                            <dd className="text-base font-bold text-gray-900 ">
+                            <dd className="text-base font-bold text-gray-900 text-right">
                                 LKR.{' '}
                                 {total > 0
                                     ? total.toLocaleString('en-US', {
