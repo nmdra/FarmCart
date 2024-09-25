@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../../Components/farmer/Farmer_sidebar'
 import shop from '../../assets/shop.png'
-import axios from '../../../axios'
+import axios from '../../axios'
 import { useDistricts } from '../../Hooks/district_City'
 import Swal from 'sweetalert2'
 

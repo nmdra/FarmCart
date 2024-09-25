@@ -4,7 +4,7 @@ import Farmer from '../models/farmerModel.js'
 
 export const protect = async (req, res, next) => {
     let token
-    console.log('aaaaa')
+    console.log('Authenticating')
 
     if (
         req.headers.authorization &&

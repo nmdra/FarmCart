@@ -80,10 +80,10 @@ const router = createBrowserRouter(
                     <Route path="/orderStatus" element={<OrderStatus />} />
                     {/* <Route path="/address" element={<BillingAddress />} /> */}
                     <Route path="/membership" element={<MembershipUpgrade />} />
-                    {/* <Route
+                    <Route
                         path="/payment-confirmation"
                         element={<PaymentConfirmation />}
-                    /> */}
+                    />
                     <Route
                         path="/paymentComplete"
                         element={<PaymentComplete />}

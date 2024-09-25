@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import axios from '../../../axios'
+import axios from '../../axios'
+// import axios from 'axios'
 import farmcartLogo from '../../assets/logo.png'
 
 const Login = () => {
@@ -12,7 +13,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post('farmers/login', {
+            const response = await axios.post('/farmers/login', {
                 email,
                 password,
             })

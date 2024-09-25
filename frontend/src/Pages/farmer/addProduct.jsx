@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../../Components/farmer/shop_sidebar'
-import axios from '../../../axios'
+import axios from '../../axios'
 import Swal from 'sweetalert2'
 
 const AddProduct = () => {

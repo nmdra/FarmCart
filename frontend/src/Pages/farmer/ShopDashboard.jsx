@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import axios from '../../../axios'
+import axios from '../../axios'
 import Sidebar from '../../Components/farmer/shop_sidebar'
 import shopCover from '../../assets/shop.png'
 

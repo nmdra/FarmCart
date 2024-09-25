@@ -24,6 +24,10 @@ function Dashboard() {
     }, [page, orders])
 
     useEffect(() => {
+        document.title = 'FarmCart : Dashboard'
+    }, [])
+
+    useEffect(() => {
         const fetchUserOrders = async () => {
             try {
                 const res = await axios.get(
@@ -132,17 +136,27 @@ function Dashboard() {
                 </div>
             </div>
             {/* Recent Orders */}
-            <div className="max-w-full mx-2 p-6 bg-white rounded-lg shadow-lg border-2 border-green-400 mt-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                    Recent Orders
-                </h2>
-                <OrderTable
-                    items={items}
-                    page={page}
-                    pages={pages}
-                    setPage={setPage}
-                />
-            </div>
+{/* Recent Orders */}
+<div className="max-w-full mx-2 p-6 bg-white rounded-lg shadow-lg border-2 border-green-400 mt-6">
+    <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold text-gray-900">
+            Recent Orders
+        </h2>
+        <Link
+            to="/orderhistory"  
+            className="text-green-700 underline text-sm"
+        >
+            View All
+        </Link>
+    </div>
+    <OrderTable
+        items={items}
+        page={page}
+        pages={pages}
+        setPage={setPage}
+    />
+</div>
+
         </div>
     )
 }
