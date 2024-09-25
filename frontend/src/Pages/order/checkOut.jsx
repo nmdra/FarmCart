@@ -57,6 +57,7 @@ const CheckOut = () => {
         setTotal(originalPrice - couponDiscount)
     }, [originalPrice, couponDiscount])
 
+
     const onSubmit = async () => {
         const nameError = validateName(name)
         const emailError = validateEmail(email)
@@ -251,8 +252,10 @@ const CheckOut = () => {
     return (
         <div className="flex w-full justify-center ">
             <div className=" flex w-3/4 justify-center p-2 mt-10 items-center border rounded-lg ">
+
                 <div className="w-1/2 bg-white ">
                     <div className=" flex justify-center items-center p-10 ">
+
                         <div className=" w-[600px]">
                             <form className="flex flex-col gap-2">
                                 <div className="flex gap-3">

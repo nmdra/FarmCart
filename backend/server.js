@@ -2,51 +2,58 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
+import dotenv from 'dotenv' // Load environment variables
+
+// Import routes
 import userRoute from './routes/userRoute.js'
 import orderRoute from './routes/orderRoute.js'
 import farmerRoutes from './routes/farmerRoute.js'
 import shopRoute from './routes/shop_productRoute.js'
 import userShop from './routes/userShopRoute.js'
 import imageHandler from './routes/imageHandlerRoute.js'
-import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 import couponRouter from './routes/couponRouter.js'
 
-// load environment variables
+// Import middlewares
+import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
+
+// Load environment variables from .env file
+dotenv.config()
+
+// Set up port from environment or default to 8000
 const PORT = process.env.PORT || 8000
 
-// connect to MongoDB
+// Connect to MongoDB
 connectDB()
 
 const app = express()
 
+// Apply middleware
 app.use(cors())
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
 app.use(cookieParser())
 
-// routes
+// Test API route
 app.get('/', (_req, res) => {
     res.send('FarmCart API is Running...')
 })
 
-// User API routes
+// Define API routes
 app.use('/api/users', userRoute)
 app.use('/api/orders', orderRoute)
-
-// Shop API routes
-app.use('/api/farmers', farmerRoutes);
-app.use('/api/shops', shopRoute);
-app.use('/api/userShops', userShop);
+app.use('/api/farmers', farmerRoutes)
+app.use('/api/shops', shopRoute)
+app.use('/api/userShops', userShop)
 app.use('/api/images', imageHandler)
 app.use('/api/coupon', couponRouter)
+
+// Handle 404 Not Found
 app.use(notFound)
 
-// Middleware to handle errors and send appropriate responses
+// Error handler middleware
 app.use(errorHandler)
 
-// Start the server and listen on the specified port
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server currently is running on port ${PORT}`)
 }).on('error', (error) => {

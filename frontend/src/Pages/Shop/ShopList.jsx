@@ -16,7 +16,13 @@ const ShopList = () => {
     useEffect(() => {
         const fetchShops = async () => {
             try {
-                const { data } = await axios.get('/api/userShops')
+              const config = {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+              };
+              const { data } = await axios.get('/api/userShops', config);
+              
                 setShops(data.shops)
             } catch (error) {
                 console.error('Error fetching shops:', error)
@@ -28,6 +34,13 @@ const ShopList = () => {
         fetchShops()
     }, [])
 
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
+    
     // Filtering and Sorting Logic
     const filteredShops = shops
         .filter((shop) =>
@@ -105,6 +118,7 @@ const ShopList = () => {
 
                     {/* Search Bar */}
                     <input
+
     type="text"
     placeholder="Search shops..."
     value={searchTerm}
@@ -112,6 +126,7 @@ const ShopList = () => {
     className="mb-5 border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
   
 />
+
 
 
                     {/* Loading Message */}
