@@ -48,6 +48,15 @@ import ProductPage from './Pages/Shop/ProductPage'
 import Cart from './Pages/order/Cart'
 import CheckOut from './Pages/order/checkOut'
 
+//Admin
+import DashboardLayout from './Components/Admin/DashboardLayout';
+import CustomerPage from './Components/Admin/CustomerPage';
+import StaffPage from './Components/Admin/StaffPage';
+import PromotionPage from './Components/Admin/PromotionPage';
+import FinancialAnalysisPage from './Components/Admin/FinancialAnalysisPage';
+import CreateStaff from './Components/Admin/AdminCreateStaffPage';
+import CreateCustomer from './Components/Admin/AdminCreateCustomerPage';
+
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<MainLayout />}>
@@ -107,6 +116,14 @@ const router = createBrowserRouter(
             <Route path="/updateproduct" element={<UpdateProduct />} />
             <Route path="/farmerlogout" element={<FarmerLogout />} />
             <Route path="*" element={<NotFound />} />
+
+            <Route path="/Admindashboard" element={<DashboardLayout />}/>
+            <Route path="/Admindashboard/customer" element={<CustomerPage />} />
+            <Route path="/Admindashboard/staff" element={<StaffPage />} />
+            <Route path="/Admindashboard/offers" element={<PromotionPage />} />
+            <Route path="/Admindashboard/financial-analysis" element={<FinancialAnalysisPage />} />
+            <Route path="/Admindashboard/staff/create" element={<CreateStaff />} /> {/* Updated path */}
+            <Route path="/Admindashboard/Customer/create" element={<CreateCustomer />} />
         </Route>
     )
 )
