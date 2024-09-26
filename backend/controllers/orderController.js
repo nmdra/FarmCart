@@ -117,29 +117,33 @@ export const DeleteOrder = async (req, res) => {
 
 export const getShopByFarmerId = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params
 
         // Optional: Validate the ID format (assuming MongoDB ObjectId)
         if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-            return res.status(400).json({ message: 'Invalid farmer ID format' });
+            return res.status(400).json({ message: 'Invalid farmer ID format' })
         }
 
         // Find shops associated with the given farmer ID
-        const shops = await Shop.find({ farmer: id });
+        const shops = await Shop.find({ farmer: id })
 
         // Check if any shop is found
         if (!shops.length) {
-            return res.status(404).json({ message: 'No shops found for this farmer' });
+            return res
+                .status(404)
+                .json({ message: 'No shops found for this farmer' })
         }
 
         // Return the shop(s) found
-        res.status(200).json(shops);
+        res.status(200).json(shops)
     } catch (error) {
         // Return an error with a 500 status for internal server issues
-        res.status(500).json({ message: 'Failed to retrieve shops', error: error.message });
+        res.status(500).json({
+            message: 'Failed to retrieve shops',
+            error: error.message,
+        })
     }
-};
-
+}
 
 export const getOrderById = async (req, res) => {
     const { id: orderId } = req.params // Destructure orderId from request query
