@@ -204,7 +204,7 @@ const Dashboard = () => {
         doc.save('orders-report.pdf')
     }
 
-    if (loading) {
+   /* if (loading) {
         return (
             <div>
                 <div className="flex justify-center items-center h-full mt-[100px]">
@@ -212,7 +212,7 @@ const Dashboard = () => {
                 </div>
             </div>
         )
-    }
+    }*/
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
