@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Toaster, toast } from 'react-hot-toast'; 
 
 const ProductPage = ({ onAddToCart }) => {
     const { id, productId } = useParams() // shop ID and product ID from URL
@@ -10,7 +9,8 @@ const ProductPage = ({ onAddToCart }) => {
     const [quantity, setQuantity] = useState(1)
     const navigate = useNavigate()
 
-    const notify = () => toast("Item added to wishlist!");
+    //const notify = () => toast("Item added to wishlist!");
+    const notifyWishlist = () => toast.success('Item added to wishlist!');
 
     const handleAddClick = (product) => {
         const sanitizedProduct = {
@@ -142,7 +142,7 @@ const ProductPage = ({ onAddToCart }) => {
                             >
                                 Add to Cart
                             </button>
-                                <button onClick={notify} className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-pink-500 ml-4 hover:bg-pink-300 hover:text-pink-500 hover:shadow-lg transition duration-200 ease-in-out">
+                                <button onClick={notifyWishlist} className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-pink-500 ml-4 hover:bg-pink-300 hover:text-pink-500 hover:shadow-lg transition duration-200 ease-in-out">
                                     <svg
                                         fill="currentColor"
                                         stroke-linecap="round"
@@ -154,7 +154,7 @@ const ProductPage = ({ onAddToCart }) => {
                                         <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
                                     </svg>
                                 </button>
-                                <ToastContainer />
+                                
 
                         </div>
                     </div>

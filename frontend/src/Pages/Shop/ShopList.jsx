@@ -12,6 +12,7 @@ const ShopList = () => {
     const [filterDistrict, setFilterDistrict] = useState('')
     const [loading, setLoading] = useState(true) // Loading state
 
+
     // Fetch shops on component mount
     useEffect(() => {
         const fetchShops = async () => {
@@ -61,6 +62,7 @@ const ShopList = () => {
         })
 
     return (
+        
         <div className="relative min-h-screen bg-gray-50 grid grid-cols-1 justify-center">
             <div className="flex flex-col lg:flex-row">
                 {/* Sidebar */}
@@ -125,8 +127,7 @@ const ShopList = () => {
     onChange={(e) => setSearchTerm(e.target.value)}
     className="mb-5 border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
   
-/>
-
+/>                                    
 
 
                     {/* Loading Message */}
@@ -164,7 +165,11 @@ const ShopList = () => {
                                         >
                                             View Shop
                                         </Link>
+
+                                        
                                     </div>
+                                    
+                                    
                                 ))
                             ) : (
                                 <p>No shops found</p>
