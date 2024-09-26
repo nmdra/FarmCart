@@ -38,19 +38,6 @@ const Dashboard = () => {
     const navigate = useNavigate()
     console.log(farmer)
 
-    useEffect(() => {
-        const getShopByFarmer = async () => {
-            try {
-                const res = await axios.get(`/orders/get-shop/${farmer._id}`)
-                setFarmersShop(res.data)
-            } catch (error) {
-                console.error('Error fetching farmer details:', error)
-            }
-        }
-
-        getShopByFarmer()
-    }, [farmer])
-
     // useEffect hook to fetch farmer details when the component mounts
     useEffect(() => {
         const fetchFarmerDetails = async () => {
@@ -78,8 +65,25 @@ const Dashboard = () => {
         fetchFarmerDetails()
     }, []) // Empty dependency array ensures this effect runs only once when the component mounts
 
-    // Render a loading state until farmer details are fetched
+useEffect(() => {
+    const getShopByFarmer = async () => {
+        try {
+            if (farmer && farmer._id) {  // Check if farmer and farmer._id are defined
+                console.log(farmer._id)
 
+                const res = await axios.get(`/orders/get-shop/${farmer._id}`)
+                setFarmersShop(res.data)
+            }
+        } catch (error) {
+            console.error('Error fetching farmer details:', error)
+            setLoading(false)
+        }
+    }
+
+    getShopByFarmer()
+}, [farmer])
+
+    // Render a loading state until farmer details are fetched
     const [loading, setLoading] = useState(true)
     const [orders, setOrders] = useState([])
 
@@ -146,6 +150,7 @@ const Dashboard = () => {
                 })
             } catch (error) {
                 console.log(error)
+                setLoading(false)
             }
         }
 
