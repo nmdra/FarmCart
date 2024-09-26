@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import notFoundImage from '../assets/notFound.png' // Make sure to replace this with the actual image path
 
