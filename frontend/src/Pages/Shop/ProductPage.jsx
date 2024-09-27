@@ -82,7 +82,7 @@ const ProductPage = ({ onAddToCart }) => {
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">
                             {product.brand}
                         </h2>
-                        <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+                        <h1 className="text-gray-900 text-4xl title-font font-medium mb-1">
                             {product.name || 'Product Name'}
                         </h1>
                         <p className="leading-relaxed mb-4">
@@ -93,7 +93,7 @@ const ProductPage = ({ onAddToCart }) => {
                             LKR{' '}
                             {(product.pricePerKg * quantity)?.toFixed(2) || '0.00'}
                         </span>
-                        <p className="text-xs font-normal ">
+                        <p className="text-xs font-normal mb-2">
                         Tax included, shipping and discounts calculated at checkout
                         </p>
                         <div className=" flex py-5">
@@ -162,32 +162,35 @@ const ProductPage = ({ onAddToCart }) => {
             </div>
 
 
-            <div className="mt-1" style={{ marginLeft: '105px' }}>
-            <div >
-                    <h3 className="text-4xl font-semibold mb-6 ml-7">Customer Reviews</h3>
+            <div class="bg-gray-50 p-8 rounded-lg shadow-lg">
+            <h3 class="text-3xl font-bold mb-6 ml-7 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 relative">
+            Customer Reviews
+            
+            </h3>
 
-                    {/* Review 1 */}
-                    <div className="border-b border-gray-300 pb-4 mb-4 ml-20">
-                        <p className="text-sm font-semibold">⭐⭐⭐⭐⭐</p>
-                        <p className="text-sm text-gray-700">"This product is amazing! Very fresh and top quality."</p>
-                        <p className="text-xs text-gray-500">- John Doe</p>
-                    </div>
 
-                    {/* Review 2 */}
-                    <div className="border-b border-gray-300 pb-4 mb-4  ml-20">
-                        <p className="text-sm font-semibold">⭐⭐⭐⭐</p>
-                        <p className="text-sm text-gray-700">"Good product but a bit pricey."</p>
-                        <p className="text-xs text-gray-500">- Jane Smith</p>
-                    </div>
+   
+    <div class="border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
+        <p class="text-yellow-500 text-xl font-semibold mb-2">⭐⭐⭐⭐⭐</p>
+        <p class="text-sm text-gray-700">"This product is amazing! Very fresh and top quality."</p>
+        <p class="text-xs text-gray-500 mt-2">- John Doe</p>
+    </div>
 
-                    {/* Review 3 */}
-                    <div className="border-b border-gray-300 pb-4 mb-4  ml-20">
-                        <p className="text-sm font-semibold">⭐⭐⭐⭐⭐</p>
-                        <p className="text-sm text-gray-700">"Highly recommend! Will definitely buy again."</p>
-                        <p className="text-xs text-gray-500">- Alex Brown</p>
-                    </div>
-                </div>
-            </div>
+    
+    <div class="border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
+        <p class="text-yellow-500 text-xl font-semibold mb-2">⭐⭐⭐⭐</p>
+        <p class="text-sm text-gray-700">"Good product but a bit pricey."</p>
+        <p class="text-xs text-gray-500 mt-2">- Jane Smith</p>
+    </div>
+
+    
+    <div class="border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
+        <p class="text-yellow-500 text-xl font-semibold mb-2">⭐⭐⭐⭐⭐</p>
+        <p class="text-sm text-gray-700">"Highly recommend! Will definitely buy again."</p>
+        <p class="text-xs text-gray-500 mt-2">- Alex Brown</p>
+    </div>
+</div>
+
         </section>
 
                                 
