@@ -7,7 +7,7 @@
     "transform": {}
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node --env-file=.env server.js",
     "dev": "nodemon --verbose --env-file=.env server.js",
     "watch": "node --watch --env-file=.env server",
     "lint": "eslint ",

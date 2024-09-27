@@ -1,0 +1,46 @@
+name: FarmCart-Caddy
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    env_file: ./backend/.env.prod
+    # ports:
+    #   - "5002:5002"
+    networks:
+      - app-network-caddy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.caddy
+    restart: unless-stopped
+    depends_on:
+      - api
+    networks:
+      - app-network-caddy
+
+  caddy:
+    image: caddy:2.8.4-alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./frontend/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - app-network-caddy
+    depends_on:
+      - api
+      - frontend
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  app-network-caddy:
+    driver: bridge

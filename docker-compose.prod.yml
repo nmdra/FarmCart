@@ -1,0 +1,36 @@
+name: FarmCart-Prod
+
+services:
+  api:
+    build:
+      context: ./backend  # Path to your backend directory
+      dockerfile: Dockerfile.prod  # Backend Dockerfile (already in use)
+    restart: unless-stopped
+    env_file: ./backend/.env.prod
+    # ports:
+    #   - "5002:5002"  # Map backend port 5002 to localhost:5002
+    volumes:
+      - ./backend:/app  # Only in development; remove for production
+      - /app/node_modules
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend  # Path to your frontend directory
+      dockerfile: Dockerfile.prod  # Frontend Dockerfile using Nginx
+    restart: unless-stopped
+    env_file: ./frontend/.env.prod
+    ports:
+      - "80:80"  # Serve frontend on port 80
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - api  # Ensure the API is running before frontend starts
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
