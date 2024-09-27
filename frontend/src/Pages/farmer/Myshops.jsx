@@ -53,12 +53,12 @@ const MyShop = () => {
                             <img
                                 src={addShopIcon}
                                 alt="Add Shop"
-                                className="w-45 h-40 mb-6"
+                                className="w-40 h-38 mb-6"
                             />
                             <div className="flex justify-center">
                                 <button
                                     onClick={handleAddNewShop}
-                                    className="bg-green-500 text-white hover:bg-green-600 font-semibold py-2 px-4 rounded w-40 text-center"
+                                    className="bg-green-500 text-white hover:bg-green-600 font-semibold py-2 px-4 rounded w-40 text-center "
                                 >
                                     Create New Shop
                                 </button>

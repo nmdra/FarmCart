@@ -167,7 +167,7 @@ const UpdateProduct = () => {
                         'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
                 },
             })
-            navigate(`/shop/${shopId}/productpage`)
+            navigate(`/farmerShop/${shopId}/productpage`)
         } catch (err) {
             setError(
                 err.response?.data?.message ||
@@ -179,7 +179,7 @@ const UpdateProduct = () => {
 
     // Handle cancel action
     const handleCancel = () => {
-        navigate(`/shop/${shopId}/productpage`)
+        navigate(`/farmerShop/${shopId}/productpage`)
     }
 
     return (
