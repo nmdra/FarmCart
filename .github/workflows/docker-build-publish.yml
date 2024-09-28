@@ -36,12 +36,12 @@ jobs:
       # Step 4: Build and push the backend Docker image
       - name: Build and push backend Docker image
         run: |
-          docker build -t ${{ github.repository_owner }}/farmcart-api:latest -f ./backend/Dockerfile ./backend
-          docker push ${{ github.repository_owner }}/farmcart-api:latest
+          docker build -t ghcr.io/${{ github.repository_owner }}/farmcart-api:latest -f ./backend/Dockerfile ./backend
+          docker push ghcr.io/${{ github.repository_owner }}/farmcart-api:latest
 
       # Step 5: Build and push the frontend Docker image
       - name: Build and push frontend Docker image
         run: |
-          docker build -t ${{ github.repository_owner }}/farmcart-app:latest -f ./frontend/Dockerfile ./frontend
-          docker push ${{ github.repository_owner }}/farmcart-app:latest
+          docker build -t ghcr.io/${{ github.repository_owner }}/farmcart-app:latest -f ./frontend/Dockerfile ./frontend
+          docker push ghcr.io/${{ github.repository_owner }}/farmcart-app:latest
 
