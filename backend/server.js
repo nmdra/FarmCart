@@ -20,9 +20,6 @@ import customerRoutes from './routes/Admin/AdminCustomerRoutes.js';
 
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
-// Load environment variables from .env file
-dotenv.config()
-
 // Set up port from environment or default to 8000
 const PORT = process.env.PORT || 8000
 

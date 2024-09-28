@@ -12,7 +12,7 @@ const CustomerPage = () => {
 
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/customer');
+      const response = await axios.get('/api/customer');
       setCustomers(response.data);
     } catch (error) {
       console.error('Error fetching customers:', error);
@@ -25,7 +25,7 @@ const CustomerPage = () => {
 
   const handleDeleteClick = async (customerId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/customer/${customerId}`);
+      await axios.delete(`/api/customer/${customerId}`);
       fetchCustomers();
     } catch (error) {
       console.error('Error deleting customer:', error);

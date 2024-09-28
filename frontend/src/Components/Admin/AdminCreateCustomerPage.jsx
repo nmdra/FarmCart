@@ -59,9 +59,9 @@ const AdminCreateCustomerPage = () => {
 
     try {
       if (editMode) {
-        await axios.put(`http://localhost:3000/api/customer/${customerToEdit._id}`, formData);
+        await axios.put(`/api/customer/${customerToEdit._id}`, formData);
       } else {
-        await axios.post('http://localhost:3000/api/customer/AddCustomer', formData);
+        await axios.post('/api/customer/AddCustomer', formData);
       }
       navigate('/customer'); // Redirect to CustomerPage after successful submission
     } catch (error) {
