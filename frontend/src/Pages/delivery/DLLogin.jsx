@@ -12,7 +12,7 @@ const DLLogin = () => {
         e.preventDefault()
         try {
             const { data } = await axios.post(
-                'http://localhost:3000/api/drivers/login',
+                '/api/drivers/login',
                 { email, password }
             )
             localStorage.setItem('driverToken', data.token) // Store JWT token in localStorage

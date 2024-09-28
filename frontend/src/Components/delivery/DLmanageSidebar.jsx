@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import {
     FaTachometerAlt,
     FaTruck,
@@ -13,60 +13,80 @@ const DLmanageSidebar = () => {
     return (
         <aside className="absolute top-6 left-6 w-60 bg-white rounded-lg shadow-lg p-4 mt-8">
             <nav>
-                <ul>
-                    <li className="mb-2">
-                        <Link
+                <ul className="space-y-4">
+                    <li>
+                        <NavLink
                             to="/manager/dashboard"
-                            className="flex items-center p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaTachometerAlt className="w-5 h-5 mr-3" />
                             Dashboard
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li className="mb-2">
-                        <Link
+                    <li>
+                        <NavLink
                             to="/DLAllDeliveries"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaTruck className="w-5 h-5 mr-3" />
                             Deliveries
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li className="mb-2">
-                        <Link
+                    <li>
+                        <NavLink
                             to="/alldrivers"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaUsers className="w-5 h-5 mr-3" />
                             Drivers
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li className="mb-2">
-                        <Link
+                    <li>
+                        <NavLink
                             to="/manager/approve-driver"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaUserCheck className="w-5 h-5 mr-3" />
                             Pending Drivers
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li className="mb-2">
-                        <Link
+                    <li>
+                        <NavLink
                             to="/notifications"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaBell className="w-5 h-5 mr-3" />
                             Notifications
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
-                        <Link
+                        <NavLink
                             to="/logout"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                            className="flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100"
                         >
                             <FaSignOutAlt className="w-5 h-5 mr-3" />
                             Logout
-                        </Link>
+                        </NavLink>
                     </li>
                 </ul>
             </nav>

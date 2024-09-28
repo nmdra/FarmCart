@@ -13,7 +13,7 @@ const DLApproveDriver = () => {
     useEffect(() => {
         const fetchPendingForms = async () => {
             try {
-                const { data } = await axios.get('/api/d_forms/pending-forms')
+                const { data } = await axios.get('/d_forms/pending-forms')
                 setPendingForms(data)
             } catch (error) {
                 console.error('Error fetching pending forms:', error)
@@ -26,7 +26,7 @@ const DLApproveDriver = () => {
     // Handle reviewing a driver by navigating to the review page
     const handleReview = (id) => {
 
-        navigate(`/api/manager/approve-driver/${id}`);
+        navigate(`/manager/approve-driver/${id}`);
     };
 
 
