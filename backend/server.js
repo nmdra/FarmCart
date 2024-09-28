@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import path from 'path'; //DL
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
 import userRoute from './routes/userRoute.js'
@@ -17,6 +18,18 @@ import promotionRoutes from './routes/Admin/AdminPromotionRoutes.js';
 import productRoutes from './routes/Admin/AdminProductRoutes.js';
 import staffRoutes from './routes/Admin/AdminStaffRoutes.js';
 import customerRoutes from './routes/Admin/AdminCustomerRoutes.js';
+
+
+//Delivery imports
+import DLFormRoutes from './routes/DLFormRoutes.js';//DL
+import driverRoutes from './routes/DLDriverRoutes.js';//DL
+import { fileURLToPath } from 'url'; //DL
+import DLEmailRoutes from './routes/DLEmailRoutes.js'; //DL
+import oRoutes from './routes/DLORoutes.js'; // DL
+import { checkForAvailableDrivers } from './controllers/DLDeliveryController.js'; //DL THIS IS CHECKING ALL ODRS AND ASSIGN DRIVERS
+import deliveryRoutes from './routes/DLDeliveryRoute.js'; //DL
+checkForAvailableDrivers(); //DL
+
 //Admin
 dotenv.config();
 
@@ -34,6 +47,17 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser())
+
+
+//Delivery image 
+
+const __filename = fileURLToPath(import.meta.url); //DL
+const __dirname = path.dirname(__filename);//DL
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));//DL
+
+
+
 
 // routes
 app.get('/', (_req, res) => {
@@ -58,6 +82,18 @@ app.use('/api/promotion', promotionRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/staff', staffRoutes);
 app.use('/api/customer', customerRoutes);
+
+
+
+//Delivery Routes
+// Routes
+app.use('/api/images', imageHandler);//DL
+app.use('/api/d_forms', DLFormRoutes);//DL
+app.use('/api/drivers', driverRoutes); // Added driver routes
+app.use('/api/email', DLEmailRoutes); // Use the email routes
+app.use('/api/od', oRoutes);//dl
+app.use('/api/delivery', deliveryRoutes); // Use the delivery routes
+
 
 // Middleware to handle errors and send appropriate responses
 app.use(errorHandler)
