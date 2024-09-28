@@ -14,7 +14,7 @@ const StaffPage = () => {
 
   const fetchStaff = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/staff');
+      const response = await axios.get('/api/staff');
       setStaff(response.data);
     } catch (error) {
       console.error('Error fetching staff:', error);
@@ -23,7 +23,7 @@ const StaffPage = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/staff/search?name=${searchTerm}`);
+      const response = await axios.get(`/api/staff/search?name=${searchTerm}`);
       setStaff(response.data);
     } catch (error) {
       console.error('Error searching staff:', error);
@@ -36,7 +36,7 @@ const StaffPage = () => {
 
   const handleDeleteClick = async (staffId) => {
     try {
-      await axios.delete(`http://localhost:3000/api/staff/${staffId}`);
+      await axios.delete(`/api/staff/${staffId}`);
       fetchStaff();
     } catch (error) {
       console.error('Error deleting staff member:', error);

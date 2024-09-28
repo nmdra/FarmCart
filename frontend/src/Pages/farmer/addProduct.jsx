@@ -148,7 +148,7 @@ const AddProduct = () => {
                 },
             })
 
-            navigate(`/shop/${shopId}/productpage`)
+            navigate(`/farmerShop/${shopId}/productpage`)
         } catch (err) {
             setErrors({
                 ...errors,
@@ -171,7 +171,7 @@ const AddProduct = () => {
 
     // Handle cancel action
     const handleCancel = () => {
-        navigate(`/shop/${shopId}/productpage`)
+        navigate(`/farmerShop/${shopId}/productpage`)
     }
 
     return (

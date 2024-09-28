@@ -27,6 +27,7 @@ import OrderStatus from './Pages/Customer/OrderStatus';
 import Address from './Components/Address';
 import PaymentConfirmation from './Pages/Customer/PaymentConfirmation';
 import PaymentComplete from './Pages/Customer/PaymentComplete';
+import { Toaster } from 'react-hot-toast'; 
 
 // Shop Pages
 import ShopList from './Pages/Shop/ShopList';
@@ -154,7 +155,12 @@ const router = createBrowserRouter(
 );
 
 const App = () => {
-    return <RouterProvider router={router}></RouterProvider>;
-};
+    return (
+        <>
+            <RouterProvider router={router} />
+            <Toaster position="top-center" reverseOrder={false} /> 
+        </>
+    )
+}
 
 export default App;
