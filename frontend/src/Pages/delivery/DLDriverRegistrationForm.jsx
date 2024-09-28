@@ -17,121 +17,111 @@ const RegisterDriverForm = () => {
         vehicleNumber: '',
         vehicleType: '',
     })
-    const [idCardImage, setIdCardImage] = useState(null)
-    const [licenseImage, setLicenseImage] = useState(null)
-    const [personalImage, setPersonalImage] = useState(null)
+
+    // State for images and their URLs
+    const [idCardImageUrl, setIdCardImageUrl] = useState(null)
+    const [licenseImageUrl, setLicenseImageUrl] = useState(null)
+    const [personalImageUrl, setPersonalImageUrl] = useState(null)
+
+    // State for image previews
+    const [previewIdCard, setPreviewIdCard] = useState(null)
+    const [previewLicense, setPreviewLicense] = useState(null)
+    const [previewPersonal, setPreviewPersonal] = useState(null)
+
+    // State for error and loading states
     const [errors, setErrors] = useState({})
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState({ idCard: false, license: false, personal: false })
     const [successMessage, setSuccessMessage] = useState('')
     const navigate = useNavigate()
 
-    // Handle form input changes with validation
+    // Handle form input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        let errorMessage = ''
-
-        // Basic validation rules
-        if (name === 'email') {
-            if (!/^.*@gmail\.com$/.test(value)) {
-                errorMessage = 'Email must be a valid @gmail.com address.'
-            }
-        }
-
-        if (name === 'phone') {
-            if (!/^0\d{9}$/.test(value)) {
-                errorMessage = 'Phone number must be 10 digits and start with 0.'
-            }
-        }
-
-        // Add more validations here as needed
-
-        setFormData({
-            ...formData,
-            [name]: value,
-        })
-
-        setErrors((prevErrors) => ({
-            ...prevErrors,
-            [name]: errorMessage,
-        }))
+        setFormData({ ...formData, [name]: value })
     }
 
-    // Handle file input changes
-    const handleFileChange = (e, setImageFunction) => {
-        setImageFunction(e.target.files[0])
+    // Handle image file changes, upload to Cloudinary, and set previews
+    const handleFileChange = async (e, setImageUrlFunction, setPreviewFunction, type) => {
+        const file = e.target.files[0]
+        if (file) {
+            setPreviewFunction(URL.createObjectURL(file)) // Set preview URL
+            setLoading({ ...loading, [type]: true }) // Set loading state
+
+            try {
+                const formData = new FormData()
+                formData.append('image', file)
+                formData.append('folder', 'drivers') // Upload to "drivers" folder in Cloudinary
+
+                const response = await axios.post('/images', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+
+                setImageUrlFunction(response.data.url) // Set Cloudinary image URL
+                Swal.fire({
+                    icon: 'success',
+                    title: `${type} uploaded successfully!`,
+                })
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Upload Error',
+                    text: 'Failed to upload image. Please try again.',
+                })
+            } finally {
+                setLoading({ ...loading, [type]: false }) // Remove loading state
+            }
+        }
     }
 
-    // Handle form submission with validation
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setLoading(true)
 
-        // Check for validation errors before submitting
-        if (Object.values(errors).some((error) => error)) {
+        // Prevent submission if any images are still uploading
+        if (loading.idCard || loading.license || loading.personal) {
             Swal.fire({
-                icon: 'error',
-                title: 'Validation Error',
-                text: 'Please fix the validation errors before submitting.',
-                customClass: {
-                    confirmButton:
-                        'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
-                },
+                icon: 'info',
+                title: 'Please Wait',
+                text: 'Wait for all images to finish uploading before submitting.',
             })
-            setLoading(false)
             return
         }
 
         try {
-            const formDataObj = new FormData()
-            Object.keys(formData).forEach((key) =>
-                formDataObj.append(key, formData[key])
-            )
-            formDataObj.append('idCardImage', idCardImage)
-            formDataObj.append('licenseImage', licenseImage)
-            formDataObj.append('personalImage', personalImage)
+            const formDataObj = {
+                ...formData,
+                idCardImageUrl,
+                licenseImageUrl,
+                personalImageUrl,
+            }
 
-            await axios.post('/d_forms', formDataObj, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
+            await axios.post('/d_forms', formDataObj)
 
             Swal.fire({
                 icon: 'success',
                 title: 'Registration Successful',
                 text: 'Your registration was successful!',
-                customClass: {
-                    confirmButton:
-                        'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
-                },
             })
 
-            setLoading(false)
             navigate('/driver/login')
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text:
-                    error.response?.data?.message ||
-                    'Failed to submit the form. Please try again.',
-                customClass: {
-                    confirmButton:
-                        'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
-                },
+                text: error.response?.data?.message || 'Failed to submit the form. Please try again.',
             })
-            setLoading(false)
         }
     }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
-                <h2 className="text-3xl font-bold mb-6 text-center">
-                    Driver Registration Form
-                </h2>
+                <h2 className="text-3xl font-bold mb-6 text-center">Driver Registration Form</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Input fields for registration */}
                         <div className="col-span-1">
                             <input
                                 type="text"
@@ -143,9 +133,7 @@ const RegisterDriverForm = () => {
                                 required
                             />
                             {errors.firstName && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.firstName}
-                                </p>
+                                <p className="text-red-500 text-sm">{errors.firstName}</p>
                             )}
                         </div>
 
@@ -160,9 +148,7 @@ const RegisterDriverForm = () => {
                                 required
                             />
                             {errors.lastName && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.lastName}
-                                </p>
+                                <p className="text-red-500 text-sm">{errors.lastName}</p>
                             )}
                         </div>
 
@@ -189,9 +175,7 @@ const RegisterDriverForm = () => {
                                 required
                             />
                             {errors.email && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.email}
-                                </p>
+                                <p className="text-red-500 text-sm">{errors.email}</p>
                             )}
                         </div>
 
@@ -206,9 +190,7 @@ const RegisterDriverForm = () => {
                                 required
                             />
                             {errors.phone && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.phone}
-                                </p>
+                                <p className="text-red-500 text-sm">{errors.phone}</p>
                             )}
                         </div>
 
@@ -281,67 +263,80 @@ const RegisterDriverForm = () => {
                             >
                                 <option value="">Select Vehicle Type</option>
                                 <option value="Bike">Bike</option>
-                                <option value="Three-Wheel">
-                                    Three-Wheel
-                                </option>
+                                <option value="Three-Wheel">Three-Wheel</option>
                                 <option value="Lorry">Lorry</option>
                             </select>
                         </div>
                     </div>
 
+                    {/* ID Card Image Upload */}
                     <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            ID Card Image
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">ID Card Image</label>
                         <input
                             type="file"
-                            onChange={(e) => handleFileChange(e, setIdCardImage)}
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                            onChange={(e) => handleFileChange(e, setIdCardImageUrl, setPreviewIdCard, 'idCard')}
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
                             required
                         />
+                        {loading.idCard && (
+                            <div className="mt-2">
+                                <svg className="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"></path>
+                                </svg>
+                            </div>
+                        )}
+                        {previewIdCard && <img src={previewIdCard} alt="ID Card Preview" className="mt-2 w-32 h-32 object-cover" />}
                     </div>
 
+                    {/* License Image Upload */}
                     <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            License Image
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">License Image</label>
                         <input
                             type="file"
-                            onChange={(e) => handleFileChange(e, setLicenseImage)}
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                            onChange={(e) => handleFileChange(e, setLicenseImageUrl, setPreviewLicense, 'license')}
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
                             required
                         />
+                        {loading.license && (
+                            <div className="mt-2">
+                                <svg className="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"></path>
+                                </svg>
+                            </div>
+                        )}
+                        {previewLicense && <img src={previewLicense} alt="License Preview" className="mt-2 w-32 h-32 object-cover" />}
                     </div>
 
+                    {/* Personal Image Upload */}
                     <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Personal Image
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Personal Image</label>
                         <input
                             type="file"
-                            onChange={(e) => handleFileChange(e, setPersonalImage)}
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                            onChange={(e) => handleFileChange(e, setPersonalImageUrl, setPreviewPersonal, 'personal')}
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
                             required
                         />
+                        {loading.personal && (
+                            <div className="mt-2">
+                                <svg className="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"></path>
+                                </svg>
+                            </div>
+                        )}
+                        {previewPersonal && <img src={previewPersonal} alt="Personal Preview" className="mt-2 w-32 h-32 object-cover" />}
                     </div>
 
-                    {errors.submit && (
-                        <p className="text-red-500 text-sm mt-2">
-                            {errors.submit}
-                        </p>
-                    )}
-                    {successMessage && (
-                        <p className="text-green-500 text-sm mt-2">
-                            {successMessage}
-                        </p>
-                    )}
+                    {successMessage && <p className="text-green-500 text-sm mt-2">{successMessage}</p>}
 
                     <button
                         type="submit"
-                        className="mt-6 w-full bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-400"
-                        disabled={loading}
+                        className="mt-6 w-full bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600"
+                        disabled={loading.idCard || loading.license || loading.personal}
                     >
-                        {loading ? 'Submitting...' : 'Submit'}
+                        {loading.idCard || loading.license || loading.personal ? 'Uploading...' : 'Submit'}
                     </button>
                 </form>
             </div>

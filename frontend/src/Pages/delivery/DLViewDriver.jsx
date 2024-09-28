@@ -29,10 +29,10 @@ const DLViewDriver = () => {
     }
 
     // Construct the full URL for each image
-    const baseUrl = 'http://localhost:3000/'
-    const idCardImageUrl = `${baseUrl}${driverDetails.idCardImageUrl}`
-    const licenseImageUrl = `${baseUrl}${driverDetails.licenseImageUrl}`
-    const personalImageUrl = `${baseUrl}${driverDetails.personalImageUrl}`
+    //const baseUrl = 'http://localhost:3000/'
+    const idCardImageUrl = `${driverDetails.idCardImageUrl}`
+    const licenseImageUrl = `${driverDetails.licenseImageUrl}`
+    const personalImageUrl = `${driverDetails.personalImageUrl}`
 
     // Handler to open image in a modal
     const handleImageClick = (imageUrl) => {
