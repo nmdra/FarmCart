@@ -12,7 +12,7 @@ const DashboardLayout = () => {
           <ul className="space-y-4">
             <li>
               <Link
-                to="/customer"
+                to="/Admindashboard/customer"
                 className="flex items-center text-lg text-gray-700 hover:text-[#99DD05] transition duration-200"
               >
                 <FiUser className="mr-2" /> Customer

@@ -36,7 +36,7 @@ const CustomerPage = () => {
     <div className="p-6">
       <h2 className="text-xl font-bold mb-4">Customers</h2>
       <button
-        onClick={() => navigate('/customer/create')} // Navigate to Add Customer form
+        onClick={() => navigate('/Admindashboard/Customer/create')} // Navigate to Add Customer form
         className="bg-green-500 text-white px-3 py-1 rounded mb-4"
       >
         Add Customer
