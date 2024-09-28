@@ -112,7 +112,9 @@ const RegisterDriverForm = () => {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: error.response?.data?.message || 'Failed to submit the form. Please try again.',
+                text:
+                    error.response?.data?.message ||
+                    'Failed to submit the form. Please try again.',
                 customClass: {
                     confirmButton:
                         'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
@@ -125,12 +127,11 @@ const RegisterDriverForm = () => {
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
-                <h2 className="text-2xl font-bold mb-6 text-center">
+                <h2 className="text-3xl font-bold mb-6 text-center">
                     Driver Registration Form
                 </h2>
                 <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* First Name */}
                         <div className="col-span-1">
                             <input
                                 type="text"
@@ -138,13 +139,16 @@ const RegisterDriverForm = () => {
                                 placeholder="First Name"
                                 value={formData.firstName}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
-                            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+                            {errors.firstName && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.firstName}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Last Name */}
                         <div className="col-span-1">
                             <input
                                 type="text"
@@ -152,13 +156,16 @@ const RegisterDriverForm = () => {
                                 placeholder="Last Name"
                                 value={formData.lastName}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
-                            {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                            {errors.lastName && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.lastName}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Full Name */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -166,12 +173,11 @@ const RegisterDriverForm = () => {
                                 placeholder="Full Name"
                                 value={formData.fullName}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* Email */}
                         <div className="col-span-2">
                             <input
                                 type="email"
@@ -179,13 +185,16 @@ const RegisterDriverForm = () => {
                                 placeholder="Email"
                                 value={formData.email}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
-                            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                            {errors.email && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.email}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Phone */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -193,25 +202,27 @@ const RegisterDriverForm = () => {
                                 placeholder="Phone Number"
                                 value={formData.phone}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
-                            {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+                            {errors.phone && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.phone}
+                                </p>
+                            )}
                         </div>
 
-                        {/* Date of Birth */}
                         <div className="col-span-2">
                             <input
                                 type="date"
                                 name="dateOfBirth"
                                 value={formData.dateOfBirth}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* ID Card Number */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -219,12 +230,11 @@ const RegisterDriverForm = () => {
                                 placeholder="ID Card Number"
                                 value={formData.idCardNumber}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* License Card Number */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -232,12 +242,11 @@ const RegisterDriverForm = () => {
                                 placeholder="License Card Number"
                                 value={formData.licenseCardNumber}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* Address */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -245,12 +254,11 @@ const RegisterDriverForm = () => {
                                 placeholder="Address"
                                 value={formData.address}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* Vehicle Number */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -258,29 +266,29 @@ const RegisterDriverForm = () => {
                                 placeholder="Vehicle Number"
                                 value={formData.vehicleNumber}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* Vehicle Type */}
                         <div className="col-span-2">
                             <select
                                 name="vehicleType"
                                 value={formData.vehicleType}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             >
                                 <option value="">Select Vehicle Type</option>
                                 <option value="Bike">Bike</option>
-                                <option value="Three-Wheel">Three-Wheel</option>
+                                <option value="Three-Wheel">
+                                    Three-Wheel
+                                </option>
                                 <option value="Lorry">Lorry</option>
                             </select>
                         </div>
                     </div>
 
-                    {/* File Upload Inputs */}
                     <div className="mt-4">
                         <label className="block text-sm font-medium text-gray-700">
                             ID Card Image
@@ -288,7 +296,7 @@ const RegisterDriverForm = () => {
                         <input
                             type="file"
                             onChange={(e) => handleFileChange(e, setIdCardImage)}
-                            className="border p-2 rounded-md w-full"
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                             required
                         />
                     </div>
@@ -300,7 +308,7 @@ const RegisterDriverForm = () => {
                         <input
                             type="file"
                             onChange={(e) => handleFileChange(e, setLicenseImage)}
-                            className="border p-2 rounded-md w-full"
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                             required
                         />
                     </div>
@@ -312,23 +320,25 @@ const RegisterDriverForm = () => {
                         <input
                             type="file"
                             onChange={(e) => handleFileChange(e, setPersonalImage)}
-                            className="border p-2 rounded-md w-full"
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                             required
                         />
                     </div>
 
-                    {/* Error and Success Messages */}
                     {errors.submit && (
-                        <p className="text-red-500 text-sm mt-2">{errors.submit}</p>
+                        <p className="text-red-500 text-sm mt-2">
+                            {errors.submit}
+                        </p>
                     )}
                     {successMessage && (
-                        <p className="text-green-500 text-sm mt-2">{successMessage}</p>
+                        <p className="text-green-500 text-sm mt-2">
+                            {successMessage}
+                        </p>
                     )}
 
-                    {/* Submit Button */}
                     <button
                         type="submit"
-                        className="mt-6 bg-green-500 text-white p-2 rounded-md w-full"
+                        className="mt-6 w-full bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-400"
                         disabled={loading}
                     >
                         {loading ? 'Submitting...' : 'Submit'}
