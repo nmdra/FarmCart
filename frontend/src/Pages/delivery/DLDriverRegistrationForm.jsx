@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from '../../../axios' // Import your axios instance with baseURL and interceptor
+import axios from '../../axios' // Import your axios instance with baseURL and interceptor
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2' // For user-friendly alerts
 

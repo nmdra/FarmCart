@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar';
-import axios from '../../../axios'; // Update the axios path as per your project structure
+import axios from '../../axios'; // Update the axios path as per your project structure
 
 const DLmanageDash = () => {
     const [stats, setStats] = useState({

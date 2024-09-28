@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from '../../../axios'; // Corrected path
+import axios from '../../axios'; // Corrected path
 import Swal from 'sweetalert2'; // For sweet alerts
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar'; // Import the DeliverySidebar component
 

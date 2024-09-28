@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import axios from '../../../axios'; // Ensure the path matches your project structure
+import axios from '../../axios'; // Ensure the path matches your project structure
 import { useNavigate } from 'react-router-dom';
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar'; // Import the DeliverySidebar component
 
@@ -13,7 +13,7 @@ const DLApproveDriver = () => {
     useEffect(() => {
         const fetchPendingForms = async () => {
             try {
-                const { data } = await axios.get('/d_forms/pending-forms')
+                const { data } = await axios.get('/api/d_forms/pending-forms')
                 setPendingForms(data)
             } catch (error) {
                 console.error('Error fetching pending forms:', error)
@@ -26,7 +26,7 @@ const DLApproveDriver = () => {
     // Handle reviewing a driver by navigating to the review page
     const handleReview = (id) => {
 
-        navigate(`/manager/approve-driver/${id}`);
+        navigate(`/api/manager/approve-driver/${id}`);
     };
 
 

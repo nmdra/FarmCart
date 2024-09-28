@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from '../../../axios' // Ensure correct path to axios
+import axios from '../../axios' // Ensure correct path to axios
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sidebar component
 import Swal from 'sweetalert2'
 
