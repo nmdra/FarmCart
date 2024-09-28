@@ -17,120 +17,111 @@ const RegisterDriverForm = () => {
         vehicleNumber: '',
         vehicleType: '',
     })
-    const [idCardImage, setIdCardImage] = useState(null)
-    const [licenseImage, setLicenseImage] = useState(null)
-    const [personalImage, setPersonalImage] = useState(null)
+
+    // State for images and their URLs
+    const [idCardImageUrl, setIdCardImageUrl] = useState(null)
+    const [licenseImageUrl, setLicenseImageUrl] = useState(null)
+    const [personalImageUrl, setPersonalImageUrl] = useState(null)
+
+    // State for image previews
+    const [previewIdCard, setPreviewIdCard] = useState(null)
+    const [previewLicense, setPreviewLicense] = useState(null)
+    const [previewPersonal, setPreviewPersonal] = useState(null)
+
+    // State for error and loading states
     const [errors, setErrors] = useState({})
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState({ idCard: false, license: false, personal: false })
     const [successMessage, setSuccessMessage] = useState('')
     const navigate = useNavigate()
 
-    // Handle form input changes with validation
+    // Handle form input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        let errorMessage = ''
-
-        // Basic validation rules
-        if (name === 'email') {
-            if (!/^.*@gmail\.com$/.test(value)) {
-                errorMessage = 'Email must be a valid @gmail.com address.'
-            }
-        }
-
-        if (name === 'phone') {
-            if (!/^0\d{9}$/.test(value)) {
-                errorMessage = 'Phone number must be 10 digits and start with 0.'
-            }
-        }
-
-        // Add more validations here as needed
-
-        setFormData({
-            ...formData,
-            [name]: value,
-        })
-
-        setErrors((prevErrors) => ({
-            ...prevErrors,
-            [name]: errorMessage,
-        }))
+        setFormData({ ...formData, [name]: value })
     }
 
-    // Handle file input changes
-    const handleFileChange = (e, setImageFunction) => {
-        setImageFunction(e.target.files[0])
+    // Handle image file changes, upload to Cloudinary, and set previews
+    const handleFileChange = async (e, setImageUrlFunction, setPreviewFunction, type) => {
+        const file = e.target.files[0]
+        if (file) {
+            setPreviewFunction(URL.createObjectURL(file)) // Set preview URL
+            setLoading({ ...loading, [type]: true }) // Set loading state
+
+            try {
+                const formData = new FormData()
+                formData.append('image', file)
+                formData.append('folder', 'drivers') // Upload to "drivers" folder in Cloudinary
+
+                const response = await axios.post('/images', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+
+                setImageUrlFunction(response.data.url) // Set Cloudinary image URL
+                Swal.fire({
+                    icon: 'success',
+                    title: `${type} uploaded successfully!`,
+                })
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Upload Error',
+                    text: 'Failed to upload image. Please try again.',
+                })
+            } finally {
+                setLoading({ ...loading, [type]: false }) // Remove loading state
+            }
+        }
     }
 
-    // Handle form submission with validation
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setLoading(true)
 
-        // Check for validation errors before submitting
-        if (Object.values(errors).some((error) => error)) {
+        // Prevent submission if any images are still uploading
+        if (loading.idCard || loading.license || loading.personal) {
             Swal.fire({
-                icon: 'error',
-                title: 'Validation Error',
-                text: 'Please fix the validation errors before submitting.',
-                customClass: {
-                    confirmButton:
-                        'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
-                },
+                icon: 'info',
+                title: 'Please Wait',
+                text: 'Wait for all images to finish uploading before submitting.',
             })
-            setLoading(false)
             return
         }
 
         try {
-            const formDataObj = new FormData()
-            Object.keys(formData).forEach((key) =>
-                formDataObj.append(key, formData[key])
-            )
-            formDataObj.append('idCardImage', idCardImage)
-            formDataObj.append('licenseImage', licenseImage)
-            formDataObj.append('personalImage', personalImage)
+            const formDataObj = {
+                ...formData,
+                idCardImageUrl,
+                licenseImageUrl,
+                personalImageUrl,
+            }
 
-            await axios.post('/d_forms', formDataObj, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
+            await axios.post('/d_forms', formDataObj)
 
             Swal.fire({
                 icon: 'success',
                 title: 'Registration Successful',
                 text: 'Your registration was successful!',
-                customClass: {
-                    confirmButton:
-                        'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
-                },
             })
 
-            setLoading(false)
             navigate('/driver/login')
         } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: error.response?.data?.message || 'Failed to submit the form. Please try again.',
-                customClass: {
-                    confirmButton:
-                        'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
-                },
             })
-            setLoading(false)
         }
     }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
-                <h2 className="text-2xl font-bold mb-6 text-center">
-                    Driver Registration Form
-                </h2>
+                <h2 className="text-3xl font-bold mb-6 text-center">Driver Registration Form</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* First Name */}
+                        {/* Input fields for registration */}
                         <div className="col-span-1">
                             <input
                                 type="text"
@@ -138,13 +129,14 @@ const RegisterDriverForm = () => {
                                 placeholder="First Name"
                                 value={formData.firstName}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
-                            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+                            {errors.firstName && (
+                                <p className="text-red-500 text-sm">{errors.firstName}</p>
+                            )}
                         </div>
 
-                        {/* Last Name */}
                         <div className="col-span-1">
                             <input
                                 type="text"
@@ -152,13 +144,14 @@ const RegisterDriverForm = () => {
                                 placeholder="Last Name"
                                 value={formData.lastName}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
-                            {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                            {errors.lastName && (
+                                <p className="text-red-500 text-sm">{errors.lastName}</p>
+                            )}
                         </div>
 
-                        {/* Full Name */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -166,12 +159,11 @@ const RegisterDriverForm = () => {
                                 placeholder="Full Name"
                                 value={formData.fullName}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* Email */}
                         <div className="col-span-2">
                             <input
                                 type="email"
@@ -179,13 +171,14 @@ const RegisterDriverForm = () => {
                                 placeholder="Email"
                                 value={formData.email}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
-                            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                            {errors.email && (
+                                <p className="text-red-500 text-sm">{errors.email}</p>
+                            )}
                         </div>
 
-                        {/* Phone */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -193,25 +186,25 @@ const RegisterDriverForm = () => {
                                 placeholder="Phone Number"
                                 value={formData.phone}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
-                            {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+                            {errors.phone && (
+                                <p className="text-red-500 text-sm">{errors.phone}</p>
+                            )}
                         </div>
 
-                        {/* Date of Birth */}
                         <div className="col-span-2">
                             <input
                                 type="date"
                                 name="dateOfBirth"
                                 value={formData.dateOfBirth}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* ID Card Number */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -219,12 +212,11 @@ const RegisterDriverForm = () => {
                                 placeholder="ID Card Number"
                                 value={formData.idCardNumber}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* License Card Number */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -232,12 +224,11 @@ const RegisterDriverForm = () => {
                                 placeholder="License Card Number"
                                 value={formData.licenseCardNumber}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* Address */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -245,12 +236,11 @@ const RegisterDriverForm = () => {
                                 placeholder="Address"
                                 value={formData.address}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* Vehicle Number */}
                         <div className="col-span-2">
                             <input
                                 type="text"
@@ -258,18 +248,17 @@ const RegisterDriverForm = () => {
                                 placeholder="Vehicle Number"
                                 value={formData.vehicleNumber}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
                         </div>
 
-                        {/* Vehicle Type */}
                         <div className="col-span-2">
                             <select
                                 name="vehicleType"
                                 value={formData.vehicleType}
                                 onChange={handleInputChange}
-                                className="border p-2 rounded-md w-full"
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             >
                                 <option value="">Select Vehicle Type</option>
@@ -280,58 +269,74 @@ const RegisterDriverForm = () => {
                         </div>
                     </div>
 
-                    {/* File Upload Inputs */}
+                    {/* ID Card Image Upload */}
                     <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            ID Card Image
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">ID Card Image</label>
                         <input
                             type="file"
-                            onChange={(e) => handleFileChange(e, setIdCardImage)}
-                            className="border p-2 rounded-md w-full"
+                            onChange={(e) => handleFileChange(e, setIdCardImageUrl, setPreviewIdCard, 'idCard')}
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
                             required
                         />
+                        {loading.idCard && (
+                            <div className="mt-2">
+                                <svg className="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"></path>
+                                </svg>
+                            </div>
+                        )}
+                        {previewIdCard && <img src={previewIdCard} alt="ID Card Preview" className="mt-2 w-32 h-32 object-cover" />}
                     </div>
 
+                    {/* License Image Upload */}
                     <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            License Image
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">License Image</label>
                         <input
                             type="file"
-                            onChange={(e) => handleFileChange(e, setLicenseImage)}
-                            className="border p-2 rounded-md w-full"
+                            onChange={(e) => handleFileChange(e, setLicenseImageUrl, setPreviewLicense, 'license')}
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
                             required
                         />
+                        {loading.license && (
+                            <div className="mt-2">
+                                <svg className="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"></path>
+                                </svg>
+                            </div>
+                        )}
+                        {previewLicense && <img src={previewLicense} alt="License Preview" className="mt-2 w-32 h-32 object-cover" />}
                     </div>
 
+                    {/* Personal Image Upload */}
                     <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Personal Image
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700">Personal Image</label>
                         <input
                             type="file"
-                            onChange={(e) => handleFileChange(e, setPersonalImage)}
-                            className="border p-2 rounded-md w-full"
+                            onChange={(e) => handleFileChange(e, setPersonalImageUrl, setPreviewPersonal, 'personal')}
+                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
                             required
                         />
+                        {loading.personal && (
+                            <div className="mt-2">
+                                <svg className="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"></path>
+                                </svg>
+                            </div>
+                        )}
+                        {previewPersonal && <img src={previewPersonal} alt="Personal Preview" className="mt-2 w-32 h-32 object-cover" />}
                     </div>
 
-                    {/* Error and Success Messages */}
-                    {errors.submit && (
-                        <p className="text-red-500 text-sm mt-2">{errors.submit}</p>
-                    )}
-                    {successMessage && (
-                        <p className="text-green-500 text-sm mt-2">{successMessage}</p>
-                    )}
+                    {successMessage && <p className="text-green-500 text-sm mt-2">{successMessage}</p>}
 
-                    {/* Submit Button */}
                     <button
                         type="submit"
-                        className="mt-6 bg-green-500 text-white p-2 rounded-md w-full"
-                        disabled={loading}
+                        className="mt-6 w-full bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600"
+                        disabled={loading.idCard || loading.license || loading.personal}
                     >
-                        {loading ? 'Submitting...' : 'Submit'}
+                        {loading.idCard || loading.license || loading.personal ? 'Uploading...' : 'Submit'}
                     </button>
                 </form>
             </div>
