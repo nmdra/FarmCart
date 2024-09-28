@@ -12,11 +12,18 @@ const ShopList = () => {
     const [filterDistrict, setFilterDistrict] = useState('')
     const [loading, setLoading] = useState(true) // Loading state
 
+
     // Fetch shops on component mount
     useEffect(() => {
         const fetchShops = async () => {
             try {
-                const { data } = await axios.get('/api/userShops')
+              const config = {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+              };
+              const { data } = await axios.get('/api/userShops', config);
+              
                 setShops(data.shops)
             } catch (error) {
                 console.error('Error fetching shops:', error)
@@ -28,6 +35,13 @@ const ShopList = () => {
         fetchShops()
     }, [])
 
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    };
+    
     // Filtering and Sorting Logic
     const filteredShops = shops
         .filter((shop) =>
@@ -48,6 +62,7 @@ const ShopList = () => {
         })
 
     return (
+        
         <div className="relative min-h-screen bg-gray-50 grid grid-cols-1 justify-center">
             <div className="flex flex-col lg:flex-row">
                 {/* Sidebar */}
@@ -58,7 +73,7 @@ const ShopList = () => {
                         <select
                             value={sortOrder}
                             onChange={(e) => setSortOrder(e.target.value)}
-                            className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-green-500"
                         >
                             <option value="asc">Name (A-Z)</option>
                             <option value="desc">Name (Z-A)</option>
@@ -70,7 +85,7 @@ const ShopList = () => {
                         <select
                             value={filterCategory}
                             onChange={(e) => setFilterCategory(e.target.value)}
-                            className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-green-500"
                         >
                             <option value="">All Categories</option>
                             <option value="Vegetables">Vegetables</option>
@@ -84,7 +99,7 @@ const ShopList = () => {
                         <select
                             value={filterDistrict}
                             onChange={(e) => setFilterDistrict(e.target.value)}
-                            className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-green-500"
                         >
                             <option value="">All Districts</option>
                             {Object.keys(DistrictsData).map((district) => (
@@ -105,12 +120,15 @@ const ShopList = () => {
 
                     {/* Search Bar */}
                     <input
-                        type="text"
-                        placeholder="Search shops..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="border p-2 rounded w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+
+    type="text"
+    placeholder="Search shops..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="mb-5 border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+  
+/>                                    
+
 
                     {/* Loading Message */}
                     {loading ? (
@@ -121,7 +139,7 @@ const ShopList = () => {
                                 filteredShops.map((shop) => (
                                     <div
                                         key={shop._id}
-                                        className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-200"
+                                        className="bg-white p-4 rounded-lg shadow hover:border-2 hover:border-green-500 transition duration-200"
                                     >
                                         {shop.image && (
                                             <img
@@ -143,11 +161,15 @@ const ShopList = () => {
 
                                         <Link
                                             to={`/shops/${shop._id}`}
-                                            className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-200"
+                                            className="mt-4 inline-block bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors duration-200"
                                         >
                                             View Shop
                                         </Link>
+
+                                        
                                     </div>
+                                    
+                                    
                                 ))
                             ) : (
                                 <p>No shops found</p>

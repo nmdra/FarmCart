@@ -119,6 +119,7 @@ export const getShopByFarmerId = async (req, res) => {
     try {
         const { id } = req.params;
 
+        console.log("farmerid", id)
         // Optional: Validate the ID format (assuming MongoDB ObjectId)
         if (!id.match(/^[0-9a-fA-F]{24}$/)) {
             return res.status(400).json({ message: 'Invalid farmer ID format' });

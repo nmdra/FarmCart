@@ -69,8 +69,8 @@ const Shop = () => {
                         <p className="text-gray-900">{shop.email}</p>
                         <p className="text-gray-900">{shop.contactNumber}</p>
                         <Link
-                            to="/shop/profile"
-                            className="text-green-500 mt-2 inline-block"
+                            to="/farmerShop/profile"
+                            className="text-green-500 mt-2 inline-block font-bold"
                         >
                             Edit Details
                         </Link>

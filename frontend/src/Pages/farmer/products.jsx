@@ -5,10 +5,12 @@ import Sidebar from '../../Components/farmer/shop_sidebar'
 import addproduct from '../../assets/addpoduct.png'
 import Swal from 'sweetalert2'
 import { useReactToPrint } from 'react-to-print'
+import farmcartLogo from '../../assets/logo.png'
 
 const Products = () => {
     const [products, setProducts] = useState([])
     const shopId = localStorage.getItem('shopId')
+    const [shopName, setShopName] = useState('') 
     const navigate = useNavigate()
     const [searchTerm, setSearchTerm] = useState('') // State for the search term
 
@@ -21,6 +23,10 @@ const Products = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 }
+
+                const shopResponse = await axios.get(`/shops/${shopId}`, config)
+                setShopName(shopResponse.data.name)
+
                 const { data } = await axios.get(
                     `/shops/${shopId}/products`,
                     config
@@ -136,7 +142,7 @@ const Products = () => {
                     <div className="flex justify-end pe-24 mb-6">
                         <input
                             type="text"
-                            placeholder="Search products..."
+                            placeholder="Search Products..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="border border-gray-600 rounded-lg p-2 w-80 h-10 focus:outline-none focus:ring-2 focus:ring-green-500 text-center"
@@ -151,11 +157,22 @@ const Products = () => {
                 </div>
                 {/* Printable Product Price List */}
                 <div ref={productRef} className="hidden print:block">
+                    <div className="float-left">
+                        <br/>
+                        <img
+                        src={farmcartLogo}
+                        alt="Logo"
+                        className="h-5 w-auto mb-2 pl-4"
+                        />
+                    </div>
+                    <br/>
+                
                     {/* Title */}
-                    <h1 className="text-center text-2xl font-bold mb-4">
-                        Product Price List
+                    <h1 className="text-center text-2xl font-bold mb-4 ">
+                        {shopName} - Product Price List 
                     </h1>
 
+                    <div className="pl-16 pr-4">
                     {/* Product Table */}
                     <table className="table-auto w-full border-collapse">
                         <thead>
@@ -183,6 +200,7 @@ const Products = () => {
                     <p className="text-left mb-2 text-sm">
                         Generated on: {new Date().toLocaleString()}
                     </p>
+                </div>
                 </div>
 
                 <div className="grid grid-cols-4 gap-x-8 gap-y-12">

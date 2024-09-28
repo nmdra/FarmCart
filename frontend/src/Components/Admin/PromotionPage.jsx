@@ -9,7 +9,7 @@ const OfferPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/product'); // Update this with your correct API URL
+        const response = await axios.get('/api/product'); // Update this with your correct API URL
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products', error);
@@ -26,7 +26,7 @@ const OfferPage = () => {
   // Submit the promotion to the backend
   const submitPromotion = async () => {
     try {
-      await axios.post('http://localhost:3000/api/promotion', promotionData);
+      await axios.post('/api/promotion', promotionData);
       alert('Promotion added successfully');
     } catch (error) {
       console.error('Error adding promotion', error);

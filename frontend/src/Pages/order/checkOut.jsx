@@ -115,11 +115,9 @@ const CheckOut = () => {
                     ),
                     deliveryDateObj: date,
                 }
-                
-                console.log(data.user)
 
                 const response = await axios.post(
-                 'http://localhost:3000/api/orders/create-payment-intent',
+                    '/api/orders/create-payment-intent',
                     {
                         totalPrice: (data.totalPrice / 300).toFixed(2),
                         user: data.user,
@@ -148,7 +146,7 @@ const CheckOut = () => {
                 } else if (paymentResult.paymentIntent.status === 'succeeded') {
                     await axios.post('/api/orders', data)
                     toast.success(
-                        `Payment successful for farmer ${shopId}, order placed!`
+                        `Payment successful and order placed!`
                     )
                 }
             }
@@ -180,35 +178,63 @@ const CheckOut = () => {
     }, [])
 
     const validateName = (name) => {
+        const nameRegex = /^[a-zA-Z\s]*$/; 
         if (!name) {
-            return 'Name is required.'
+            return 'Name is required.';
+        } else if (!nameRegex.test(name)) {
+            return 'Name can only contain letters and spaces.';
         }
-        return ''
-    }
+        return '';
+    };
+    
 
+    //Validate email
     const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
         if (!email) {
-            return 'Email is required.'
-        } else if (!emailRegex.test(email)) {
-            return 'Invalid email address.'
+            return 'Email is required.';
+        } 
+
+        else if (!emailRegex.test(email)) {
+            return 'Invalid email address.';
         }
-        return ''
+
+        else if (email.length > 256) {
+            return 'Email must be less than 256 characters.';
+        }
+
+        const invalidDomains = ['example.com', 'test.com'];
+        const emailDomain = email.split('@')[1];
+        if (invalidDomains.includes(emailDomain)) {
+            return 'This domain is not allowed.';
+        }
+
+        return '';
     }
+    
 
     const validateCity = (city) => {
+        const cityRegex = /^[a-zA-Z\s]*$/; 
         if (!city) {
-            return 'City is required.'
+            return 'City is required.';
+        } else if (!cityRegex.test(city)) {
+            return 'City can only contain letters and spaces.';
         }
-        return ''
-    }
+        return '';
+    };
+    
+    
+    
+    
 
     const validatePhone = (phone) => {
         const phoneRegex = /^[0-9]{10}$/
         if (!phone) {
             return 'Phone number is required.'
         } else if (!phoneRegex.test(phone)) {
-            return 'Invalid phone number.'
+            return 'Phone number must contain 10 numbers'
         }
         return ''
     }
@@ -221,40 +247,66 @@ const CheckOut = () => {
     }
 
     const handleNameChange = (e) => {
-        const { value } = e.target
-        setName(value)
-        setErrors((prev) => ({ ...prev, name: validateName(value) }))
-    }
+        const { value } = e.target;
+    
+        // Filter out invalid characters before setting the value
+        const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
+        setName(filteredValue);
+        setErrors((prev) => ({ ...prev, name: validateName(filteredValue) }));
+    };
+    
 
     const handleEmailChange = (e) => {
-        const { value } = e.target
-        setEmail(value)
-        setErrors((prev) => ({ ...prev, email: validateEmail(value) }))
-    }
+        const { value } = e.target;
+    
+        const domain = '@gmail.com';
+        const domainIndex = value.indexOf(domain);
+    
+        const filteredValue = domainIndex !== -1 ? value.slice(0, domainIndex + domain.length) : value;
+    
+        setEmail(filteredValue);
+        setErrors((prev) => ({ ...prev, email: validateEmail(filteredValue) }));
+    };
+    
 
     const handleCityChange = (e) => {
-        const { value } = e.target
-        setCity(value)
-        setErrors((prev) => ({ ...prev, city: validateCity(value) }))
-    }
+        const { value } = e.target;
+    
+        const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
+        setCity(filteredValue);
+        setErrors((prev) => ({ ...prev, city: validateCity(filteredValue) }));
+    };
+    
 
     const handlePhoneChange = (e) => {
-        const { value } = e.target
-        setPhone(value)
-        setErrors((prev) => ({ ...prev, phone: validatePhone(value) }))
-    }
+        const { value } = e.target;
+    
+        if (/^[0-9]*$/.test(value) && value.length <= 10) {
+            setPhone(value);
+            setErrors((prev) => ({ ...prev, phone: validatePhone(value) }));
+        } else {
+            setErrors((prev) => ({ ...prev, phone: '' }));
+        }
+    };
+    
+    
 
     const handleAddressChange = (e) => {
-        const { value } = e.target
-        setAddress(value)
-        setErrors((prev) => ({ ...prev, address: validateAddress(value) }))
-    }
+        const { value } = e.target;
+    
+        const specialCharRegex = /^[a-zA-Z0-9\s,.]*$/;
+    
+        if (specialCharRegex.test(value) || value === '') {
+            setAddress(value);
+            setErrors((prev) => ({ ...prev, address: validateAddress(value) }));
+        }
+    };
 
     return (
         <div className="flex w-full justify-center ">
             <div className=" flex w-3/4 justify-center p-2 mt-10 items-center border rounded-lg ">
-                <div className="w-1/2 bg-white">
-                    <div className=" flex justify-center items-center p-10">
+                <div className="w-1/2 bg-white ">
+                    <div className=" flex justify-center items-center p-10 ">
                         <div className=" w-[600px]">
                             <form className="flex flex-col gap-2">
                                 <div className="flex gap-3">
@@ -311,6 +363,7 @@ const CheckOut = () => {
                                             getLocalTimeZone()
                                         ).subtract({ days: 3 })}
                                         onChange={(date) => setDate(date)}
+                                        
                                     />
                                 </div>
                                 <div className="flex gap-3">
@@ -373,7 +426,7 @@ const CheckOut = () => {
                                             }}
                                         />
                                     </div>
-                                    <div className="flex w-full gap-2">
+                                    <div className="flex w-full gap-2 ">
                                         <div className="flex-wrap w-full p-2 rounded-lg border-2">
                                             <CardExpiryElement
                                                 options={{
@@ -416,7 +469,7 @@ const CheckOut = () => {
                                                 }}
                                             />
                                         </div>
-                                        <div className="flex-wrap w-full p-2 rounded-lg border-2">
+                                        <div className="flex-wrap w-full p-2 rounded-lg border-2 ">
                                             <CardCvcElement
                                                 options={{
                                                     style: {
@@ -460,7 +513,11 @@ const CheckOut = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <Button color="primary" onClick={onSubmit}>
+                                <Button
+                                    color="primary"
+                                    onClick={onSubmit}
+                                    className="hover:bg-green-600 bg-green-500"
+                                >
                                     Proceed to Checkout
                                 </Button>
                             </form>
@@ -468,50 +525,37 @@ const CheckOut = () => {
                     </div>
                 </div>
 
-                <div className="w-1/2 flex justify-center flex-col items-center">
+                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6">
+                    Order Summary
                     <div className="w-[400px] gap-2 ">
                         {cart.length > 0 ? (
                             cart.map((product) => (
                                 <div
                                     key={product.id}
-                                    className="mx-auto  flex-none mt-2"
+                                    className="mx-auto flex-none mt-2"
                                 >
-                                    <div className="">
-                                        <div className="rounded-lg border border-gray-200 bg-white p-2 shadow-sm ">
-                                            <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
-                                                <div className="shrink-0 md:order-1">
-                                                    <img
-                                                        src={product.image}
-                                                        alt=""
-                                                        className="w-16 h-16 rounded-lg object-cover"
-                                                    />
+                                    <div className="rounded-lg p-2">
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div className="flex items-center space-x-4">
+                                                <img
+                                                    src={product.image}
+                                                    alt=""
+                                                    className="w-16 h-16 rounded-lg object-cover"
+                                                />
+                                                <div className="text-base font-medium text-gray-900">
+                                                    {product.name} x
+                                                    {product.quantity}
                                                 </div>
-                                                <div className="w-full min-w-0 flex-1 space-y-2 md:order-2 md:max-w-md">
-                                                    <div className="text-base font-medium text-gray-900 hover:underline ">
-                                                        {product.name}
-                                                    </div>
-                                                    <div className="text-base font-medium text-gray-900 hover:underline ">
-                                                        quantity :
-                                                        {product.quantity}
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center justify-between md:order-3 md:justify-end">
-                                                    <div className="text-end md:order-4 md:w-32">
-                                                        <p className="text-base font-bold text-gray-900 ">
-                                                            LKR.{' '}
-                                                            {(
-                                                                product.price *
-                                                                product.quantity
-                                                            ).toLocaleString(
-                                                                'en-US',
-                                                                {
-                                                                    minimumFractionDigits: 2,
-                                                                    maximumFractionDigits: 2,
-                                                                }
-                                                            )}{' '}
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                            </div>
+                                            <div className="text-base font-bold text-gray-900 text-right">
+                                                LKR.{' '}
+                                                {(
+                                                    product.price *
+                                                    product.quantity
+                                                ).toLocaleString('en-US', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                })}
                                             </div>
                                         </div>
                                     </div>
@@ -523,12 +567,13 @@ const CheckOut = () => {
                             </div>
                         )}
                     </div>
-                    <div className="mt-4 w-[350px] flex flex-col">
+                    {/* Price Summary */}
+                    <div className="mt-4 w-[400px] flex flex-col">
                         <dl className="flex items-center justify-between gap-4">
-                            <dt className="text-base font-normal text-gray-700 ">
-                                Original price
+                            <dt className="text-base font-normal text-gray-700">
+                                Subtotal:
                             </dt>
-                            <dd className="text-base font-medium text-gray-900 ">
+                            <dd className="text-base font-medium text-gray-900 text-right">
                                 LKR.{' '}
                                 {originalPrice.toLocaleString('en-US', {
                                     minimumFractionDigits: 2,
@@ -536,12 +581,13 @@ const CheckOut = () => {
                                 })}
                             </dd>
                         </dl>
+                        <br></br>
 
                         <dl className="flex items-center justify-between gap-4">
-                            <dt className="text-base font-normal text-gray-700 ">
-                                Coupon Discount
+                            <dt className="text-base font-normal text-gray-700">
+                                Coupon Discount:
                             </dt>
-                            <dd className="text-base font-medium text-green-600">
+                            <dd className="text-base font-medium text-green-600 text-right">
                                 LKR.{' '}
                                 {couponDiscount.toLocaleString('en-US', {
                                     minimumFractionDigits: 2,
@@ -549,12 +595,13 @@ const CheckOut = () => {
                                 })}
                             </dd>
                         </dl>
+                        <br></br>
 
-                        <dl className="flex items-center justify-between gap-4 border-t  border-gray-200 pt-2 dark:border-gray-700">
-                            <dt className="text-base font-bold text-gray-900 ">
-                                Total
+                        <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                            <dt className="text-base font-bold text-gray-900">
+                                Total:
                             </dt>
-                            <dd className="text-base font-bold text-gray-900 ">
+                            <dd className="text-base font-bold text-gray-900 text-right">
                                 LKR.{' '}
                                 {total > 0
                                     ? total.toLocaleString('en-US', {
