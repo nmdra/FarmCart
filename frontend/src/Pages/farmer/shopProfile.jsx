@@ -245,7 +245,7 @@ const ShopProfile = () => {
                         'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
                 },
             })
-            navigate(`/shop/${id}`)
+            navigate(`/farmerShop/${id}`)
         } catch (error) {
             console.error('Error updating shop details:', error)
         } finally {
@@ -309,7 +309,7 @@ const ShopProfile = () => {
     }
     // Handle cancel action
     const handleCancel = () => {
-        navigate(`/shop/${id}`)
+        navigate(`/farmerShop/${id}`)
     }
     return (
         <div className="flex min-h-screen  bg-gray-50">

@@ -63,6 +63,7 @@ const Dashboard = () => {
         }
 
         fetchFarmerDetails()
+        console.log(`Fetch ${farmer._id}`)
     }, []) // Empty dependency array ensures this effect runs only once when the component mounts
 
 useEffect(() => {
@@ -245,7 +246,7 @@ useEffect(() => {
                                     </span>
                                     <Link
                                         to="/farmerprofile"
-                                        className="text-green-500 mt-2 inline-block"
+                                        className="text-green-500 mt-2 inline-block font-bold"
                                     >
                                         Edit details
                                     </Link>
@@ -265,7 +266,7 @@ useEffect(() => {
                                 </p>
                                 <Link
                                     to="/farmerprofile"
-                                    className="text-green-500"
+                                    className="text-green-500 font-bold"
                                 >
                                     Edit Address
                                 </Link>
@@ -292,7 +293,7 @@ useEffect(() => {
                                 onClick={generatePDF}
                                 className=" mt-2 inline-block cursor-pointer bg-red-500 p-2 rounded-md text-white ring-0"
                             >
-                                download sales report
+                                Download Sales Report
                             </div>
                         </div>
                         <Table
