@@ -68,16 +68,14 @@ const ProductPage = ({ onAddToCart }) => {
     }
     return (
         
-        <section className="text-gray-600 body-font overflow-hidden mb-0">
-            <div className="container px-5 py-24 mx-auto ml-0">
-                <div className="lg:w-4/5 mx-auto flex flex-wrap">
-                    <img
-                        alt={product.name}
-                        className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded-2xl"
-                        src={product.image || 'https://dummyimage.com/400x400'} // Placeholder if no image
-                    />
-
-
+        <section className="text-gray-600 body-font overflow-hidden mb-0 mt-0">
+        <div className="container px-2 py-8 mx-auto ml-0"> 
+            <div className="lg:w-4/5 mx-auto flex flex-wrap">
+                <img
+                    alt={product.name}
+                    className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded-2xl"
+                    src={product.image || 'https://dummyimage.com/400x400'} // Placeholder if no image
+                />
                     <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">
                             {product.brand}
