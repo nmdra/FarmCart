@@ -1,5 +1,10 @@
-farmcart.local {
-    root * /var/www/html
+# Serve the frontend and proxy API for localhost, farmcart.local, and 127.0.0.1
+{
+    local_certs
+}
+
+localhost farmcart.local 127.0.0.1 {
+    root * /srv
     file_server
 
     # Enable HTTPS with self-signed certificates
@@ -7,5 +12,4 @@ farmcart.local {
 
     # Proxy API requests to the backend service
     reverse_proxy /api/* http://api:5002
-
 }

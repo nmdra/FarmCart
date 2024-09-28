@@ -26,11 +26,10 @@ COPY ./certs/farmcart.local.crt /etc/caddy/certs/farmcart.local.crt
 COPY ./certs/farmcart.local.key /etc/caddy/certs/farmcart.local.key
 
 # Copy the static files from the builder
-COPY --from=builder /app/dist /usr/share/caddy
+COPY --from=builder /app/dist /srv/
 
 # Expose HTTP and HTTPS ports
 EXPOSE 80
 EXPOSE 443
 
-# Start Caddy
-# CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--log", "stdout"]
+# Caddy runs automatically as the entry point
