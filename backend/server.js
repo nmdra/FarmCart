@@ -11,6 +11,15 @@ import imageHandler from './routes/imageHandlerRoute.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 import couponRouter from './routes/couponRouter.js'
 
+//Admin imports
+import dotenv from 'dotenv';
+import promotionRoutes from './routes/Admin/AdminPromotionRoutes.js';
+import productRoutes from './routes/Admin/AdminProductRoutes.js';
+import staffRoutes from './routes/Admin/AdminStaffRoutes.js';
+import customerRoutes from './routes/Admin/AdminCustomerRoutes.js';
+//Admin
+dotenv.config();
+
 // load environment variables
 const PORT = process.env.PORT || 8000
 
@@ -42,6 +51,13 @@ app.use('/api/userShops', userShop);
 app.use('/api/images', imageHandler)
 app.use('/api/coupon', couponRouter)
 app.use(notFound)
+
+//Admin Routes
+// Routes
+app.use('/api/promotion', promotionRoutes);
+app.use('/api/product', productRoutes);
+app.use('/api/staff', staffRoutes);
+app.use('/api/customer', customerRoutes);
 
 // Middleware to handle errors and send appropriate responses
 app.use(errorHandler)

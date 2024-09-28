@@ -31,4 +31,6 @@ dist-ssr
 
 # Docker 
 .env.docker
+.env.prod
 
+certs
