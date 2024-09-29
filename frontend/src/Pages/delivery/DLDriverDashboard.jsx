@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import DeliverySidebar from '../../Components/delivery/DeliverySidebar'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import DeliverySidebar from '../../Components/delivery/DeliverySidebar';
 
 const DLDriverDashboard = () => {
     const [driver, setDriver] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isAvailable, setIsAvailable] = useState(false); // State for availability
+    const [ongoingDeliveries, setOngoingDeliveries] = useState([]); // State for ongoing deliveries
     const navigate = useNavigate();
-
 
     useEffect(() => {
         const fetchDriverProfile = async () => {
-            const driverToken = localStorage.getItem('driverToken') // Get token from localStorage
+            const driverToken = localStorage.getItem('driverToken'); // Get token from localStorage
             if (!driverToken) {
-                navigate('/driver/login') // If no token, redirect to login page
-                return
+                navigate('/driver/login'); // If no token, redirect to login page
+                return;
             }
 
             try {
@@ -26,17 +26,21 @@ const DLDriverDashboard = () => {
                 });
                 setDriver(data); // Set driver data from the response
                 setIsAvailable(data.isAvailable); // Set initial availability
+
+                // Fetch ongoing deliveries assigned to this driver
+                const deliveriesRes = await axios.get(`/api/delivery/ongoing/${data._id}`);
+                setOngoingDeliveries(deliveriesRes.data);
+
                 setLoading(false);
-
             } catch (err) {
-                console.error('Error fetching driver profile:', err)
-                localStorage.removeItem('driverToken') // Remove invalid token
-                navigate('/driver/login') // Redirect to login on error
+                console.error('Error fetching driver profile:', err);
+                localStorage.removeItem('driverToken'); // Remove invalid token
+                navigate('/driver/login'); // Redirect to login on error
             }
-        }
+        };
 
-        fetchDriverProfile() // Fetch the driver profile on component load
-    }, [navigate])
+        fetchDriverProfile(); // Fetch the driver profile on component load
+    }, [navigate]);
 
     const handleLogout = () => {
         navigate('/driver/logout'); // Navigate to the DLlogout page
@@ -60,8 +64,7 @@ const DLDriverDashboard = () => {
         }
     };
 
-
-    if (loading) return <div>Loading...</div>
+    if (loading) return <div>Loading...</div>;
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -107,22 +110,46 @@ const DLDriverDashboard = () => {
                         </div>
                     </div>
 
-                    {/* Statistics Section */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-yellow-100 p-6 rounded-lg shadow-md">
-                            <h2 className="text-lg font-semibold text-yellow-800">Assigned Deliveries</h2>
-                            <p className="text-4xl font-bold text-yellow-800 mt-4">0</p>
-                        </div>
-                        <div className="bg-blue-100 p-6 rounded-lg shadow-md">
-                            <h2 className="text-lg font-semibold text-blue-800">Completed Deliveries</h2>
-                            <p className="text-4xl font-bold text-blue-800 mt-4">8</p>
-                        </div>
+                    {/* Ongoing Deliveries Section */}
+                    <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
+                        <h2 className="text-2xl font-bold mb-4">Ongoing Deliveries</h2>
+                        {ongoingDeliveries.length > 0 ? (
+                            <table className="min-w-full bg-white border border-gray-200">
+                                <thead>
+                                    <tr className="bg-gray-200">
+                                        <th className="px-4 py-2 border">Tracking ID</th>
+                                        <th className="px-4 py-2 border">Shop Name</th>
+                                        <th className="px-4 py-2 border">Pickup Address</th>
+                                        <th className="px-4 py-2 border">Dropoff Address</th>
+                                        <th className="px-4 py-2 border">Status</th>
+                                        <th className="px-4 py-2 border">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {ongoingDeliveries.map((delivery) => (
+                                        <tr key={delivery._id} className="hover:bg-gray-100">
+                                            <td className="px-4 py-2 border">{delivery.trackingID}</td>
+                                            <td className="px-4 py-2 border">{delivery.shopName}</td>
+                                            <td className="px-4 py-2 border">{delivery.pickupAddress}</td>
+                                            <td className="px-4 py-2 border">{delivery.dropOffAddress}</td>
+                                            <td className="px-4 py-2 border">{delivery.deliveryStatus}</td>
+                                            <td className="px-4 py-2 border">
+                                                <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : (
+                            <p>No ongoing deliveries at the moment.</p>
+                        )}
                     </div>
                 </div>
             </main>
-
         </div>
-    )
-}
+    );
+};
 
-export default DLDriverDashboard
+export default DLDriverDashboard;

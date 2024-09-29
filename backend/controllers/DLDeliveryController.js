@@ -151,3 +151,19 @@ export const getOngoingDeliveries = asyncHandler(async (req, res) => {
     res.json({ count: ongoingDeliveries });
 });
 
+// Controller to get ongoing deliveries for a specific driver
+export const getOngoingDeliveriesByDriver = asyncHandler(async (req, res) => {
+    const driverID = req.params.driverID; // Get driverID from the URL parameters
+
+    // Find deliveries assigned to the driver where status is not 'Delivered'
+    const deliveries = await DLDelivery.find({
+        driverID,
+        deliveryStatus: { $ne: 'Delivered' },
+    });
+
+    if (deliveries.length > 0) {
+        res.json(deliveries);
+    } else {
+        res.json({ message: 'No ongoing deliveries at the moment' });
+    }
+});
