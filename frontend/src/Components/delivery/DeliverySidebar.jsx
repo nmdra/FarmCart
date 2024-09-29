@@ -44,8 +44,8 @@ const DeliverySidebar = ({ driver }) => {
         });
     };
 
-    const baseUrl = 'http://localhost:3000/';
-    const personalImageUrl = `${baseUrl}${driver?.personalImageUrl}`;
+    
+    const personalImageUrl = `${driver?.personalImageUrl}`;
 
     return (
         <aside className="absolute top-6 left-6 w-60 bg-white rounded-lg shadow-lg p-4 mt-8">

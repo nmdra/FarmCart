@@ -1,6 +1,8 @@
 import { FaFacebookSquare } from 'react-icons/fa'
 import { FaTiktok } from 'react-icons/fa'
 import { FaMedium } from 'react-icons/fa6'
+import logo from '../../assets/Logo.png';
+
 
 const Footer = () => {
     return (
@@ -8,7 +10,7 @@ const Footer = () => {
             <hr className="my-2 " />
             <div className="grid grid-cols-2 pt-10 pb-8 md:grid-cols-4">
                 <div>
-                    <h1 className="text-3xl font-bold ">FarmCart.</h1>
+                <img src={logo} alt="Logo" width={160} height={160} />
                 </div>
                 <div></div>
                 <div className="flex flex-col gap-y-4">
