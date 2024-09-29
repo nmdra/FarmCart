@@ -9,6 +9,7 @@ const DLALLdrivers = () => {
     const [filteredDrivers, setFilteredDrivers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [showAvailableOnly, setShowAvailableOnly] = useState(false); // New state for available drivers filter
     const rowsPerPage = 30; // Limit rows to 30 per page
     const navigate = useNavigate();
 
@@ -50,6 +51,19 @@ const DLALLdrivers = () => {
             setTotalPages(Math.ceil(filtered.length / rowsPerPage)); // Update total pages after filtering
             setCurrentPage(1); // Reset to first page when search changes
         }
+    };
+
+    // Handle showing only available drivers
+    const toggleAvailableDrivers = () => {
+        setShowAvailableOnly(!showAvailableOnly); // Toggle filter state
+        if (!showAvailableOnly) {
+            const availableDrivers = drivers.filter((driver) => driver.isAvailable);
+            setFilteredDrivers(availableDrivers);
+        } else {
+            setFilteredDrivers(drivers); // Show all drivers when toggled off
+        }
+        setCurrentPage(1); // Reset to first page
+        setTotalPages(Math.ceil(filteredDrivers.length / rowsPerPage)); // Recalculate total pages
     };
 
     // Pagination logic
@@ -95,6 +109,16 @@ const DLALLdrivers = () => {
                             onChange={handleSearch}
                             className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                    </div>
+
+                    {/* Available drivers toggle button */}
+                    <div className="mb-4">
+                        <button
+                            onClick={toggleAvailableDrivers}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+                        >
+                            {showAvailableOnly ? 'Show All Drivers' : 'Show Available Drivers Only'}
+                        </button>
                     </div>
 
                     {/* Drivers table */}
