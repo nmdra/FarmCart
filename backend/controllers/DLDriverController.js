@@ -336,6 +336,25 @@ const verifyPassword = async (req, res) => {
     }
 };
 
+
+
+
+// Example: Endpoint to get total drivers count
+const getDriversCount = asyncHandler(async (req, res) => {
+    const count = await DLDriver.countDocuments({});
+    res.json({ count });
+});
+
+// Example: Endpoint to get available drivers count
+const getAvailableDriversCount = asyncHandler(async (req, res) => {
+    const count = await DLDriver.countDocuments({ isAvailable: true });
+    res.json({ count });
+});
+
+export { getDriversCount, getAvailableDriversCount };
+
+
+
 export { addDriver,
     deleteDriverAccount,
     updateDriverPassword,

@@ -134,3 +134,20 @@ export const getDeliveryById = asyncHandler(async (req, res) => {
         throw new Error('Delivery not found');
     }
 });
+
+
+
+// Get total deliveries count
+export const getTotalDeliveries = asyncHandler(async (req, res) => {
+    const totalDeliveries = await DLDelivery.countDocuments(); // Count all documents
+    res.json({ count: totalDeliveries });
+});
+
+// Get ongoing deliveries count
+export const getOngoingDeliveries = asyncHandler(async (req, res) => {
+    const ongoingDeliveries = await DLDelivery.countDocuments({
+        deliveryStatus: { $ne: 'Delivered' } // Count where status is not "Delivered"
+    });
+    res.json({ count: ongoingDeliveries });
+});
+

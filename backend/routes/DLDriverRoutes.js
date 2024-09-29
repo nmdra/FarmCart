@@ -14,6 +14,8 @@ import {
     deleteDriverAccount,
     getAllDrivers,
     verifyPassword,
+    getDriversCount, 
+    getAvailableDriversCount, 
 
     // Add logout driver function
 } from '../controllers/DLDriverController.js';
@@ -60,6 +62,11 @@ router.delete('/verifyPass', protectDriver, verifyPassword);
 
 router.get('/drivers', getAllDrivers);
 
+// Route to get the total number of drivers
+router.get('/count', getDriversCount);
+
+// Route to get the number of available drivers
+router.get('/available/count', getAvailableDriversCount);
 
 
 
