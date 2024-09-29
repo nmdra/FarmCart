@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./
 
-RUN npm install --omit=dev
+RUN npm install 
 
 # Copy all other files and build the React app
 COPY . .
@@ -20,10 +20,6 @@ FROM caddy:2.8.4-alpine
 
 # Copy the Caddyfile
 COPY ./caddy/Caddyfile /etc/caddy/Caddyfile
-
-# Copy the SSL certificates to the Caddy container
-COPY ./certs/farmcart.local.crt /etc/caddy/certs/farmcart.local.crt
-COPY ./certs/farmcart.local.key /etc/caddy/certs/farmcart.local.key
 
 # Copy the static files from the builder
 COPY --from=builder /app/dist /srv/

@@ -9,17 +9,18 @@ services:
     env_file: ./backend/.env.prod
     networks:
       - app-network-caddy
-    ports:
-      - "5002:5002"  # Expose the API on port 5002 for internal communication
+    # ports:
+    #   - "5002:5002"  # Expose the API on port 5002 for internal communication
 
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.caddy  # This Dockerfile serves React with Caddy
+      dockerfile: Dockerfile.prod  # This Dockerfile serves React with Caddy
     restart: unless-stopped
     ports:
       - 80:80  # HTTP port
       - 443:443  # HTTPS port for SSL
+
     depends_on:
       - api
     networks:

@@ -1,15 +1,11 @@
 # Serve the frontend and proxy API for localhost, farmcart.local, and 127.0.0.1
-{
-    local_certs
-}
-
 localhost farmcart.local 127.0.0.1 {
     root * /srv
-    file_server
 
-    # Enable HTTPS with self-signed certificates
-    # tls /etc/caddy/certs/farmcart.local.crt /etc/caddy/certs/farmcart.local.key
-
-    # Proxy API requests to the backend service
-    reverse_proxy /api/* http://api:5002
+    route {
+		reverse_proxy /api* api:5002
+		try_files {path} /index.html
+		file_server
+	}
 }
+

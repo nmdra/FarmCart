@@ -1,4 +1,7 @@
-.env
-.env.example
-.node_modules
 .editorconfig
+node_modules
+build
+dist
+*.log
+*.md
+*.env

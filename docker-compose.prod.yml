@@ -23,6 +23,7 @@ services:
     env_file: ./frontend/.env.prod
     ports:
       - "80:80"  # Serve frontend on port 80
+      - "443:443"
     volumes:
       - ./frontend:/app
       - /app/node_modules
