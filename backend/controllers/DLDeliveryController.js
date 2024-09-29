@@ -167,3 +167,37 @@ export const getOngoingDeliveriesByDriver = asyncHandler(async (req, res) => {
         res.json({ message: 'No ongoing deliveries at the moment' });
     }
 });
+
+
+
+// Update delivery status
+export const updateDeliveryStatus = asyncHandler(async (req, res) => {
+    const { deliveryStatus } = req.body; // Get the new status from the request body
+
+    try {
+        const delivery = await DLDelivery.findById(req.params.deliveryId);
+
+        if (!delivery) {
+            return res.status(404).json({ message: 'Delivery not found' });
+        }
+
+        // Prevent moving back to previous statuses
+        if (delivery.deliveryStatus === 'Delivered') {
+            return res.status(400).json({ message: 'Cannot update the status of a delivered order' });
+        }
+
+        // Update the delivery status
+        delivery.deliveryStatus = deliveryStatus;
+
+        // If the delivery is marked as "Delivered", set the deliveredDateTime
+        if (deliveryStatus === 'Delivered') {
+            delivery.deliveredDateTime = Date.now();
+        }
+
+        await delivery.save();
+
+        res.status(200).json({ message: 'Delivery status updated successfully', delivery });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating delivery status', error });
+    }
+});
