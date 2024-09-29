@@ -7,6 +7,8 @@ import {
 
 // Layouts and Components
 import MainLayout from './Layouts/MainLayout';
+import DLayout from './Layouts/DLayout';
+
 import SidebarLayout from './Layouts/SidebarLayout'; // Layout with Sidebar
 import PrivateRoute from './Components/PrivateRoute';
 
@@ -180,7 +182,7 @@ const router = createBrowserRouter(
             </Route>
 
             {/* delivery and driver Routes */}
-            <Route path="/">
+            <Route path="/" element={<DLayout />}>
                 
             <Route path="/register-driver" element={<DLDriverRegistrationForm />} />
                 <Route path="/upload-image" element={<DLImageUpload />} />

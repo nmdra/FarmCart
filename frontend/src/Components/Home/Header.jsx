@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import logo from '../../assets/Logo.png'
+import logo from '../../assets/logo.png'
 import CartButton from './CartButton'
 
 const Header = () => {
