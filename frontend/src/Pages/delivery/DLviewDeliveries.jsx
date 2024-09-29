@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios' // Ensure correct path to axios // do not chnge to the part without getting correct path this one is wworking
+import axios from 'axios' // Ensure correct path to axios
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sidebar component
 
 const DLAllDeliveries = () => {
@@ -9,6 +9,7 @@ const DLAllDeliveries = () => {
     const [filteredDeliveries, setFilteredDeliveries] = useState([])
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
+    const [filterStatus, setFilterStatus] = useState('All Deliveries') // State for current status filter
 
     // Fetch all deliveries
     useEffect(() => {
@@ -34,9 +35,9 @@ const DLAllDeliveries = () => {
         setSearchTerm(searchValue)
 
         if (searchValue === '') {
-            setFilteredDeliveries(deliveries) // Reset to all deliveries if search is cleared
+            applyStatusFilter(filterStatus) // Reapply status filter if search is cleared
         } else {
-            const filtered = deliveries.filter(
+            const filtered = filteredDeliveries.filter(
                 (delivery) =>
                     delivery.trackingID
                         .toLowerCase()
@@ -57,6 +58,22 @@ const DLAllDeliveries = () => {
             )
             setFilteredDeliveries(filtered)
         }
+    }
+
+    // Handle status filter
+    const applyStatusFilter = (status) => {
+        setFilterStatus(status)
+
+        if (status === 'All Deliveries') {
+            setFilteredDeliveries(deliveries) // Show all deliveries
+        } else {
+            const filtered = deliveries.filter(
+                (delivery) => delivery.deliveryStatus === status
+            )
+            setFilteredDeliveries(filtered)
+        }
+
+        setPage(1) // Reset to first page when filter changes
     }
 
     // Handle page change
@@ -95,6 +112,40 @@ const DLAllDeliveries = () => {
                             onChange={handleSearch}
                             className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
+                    </div>
+
+                    {/* Status filter buttons */}
+                    <div className="flex justify-center mb-4 space-x-4">
+                        <button
+                            onClick={() => applyStatusFilter('All Deliveries')}
+                            className={`px-4 py-2 rounded-md focus:outline-none ${filterStatus === 'All Deliveries' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                        >
+                            All Deliveries
+                        </button>
+                        <button
+                            onClick={() => applyStatusFilter('Ready')}
+                            className={`px-4 py-2 rounded-md focus:outline-none ${filterStatus === 'Ready' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                        >
+                            Ready
+                        </button>
+                        <button
+                            onClick={() => applyStatusFilter('Picked Up')}
+                            className={`px-4 py-2 rounded-md focus:outline-none ${filterStatus === 'Picked Up' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                        >
+                            Picked Up
+                        </button>
+                        <button
+                            onClick={() => applyStatusFilter('On The Way')}
+                            className={`px-4 py-2 rounded-md focus:outline-none ${filterStatus === 'On The Way' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                        >
+                            On The Way
+                        </button>
+                        <button
+                            onClick={() => applyStatusFilter('Delivered')}
+                            className={`px-4 py-2 rounded-md focus:outline-none ${filterStatus === 'Delivered' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                        >
+                            Delivered
+                        </button>
                     </div>
 
                     {/* Deliveries table */}
