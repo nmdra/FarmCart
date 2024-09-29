@@ -38,15 +38,16 @@ const DLmanageDash = () => {
 
         
         <div className="flex min-h-screen bg-gray-50">
-            {/* Sidebar */}
-            <aside>
-                <DLmanageSidebar />
-            </aside>
-
-            {/* Main content */}
-            <div className="flex-1 ml-64 p-12 bg-white">
+        {/* Sidebar */}
+        <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
+            <DLmanageSidebar />
+        </aside>
+    
+        {/* Main content */}
+        <main className="flex-1 ml-64 p-16 overflow-y-auto">
+            <div className="max-w-7xl mx-auto p-6 bg-white shadow-md rounded-md">
                 <h1 className="text-3xl font-bold mb-8 text-gray-800">Delivery Manager Dashboard</h1>
-
+    
                 {/* Statistics Section */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                     <div className="bg-green-100 p-6 rounded-lg shadow-md">
@@ -66,7 +67,7 @@ const DLmanageDash = () => {
                         <p className="text-4xl font-bold text-red-800 mt-4">{stats.pendingOrders}</p>
                     </div>
                 </div>
-
+    
                 {/* Recent Driver Requests */}
                 <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
                     <h2 className="text-2xl font-bold mb-4">Recent Driver Requests</h2>
@@ -81,7 +82,6 @@ const DLmanageDash = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* Sample driver requests */}
                                 <tr className="bg-white">
                                     <td className="px-4 py-2 border">Nimendra</td>
                                     <td className="px-4 py-2 border">Bike</td>
@@ -98,12 +98,11 @@ const DLmanageDash = () => {
                                         <span className="bg-green-500 text-white px-2 py-1 rounded">Approved</span>
                                     </td>
                                 </tr>
-                                {/* Add more rows as needed */}
                             </tbody>
                         </table>
                     </div>
                 </div>
-
+    
                 {/* Ongoing Deliveries Section */}
                 <div className="bg-gray-100 p-6 rounded-lg shadow-md">
                     <h2 className="text-2xl font-bold mb-4">Ongoing Deliveries</h2>
@@ -120,7 +119,7 @@ const DLmanageDash = () => {
                             <tbody>
                                 <tr className="bg-white">
                                     <td className="px-4 py-2 border">#1234</td>
-                                    <td className="px-4 py-2 border">Dasun </td>
+                                    <td className="px-4 py-2 border">Dasun</td>
                                     <td className="px-4 py-2 border">Bike</td>
                                     <td className="px-4 py-2 border">
                                         <span className="bg-blue-500 text-white px-2 py-1 rounded">In Progress</span>
@@ -134,13 +133,14 @@ const DLmanageDash = () => {
                                         <span className="bg-green-500 text-white px-2 py-1 rounded">Completed</span>
                                     </td>
                                 </tr>
-                                {/* Add more rows as needed */}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
+    </div>
+    
     );
 };
 
