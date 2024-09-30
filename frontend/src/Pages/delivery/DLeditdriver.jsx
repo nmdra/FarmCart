@@ -130,6 +130,7 @@ const DLViewDriver = () => {
         if (name === 'fullName') {
             if (!/^[A-Za-z\s]*$/.test(value)) {
                 errorMessage = 'Name should only contain alphabets and spaces.';
+                return;
             }
         }
     
@@ -279,8 +280,8 @@ const DLViewDriver = () => {
                                         0,
                                         10
                                     )}
-                                    onChange={handleInputChange}
-                                    className="p-2 border border-gray-300 rounded-md"
+                                    readOnly // Make field non-editable
+                                    className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
                                 />
                             </div>
 
@@ -293,8 +294,8 @@ const DLViewDriver = () => {
                                     type="text"
                                     name="idCardNumber"
                                     value={driverDetails.idCardNumber}
-                                    onChange={handleInputChange}
-                                    className="p-2 border border-gray-300 rounded-md"
+                                    readOnly // Make field non-editable
+                                    className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
                                 />
                             </div>
 
@@ -307,8 +308,8 @@ const DLViewDriver = () => {
                                     type="text"
                                     name="licenseCardNumber"
                                     value={driverDetails.licenseCardNumber}
-                                    onChange={handleInputChange}
-                                    className="p-2 border border-gray-300 rounded-md"
+                                    readOnly // Make field non-editable
+                                    className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
                                 />
                             </div>
 
