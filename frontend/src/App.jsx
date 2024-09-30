@@ -83,7 +83,8 @@ import OrderTable from './Pages/delivery/DLOtable'; // Assuming you store it in 
 import Od from './Pages/delivery/or/orderdelete'; //
 import DLAllDeliveries from './Pages/delivery/DLviewDeliveries'; // Import the DLAllDeliveries component
 import DLViewDelivery from './Pages/delivery/DLviewDelivery'; // Import the
-
+import OngoingDelivery from './Pages/delivery/driver/OngoingDelivery'; // Import the OngoingDelivery component
+import ViewDelivery from './Pages/delivery/driver/ViewDelivery'; // Import the ViewDelivery page
 
 
 
@@ -204,6 +205,8 @@ const router = createBrowserRouter(
              <Route path="/d" element={<Od/>} />
               <Route path="/DLAllDeliveries" element={<DLAllDeliveries/>} />
             <Route path="/manager/delivery/:id" element={<DLViewDelivery />} />
+            <Route path="/ongoing" element={<OngoingDelivery />} />
+            <Route path="/driver/delivery/:id" element={<ViewDelivery />} /> {/* Route for viewing a specific delivery */}
 
 
                 <Route path="*" element={<NotFound />} />

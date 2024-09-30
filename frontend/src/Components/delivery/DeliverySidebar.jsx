@@ -77,7 +77,7 @@ const DeliverySidebar = ({ driver }) => {
                     </li>
                     <li>
                         <NavLink
-                            to="/driver/ongoing-deliveries"
+                            to="/ongoing"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
                                     isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
