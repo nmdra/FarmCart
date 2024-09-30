@@ -64,8 +64,9 @@ const ProductPage = ({ onAddToCart }) => {
     }
 
     const decreaseCount = () => {
-        setQuantity((prevCount) => (prevCount > 0 ? prevCount - 1 : 0))
+        setQuantity((prevCount) => (prevCount > 1 ? prevCount - 1 : 1))
     }
+    
     return (
         
         <section className="text-gray-600 body-font overflow-hidden mb-0 mt-0">

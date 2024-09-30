@@ -303,6 +303,8 @@ const CheckOut = () => {
     };
 
     return (
+
+
         <div className="flex w-full justify-center ">
             <div className=" flex w-3/4 justify-center p-2 mt-10 items-center border rounded-lg ">
                 <div className="w-1/2 bg-white ">
@@ -310,7 +312,7 @@ const CheckOut = () => {
                         <div className=" w-[600px]">
                             <form className="flex flex-col gap-2">
                                 <div className="flex gap-3">
-                                    <Input
+                                    <Input 
                                         label="Your name"
                                         placeholder="Enter your name"
                                         type="text"
@@ -342,6 +344,7 @@ const CheckOut = () => {
                                         errorMessage={errors.city}
                                     />
                                     <Input
+                                    className="hover:border-green-400 focus:border-green-400"
                                         label="Your phone number"
                                         placeholder="Enter your phone number"
                                         type="text"
@@ -524,6 +527,8 @@ const CheckOut = () => {
                         </div>
                     </div>
                 </div>
+
+                
 
                 <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6 border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadlg transition-shadow duration-300">
                     Order Summary

@@ -89,8 +89,8 @@ const Cart = () => {
 
     return (
         <div>
-            <section className="bg-white py-8 antialiased  md:py-16">
-                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+            <section className="bg-white py-4 antialiased md:py-8">
+            <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 ml-10 p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl">
                        My Shopping Cart
                     </h2>
@@ -142,7 +142,7 @@ const Cart = () => {
                                         </td>
                                         <td className="py-4 text-right">
                                         <span
-                                        className="text-red-600 cursor-pointer hover:text-red-700 font-semibold"
+                                        className="text-red-500 cursor-pointer hover:text-red-600 font-semibold"
                                         onClick={() => handleRemove(product._id)}
                                         >
                                         Remove

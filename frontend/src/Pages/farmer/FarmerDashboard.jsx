@@ -222,12 +222,12 @@ const finalY = doc.autoTable.previous.finalY + 15;
 
 // Adding text below the table
 doc.setFontSize(8);
-doc.text('If you ever need assistance or have any questions, our FarmCart Support Team is always here to help you.', 14, finalY);
+doc.text('If you ever need assistance or have any questions, our FarmCart Support Team is always here to help you.', 14, finalY+10);
 doc.text('We are committed to providing guidance and ensuring your success every step of the way!', 14, finalY + 5);
 
 doc.setTextColor(128, 128, 128);
-doc.text('Email: support@farmcart.com', 14, finalY + 12);
-doc.text('Website: www.farmcart.com', 14, finalY + 17);
+doc.text('Email: support@farmcart.com', 14, finalY + 15);
+doc.text('Website: www.farmcart.com', 14, finalY + 20);
 
 
  // Add Report Date and Time 
@@ -238,7 +238,7 @@ doc.text('Website: www.farmcart.com', 14, finalY + 17);
  doc.setFontSize(8); 
  doc.setTextColor(0, 0, 0);  
  doc.text(`Report Date: ${formattedDate}`, 166, 20);  
- doc.text(`Time: ${formattedTime}`, 173, 25);         
+ doc.text(`Time: ${formattedTime}`, 171, 25);         
 
         doc.save('orders-report.pdf')
     }
@@ -268,7 +268,7 @@ doc.text('Website: www.farmcart.com', 14, finalY + 17);
                         {/* Profile and Details Section */}
                         <div className="flex space-x-8 mb-8">
                             {/* Profile Card */}
-                            <div className="bg-white p-6 rounded-lg shadow-md w-2/3">
+                            <div className="bg-green-50 p-6 rounded-lg shadow-md w-2/3">
                                 <div className="flex flex-col items-center">
                                     <img
                                         className="w-24 h-24 rounded-full object-cover"
@@ -291,7 +291,7 @@ doc.text('Website: www.farmcart.com', 14, finalY + 17);
                             </div>
 
                             {/* Details Card */}
-                            <div className="bg-white p-6 rounded-lg shadow-md w-2/3 flex flex-col items-center ">
+                            <div className="bg-green-50 p-6 rounded-lg shadow-md w-2/3 flex flex-col items-center ">
                                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
                                     Address
                                 </h3>

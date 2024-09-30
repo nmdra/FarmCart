@@ -6,22 +6,30 @@ import {
     ModalFooter,
     ModalHeader,
 } from '@nextui-org/react'
-
 import PropTypes from 'prop-types'
 
 const OrderDetailsModal = ({ isOpen, onOpenChange, clickOrder }) => {
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            className="rounded-xl shadow-lg"
+        >
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="flex flex-col gap-1">
-                            <h4>Order Details</h4>
+                        {/* Modal Header */}
+                        <ModalHeader className="flex flex-col gap-1 text-center">
+                            <h4 className="text-xl font-bold text-gray-800">
+                                Order Details
+                            </h4>
                         </ModalHeader>
+
+                        {/* Modal Body */}
                         <ModalBody>
-                            <div className="max-w-lg mx-auto bg-white  p-6">
+                            <div className="max-w-lg mx-auto bg-gray-50 p-6 rounded-lg shadow-sm">
                                 <div className="mb-2">
-                                    <span className="font-medium">
+                                    <span className="font-semibold text-gray-900">
                                         Order Items:
                                     </span>{' '}
                                     <span className="text-gray-700">
@@ -31,19 +39,23 @@ const OrderDetailsModal = ({ isOpen, onOpenChange, clickOrder }) => {
                                     </span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="font-medium">Name:</span>{' '}
+                                    <span className="font-semibold text-gray-900">
+                                        Name:
+                                    </span>{' '}
                                     <span className="text-gray-700">
                                         {clickOrder.shippingAddress.name}
                                     </span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="font-medium">City:</span>{' '}
+                                    <span className="font-semibold text-gray-900">
+                                        City:
+                                    </span>{' '}
                                     <span className="text-gray-700">
                                         {clickOrder.shippingAddress.city}
                                     </span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="font-medium">
+                                    <span className="font-semibold text-gray-900">
                                         Phone Number:
                                     </span>{' '}
                                     <span className="text-gray-700">
@@ -51,13 +63,15 @@ const OrderDetailsModal = ({ isOpen, onOpenChange, clickOrder }) => {
                                     </span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="font-medium">Email:</span>{' '}
+                                    <span className="font-semibold text-gray-900">
+                                        Email:
+                                    </span>{' '}
                                     <span className="text-gray-700">
                                         {clickOrder?.shippingAddress?.email}
                                     </span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="font-medium">
+                                    <span className="font-semibold text-gray-900">
                                         Shipping Address:
                                     </span>{' '}
                                     <span className="text-gray-700">
@@ -65,14 +79,15 @@ const OrderDetailsModal = ({ isOpen, onOpenChange, clickOrder }) => {
                                     </span>
                                 </div>
                                 <div className="mb-2">
-                                    <span className="font-medium">
+                                    <span className="font-semibold text-gray-900">
                                         Payment Method:
                                     </span>{' '}
                                     <span className="text-gray-700">
                                         Card Payment
                                     </span>
                                 </div>
-                                <div className="text-lg font-semibold mt-4">
+                                {/* Total Price Section */}
+                                <div className="text-lg font-bold mt-4">
                                     Total Price: LKR{' '}
                                     <span className="text-green-600">
                                         {clickOrder.totalPrice.toLocaleString(
@@ -86,14 +101,17 @@ const OrderDetailsModal = ({ isOpen, onOpenChange, clickOrder }) => {
                                 </div>
                             </div>
                         </ModalBody>
-                        <ModalFooter>
-                            <Button
-                                color="danger"
-                                variant="light"
-                                onPress={onClose}
-                            >
-                                Close
-                            </Button>
+
+                        {/* Modal Footer with a Close Button */}
+                        <ModalFooter className="justify-end">
+                        <Button
+    color="success"
+    onPress={onClose}
+    className="bg-green-500 hover:bg-green-600 text-white"
+>
+    Close
+</Button>
+
                         </ModalFooter>
                     </>
                 )}
