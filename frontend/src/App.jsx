@@ -189,7 +189,7 @@ const router = createBrowserRouter(
                 <Route path="/upload-image" element={<DLImageUpload />} />
              <Route path="/manager/approve-driver" element={<DLApproveDriver />} />
              <Route path="/manager/approve-driver/:id" element={<DLDriverAccept />} />
-             <Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />
+             {/*<Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />*/}
 
              <Route path="/driver/login" element={<DLLogin />} />  {/* Driver Login Route */}
              <Route path="/driver/dashboard" element={<DeliveryDashboard />} />

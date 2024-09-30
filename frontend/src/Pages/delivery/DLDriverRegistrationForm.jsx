@@ -140,45 +140,58 @@ const RegisterDriverForm = () => {
         }))
     }
 
-    // Handle image file changes, upload to Cloudinary, and set previews
-    const handleFileChange = async (
-        e,
-        setImageUrlFunction,
-        setPreviewFunction,
-        type
-    ) => {
-        const file = e.target.files[0]
-        if (file) {
-            setPreviewFunction(URL.createObjectURL(file)) // Set preview URL
-            setLoading({ ...loading, [type]: true }) // Set loading state
+// Handle image file changes, upload to Cloudinary, and set previews with validation
+const handleFileChange = async (
+    e,
+    setImageUrlFunction,
+    setPreviewFunction,
+    type
+) => {
+    const file = e.target.files[0]
+    const validFileTypes = ['image/png', 'image/jpeg', 'image/jpg']
 
-            try {
-                const formData = new FormData()
-                formData.append('image', file)
-                formData.append('folder', 'drivers') // Upload to "drivers" folder in Cloudinary
+    if (file) {
+        // Check if file type is valid
+        if (!validFileTypes.includes(file.type)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid File Type',
+                text: 'Please upload a valid image file (PNG or JPEG).',
+            })
+            return // Exit if invalid file type
+        }
 
-                const response = await axios.post('/images', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
+        setPreviewFunction(URL.createObjectURL(file)) // Set preview URL
+        setLoading({ ...loading, [type]: true }) // Set loading state
 
-                setImageUrlFunction(response.data.url) // Set Cloudinary image URL
-                Swal.fire({
-                    icon: 'success',
-                    title: `${type} uploaded successfully!`,
-                })
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Upload Error',
-                    text: 'Failed to upload image. Please try again.',
-                })
-            } finally {
-                setLoading({ ...loading, [type]: false }) // Remove loading state
-            }
+        try {
+            const formData = new FormData()
+            formData.append('image', file)
+            formData.append('folder', 'drivers') // Upload to "drivers" folder in Cloudinary
+
+            const response = await axios.post('/images', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            setImageUrlFunction(response.data.url) // Set Cloudinary image URL
+            Swal.fire({
+                icon: 'success',
+                title: `${type} uploaded successfully!`,
+            })
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Upload Error',
+                text: 'Failed to upload image. Please try again.',
+            })
+        } finally {
+            setLoading({ ...loading, [type]: false }) // Remove loading state
         }
     }
+}
+
 
     // Handle form submission
     const handleSubmit = async (e) => {
