@@ -6,8 +6,13 @@ import Swal from 'sweetalert2'
 
 const ViewDeliveries = () => {
     const [deliveries, setDeliveries] = useState([]);
+    const [filteredDeliveries, setFilteredDeliveries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [driver, setDriver] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterStatus, setFilterStatus] = useState('All Deliveries');
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const driverToken = localStorage.getItem('driverToken');
     const navigate = useNavigate();
 
@@ -35,7 +40,9 @@ const ViewDeliveries = () => {
                 });
 
                 setDeliveries(deliveriesRes.data);
+                setFilteredDeliveries(deliveriesRes.data);
                 setLoading(false);
+                setTotalPages(Math.ceil(deliveriesRes.data.length / 20)); // Assuming 20 deliveries per page
             } catch (error) {
                 console.error('Error fetching deliveries:', error);
                 setLoading(false);
@@ -45,65 +52,44 @@ const ViewDeliveries = () => {
         fetchDriverAndDeliveries();
     }, [driverToken, navigate]);
 
-    const handleStatusUpdate = async (deliveryId, currentStatus) => {
-        let newStatus;
-
-        // Determine next status
-        if (currentStatus === 'Ready') {
-            newStatus = 'Picked Up';
-        } else if (currentStatus === 'Picked Up') {
-            newStatus = 'On The Way';
-        } else if (currentStatus === 'On The Way') {
-            newStatus = 'Delivered';
-        } else {
-            return; // If already delivered or status is not eligible for change, do nothing
-        }
-
-        // Show SweetAlert confirmation
-        const result = await Swal.fire({
-            title: `Are you sure you want to mark this delivery as ${newStatus}?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: `Yes, ${newStatus}!`,
-        });
-
-        if (result.isConfirmed) {
-            try {
-                // Update status in the backend
-                await axios.put(
-                    `/api/delivery/${deliveryId}/status`,
-                    { deliveryStatus: newStatus },
-                    {
-                        headers: {
-                            Authorization: `Bearer ${driverToken}`,
-                        },
-                    }
-                );
-
-                // Update the state with the new status
-                setDeliveries((prevDeliveries) =>
-                    prevDeliveries.map((delivery) =>
-                        delivery._id === deliveryId
-                            ? { ...delivery, deliveryStatus: newStatus }
-                            : delivery
-                    )
-                );
-
-                // Show success message
-                Swal.fire('Updated!', `Delivery marked as ${newStatus}.`, 'success');
-            } catch (error) {
-                Swal.fire('Error', 'Failed to update delivery status', 'error');
-            }
-        }
+    const handleSearch = (e) => {
+        const value = e.target.value.toLowerCase();
+        setSearchTerm(value);
+        filterDeliveries(value, filterStatus);
     };
 
-    const handleViewDelivery = (deliveryId) => {
+    const applyStatusFilter = (status) => {
+        setFilterStatus(status);
+        filterDeliveries(searchTerm, status);
+    };
+
+    const filterDeliveries = (search, status) => {
+        const filtered = deliveries.filter(delivery => {
+            const matchesSearch = 
+                delivery.trackingID.toLowerCase().includes(search) ||
+                delivery.shopName.toLowerCase().includes(search) ||
+                delivery.drID.toLowerCase().includes(search) ||
+                delivery.customerName.toLowerCase().includes(search);
+            
+            const matchesStatus = status === 'All Deliveries' || delivery.deliveryStatus === status;
+            
+            return matchesSearch && matchesStatus;
+        });
+
+        setFilteredDeliveries(filtered);
+        setTotalPages(Math.ceil(filtered.length / 20)); // Update total pages based on filtered deliveries
+        setPage(1); // Reset to first page
+    };
+
+    const handleView = (deliveryId) => {
         navigate(`/driver/delivery/${deliveryId}`); // Navigate to delivery view page
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+
+    if (loading) return <div>Loading...</div>;
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -113,76 +99,109 @@ const ViewDeliveries = () => {
             </aside>
 
             {/* Main content */}
-            <main className="flex-1 ml-64 p-16 overflow-y-auto">
-                <div className="max-w-7xl mx-auto p-8 bg-white shadow-lg rounded-lg">
-                    <h1 className="text-3xl font-bold mb-6 text-center">All Deliveries</h1>
+            <main className="flex-1 ml-64 p-8 overflow-y-auto">
+                <div className="max-w-7xl mx-auto p-6 bg-white shadow-md rounded-md">
+                    <h2 className="text-2xl font-bold mb-6 text-center">
+                        All Deliveries
+                    </h2>
 
-                    {deliveries.length > 0 ? (
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full bg-white border border-gray-200">
-                                <thead>
-                                    <tr className="bg-gray-200">
-                                        <th className="px-4 py-2 border">Tracking ID</th>
-                                        <th className="px-4 py-2 border">Order ID</th>
-                                        <th className="px-4 py-2 border">Driver ID</th>
-                                        <th className="px-4 py-2 border">Shop Name</th>
-                                        <th className="px-4 py-2 border">Pickup Address</th>
-                                        <th className="px-4 py-2 border">Customer Name</th>
-                                        <th className="px-4 py-2 border">Dropoff Address</th>
-                                        <th className="px-4 py-2 border">Assigned Time</th>
-                                        <th className="px-4 py-2 border">Status</th>
-                                        <th className="px-4 py-2 border">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {deliveries.map((delivery) => (
+                    {/* Search box */}
+                    <div className="mb-4">
+                        <input
+                            type="text"
+                            placeholder="Search deliveries by tracking ID, shop name, driver ID, or customer name"
+                            value={searchTerm}
+                            onChange={handleSearch}
+                            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    {/* Status filter buttons */}
+                    <div className="flex justify-center mb-4 space-x-4">
+                        {['All Deliveries', 'Ready', 'Picked Up', 'On The Way', 'Delivered'].map(status => (
+                            <button
+                                key={status}
+                                onClick={() => applyStatusFilter(status)}
+                                className={`px-4 py-2 rounded-md focus:outline-none ${filterStatus === status ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                            >
+                                {status}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Deliveries table */}
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full bg-white border border-gray-200 text-sm">
+                            <thead className="bg-gray-200">
+                                <tr>
+                                    <th className="px-3 py-2 border text-left">#</th>
+                                    <th className="px-3 py-2 border text-left">Tracking ID</th>
+                                    <th className="px-3 py-2 border text-left">Order ID</th>
+                                    <th className="px-3 py-2 border text-left">Driver ID</th>
+                                    <th className="px-3 py-2 border text-left">Shop Name</th>
+                                    <th className="px-3 py-2 border text-left">Pickup Address</th>
+                                    <th className="px-3 py-2 border text-left">Customer Name</th>
+                                    <th className="px-3 py-2 border text-left">Dropoff Address</th>
+                                    <th className="px-3 py-2 border text-left">Assigned Time</th>
+                                    <th className="px-3 py-2 border text-left">Status</th>
+                                    <th className="px-3 py-2 border text-left">Delivered Time</th>
+                                    <th className="px-3 py-2 border text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredDeliveries.length > 0 ? (
+                                    filteredDeliveries.slice((page - 1) * 20, page * 20).map((delivery, index) => (
                                         <tr key={delivery._id} className="hover:bg-gray-100">
-                                            <td className="px-4 py-2 border">{delivery.trackingID}</td>
-                                            <td className="px-4 py-2 border">{delivery.oID}</td>
-                                            <td className="px-4 py-2 border">{delivery.drID}</td>
-                                            <td className="px-4 py-2 border">{delivery.shopName}</td>
-                                            <td className="px-4 py-2 border">{delivery.pickupAddress}</td>
-                                            <td className="px-4 py-2 border">{delivery.customerName}</td>
-                                            <td className="px-4 py-2 border">{delivery.dropOffAddress}</td>
-                                            <td className="px-4 py-2 border">{new Date(delivery.assignDateTime).toLocaleString()}</td>
-                                            <td className="px-4 py-2 border">{delivery.deliveryStatus}</td>
-                                            <td className="px-4 py-2 border space-y-2">
+                                            <td className="px-3 py-2 border text-left">{(page - 1) * 20 + index + 1}</td>
+                                            <td className="px-3 py-2 border">{delivery.trackingID}</td>
+                                            <td className="px-3 py-2 border">{delivery.oID}</td>
+                                            <td className="px-3 py-2 border">{delivery.drID}</td>
+                                            <td className="px-3 py-2 border">{delivery.shopName}</td>
+                                            <td className="px-3 py-2 border">{delivery.pickupAddress}</td>
+                                            <td className="px-3 py-2 border">{delivery.customerName || 'N/A'}</td>
+                                            <td className="px-3 py-2 border">{delivery.dropOffAddress}</td>
+                                            <td className="px-3 py-2 border">{new Date(delivery.assignDateTime).toLocaleString()}</td>
+                                            <td className="px-3 py-2 border">{delivery.deliveryStatus}</td>
+                                            <td className="px-3 py-2 border">{delivery.deliveredDateTime ? new Date(delivery.deliveredDateTime).toLocaleString() : 'Ongoing'}</td>
+                                            <td className="px-3 py-2 border">
                                                 <button
-                                                    onClick={() => handleStatusUpdate(delivery._id, delivery.deliveryStatus)}
-                                                    className={`block w-full px-4 py-2 ${
-                                                        delivery.deliveryStatus === 'Ready'
-                                                            ? 'bg-yellow-500 hover:bg-yellow-600'
-                                                            : delivery.deliveryStatus === 'Picked Up'
-                                                            ? 'bg-blue-500 hover:bg-blue-600'
-                                                            : delivery.deliveryStatus === 'On The Way'
-                                                            ? 'bg-green-500 hover:bg-green-600'
-                                                            : 'bg-gray-400 cursor-not-allowed'
-                                                    } text-white rounded-md`}
-                                                    disabled={delivery.deliveryStatus === 'Delivered'}
-                                                >
-                                                    {delivery.deliveryStatus === 'Ready'
-                                                        ? 'Picked Up'
-                                                        : delivery.deliveryStatus === 'Picked Up'
-                                                        ? 'On The Way'
-                                                        : delivery.deliveryStatus === 'On The Way'
-                                                        ? 'Delivered'
-                                                        : 'Completed'}
-                                                </button>
-                                                <button
-                                                    onClick={() => handleViewDelivery(delivery._id)}
-                                                    className="block w-full px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                                                    className="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                                    onClick={() => handleView(delivery._id)}
                                                 >
                                                     View
                                                 </button>
                                             </td>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    ) : (
-                        <p className="text-center text-gray-600">No deliveries available at the moment.</p>
-                    )}
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="12" className="px-3 py-2 border text-center text-gray-600">
+                                            No deliveries found
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Pagination */}
+                    <div className="flex justify-between items-center mt-4">
+                        <button
+                            onClick={() => handlePageChange(page - 1)}
+                            className={`py-1 px-3 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 ${page === 1 ? 'cursor-not-allowed' : ''}`}
+                            disabled={page === 1}
+                        >
+                            Previous
+                        </button>
+                        <span className="text-gray-700">Page {page} of {totalPages}</span>
+                        <button
+                            onClick={() => handlePageChange(page + 1)}
+                            className={`py-1 px-3 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 ${page === totalPages ? 'cursor-not-allowed' : ''}`}
+                            disabled={page === totalPages}
+                        >
+                            Next
+                        </button>
+                    </div>
                 </div>
             </main>
         </div>
