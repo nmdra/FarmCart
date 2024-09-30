@@ -85,7 +85,7 @@ import DLAllDeliveries from './Pages/delivery/DLviewDeliveries'; // Import the D
 import DLViewDelivery from './Pages/delivery/DLviewDelivery'; // Import the
 import OngoingDelivery from './Pages/delivery/driver/OngoingDelivery'; // Import the OngoingDelivery component
 import ViewDelivery from './Pages/delivery/driver/ViewDelivery'; // Import the ViewDelivery page
-
+import ViewDeliveries from './Pages/delivery/driver/ViewDeliveries'; // Import the ViewDeliveries page
 
 
 
@@ -207,7 +207,7 @@ const router = createBrowserRouter(
             <Route path="/manager/delivery/:id" element={<DLViewDelivery />} />
             <Route path="/ongoing" element={<OngoingDelivery />} />
             <Route path="/driver/delivery/:id" element={<ViewDelivery />} /> {/* Route for viewing a specific delivery */}
-
+            <Route path="/driver/deliveries" element={<ViewDeliveries />} />
 
                 <Route path="*" element={<NotFound />} />
             </Route>

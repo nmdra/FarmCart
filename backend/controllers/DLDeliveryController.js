@@ -201,3 +201,24 @@ export const updateDeliveryStatus = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'Error updating delivery status', error });
     }
 });
+
+
+
+
+// Controller to get all deliveries for a specific driver
+export const getDeliveriesByDriver = async (req, res) => {
+    const { driverID } = req.params; // Get driverID from route params
+
+    try {
+        // Fetch all deliveries where the driverID matches
+        const deliveries = await DLDelivery.find({ driverID: driverID });
+
+        if (!deliveries || deliveries.length === 0) {
+            return res.status(404).json({ message: 'No deliveries found for this driver.' });
+        }
+
+        res.status(200).json(deliveries); // Return deliveries as response
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching deliveries', error: error.message });
+    }
+};

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllDeliveries ,getDeliveryById,getTotalDeliveries,getOngoingDeliveries,getOngoingDeliveriesByDriver,updateDeliveryStatus} from '../controllers/DLDeliveryController.js';
+import { getAllDeliveries ,getDeliveryById,getTotalDeliveries,getOngoingDeliveries,getOngoingDeliveriesByDriver,updateDeliveryStatus,getDeliveriesByDriver} from '../controllers/DLDeliveryController.js';
 
 const router = express.Router();
 
@@ -25,6 +25,9 @@ router.get('/ongoing/:driverID', getOngoingDeliveriesByDriver);
 
 // Route to update delivery status
 router.put('/:deliveryId/status', updateDeliveryStatus);
+
+// Route to get all deliveries for a specific driver
+router.get('/driver/:driverID', getDeliveriesByDriver);
 
 
 export default router;
