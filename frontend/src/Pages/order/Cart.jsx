@@ -153,8 +153,9 @@ const Cart = () => {
                                 ))}
                             </tbody>
                         </table>
+                        
 
-                        <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+                        <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
                             <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm  sm:p-6">
                                 <p className="text-xl font-semibold text-gray-900 ">
                                     Order summary
@@ -290,6 +291,8 @@ const Cart = () => {
   Apply Code
 </button>
 
+
+
                                 </form>
                             </div>
                         </div>
@@ -306,7 +309,11 @@ const Cart = () => {
                 // savings={savings}
                 total={total}
             /> */}
+
+            
         </div>
+
+        
     )
 }
 

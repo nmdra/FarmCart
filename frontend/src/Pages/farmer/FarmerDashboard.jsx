@@ -21,6 +21,7 @@ import { IoSearch } from 'react-icons/io5'
 import { MdDeleteSweep } from 'react-icons/md'
 import DeleteOrder from '../order/DeleteOrder'
 import OrderDetailsModal from '../order/OrderDetailsModal'
+import farmcartLogo from '../../assets/logo.png'
 
 const Dashboard = () => {
     // State to store farmer details fetched from the backend
@@ -161,14 +162,30 @@ const Dashboard = () => {
         }
     }
 
+
     const generatePDF = () => {
         const doc = new jsPDF()
 
-         doc.setFontSize(18);
-        doc.text('Sales Report', 14, 10)
-
         
+    const imgWidth = 40; 
+    const imgHeight = 10; 
+    const imgX = 155; 
+    const imgY = 5; 
 
+    doc.addImage(farmcartLogo, 'PNG', imgX, imgY, imgWidth, imgHeight);
+
+    doc.setFontSize(18);
+    doc.text('FarmCart Lanka (PVT.) LTD', 14, 10);  
+
+    doc.setFontSize(10); 
+    doc.setTextColor(128, 128, 128);
+    doc.text('No.78, Malabe, Colombo', 14, 20);    
+    doc.text('(+94) 011 34 56 837', 14, 25);       
+    doc.text('contact@farmcart.com', 14, 35);      
+    doc.text('www.farmcart.com', 14, 40);        
+
+    doc.setTextColor(0, 0, 0);
+       
         const tableColumn = [
             'Id',
             'Order Item',
@@ -200,6 +217,28 @@ const Dashboard = () => {
             body: tableRows,
             startY: 30,
         })
+        
+const finalY = doc.autoTable.previous.finalY + 15;
+
+// Adding text below the table
+doc.setFontSize(8);
+doc.text('If you ever need assistance or have any questions, our FarmCart Support Team is always here to help you.', 14, finalY);
+doc.text('We are committed to providing guidance and ensuring your success every step of the way!', 14, finalY + 5);
+
+doc.setTextColor(128, 128, 128);
+doc.text('Email: support@farmcart.com', 14, finalY + 12);
+doc.text('Website: www.farmcart.com', 14, finalY + 17);
+
+
+ // Add Report Date and Time 
+ const currentDate = new Date();
+ const formattedDate = currentDate.toLocaleDateString(); 
+ const formattedTime = currentDate.toLocaleTimeString(); 
+
+ doc.setFontSize(8); 
+ doc.setTextColor(0, 0, 0);  
+ doc.text(`Report Date: ${formattedDate}`, 166, 20);  
+ doc.text(`Time: ${formattedTime}`, 173, 25);         
 
         doc.save('orders-report.pdf')
     }
@@ -252,7 +291,7 @@ const Dashboard = () => {
                             </div>
 
                             {/* Details Card */}
-                            <div className="bg-white p-6 rounded-lg shadow-md w-2/3 flex flex-col items-center">
+                            <div className="bg-white p-6 rounded-lg shadow-md w-2/3 flex flex-col items-center ">
                                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
                                     Address
                                 </h3>

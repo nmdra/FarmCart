@@ -59,7 +59,7 @@ const DeleteOrder = ({
                                     onClose()
                                 }}
                             >
-                                Action
+                                Yes
                             </Button>
                         </ModalFooter>
                     </>

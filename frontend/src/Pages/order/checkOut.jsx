@@ -525,7 +525,7 @@ const CheckOut = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6">
+                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6 border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadlg transition-shadow duration-300">
                     Order Summary
                     <div className="w-[400px] gap-2 ">
                         {cart.length > 0 ? (
