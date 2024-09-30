@@ -4,7 +4,7 @@ import axios from 'axios';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'; // Import jsPDF-autotable for table formatting
 import farmcartLogo from '../../../assets/logo.png'; // Make sure you have your logo here
-import DLmanageSidebar from '../../../Components/delivery/DLmanageSidebar'; // Sidebar component
+import DLmanageSidebar from '../../../Components/delivery/DeliverySidebar'; // Sidebar component
 
 const DLViewDelivery = () => {
     const { id } = useParams(); // Get the delivery ID from the URL
