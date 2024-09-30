@@ -130,6 +130,30 @@ const DLEditProfile = () => {
             }
         }
     };
+// New onChange handler for password validation
+const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    let errorMessage = '';
+
+    // Password validation
+    if (name === 'newPassword') {
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordRegex.test(value)) {
+            errorMessage = 'Password must be at least 8 characters long and include at least one special character and one number.';
+        }
+        setNewPassword(value); // Update newPassword state
+    }
+
+    // Confirm password validation
+    if (name === 'confirmPassword') {
+        if (value !== newPassword) {
+            errorMessage = 'Passwords do not match.';
+        }
+        setConfirmPassword(value); // Update confirmPassword state
+    }
+
+    setMessage(errorMessage); // Set validation error message
+};
 
     if (loading) return <div>Loading...</div>;
 
@@ -138,52 +162,64 @@ const DLEditProfile = () => {
             <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
                 <DeliverySidebar driver={driver} />
             </aside>
+
+            
             <div className="flex-grow ml-64 p-24">
+
+                 {/* Security Message */}
+                 <div className="bg-red-500 text-white p-4 rounded-md mb-6 text-center">
+                    <strong>Because of security reasons, you cannot change your details. If you have anything to update, contact us through email.</strong>
+                </div>
                 <div className="bg-white p-6 rounded-md shadow-md w-full mb-12">
                     <h2 className="text-2xl font-semibold text-center mb-6">Edit Profile</h2>
                     {message && <p className="text-red-500 mb-4">{message}</p>}
 
                     <form onSubmit={handleSubmit}>
-                        <div className="mb-4">
-                            <label className="block mb-2 text-gray-700 text-left font-semibold">Current Password</label>
-                            <input
-                                type="password"
-                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-                                value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
-                                required
-                            />
-                        </div>
+    <div className="mb-4">
+        <label className="block mb-2 text-gray-700 text-left font-semibold">Current Password</label>
+        <input
+            type="password"
+            className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            required
+        />
+    </div>
 
-                        <div className="mb-4">
-                            <label className="block mb-2 text-gray-700 text-left font-semibold">New Password</label>
-                            <input
-                                type="password"
-                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                required
-                            />
-                        </div>
+    <div className="mb-4">
+        <label className="block mb-2 text-gray-700 text-left font-semibold">New Password</label>
+        <input
+            type="password"
+            name="newPassword"
+            className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+            value={newPassword}
+            onChange={handlePasswordChange} // Trigger validation on change
+            required
+        />
+    </div>
 
-                        <div className="mb-4">
-                            <label className="block mb-2 text-gray-700 text-left font-semibold">Confirm New Password</label>
-                            <input
-                                type="password"
-                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                            />
-                        </div>
+    <div className="mb-4">
+        <label className="block mb-2 text-gray-700 text-left font-semibold">Confirm New Password</label>
+        <input
+            type="password"
+            name="confirmPassword"
+            className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+            value={confirmPassword}
+            onChange={handlePasswordChange} // Trigger validation on change
+            required
+        />
+    </div>
 
-                        <button
-                            type="submit"
-                            className="w-full py-2 mt-6 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-                        >
-                            Change Password
-                        </button>
-                    </form>
+    {message && <p className="text-red-500">{message}</p>}
+
+    <button
+        type="submit"
+        className="w-full py-2 mt-6 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+    >
+        Change Password
+    </button>
+</form>
+
                 </div>
 
                 <div className="mt-6 bg-white p-6 rounded-md shadow-md w-full">
