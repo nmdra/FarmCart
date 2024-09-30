@@ -60,7 +60,7 @@ const UserOrderTable = ({ items, page, pages, setPage }) => {
                         onClick={() => handleFilterClick(status)}
                         className={`px-3 py-1 rounded-md text-sm font-semibold ${
                             statusFilter === status
-                                ? 'bg-blue-600 text-white'
+                                ? 'bg-green-500 text-white'
                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                         }`}
                     >

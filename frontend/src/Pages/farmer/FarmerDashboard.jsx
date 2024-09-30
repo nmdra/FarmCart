@@ -263,7 +263,7 @@ doc.text('Website: www.farmcart.com', 14, finalY + 17);
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
+                <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto ">
                     <div className="mb-8">
                         {/* Profile and Details Section */}
                         <div className="flex space-x-8 mb-8">
