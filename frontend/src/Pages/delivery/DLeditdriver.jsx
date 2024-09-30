@@ -9,6 +9,7 @@ const DLViewDriver = () => {
     const [driverDetails, setDriverDetails] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null) // For image pop-up
     const [isEditing, setIsEditing] = useState(false)
+    const [errors, setErrors] = useState({}) // Error state for validation
     const navigate = useNavigate()
     
 
@@ -119,9 +120,22 @@ const DLViewDriver = () => {
         })
     }
 
-    // Handlers to update driver details
-    
+    // Function to calculate age from birth date
+    const calculateAge = (birthDate) => {
+        const today = new Date()
+        const birthDateObj = new Date(birthDate)
+        let age = today.getFullYear() - birthDateObj.getFullYear()
+        const monthDifference = today.getMonth() - birthDateObj.getMonth()
+        if (
+            monthDifference < 0 ||
+            (monthDifference === 0 && today.getDate() < birthDateObj.getDate())
+        ) {
+            age--
+        }
+        return age
+    }
 
+    // Handler for input changes with validation
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         let errorMessage = '';
@@ -135,37 +149,12 @@ const DLViewDriver = () => {
         }
     
         // Validate Contact Number
-        if (name === 'contactNumber') {
+        if (name === 'phone') {
             if (!/^0\d{9}$/.test(value)) {
                 errorMessage = 'Contact number must be 10 digits and start with 0.';
             }
         }
     
-        // Validate Birthday and Age
-        if (name === 'dateOfBirth') {
-            const age = calculateAge(value);
-            if (age < 18) {
-                errorMessage = 'You must be at least 18 years old to register.';
-            }
-    
-            // Ensure NIC year matches Birthday year
-            const birthYear = new Date(value).getFullYear();
-            if (driverDetails.NIC && !driverDetails.NIC.startsWith(birthYear.toString())) {
-                errorMessage = 'Please Enter valid NIC';
-            }
-        }
-    
-        // Validate NIC
-        if (name === 'NIC') {
-            const nicRegex = /^\d{11}[0-9Vv]$/;
-            const birthYear = new Date(driverDetails.dateOfBirth).getFullYear().toString();
-    
-            if (!nicRegex.test(value)) {
-                errorMessage = 'Please Enter valid NIC';
-            } else if (!value.startsWith(birthYear)) {
-                errorMessage = 'Please Enter valid NIC';
-            }
-        }
     
         setDriverDetails((prevDetails) => ({
             ...prevDetails,
@@ -238,6 +227,9 @@ const DLViewDriver = () => {
                                     onChange={handleInputChange}
                                     className="p-2 border border-gray-300 rounded-md"
                                 />
+                                {errors.fullName && (
+                                    <p className="text-red-500">{errors.fullName}</p>
+                                )}
                             </div>
 
                             {/* Email */}
@@ -266,6 +258,9 @@ const DLViewDriver = () => {
                                     onChange={handleInputChange}
                                     className="p-2 border border-gray-300 rounded-md"
                                 />
+                                {errors.phone && (
+                                    <p className="text-red-500">{errors.phone}</p>
+                                )}
                             </div>
 
                             {/* Date of Birth */}
@@ -280,9 +275,11 @@ const DLViewDriver = () => {
                                         0,
                                         10
                                     )}
-                                    readOnly // Make field non-editable
+                                    readOnly // Make email field non-editable
                                     className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+ 
                                 />
+                                
                             </div>
 
                             {/* ID Card Number */}
@@ -294,9 +291,11 @@ const DLViewDriver = () => {
                                     type="text"
                                     name="idCardNumber"
                                     value={driverDetails.idCardNumber}
-                                    readOnly // Make field non-editable
+                                    readOnly // Make email field non-editable
                                     className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+ 
                                 />
+                               
                             </div>
 
                             {/* License Card Number */}
@@ -308,9 +307,11 @@ const DLViewDriver = () => {
                                     type="text"
                                     name="licenseCardNumber"
                                     value={driverDetails.licenseCardNumber}
-                                    readOnly // Make field non-editable
+                                    readOnly // Make email field non-editable
                                     className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
+ 
                                 />
+                                
                             </div>
 
                             {/* Address */}
@@ -325,6 +326,9 @@ const DLViewDriver = () => {
                                     onChange={handleInputChange}
                                     className="p-2 border border-gray-300 rounded-md"
                                 />
+                                {errors.address && (
+                                    <p className="text-red-500">{errors.address}</p>
+                                )}
                             </div>
 
                             {/* Vehicle Number */}
@@ -339,6 +343,9 @@ const DLViewDriver = () => {
                                     onChange={handleInputChange}
                                     className="p-2 border border-gray-300 rounded-md"
                                 />
+                                {errors.vehicleNumber && (
+                                    <p className="text-red-500">{errors.vehicleNumber}</p>
+                                )}
                             </div>
 
                             {/* Vehicle Type */}
@@ -358,6 +365,9 @@ const DLViewDriver = () => {
                                     </option>
                                     <option value="Lorry">Lorry</option>
                                 </select>
+                                {errors.vehicleType && (
+                                    <p className="text-red-500">{errors.vehicleType}</p>
+                                )}
                             </div>
                         </div>
                     </div>
