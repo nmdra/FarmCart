@@ -179,7 +179,7 @@ const Header = () => {
                                     Become a Seller
                                 </Link>
                                 <Link
-                                    to="/become-a-driver"
+                                    to="/register-driver"
                                     className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm"
                                 >
                                     Become a Driver

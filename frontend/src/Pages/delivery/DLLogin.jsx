@@ -89,7 +89,7 @@ const DLLogin = () => {
                 <div className="mt-4">
                     <span>If you don't have an account?</span>{' '}
                     <Link
-                        to="/register"
+                        to="/register-driver"
                         className="text-blue-600 hover:underline"
                     >
                         Register Now.
