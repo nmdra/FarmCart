@@ -78,7 +78,13 @@ const RegisterDriverForm = () => {
         }
 
         if (name === 'email') {
-            if (!/^.*@gmail\.com$/.test(value)) {
+            // Remove any leading or trailing spaces
+            const trimmedValue = value.trim()
+        
+            // Check if there are any spaces in the email
+            if (/\s/.test(trimmedValue)) {
+                errorMessage = 'Email cannot contain spaces.'
+            } else if (!/^.*@gmail\.com$/.test(trimmedValue)) {
                 errorMessage = 'Email must be a valid @gmail.com address.'
             }
         }
