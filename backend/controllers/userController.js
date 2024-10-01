@@ -59,6 +59,7 @@ export const updateUser = async (req, res, next) => {
         defaultAddress,
         contactNumber,
         pic,
+        birthday,
     } = req.body
 
     try {
@@ -78,6 +79,7 @@ export const updateUser = async (req, res, next) => {
         user.defaultAddress = defaultAddress || user.defaultAddress
         user.contactNumber = contactNumber || user.contactNumber
         user.pic = pic || user.pic
+        user.birthday = birthday || user.birthday
 
         // Save updated user
         const updatedUser = await user.save()
@@ -96,6 +98,8 @@ export const updateUser = async (req, res, next) => {
                     defaultAddress: updatedUser.defaultAddress,
                     contactNumber: updatedUser.contactNumber,
                     pic: updatedUser.pic,
+                    isVerified: updatedUser.isVerified,
+                    birthday: updatedUser.birthday,
                 },
             })
         } else {
@@ -136,6 +140,8 @@ export const authUser = async (req, res, next) => {
                 defaultAddress: user.defaultAddress,
                 contactNumber: user.contactNumber,
                 membershipExpires: user.membershipExpires,
+                isVerified: user.isVerified,
+                birthday: user.birthday,
             })
         } else {
             res.status(401).json({ message: 'Invalid Password or Email' })
@@ -191,6 +197,8 @@ export const upgradeMembership = async (req, res, next) => {
                 defaultAddress: updatedUser.defaultAddress,
                 contactNumber: updatedUser.contactNumber,
                 membershipExpires: updatedUser.membershipExpires,
+                isVerified: updatedUser.isVerified,
+                birthday: updatedUser.birthday,
             },
         })
     } catch (error) {

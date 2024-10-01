@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import DistrictsData from '../lib/DistrictData'
+import toast from 'react-hot-toast'
 
 const Address = () => {
     const [formData, setFormData] = useState({
@@ -55,7 +56,8 @@ const Address = () => {
         try {
             const response = await axios.put('/api/users', formData)
             console.log(response)
-            alert('User updated successfully')
+            // alert('User updated successfully')
+            toast.success('Account updated successfully')
 
             const json = response.data.user
             console.log('Update successful:', json)
@@ -64,7 +66,8 @@ const Address = () => {
             localStorage.setItem('user', JSON.stringify(json))
         } catch (error) {
             console.error('Error updating user:', error)
-            alert('Failed to update user')
+            // alert('Failed to update user')
+            toast.error('Failed to update account details')
         }
     }
 
@@ -131,7 +134,7 @@ const Address = () => {
                             Zip Code
                         </label>
                         <input
-                            type="text"
+                            type="number"
                             name="zipCode"
                             value={formData.defaultAddress.zipCode}
                             onChange={handleInputChange}

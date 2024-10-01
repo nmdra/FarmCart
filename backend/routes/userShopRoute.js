@@ -4,6 +4,7 @@ import {
     getShopProducts,
     getShopProductById,
     getShops,
+    getRandomProducts,
 } from '../controllers/userShopController.js' // Import the controller functions
 import apicache from 'apicache'
 
@@ -18,6 +19,8 @@ router.get('/', cache('5 minutes'), getShops)
 
 // Route to fetch details of a specific shop by ID with caching
 // GET /api/shops/:id
+router.get('/random', getRandomProducts)
+
 router.get('/:id', cache('5 minutes'), getShopById)
 
 // Route to fetch all products for a specific shop with caching

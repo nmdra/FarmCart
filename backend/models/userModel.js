@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema(
                 message: '{VALUE} is not a valid contact number!',
             },
         },
+        birthday: {
+            type: Date,
+            required: false, // Ensure birth date is provided
+        },
         isVerified: {
             type: Boolean,
             default: false,
