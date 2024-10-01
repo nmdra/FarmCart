@@ -223,6 +223,8 @@ const finalY = doc.autoTable.previous.finalY + 15;
 // Adding text below the table
 doc.setFontSize(8);
 doc.text('If you ever need assistance or have any questions, our FarmCart Support Team is always here to help you.', 14, finalY+10);
+
+doc.setTextColor(255, 102, 153);
 doc.text('We are committed to providing guidance and ensuring your success every step of the way!', 14, finalY + 5);
 
 doc.setTextColor(128, 128, 128);

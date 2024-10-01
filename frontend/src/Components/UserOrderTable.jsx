@@ -36,7 +36,7 @@ const UserOrderTable = ({ items, page, pages, setPage }) => {
         <>
             {/* Search and Filter Section */}
             <div className="mb-4">
-                <Input
+                <Input 
                     clearable
                     placeholder="Search by order status, price, or item"
                     onChange={(e) => setSearchQuery(e.target.value)}

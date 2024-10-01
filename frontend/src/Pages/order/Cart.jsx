@@ -30,16 +30,11 @@ const Cart = () => {
         console.log(productId)
         setCart(updatedCart)
         localStorage.setItem('cart', JSON.stringify(updatedCart))
-        // setRefetch()
-        // setGlobalRefetch(!globalRefetch);
     }
-    // console.log('cart', cart)
 
     useEffect(() => {
         const calculateOriginalPrice = () => {
             const originalPrice = cart.reduce((acc, item) => {
-                //remove kg from string and convert to number
-                // item.kg = parseInt(item.kg.match(/\d+/)) || 0
 
                 return acc + item.price * item.quantity
             }, 0)

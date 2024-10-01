@@ -192,6 +192,13 @@ const ProductPage = ({ onAddToCart }) => {
     </div>
 </div>
 
+    <div class="ml-10 p-4">
+        <button class="bg-yellow-500 ml-6 text-white font-semibold py-2 px-4 rounded-lg shadow-sm hover:bg-yellow-600 transition-colors duration-300">
+            See More Reviews
+        </button>
+    </div>
+
+
         </section>
 
                                 
