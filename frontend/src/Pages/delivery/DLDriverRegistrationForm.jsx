@@ -136,7 +136,7 @@ const RegisterDriverForm = () => {
 
 // Validate Vehicle Number
 if (name === 'licenseCardNumber') {
-    const vehicleRegex6 = /^[A-B]{2}[0-9]{6}$/  // For 6 characters (AA0000 to ZZ9999)
+    const vehicleRegex6 = /^[A-B]{1}[0-9]{6}$/  // For 6 characters (AA0000 to ZZ9999)
 
     if (!(vehicleRegex6.test(value) )) {
         errorMessage =
