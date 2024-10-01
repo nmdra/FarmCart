@@ -1,34 +1,43 @@
-name: FarmCart-Prod
-
 services:
   api:
     build:
-      context: ./backend  # Path to your backend directory
-      dockerfile: Dockerfile.prod  # Backend Dockerfile (already in use)
+      context: ./backend
+      dockerfile: Dockerfile.prod
     restart: unless-stopped
-    env_file: ./backend/.env.prod
-    # ports:
-    #   - "5002:5002"  # Map backend port 5002 to localhost:5002
-    volumes:
-      - ./backend:/app  # Only in development; remove for production
-      - /app/node_modules
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+      MONGODB_URI: "your_mongodb_uri"
+      JWT_SECRET: "your_jwt_secret"
+      CLOUDINARY_CLOUD_NAME: "your_cloudinary_cloud_name"
+      CLOUDINARY_API_KEY: "your_cloudinary_api_key"
+      CLOUDINARY_API_SECRET: "your_cloudinary_api_secret"
+      EMAIL_USER: "your_email_user"
+      EMAIL_PASS: "your_email_pass"
+      EMAIL_SERVICE: "gmail"
+      SITE_URL: "http://0.0.0.0:3000"
+      PAYHERE_MERCHANT_ID: "your_payhere_merchant_id"
+      PAYHERE_MERCHANT_SECRET: "your_payhere_merchant_secret"
+      CRYPTO_SECRET_KEY: "your_crypto_secret_key"
+      STRIPE_SECRET_KEY: "your_stripe_secret_key"
     networks:
       - app-network
 
   frontend:
     build:
-      context: ./frontend  # Path to your frontend directory
-      dockerfile: Dockerfile.prod  # Frontend Dockerfile using Nginx
+      context: ./frontend
+      dockerfile: Dockerfile.prod
     restart: unless-stopped
-    env_file: ./frontend/.env.prod
+    environment:
+      VITE_API_URL: "http://api:5001/api"
+      VITE_STRIPE_PUBLIC_KEY: "Stripe Public Key"
+      VITE_HOST: "0.0.0.0"
+      VITE_PORT: "3000"
     ports:
-      - "80:80"  # Serve frontend on port 80
+      - "80:80"
       - "443:443"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     depends_on:
-      - api  # Ensure the API is running before frontend starts
+      - api
     networks:
       - app-network
 
