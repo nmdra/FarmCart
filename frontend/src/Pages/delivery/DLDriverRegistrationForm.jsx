@@ -129,6 +129,20 @@ const RegisterDriverForm = () => {
             'Vehicle number must be in uppercase and follow the format AA0000 or AAA0000.'
     }
 }
+
+
+
+
+
+// Validate Vehicle Number
+if (name === 'licenseCardNumber') {
+    const vehicleRegex6 = /^[A-B]{2}[0-9]{6}$/  // For 6 characters (AA0000 to ZZ9999)
+
+    if (!(vehicleRegex6.test(value) )) {
+        errorMessage =
+            'licenseCardNumber must be in uppercase and follow the format A000000 .'
+    }
+}
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -374,6 +388,12 @@ const handleFileChange = async (
                                 className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                 required
                             />
+{errors.licenseCardNumber && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.licenseCardNumber}
+                                </p>
+                            )}
+
                         </div>
 
                         <div className="col-span-2">
