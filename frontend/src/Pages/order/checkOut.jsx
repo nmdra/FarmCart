@@ -230,14 +230,17 @@ const CheckOut = () => {
     
 
     const validatePhone = (phone) => {
-        const phoneRegex = /^[0-9]{10}$/
+        const phoneRegex = /^0[0-9]{9}$/;
+        
         if (!phone) {
-            return 'Phone number is required.'
+            return 'Phone number is required.';
         } else if (!phoneRegex.test(phone)) {
-            return 'Phone number must contain 10 numbers'
+            return 'Phone number must contain 10 digits and start with 0';
         }
-        return ''
-    }
+        
+        return '';
+    };
+    
 
     const validateAddress = (address) => {
         if (!address) {
@@ -530,7 +533,8 @@ const CheckOut = () => {
 
                 
 
-                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6 border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadlg transition-shadow duration-300">
+                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6 border-b border-gray-300 pb-4 mb-4 ml-10 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+
                     Order Summary
                     <div className="w-[400px] gap-2 ">
                         {cart.length > 0 ? (

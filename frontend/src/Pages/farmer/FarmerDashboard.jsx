@@ -332,7 +332,7 @@ doc.text('Website: www.farmcart.com', 14, finalY + 20);
                                 onClick={generatePDF}
                                 className=" mt-2 inline-block cursor-pointer hover:bg-red-600 bg-red-500 p-2 rounded-md text-white ring-0"
                             >
-                                download sales report
+                                Download Sales Report
                             </div>
                         </div>
                         <Table
