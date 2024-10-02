@@ -162,30 +162,28 @@ const Dashboard = () => {
         }
     }
 
-
     const generatePDF = () => {
         const doc = new jsPDF()
 
-        
-    const imgWidth = 40; 
-    const imgHeight = 10; 
-    const imgX = 155; 
-    const imgY = 5; 
+        const imgWidth = 40
+        const imgHeight = 10
+        const imgX = 155
+        const imgY = 5
 
-    doc.addImage(farmcartLogo, 'PNG', imgX, imgY, imgWidth, imgHeight);
+        doc.addImage(farmcartLogo, 'PNG', imgX, imgY, imgWidth, imgHeight)
 
-    doc.setFontSize(18);
-    doc.text('FarmCart Lanka (PVT.) LTD', 14, 10);  
+        doc.setFontSize(18)
+        doc.text('FarmCart Lanka (PVT.) LTD', 14, 10)
 
-    doc.setFontSize(10); 
-    doc.setTextColor(128, 128, 128);
-    doc.text('No.78, Malabe, Colombo', 14, 20);    
-    doc.text('(+94) 011 34 56 837', 14, 25);       
-    doc.text('contact@farmcart.com', 14, 35);      
-    doc.text('www.farmcart.com', 14, 40);        
+        doc.setFontSize(10)
+        doc.setTextColor(128, 128, 128)
+        doc.text('No.78, Malabe, Colombo', 14, 20)
+        doc.text('(+94) 011 34 56 837', 14, 25)
+        doc.text('contact@farmcart.com', 14, 35)
+        doc.text('www.farmcart.com', 14, 40)
 
-    doc.setTextColor(0, 0, 0);
-       
+        doc.setTextColor(0, 0, 0)
+
         const tableColumn = [
             'Id',
             'Order Item',
@@ -217,35 +215,42 @@ const Dashboard = () => {
             body: tableRows,
             startY: 30,
         })
-        
-const finalY = doc.autoTable.previous.finalY + 15;
 
-// Adding text below the table
-doc.setFontSize(8);
-doc.text('If you ever need assistance or have any questions, our FarmCart Support Team is always here to help you.', 14, finalY+10);
+        const finalY = doc.autoTable.previous.finalY + 15
 
-doc.setTextColor(255, 102, 153);
-doc.text('We are committed to providing guidance and ensuring your success every step of the way!', 14, finalY + 5);
+        // Adding text below the table
+        doc.setFontSize(8)
+        doc.text(
+            'If you ever need assistance or have any questions, our FarmCart Support Team is always here to help you.',
+            14,
+            finalY + 10
+        )
 
-doc.setTextColor(128, 128, 128);
-doc.text('Email: support@farmcart.com', 14, finalY + 15);
-doc.text('Website: www.farmcart.com', 14, finalY + 20);
+        doc.setTextColor(255, 102, 153)
+        doc.text(
+            'We are committed to providing guidance and ensuring your success every step of the way!',
+            14,
+            finalY + 5
+        )
 
+        doc.setTextColor(128, 128, 128)
+        doc.text('Email: support@farmcart.com', 14, finalY + 15)
+        doc.text('Website: www.farmcart.com', 14, finalY + 20)
 
- // Add Report Date and Time 
- const currentDate = new Date();
- const formattedDate = currentDate.toLocaleDateString(); 
- const formattedTime = currentDate.toLocaleTimeString(); 
+        // Add Report Date and Time
+        const currentDate = new Date()
+        const formattedDate = currentDate.toLocaleDateString()
+        const formattedTime = currentDate.toLocaleTimeString()
 
- doc.setFontSize(8); 
- doc.setTextColor(0, 0, 0);  
- doc.text(`Report Date: ${formattedDate}`, 166, 20);  
- doc.text(`Time: ${formattedTime}`, 171, 25);         
+        doc.setFontSize(8)
+        doc.setTextColor(0, 0, 0)
+        doc.text(`Report Date: ${formattedDate}`, 166, 20)
+        doc.text(`Time: ${formattedTime}`, 171, 25)
 
         doc.save('orders-report.pdf')
     }
 
-   /* if (loading) {
+    /* if (loading) {
         return (
             <div>
                 <div className="flex justify-center items-center h-full mt-[100px]">
@@ -437,7 +442,7 @@ doc.text('Website: www.farmcart.com', 14, finalY + 20);
                                                 }
                                             >
                                                 <option value="Pending">
-                                                    Pending  
+                                                    Pending
                                                 </option>
                                                 <option value="Accept">
                                                     Accept
@@ -455,7 +460,7 @@ doc.text('Website: www.farmcart.com', 14, finalY + 20);
                                                     Delivered
                                                 </option>
                                                 <option value="Rejected">
-                                                    Rejected  
+                                                    Rejected
                                                 </option>
                                             </select>
                                         </TableCell>

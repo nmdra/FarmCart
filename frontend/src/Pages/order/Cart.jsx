@@ -35,7 +35,6 @@ const Cart = () => {
     useEffect(() => {
         const calculateOriginalPrice = () => {
             const originalPrice = cart.reduce((acc, item) => {
-
                 return acc + item.price * item.quantity
             }, 0)
             console.log('originalPrice', originalPrice)
@@ -85,13 +84,13 @@ const Cart = () => {
     return (
         <div>
             <section className="bg-white py-4 antialiased md:py-8">
-            <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 ml-10 p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 ml-10 p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl">
-                       My Shopping Cart
+                        My Shopping Cart
                     </h2>
 
                     <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
-                    <table className="w-2/3 mr-4 table-auto border-collapse">
+                        <table className="w-2/3 mr-4 table-auto border-collapse">
                             <thead>
                                 <tr className="border-b">
                                     <th className="text-left py-4">Product</th>
@@ -136,19 +135,19 @@ const Cart = () => {
                                             ).toFixed(2)}
                                         </td>
                                         <td className="py-4 text-right">
-                                        <span
-                                        className="text-red-500 cursor-pointer hover:text-red-600 font-semibold"
-                                        onClick={() => handleRemove(product._id)}
-                                        >
-                                        Remove
-                                        </span>
-
+                                            <span
+                                                className="text-red-500 cursor-pointer hover:text-red-600 font-semibold"
+                                                onClick={() =>
+                                                    handleRemove(product._id)
+                                                }
+                                            >
+                                                Remove
+                                            </span>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                        
 
                         <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
                             <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm  sm:p-6">
@@ -211,17 +210,16 @@ const Cart = () => {
                                 </div>
 
                                 <Link to="/checkOut">
-                                <button
-                                disabled={cart.length === 0}
-                                className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium mt-4 text-white ${
-                                    cart.length === 0
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
-                                }`}
-                                >
-                                Proceed to Checkout
-                                </button>
-
+                                    <button
+                                        disabled={cart.length === 0}
+                                        className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium mt-4 text-white ${
+                                            cart.length === 0
+                                                ? 'bg-gray-400 cursor-not-allowed'
+                                                : 'bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
+                                        }`}
+                                    >
+                                        Proceed to Checkout
+                                    </button>
                                 </Link>
 
                                 <div className="flex items-center justify-center gap-2">
@@ -274,20 +272,23 @@ const Cart = () => {
                                         />
                                     </div>
                                     <button
-  type="submit"
-  disabled={cart.length === 0 || disabledCouponButton}
-  className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium ${
-    cart.length === 0 || disabledCouponButton
-      ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
-      : 'bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
-  }`}
-  onClick={cart.length === 0 ? null : addCoupon}
->
-  Apply Code
-</button>
-
-
-
+                                        type="submit"
+                                        disabled={
+                                            cart.length === 0 ||
+                                            disabledCouponButton
+                                        }
+                                        className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium ${
+                                            cart.length === 0 ||
+                                            disabledCouponButton
+                                                ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
+                                                : 'bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
+                                        }`}
+                                        onClick={
+                                            cart.length === 0 ? null : addCoupon
+                                        }
+                                    >
+                                        Apply Code
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -304,11 +305,7 @@ const Cart = () => {
                 // savings={savings}
                 total={total}
             /> */}
-
-            
         </div>
-
-        
     )
 }
 

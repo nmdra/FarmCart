@@ -104,14 +104,13 @@ const OrderDetailsModal = ({ isOpen, onOpenChange, clickOrder }) => {
 
                         {/* Modal Footer with a Close Button */}
                         <ModalFooter className="justify-end">
-                        <Button
-    color="success"
-    onPress={onClose}
-    className="bg-green-500 hover:bg-green-600 text-white"
->
-    Close
-</Button>
-
+                            <Button
+                                color="success"
+                                onPress={onClose}
+                                className="bg-green-500 hover:bg-green-600 text-white"
+                            >
+                                Close
+                            </Button>
                         </ModalFooter>
                     </>
                 )}

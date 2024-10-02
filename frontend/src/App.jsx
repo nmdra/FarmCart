@@ -5,8 +5,6 @@ import {
     Route,
 } from 'react-router-dom'
 
-
-
 // Layouts and Components
 import MainLayout from './Layouts/MainLayout'
 import SidebarLayout from './Layouts/SidebarLayout' // Layout with Sidebar
@@ -17,7 +15,7 @@ import HomePage from './Pages/HomePage'
 import NotFound from './Pages/NotFound'
 import Login from './Pages/Customer/LoginForm'
 import Register from './Pages/Customer/RegisterForm'
-import { Toaster } from 'react-hot-toast'; 
+import { Toaster } from 'react-hot-toast'
 
 // import UserProfile from './Pages/Customer/UserProfile';
 import VerifyEmail from './Pages/Customer/VerifyEmail'
@@ -118,7 +116,7 @@ const App = () => {
     return (
         <>
             <RouterProvider router={router} />
-            <Toaster position="top-center" reverseOrder={false} /> 
+            <Toaster position="top-center" reverseOrder={false} />
         </>
     )
 }

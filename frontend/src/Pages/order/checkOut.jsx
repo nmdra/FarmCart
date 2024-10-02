@@ -145,9 +145,7 @@ const CheckOut = () => {
                     return
                 } else if (paymentResult.paymentIntent.status === 'succeeded') {
                     await axios.post('http://localhost:3000/api/orders', data)
-                    toast.success(
-                        `Payment successful and order placed!`
-                    )
+                    toast.success(`Payment successful and order placed!`)
                 }
             }
 
@@ -178,69 +176,57 @@ const CheckOut = () => {
     }, [])
 
     const validateName = (name) => {
-        const nameRegex = /^[a-zA-Z\s]*$/; 
+        const nameRegex = /^[a-zA-Z\s]*$/
         if (!name) {
-            return 'Name is required.';
+            return 'Name is required.'
         } else if (!nameRegex.test(name)) {
-            return 'Name can only contain letters and spaces.';
+            return 'Name can only contain letters and spaces.'
         }
-        return '';
-    };
-    
+        return ''
+    }
 
     //Validate email
     const validateEmail = (email) => {
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
         if (!email) {
-            return 'Email is required.';
-        } 
-
-        else if (!emailRegex.test(email)) {
-            return 'Invalid email address.';
+            return 'Email is required.'
+        } else if (!emailRegex.test(email)) {
+            return 'Invalid email address.'
+        } else if (email.length > 256) {
+            return 'Email must be less than 256 characters.'
         }
 
-        else if (email.length > 256) {
-            return 'Email must be less than 256 characters.';
-        }
-
-        const invalidDomains = ['example.com', 'test.com'];
-        const emailDomain = email.split('@')[1];
+        const invalidDomains = ['example.com', 'test.com']
+        const emailDomain = email.split('@')[1]
         if (invalidDomains.includes(emailDomain)) {
-            return 'This domain is not allowed.';
+            return 'This domain is not allowed.'
         }
 
-        return '';
+        return ''
     }
-    
 
     const validateCity = (city) => {
-        const cityRegex = /^[a-zA-Z\s]*$/; 
+        const cityRegex = /^[a-zA-Z\s]*$/
         if (!city) {
-            return 'City is required.';
+            return 'City is required.'
         } else if (!cityRegex.test(city)) {
-            return 'City can only contain letters and spaces.';
+            return 'City can only contain letters and spaces.'
         }
-        return '';
-    };
-    
-    
-    
-    
+        return ''
+    }
 
     const validatePhone = (phone) => {
-        const phoneRegex = /^0[0-9]{9}$/;
-        
+        const phoneRegex = /^0[0-9]{9}$/
+
         if (!phone) {
-            return 'Phone number is required.';
+            return 'Phone number is required.'
         } else if (!phoneRegex.test(phone)) {
-            return 'Phone number must contain 10 digits and start with 0';
+            return 'Phone number must contain 10 digits and start with 0'
         }
-        
-        return '';
-    };
-    
+
+        return ''
+    }
 
     const validateAddress = (address) => {
         if (!address) {
@@ -250,64 +236,60 @@ const CheckOut = () => {
     }
 
     const handleNameChange = (e) => {
-        const { value } = e.target;
-    
+        const { value } = e.target
+
         // Filter out invalid characters before setting the value
-        const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
-        setName(filteredValue);
-        setErrors((prev) => ({ ...prev, name: validateName(filteredValue) }));
-    };
-    
+        const filteredValue = value.replace(/[^a-zA-Z\s]/g, '')
+        setName(filteredValue)
+        setErrors((prev) => ({ ...prev, name: validateName(filteredValue) }))
+    }
 
     const handleEmailChange = (e) => {
-        const { value } = e.target;
-    
-        const domain = '@gmail.com';
-        const domainIndex = value.indexOf(domain);
-    
-        const filteredValue = domainIndex !== -1 ? value.slice(0, domainIndex + domain.length) : value;
-    
-        setEmail(filteredValue);
-        setErrors((prev) => ({ ...prev, email: validateEmail(filteredValue) }));
-    };
-    
+        const { value } = e.target
+
+        const domain = '@gmail.com'
+        const domainIndex = value.indexOf(domain)
+
+        const filteredValue =
+            domainIndex !== -1
+                ? value.slice(0, domainIndex + domain.length)
+                : value
+
+        setEmail(filteredValue)
+        setErrors((prev) => ({ ...prev, email: validateEmail(filteredValue) }))
+    }
 
     const handleCityChange = (e) => {
-        const { value } = e.target;
-    
-        const filteredValue = value.replace(/[^a-zA-Z\s]/g, '');
-        setCity(filteredValue);
-        setErrors((prev) => ({ ...prev, city: validateCity(filteredValue) }));
-    };
-    
+        const { value } = e.target
+
+        const filteredValue = value.replace(/[^a-zA-Z\s]/g, '')
+        setCity(filteredValue)
+        setErrors((prev) => ({ ...prev, city: validateCity(filteredValue) }))
+    }
 
     const handlePhoneChange = (e) => {
-        const { value } = e.target;
-    
+        const { value } = e.target
+
         if (/^[0-9]*$/.test(value) && value.length <= 10) {
-            setPhone(value);
-            setErrors((prev) => ({ ...prev, phone: validatePhone(value) }));
+            setPhone(value)
+            setErrors((prev) => ({ ...prev, phone: validatePhone(value) }))
         } else {
-            setErrors((prev) => ({ ...prev, phone: '' }));
+            setErrors((prev) => ({ ...prev, phone: '' }))
         }
-    };
-    
-    
+    }
 
     const handleAddressChange = (e) => {
-        const { value } = e.target;
-    
-        const specialCharRegex = /^[a-zA-Z0-9\s,.]*$/;
-    
+        const { value } = e.target
+
+        const specialCharRegex = /^[a-zA-Z0-9\s,.]*$/
+
         if (specialCharRegex.test(value) || value === '') {
-            setAddress(value);
-            setErrors((prev) => ({ ...prev, address: validateAddress(value) }));
+            setAddress(value)
+            setErrors((prev) => ({ ...prev, address: validateAddress(value) }))
         }
-    };
+    }
 
     return (
-
-
         <div className="flex w-full justify-center ">
             <div className=" flex w-3/4 justify-center p-2 mt-10 items-center border rounded-lg ">
                 <div className="w-1/2 bg-white ">
@@ -315,7 +297,7 @@ const CheckOut = () => {
                         <div className=" w-[600px]">
                             <form className="flex flex-col gap-2">
                                 <div className="flex gap-3">
-                                    <Input 
+                                    <Input
                                         label="Your name"
                                         placeholder="Enter your name"
                                         type="text"
@@ -347,7 +329,7 @@ const CheckOut = () => {
                                         errorMessage={errors.city}
                                     />
                                     <Input
-                                    className="hover:border-green-400 focus:border-green-400"
+                                        className="hover:border-green-400 focus:border-green-400"
                                         label="Your phone number"
                                         placeholder="Enter your phone number"
                                         type="text"
@@ -369,7 +351,6 @@ const CheckOut = () => {
                                             getLocalTimeZone()
                                         ).subtract({ days: 3 })}
                                         onChange={(date) => setDate(date)}
-                                        
                                     />
                                 </div>
                                 <div className="flex gap-3">
@@ -531,10 +512,7 @@ const CheckOut = () => {
                     </div>
                 </div>
 
-                
-
                 <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6 border-b border-gray-300 pb-4 mb-4 ml-10 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-
                     Order Summary
                     <div className="w-[400px] gap-2 ">
                         {cart.length > 0 ? (

@@ -12,18 +12,17 @@ const ShopList = () => {
     const [filterDistrict, setFilterDistrict] = useState('')
     const [loading, setLoading] = useState(true) // Loading state
 
-
     // Fetch shops on component mount
     useEffect(() => {
         const fetchShops = async () => {
             try {
-              const config = {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-              };
-              const { data } = await axios.get('/api/userShops', config);
-              
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }
+                const { data } = await axios.get('/api/userShops', config)
+
                 setShops(data.shops)
             } catch (error) {
                 console.error('Error fetching shops:', error)
@@ -35,13 +34,12 @@ const ShopList = () => {
         fetchShops()
     }, [])
 
-
     const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    };
-    
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+    }
+
     // Filtering and Sorting Logic
     const filteredShops = shops
         .filter((shop) =>
@@ -62,7 +60,6 @@ const ShopList = () => {
         })
 
     return (
-        
         <div className="relative min-h-screen bg-gray-50 grid grid-cols-1 justify-center">
             <div className="flex flex-col lg:flex-row">
                 {/* Sidebar */}
@@ -120,15 +117,12 @@ const ShopList = () => {
 
                     {/* Search Bar */}
                     <input
-
-    type="text"
-    placeholder="Search shops..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="mb-5 border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-  
-/>                                    
-
+                        type="text"
+                        placeholder="Search shops..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="mb-5 border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    />
 
                     {/* Loading Message */}
                     {loading ? (
@@ -165,11 +159,7 @@ const ShopList = () => {
                                         >
                                             View Shop
                                         </Link>
-
-                                        
                                     </div>
-                                    
-                                    
                                 ))
                             ) : (
                                 <p>No shops found</p>
