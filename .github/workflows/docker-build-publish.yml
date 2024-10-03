@@ -40,7 +40,7 @@ jobs:
           docker push ghcr.io/${{ github.repository_owner }}/farmcart-api:latest
 
       # Step 5: Build and push the frontend Docker image
-      - name: Build and push frontend Docker image
-        run: |
-          docker build --build-arg VITE_STRIPE_PUBLIC_KEY=${{ secrets.VITE_STRIPE_PUBLIC_KEY }} -t ghcr.io/${{ github.repository_owner }}/farmcart-app:latest -f ./frontend/Dockerfile.prod ./frontend
-          docker push ghcr.io/${{ github.repository_owner }}/farmcart-app:latest
+      # - name: Build and push frontend Docker image
+      #  run: |
+      #    docker build --build-arg VITE_STRIPE_PUBLIC_KEY=${{ secrets.VITE_STRIPE_PUBLIC_KEY }} -t ghcr.io/${{ github.repository_owner }}/farmcart-app:latest -f ./frontend/Dockerfile.prod ./frontend
+      #    docker push ghcr.io/${{ github.repository_owner }}/farmcart-app:latest
