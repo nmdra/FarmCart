@@ -1,6 +1,9 @@
 # Stage 1: Build the React app
 FROM node:22-alpine3.20 AS builder
 
+ARG VITE_STRIPE_PUBLIC_KEY
+ENV VITE_STRIPE_PUBLIC_KEY=${VITE_STRIPE_PUBLIC_KEY}
+
 # Set the working directory
 WORKDIR /app
 
@@ -11,8 +14,6 @@ RUN npm install
 
 # Copy all other files and build the React app
 COPY . .
-# Copy .env file
-COPY .env.prod .env
 
 RUN npm run build
 
@@ -29,4 +30,3 @@ COPY --from=builder /app/dist /srv/
 EXPOSE 80
 EXPOSE 443
 
-# Caddy runs automatically as the entry point

@@ -19,6 +19,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod  # This Dockerfile serves React with Caddy
+      args:
+        - VITE_STRIPE_PUBLIC_KEY=pk_test_51LMEvTC05RrpHY1zUINiBb70Oue9TVmbH9LoKTZKKa0Ra3a8J188Ph3kouCpSeLJUr7qCgndpWlAXwt5GVlZOLIY00SkMj6avh
     restart: unless-stopped
     env_file: ./frontend/.env.prod
     ports:

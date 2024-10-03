@@ -1,46 +1,37 @@
+name: FarmCart-Prod
+
 services:
   api:
     build:
       context: ./backend
       dockerfile: Dockerfile.prod
     restart: unless-stopped
-    environment:
-      PORT: 5000
-      NODE_ENV: production
-      MONGODB_URI: "your_mongodb_uri"
-      JWT_SECRET: "your_jwt_secret"
-      CLOUDINARY_CLOUD_NAME: "your_cloudinary_cloud_name"
-      CLOUDINARY_API_KEY: "your_cloudinary_api_key"
-      CLOUDINARY_API_SECRET: "your_cloudinary_api_secret"
-      EMAIL_USER: "your_email_user"
-      EMAIL_PASS: "your_email_pass"
-      EMAIL_SERVICE: "gmail"
-      SITE_URL: "http://0.0.0.0:3000"
-      PAYHERE_MERCHANT_ID: "your_payhere_merchant_id"
-      PAYHERE_MERCHANT_SECRET: "your_payhere_merchant_secret"
-      CRYPTO_SECRET_KEY: "your_crypto_secret_key"
-      STRIPE_SECRET_KEY: "your_stripe_secret_key"
+    env_file: ./backend/.env.prod
     networks:
-      - app-network
+      - app-network-caddy
+    deploy:
+      mode: replicated
+      replicas: 2
+    # ports:
+    #   - "5002:5002"  # Expose the API on port 5002 for internal communication
 
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile.prod  # This Dockerfile serves React with Caddy
+      args:
+        - VITE_STRIPE_PUBLIC_KEY=<add VITE_STRIPE_PUBLIC_KEY>
     restart: unless-stopped
-    environment:
-      VITE_API_URL: "http://api:5001/api"
-      VITE_STRIPE_PUBLIC_KEY: "Stripe Public Key"
-      VITE_HOST: "0.0.0.0"
-      VITE_PORT: "3000"
+    env_file: ./frontend/.env.prod
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80  # HTTP port
+      - 443:443  # HTTPS port for SSL
     depends_on:
       - api
     networks:
-      - app-network
+      - app-network-caddy
 
 networks:
-  app-network:
+  app-network-caddy:
     driver: bridge
+
