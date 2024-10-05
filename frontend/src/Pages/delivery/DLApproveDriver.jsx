@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import axios from '../../../axios'; // Ensure the path matches your project structure
+import axios from '../../axios'; // Ensure the path matches your project structure
 import { useNavigate } from 'react-router-dom';
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar'; // Import the DeliverySidebar component
 

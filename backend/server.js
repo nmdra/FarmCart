@@ -74,7 +74,6 @@ app.use('/api/shops', shopRoute);
 app.use('/api/userShops', userShop);
 app.use('/api/images', imageHandler)
 app.use('/api/coupon', couponRouter)
-app.use(notFound)
 
 //Admin Routes
 // Routes
@@ -96,6 +95,7 @@ app.use('/api/delivery', deliveryRoutes); // Use the delivery routes
 
 
 // Middleware to handle errors and send appropriate responses
+app.use(notFound)
 app.use(errorHandler)
 
 // Start the server and listen on the specified port

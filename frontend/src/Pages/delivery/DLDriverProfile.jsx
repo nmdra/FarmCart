@@ -82,10 +82,9 @@ const DLDriverProfile = () => {
         setSelectedImage(null) // Close the modal
     }
 
-    const baseUrl = 'http://localhost:3000/'
-    const idCardImageUrl = `${baseUrl}${driverDetails.idCardImageUrl}`
-    const licenseImageUrl = `${baseUrl}${driverDetails.licenseImageUrl}`
-    const personalImageUrl = `${baseUrl}${driverDetails.personalImageUrl}`
+    const idCardImageUrl = `${driverDetails.idCardImageUrl}`
+    const licenseImageUrl = `${driverDetails.licenseImageUrl}`
+    const personalImageUrl = `${driverDetails.personalImageUrl}`
 
     if (loading) return <div>Loading...</div>
 

@@ -27,13 +27,34 @@ export const sendApprovalEmail = asyncHandler(async (req, res) => {
         },
     })
 
+
+
+        // The URL for the driver to follow (this could be your site's login or another relevant page)
+    const loginUrl = `http://localhost:5000/driver/login`
+
+
+
     // Email content
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: driver.email,
         subject: 'Approval Confirmation',
-        text: `Dear ${driver.fullName},\n\nCongratulations! Your driver registration has been approved.Enter Your ID to login in first time . \n\nRegards,\nFarmCart Team`,
-    }
+        html: `
+        <p>Dear ${driver.fullName},</p>
+        <p>Congratulations! Your driver registration has been approved. Please click the button below to log in and complete your registration:</p>
+        <a href="${loginUrl}" style="
+            background-color: #4CAF50; 
+            color: white; 
+            padding: 10px 20px; 
+            text-align: center; 
+            text-decoration: none; 
+            display: inline-block; 
+            border-radius: 5px;">
+            Click Here to Log In
+        </a>
+        <p>Alternatively, you can enter your ID to log in for the first time.</p>
+        <p>Regards,<br/>FarmCart Team</p>
+    `,    }
 
     // Send the email
     try {

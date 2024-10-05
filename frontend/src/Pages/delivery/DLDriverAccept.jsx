@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from '../../../axios'; // Corrected path
+import axios from '../../axios'; // Corrected path
 import Swal from 'sweetalert2'; // For sweet alerts
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar'; // Import the DeliverySidebar component
 
@@ -102,10 +102,10 @@ const DLDriverAccept = () => {
 
 
     // Construct the full URL for each image
-    const baseUrl = 'http://localhost:3000/'
-    const idCardImageUrl = `${baseUrl}${driverDetails.idCardImageUrl}`
-    const licenseImageUrl = `${baseUrl}${driverDetails.licenseImageUrl}`
-    const personalImageUrl = `${baseUrl}${driverDetails.personalImageUrl}`
+   // const baseUrl = 'http://localhost:3000/'
+    const idCardImageUrl = `${driverDetails.idCardImageUrl}`
+    const licenseImageUrl = `${driverDetails.licenseImageUrl}`
+    const personalImageUrl = `${driverDetails.personalImageUrl}`
 
     return (
 

@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import DLDeliveryForm from '../models/DLDeliveryFormModel.js'
 
 // Function to submit a delivery form
+// Function to submit a delivery form
 const submitDLDeliveryForm = asyncHandler(async (req, res) => {
     const {
         firstName,
@@ -15,6 +16,9 @@ const submitDLDeliveryForm = asyncHandler(async (req, res) => {
         address,
         vehicleNumber,
         vehicleType,
+        idCardImageUrl,    // Image URLs passed from front-end
+        licenseImageUrl,   // Image URLs passed from front-end
+        personalImageUrl,  // Image URLs passed from front-end
     } = req.body
 
     // Check if a form with the same email already exists
@@ -26,11 +30,6 @@ const submitDLDeliveryForm = asyncHandler(async (req, res) => {
         })
         return
     }
-
-    // Save the images
-    const idCardImageUrl = req.files['idCardImage'][0].path
-    const licenseImageUrl = req.files['licenseImage'][0].path
-    const personalImageUrl = req.files['personalImage'][0].path
 
     // Create and save the delivery form
     const deliveryForm = await DLDeliveryForm.create({
@@ -45,16 +44,19 @@ const submitDLDeliveryForm = asyncHandler(async (req, res) => {
         address,
         vehicleNumber,
         vehicleType,
-        idCardImageUrl,
-        licenseImageUrl,
-        personalImageUrl,
+        idCardImageUrl,    // Directly saving the image URL passed from front-end
+        licenseImageUrl,   // Directly saving the image URL passed from front-end
+        personalImageUrl,  // Directly saving the image URL passed from front-end
     })
 
+    // Respond with success message and saved form
     res.status(201).json({
         message: 'Form submitted successfully',
         deliveryForm,
     })
 })
+
+
 
 // Function to get all pending forms
 const getPendingForms = asyncHandler(async (req, res) => {

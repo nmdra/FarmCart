@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate for navigation
+import { NavLink, useNavigate } from 'react-router-dom'; // Using NavLink for active link detection
 import Swal from 'sweetalert2';
 import {
     FaTachometerAlt,
@@ -45,9 +44,8 @@ const DeliverySidebar = ({ driver }) => {
         });
     };
 
-    const baseUrl = 'http://localhost:3000/';
-    const personalImageUrl = `${baseUrl}${driver?.personalImageUrl}`;
-
+    
+    const personalImageUrl = `${driver?.personalImageUrl}`;
 
     return (
         <aside className="absolute top-6 left-6 w-60 bg-white rounded-lg shadow-lg p-4 mt-8">
@@ -63,57 +61,76 @@ const DeliverySidebar = ({ driver }) => {
 
             {/* Navigation Links */}
             <nav>
-                <ul>
-                    <li className="mb-2">
-                        <Link
+                <ul className="space-y-4">
+                    <li>
+                        <NavLink
                             to="/driver/dashboard"
-                            className="flex items-center p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaTachometerAlt className="w-5 h-5 mr-3" />
                             Dashboard
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li className="mb-2">
-                        <Link
-                            to="/driver/ongoing-deliveries"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                    <li>
+                        <NavLink
+                            to="/ongoing"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaTruck className="w-5 h-5 mr-3" />
                             Ongoing Deliveries
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li className="mb-2">
-                        <Link
+                    <li>
+                        <NavLink
                             to="/driver/deliveries"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaClipboardList className="w-5 h-5 mr-3" />
                             Deliveries
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li className="mb-2">
-                        <Link
+                    <li>
+                        <NavLink
                             to="/driver/profile"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaUser className="w-5 h-5 mr-3" />
                             Profile
-                        </Link>
+                        </NavLink>
                     </li>
-                    <li className="mb-2">
-                        <Link
+                    <li>
+                        <NavLink
                             to="/driver/settings"
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-green-500 hover:text-white"
+                            className={({ isActive }) =>
+                                `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
+                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                }`
+                            }
                         >
                             <FaCog className="w-5 h-5 mr-3" />
-
                             Settings
-                        </Link>
+                        </NavLink>
                     </li>
                     <li>
                         <button
                             onClick={handleLogout}
-                            className="flex items-center p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg hover:bg-red-500 hover:text-white"
+                            className="flex items-center p-2 text-gray-700 rounded-md hover:bg-red-500 hover:text-white"
                         >
                             <FaSignOutAlt className="w-5 h-5 mr-3" />
                             Log-out
@@ -125,5 +142,4 @@ const DeliverySidebar = ({ driver }) => {
     );
 };
 
-
-export default DeliverySidebar
+export default DeliverySidebar;
