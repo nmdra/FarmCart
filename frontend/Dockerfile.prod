@@ -21,7 +21,7 @@ RUN npm run build
 FROM caddy:2.8.4-alpine
 
 # Copy the Caddyfile
-COPY ./caddy/Caddyfile /etc/caddy/Caddyfile
+# COPY ./caddy/Caddyfile /etc/caddy/Caddyfile
 
 # Copy the static files from the builder
 COPY --from=builder /app/dist /srv/
