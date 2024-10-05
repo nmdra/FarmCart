@@ -505,7 +505,7 @@ const CheckOut = () => {
                                     onClick={onSubmit}
                                     className="hover:bg-green-600 bg-green-500"
                                 >
-                                    Proceed to Checkout
+                                    PAY NOW
                                 </Button>
                             </form>
                         </div>
