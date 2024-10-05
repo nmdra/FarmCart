@@ -58,12 +58,9 @@ const Cart = () => {
         e.preventDefault()
 
         try {
-            const res = await axios.post(
-                '/api/coupon/valid-coupon',
-                {
-                    couponCode: coupon,
-                }
-            )
+            const res = await axios.post('/api/coupon/valid-coupon', {
+                couponCode: coupon,
+            })
 
             if (res.data.coupon) {
                 const couponDiscount = res.data.coupon.discount
@@ -92,11 +89,11 @@ const Cart = () => {
             <section className="bg-white py-8 antialiased  md:py-16">
                 <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
                     <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl">
-                       My Shopping Cart
+                        My Shopping Cart
                     </h2>
 
                     <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
-                    <table className="w-2/3 mr-4 table-auto border-collapse">
+                        <table className="w-2/3 mr-4 table-auto border-collapse">
                             <thead>
                                 <tr className="border-b">
                                     <th className="text-left py-4">Product</th>
@@ -141,13 +138,14 @@ const Cart = () => {
                                             ).toFixed(2)}
                                         </td>
                                         <td className="py-4 text-right">
-                                        <span
-                                        className="text-red-600 cursor-pointer hover:text-red-700 font-semibold"
-                                        onClick={() => handleRemove(product._id)}
-                                        >
-                                        Remove
-                                        </span>
-
+                                            <span
+                                                className="text-red-600 cursor-pointer hover:text-red-700 font-semibold"
+                                                onClick={() =>
+                                                    handleRemove(product._id)
+                                                }
+                                            >
+                                                Remove
+                                            </span>
                                         </td>
                                     </tr>
                                 ))}
@@ -215,17 +213,16 @@ const Cart = () => {
                                 </div>
 
                                 <Link to="/checkOut">
-                                <button
-                                disabled={cart.length === 0}
-                                className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium mt-4 text-white ${
-                                    cart.length === 0
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
-                                }`}
-                                >
-                                Proceed to Checkout
-                                </button>
-
+                                    <button
+                                        disabled={cart.length === 0}
+                                        className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium mt-4 text-white ${
+                                            cart.length === 0
+                                                ? 'bg-gray-400 cursor-not-allowed'
+                                                : 'bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
+                                        }`}
+                                    >
+                                        Proceed to Checkout
+                                    </button>
                                 </Link>
 
                                 <div className="flex items-center justify-center gap-2">
@@ -278,18 +275,23 @@ const Cart = () => {
                                         />
                                     </div>
                                     <button
-  type="submit"
-  disabled={cart.length === 0 || disabledCouponButton}
-  className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium ${
-    cart.length === 0 || disabledCouponButton
-      ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
-      : 'bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
-  }`}
-  onClick={cart.length === 0 ? null : addCoupon}
->
-  Apply Code
-</button>
-
+                                        type="submit"
+                                        disabled={
+                                            cart.length === 0 ||
+                                            disabledCouponButton
+                                        }
+                                        className={`flex w-full items-center justify-center rounded-lg px-5 py-2.5 text-sm font-medium ${
+                                            cart.length === 0 ||
+                                            disabledCouponButton
+                                                ? 'bg-gray-400 text-gray-700 cursor-not-allowed'
+                                                : 'bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300'
+                                        }`}
+                                        onClick={
+                                            cart.length === 0 ? null : addCoupon
+                                        }
+                                    >
+                                        Apply Code
+                                    </button>
                                 </form>
                             </div>
                         </div>

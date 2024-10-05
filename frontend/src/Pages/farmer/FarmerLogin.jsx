@@ -33,8 +33,8 @@ const Login = () => {
     }
 
     return (
-        <div className="flex min-h-screen w-screen items-center justify-center bg-gray-50">
-            <div className="bg-white p-8 rounded-lg shadow-md w-sm min-w-md">
+        <div className="flex max-h-screen w-screen items-center justify-center bg-gray-50 p-24">
+            <div className="bg-white p-8 rounded-lg shadow-md w-1/3 p">
                 <div className="text-center mb-8">
                     <img
                         src={farmcartLogo}
