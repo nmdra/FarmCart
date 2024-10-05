@@ -7,24 +7,47 @@ import shopCover from '../../assets/shop.png'
 const Shop = () => {
     const { id } = useParams()
     const [shop, setShop] = useState(null)
+    const [orderStats, setOrderStats] = useState({
+        totalOrders: 0,
+        ongoingOrders: 0,
+        completedOrders: 0,
+    })
 
     useEffect(() => {
         const fetchShop = async () => {
             try {
                 const token = localStorage.getItem('token')
-                console.log(token)
                 const config = {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 }
+                // Set shopId in localStorage
                 localStorage.setItem('shopId', id)
-                const { data } = await axios.get(`/shops/${id}`, config)
-                setShop(data)
+                
+                // Fetch shop details
+                const { data: shopData } = await axios.get(`/shops/${id}`, config)
+                setShop(shopData)
+                
+                // Fetch orders related to the shop
+                const { data: orders } = await axios.get(`/orders?shopId=${id}`, config)
+                
+                // Calculate order stats
+                const totalOrders = orders.filter(order => order.orderStatus !== 'Reject').length;
+                const completedOrders = orders.filter(order => order.orderStatus === 'Delivered').length
+                const ongoingOrders = totalOrders - completedOrders
+
+                // Update state with the calculated order stats
+                setOrderStats({
+                    totalOrders,
+                    ongoingOrders,
+                    completedOrders,
+                })
             } catch (error) {
-                console.error('Error fetching shop details:', error)
+                console.error('Error fetching shop details or orders:', error)
             }
         }
+
 
         fetchShop()
     }, [id])
@@ -86,15 +109,15 @@ const Shop = () => {
                 {/* Order Stats Cards */}
                 <div className="flex gap-x-10">
                     <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
-                        <h3 className="text-2xl font-bold text-white">220</h3>
+                        <h3 className="text-2xl font-bold text-white">{orderStats.totalOrders}</h3>
                         <p className="text-white">Total Orders</p>
                     </div>
                     <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
-                        <h3 className="text-2xl font-bold text-white">20</h3>
+                        <h3 className="text-2xl font-bold text-white">{orderStats.ongoingOrders}</h3>
                         <p className="text-white">Ongoing Orders</p>
                     </div>
                     <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
-                        <h3 className="text-2xl font-bold text-white">200</h3>
+                        <h3 className="text-2xl font-bold text-white">{orderStats.completedOrders}</h3>
                         <p className="text-white">Completed Orders</p>
                     </div>
                 </div>
