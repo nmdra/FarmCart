@@ -41,7 +41,11 @@ const ProductPage = ({ onAddToCart }) => {
 
         localStorage.setItem('cart', JSON.stringify(cart))
         // setRefetch()
-        navigate(`/cart`)
+        /*navigate(`/cart`)*/
+
+        toast.success('Item added to cart!')
+
+
     }
 
     useEffect(() => {
