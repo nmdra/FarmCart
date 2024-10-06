@@ -11,6 +11,8 @@ const Products = () => {
     const [products, setProducts] = useState([])
     const shopId = localStorage.getItem('shopId')
     const [shopName, setShopName] = useState('')
+    const [shopEmail, setShopEmail] = useState('')
+    const [shopContact, setShopContact] = useState('')
     const navigate = useNavigate()
     const [searchTerm, setSearchTerm] = useState('') // State for the search term
 
@@ -232,10 +234,6 @@ const Products = () => {
                                 ))}
                             </tbody>
                         </table>
-                        {/* Generated Date and Time */}
-                        <p className="text-left mb-2 text-sm">
-                            Generated on: {new Date().toLocaleString()}
-                        </p>
                     </div>
                 </div>
 

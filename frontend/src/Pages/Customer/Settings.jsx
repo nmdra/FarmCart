@@ -28,8 +28,7 @@ function Settings() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     // const phoneRegex =
     //     /^(?:0(?:71|77|76|75|74|73|72|71|11)|\+947[1-9]|(?:07[1-9]))[0-9]{7}$/
-    const phoneRegex =
-    /^(?:0(?:71|77|76|75|74|73|72|11)|\+947[1-9])\d{7}$/
+    const phoneRegex = /^(?:0(?:71|77|76|75|74|73|72|11)|\+947[1-9])\d{7}$/
 
     // https://stackoverflow.com/a/2385967
     const nameRegex = /^[a-z ,.'-]+$/i
