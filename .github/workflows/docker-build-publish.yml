@@ -3,9 +3,9 @@ name: Build and Publish Docker Image
 # Trigger the workflow on push or pull request to the main branch
 on:
   push:
-    branches:
-      - main
-      - release
+    # branches:
+    #   - main
+    #   - release
     tags:
       - 'v*.*.*'
   # pull_request:
