@@ -79,12 +79,14 @@ const ProductCarousel = () => {
                                 } // Navigate on click
                             >
                                 <img
-
                                     src={
-        product.products.image 
-            ? product.products.image.replace(/\.\w+$/, '.webp') 
-            : 'https://placehold.co/400x400.webp'
-    }
+                                        product.products.image
+                                            ? product.products.image.replace(
+                                                  /\.\w+$/,
+                                                  '.webp'
+                                              )
+                                            : 'https://placehold.co/400x400.webp'
+                                    }
                                     alt={product.products.name}
                                     className="h-40 w-full object-cover mb-4"
                                 />

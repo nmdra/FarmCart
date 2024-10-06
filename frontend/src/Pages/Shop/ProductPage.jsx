@@ -73,7 +73,11 @@ const ProductPage = ({ onAddToCart }) => {
                     <img
                         alt={product.name}
                         className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded-2xl"
-                        src={product.image ? product.image.replace(/\.\w+$/, '.webp') : 'https://placehold.co/400x400.webp'}
+                        src={
+                            product.image
+                                ? product.image.replace(/\.\w+$/, '.webp')
+                                : 'https://placehold.co/400x400.webp'
+                        }
                     />
 
                     <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">

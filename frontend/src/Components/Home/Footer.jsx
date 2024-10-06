@@ -55,12 +55,12 @@ const Footer = () => {
                         Terms
                     </p>
 
-<a href="https://status.nimendra.xyz/status/farmcart" className="hover:text-[#b8f724] hover:underline hover:cursor-pointer">
-    <p>
-        status
-    </p>
-</a>
-
+                    <a
+                        href="https://status.nimendra.xyz/status/farmcart"
+                        className="hover:text-[#b8f724] hover:underline hover:cursor-pointer"
+                    >
+                        <p>status</p>
+                    </a>
                 </div>
                 <div>
                     <p>© 2024 Farmcart Technologies Inc.</p>

@@ -263,7 +263,12 @@ const Products = () => {
                             {/* Upper half - Product Image */}
                             <div className="flex-shrink-0 w-full h-1/2 overflow-hidden">
                                 <img
-                                    src={product.image.replace(/\.\w+$/, '.webp') || 'https://dummyimage.com/400x400'} // Placeholder if no image
+                                    src={
+                                        product.image.replace(
+                                            /\.\w+$/,
+                                            '.webp'
+                                        ) || 'https://dummyimage.com/400x400'
+                                    } // Placeholder if no image
                                     alt="Product"
                                     className="object-cover w-full h-full"
                                 />

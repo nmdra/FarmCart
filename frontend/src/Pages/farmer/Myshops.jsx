@@ -100,7 +100,10 @@ const MyShop = () => {
                             className="relative bg-white rounded-lg shadow-md overflow-hidden h-72 w-85 flex flex-col"
                         >
                             <img
-                                src={shop.image.replace(/\.\w+$/, '.webp') || shopCover} // Placeholder if no image
+                                src={
+                                    shop.image.replace(/\.\w+$/, '.webp') ||
+                                    shopCover
+                                } // Placeholder if no image
                                 alt="Shop Cover"
                                 className="object-cover h-full w-full"
                             />
