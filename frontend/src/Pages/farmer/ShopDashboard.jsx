@@ -24,17 +24,27 @@ const Shop = () => {
                 }
                 // Set shopId in localStorage
                 localStorage.setItem('shopId', id)
-                
+
                 // Fetch shop details
-                const { data: shopData } = await axios.get(`/shops/${id}`, config)
+                const { data: shopData } = await axios.get(
+                    `/shops/${id}`,
+                    config
+                )
                 setShop(shopData)
-                
+
                 // Fetch orders related to the shop
-                const { data: orders } = await axios.get(`/orders?shopId=${id}`, config)
-                
+                const { data: orders } = await axios.get(
+                    `/orders?shopId=${id}`,
+                    config
+                )
+
                 // Calculate order stats
-                const totalOrders = orders.filter(order => order.orderStatus !== 'Reject').length;
-                const completedOrders = orders.filter(order => order.orderStatus === 'Delivered').length
+                const totalOrders = orders.filter(
+                    (order) => order.orderStatus !== 'Reject'
+                ).length
+                const completedOrders = orders.filter(
+                    (order) => order.orderStatus === 'Delivered'
+                ).length
                 const ongoingOrders = totalOrders - completedOrders
 
                 // Update state with the calculated order stats
@@ -47,7 +57,6 @@ const Shop = () => {
                 console.error('Error fetching shop details or orders:', error)
             }
         }
-
 
         fetchShop()
     }, [id])
@@ -109,15 +118,21 @@ const Shop = () => {
                 {/* Order Stats Cards */}
                 <div className="flex gap-x-10">
                     <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
-                        <h3 className="text-2xl font-bold text-white">{orderStats.totalOrders}</h3>
+                        <h3 className="text-2xl font-bold text-white">
+                            {orderStats.totalOrders}
+                        </h3>
                         <p className="text-white">Total Orders</p>
                     </div>
                     <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
-                        <h3 className="text-2xl font-bold text-white">{orderStats.ongoingOrders}</h3>
+                        <h3 className="text-2xl font-bold text-white">
+                            {orderStats.ongoingOrders}
+                        </h3>
                         <p className="text-white">Ongoing Orders</p>
                     </div>
                     <div className="bg-custom-green p-6 rounded-lg shadow-md w-2/3 text-center">
-                        <h3 className="text-2xl font-bold text-white">{orderStats.completedOrders}</h3>
+                        <h3 className="text-2xl font-bold text-white">
+                            {orderStats.completedOrders}
+                        </h3>
                         <p className="text-white">Completed Orders</p>
                     </div>
                 </div>
