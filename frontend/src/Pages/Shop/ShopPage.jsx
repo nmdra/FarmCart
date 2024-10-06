@@ -82,7 +82,7 @@ const ShopPage = () => {
                             /* Using flex and justify-between for vertical spacing */
                         >
                             <img
-                                src={product.image}
+                                src={product.image.replace(/\.\w+$/, '.webp')}
                                 alt={product.name}
                                 className="w-full h-40 object-cover rounded-lg mb-2"
                             />

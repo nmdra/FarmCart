@@ -1,0 +1,48 @@
+name: Build and Publish Docker Image
+
+# Trigger the workflow on push or pull request to the main branch
+on:
+  push:
+    # branches:
+    #   - main
+    #   - release
+    tags:
+      - 'v*.*.*'
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - release
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Step 3: Log in to Docker Hub (or GHCR if you prefer)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+            registry: ghcr.io
+            username: ${{ github.actor }}  # Docker Hub username (use GitHub actor if using GHCR)
+            password: ${{ secrets.GITHUB_TOKEN }}  # Docker Hub password (use GitHub token if using GHCR)
+
+      # Step 4: Build and push the backend Docker image
+      - name: Build and push backend Docker image
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/farmcart-api:latest -f ./backend/Dockerfile.prod ./backend
+          docker push ghcr.io/${{ github.repository_owner }}/farmcart-api:latest
+
+      # Step 5: Build and push the frontend Docker image
+      - name: Build and push frontend Docker image
+        run: |
+          docker build --build-arg VITE_STRIPE_PUBLIC_KEY=${{ secrets.VITE_STRIPE_PUBLIC_KEY }} -t ghcr.io/${{ github.repository_owner }}/farmcart-app:latest -f ./frontend/Dockerfile.prod ./frontend
+          docker push ghcr.io/${{ github.repository_owner }}/farmcart-app:latest

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Address from '../../Components/Address'
+import toast from 'react-hot-toast'
 
 function Settings() {
     const [previewUrl, setPreviewUrl] = useState(null)
@@ -12,6 +13,7 @@ function Settings() {
     const [emailError, setEmailError] = useState('')
     const [firstNameError, setFirstNameError] = useState('')
     const [lastNameError, setLastNameError] = useState('')
+    const [birthdayError, setBirthdayError] = useState('')
     const user = JSON.parse(localStorage.getItem('user'))
 
     console.log(user)
@@ -24,8 +26,10 @@ function Settings() {
     const [birthday, setBirthday] = useState('')
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    const phoneRegex =
-        /^(?:0(?:71|77|76|75|74|73|72|71|11)|\+947[1-9]|(?:07[1-9]))[0-9]{7}$/
+    // const phoneRegex =
+    //     /^(?:0(?:71|77|76|75|74|73|72|71|11)|\+947[1-9]|(?:07[1-9]))[0-9]{7}$/
+    const phoneRegex = /^(?:0(?:71|77|76|75|74|73|72|11)|\+947[1-9])\d{7}$/
+
     // https://stackoverflow.com/a/2385967
     const nameRegex = /^[a-z ,.'-]+$/i
 
@@ -40,7 +44,11 @@ function Settings() {
             setEmail(user.email || '')
             setcontactNumber(user.contactNumber || '')
             setPreviewUrl(user.pic || '')
-            setBirthday(user.birthday || '')
+            // Format birthday properly for an input of type date
+            const formattedBirthday = user.birthday
+                ? new Date(user.birthday).toISOString().split('T')[0]
+                : ''
+            setBirthday(formattedBirthday)
         }
     }, [])
 
@@ -102,8 +110,7 @@ function Settings() {
 
             const response = await axios.put('/api/users', userDetails)
             console.log('Update successful:', response.data)
-            alert('Account details updated successfully')
-
+            toast.success(`Account details updated successfully`)
             const json = response.data.user
             console.log('Update successful:', json)
 
@@ -111,7 +118,9 @@ function Settings() {
             localStorage.setItem('user', JSON.stringify(json))
         } catch (error) {
             console.error('Error updating account details:', error)
-            alert('Failed to update account details')
+            // alert('Failed to update account details')
+
+            toast.error(`Failed to update account details`)
         }
     }
 
@@ -166,6 +175,23 @@ function Settings() {
         }
 
         setlastname(newLastName) // Update last name state
+    }
+
+    const handleBirthdayChange = (e) => {
+        const selectedDate = e.target.value
+        const today = new Date().toISOString().split('T')[0] // Get today's date in YYYY-MM-DD format
+
+        // Validate the selected birthday
+        if (selectedDate > today) {
+            setBirthdayError('Birthday cannot be in the future.')
+        } else if (selectedDate < '1950-01-01' || selectedDate > '2010-12-31') {
+            setBirthdayError(
+                'Please select a birthday between 1950-01-01 and 2010-12-31.'
+            )
+        } else {
+            setBirthdayError('') // Clear any previous error
+            setBirthday(selectedDate) // Update state if valid
+        }
     }
 
     return (
@@ -298,8 +324,9 @@ function Settings() {
                                         Phone Number
                                     </label>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder="Phone Number"
+                                        maxLength={10}
                                         value={contactNumber}
                                         className={`border p-2 rounded-md w-full ${phoneError ? 'border-red-500' : ''}`}
                                         onChange={handlePhoneChange}
@@ -310,21 +337,25 @@ function Settings() {
                                         </div>
                                     )}
                                 </div>
+
                                 <div>
                                     <label className="block text-gray-700">
                                         Birthday
                                     </label>
                                     <input
                                         type="date"
-                                        placeholder={birthday || 'Birthday'}
                                         value={birthday}
-                                        onChange={(e) =>
-                                            setBirthday(e.target.value)
-                                        }
+                                        onChange={handleBirthdayChange}
                                         className="border p-2 rounded-md w-full"
                                         min="1950-01-01"
                                         max="2010-12-31"
                                     />
+                                    {birthdayError && (
+                                        <p className="text-red-500 text-sm">
+                                            {birthdayError}
+                                        </p>
+                                    )}{' '}
+                                    {/* Display error message */}
                                 </div>
                             </div>
                         </div>

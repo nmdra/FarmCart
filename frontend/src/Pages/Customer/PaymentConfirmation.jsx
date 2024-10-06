@@ -5,6 +5,7 @@ import farmcartLogo from '../../assets/logo.png'
 import gold from '../../assets/premiumGold.png'
 import silver from '../../assets/premiumSilver.png'
 import PayhereBanner from '../../assets/PayhereShortBannerWhite.png'
+import toast from 'react-hot-toast'
 
 const PaymentConfirmation = ({ setPaymentSuccess, setOrderID }) => {
     const location = useLocation()
@@ -80,12 +81,15 @@ const PaymentConfirmation = ({ setPaymentSuccess, setOrderID }) => {
                 response.data
             )
 
+            // toast.success("payment updated successfully")
+
             const json = response.data.user
 
             localStorage.setItem('user', JSON.stringify(json))
             navigate('/paymentComplete')
         } catch (error) {
-            console.error('Error verifying payment', error)
+            console.log('Error verifying payment', error)
+            toast.error('Error verifying payment', error)
         }
     }
 
@@ -97,6 +101,8 @@ const PaymentConfirmation = ({ setPaymentSuccess, setOrderID }) => {
 
     window.payhere.onCompleted = function (order_id) {
         console.log('Payment completed. OrderID:', order_id)
+        toast.success('Payment updated successfully')
+        // navigate('/paymentComplete')
         setSuccess(true)
     }
 

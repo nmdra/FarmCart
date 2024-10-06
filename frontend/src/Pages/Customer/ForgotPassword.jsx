@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 import farmcartLogo from '../../assets/logo.png'
+import toast from 'react-hot-toast'
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('')
@@ -18,6 +19,7 @@ const ForgotPassword = () => {
             const { data } = await axios.post('/api/users/forgot-password', {
                 verifyEmail: email,
             })
+            toast.success('Email sent successfully')
             setMessage(data.message)
         } catch (error) {
             setError(

@@ -137,7 +137,10 @@ const ShopList = () => {
                                     >
                                         {shop.image && (
                                             <img
-                                                src={shop.image}
+                                                src={shop.image.replace(
+                                                    /\.\w+$/,
+                                                    '.webp'
+                                                )}
                                                 alt={`${shop.name} image`}
                                                 className="w-full h-32 object-cover rounded-t-lg mb-4"
                                             />
