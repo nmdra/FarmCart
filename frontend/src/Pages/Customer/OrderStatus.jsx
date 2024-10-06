@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link, useLocation } from 'react-router-dom'
 import Loading from '../../Components/Loading'
-import DownloadReceipt from './DownloadReceipt' 
+import DownloadReceipt from './DownloadReceipt'
 
 const OrderStatus = () => {
     const [order, setOrder] = useState(null)
@@ -44,7 +44,9 @@ const OrderStatus = () => {
         <div className="p-8 max-w-4xl mx-auto bg-white shadow-lg rounded-lg border-2 border-green-500 my-6">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Order Details</h2>
-                <h4 className="font-semibold">ORDER ID: #{order._id.slice(-12)}</h4>
+                <h4 className="font-semibold">
+                    ORDER ID: #{order._id.slice(-12)}
+                </h4>
                 <h4 className="text-sm text-gray-500">
                     {/* {new Date(order.createdAt).toLocaleDateString()} •{' '} */}
                     {order.orderItems.length} Products
@@ -143,7 +145,8 @@ const OrderStatus = () => {
             </div>
             {/* Download receipt */}
             <div className="mt-6">
-                <DownloadReceipt order={order} /> {/* Add the download button */}
+                <DownloadReceipt order={order} />{' '}
+                {/* Add the download button */}
             </div>
         </div>
     )

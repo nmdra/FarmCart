@@ -40,7 +40,7 @@ const MyShop = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Fixed Sidebar */}
-            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md p-8 pt-16 mt-16">
+            <aside className="fixed top-28 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 

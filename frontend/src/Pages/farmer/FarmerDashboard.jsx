@@ -66,23 +66,26 @@ const Dashboard = () => {
         console.log(`Fetch ${farmer._id}`)
     }, []) // Empty dependency array ensures this effect runs only once when the component mounts
 
-useEffect(() => {
-    const getShopByFarmer = async () => {
-        try {
-            if (farmer && farmer._id) {  // Check if farmer and farmer._id are defined
-                console.log(farmer._id)
+    useEffect(() => {
+        const getShopByFarmer = async () => {
+            try {
+                if (farmer && farmer._id) {
+                    // Check if farmer and farmer._id are defined
+                    console.log(farmer._id)
 
-                const res = await axios.get(`/orders/get-shop/${farmer._id}`)
-                setFarmersShop(res.data)
+                    const res = await axios.get(
+                        `/orders/get-shop/${farmer._id}`
+                    )
+                    setFarmersShop(res.data)
+                }
+            } catch (error) {
+                console.error('Error fetching farmer details:', error)
+                setLoading(false)
             }
-        } catch (error) {
-            console.error('Error fetching farmer details:', error)
-            setLoading(false)
         }
-    }
 
-    getShopByFarmer()
-}, [farmer])
+        getShopByFarmer()
+    }, [farmer])
 
     // Render a loading state until farmer details are fetched
     const [loading, setLoading] = useState(true)
@@ -123,9 +126,7 @@ useEffect(() => {
         const fetchUserOrders = async () => {
             try {
                 farmersShop.forEach(async (shop) => {
-                    const res = await axios.get(
-                        `/orders?shopId=${shop._id}`
-                    )
+                    const res = await axios.get(`/orders?shopId=${shop._id}`)
 
                     setOrders((prevOrders) => {
                         const updatedOrders = prevOrders.map((order) => {
@@ -171,10 +172,8 @@ useEffect(() => {
     const generatePDF = () => {
         const doc = new jsPDF()
 
-         doc.setFontSize(18);
+        doc.setFontSize(18)
         doc.text('Sales Report', 14, 10)
-
-        
 
         const tableColumn = [
             'Id',
@@ -211,7 +210,7 @@ useEffect(() => {
         doc.save('orders-report.pdf')
     }
 
-   if (loading) {
+    if (loading) {
         return (
             <div className="flex flex-1 min-h-screen justify-center items-center">
                 <Loading />
@@ -222,14 +221,14 @@ useEffect(() => {
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
             {/* Main Content Container */}
-            <div className="flex flex-1 mt-16">
+            <div className="flex flex-1 ">
                 {/* Fixed Sidebar */}
-                <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
+                <aside className="fixed top-20 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                     <Sidebar />
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
+                <main className="flex-1 ml-60 p-24 pt-16 overflow-y-auto">
                     <div className="mb-8">
                         {/* Profile and Details Section */}
                         <div className="flex space-x-8 mb-8">
@@ -278,7 +277,7 @@ useEffect(() => {
                     </div>
 
                     {/* Orders Section */}
-                    <div className="bg-white p-6 rounded-lg shadow-md w-full border-2 border-green-400 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <div className="bg-white p-6 rounded-lg shadow-md w-full border-2  focus:outline-none focus:ring-2 focus:ring-green-500">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold text-gray-800">
                                 My Orders
@@ -401,7 +400,7 @@ useEffect(() => {
                                                 }
                                             >
                                                 <option value="Pending">
-                                                    Pending  
+                                                    Pending
                                                 </option>
                                                 <option value="Accept">
                                                     Accept
@@ -419,7 +418,7 @@ useEffect(() => {
                                                     Delivered
                                                 </option>
                                                 <option value="Rejected">
-                                                    Rejected  
+                                                    Rejected
                                                 </option>
                                             </select>
                                         </TableCell>
