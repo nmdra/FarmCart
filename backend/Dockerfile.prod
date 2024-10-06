@@ -1,5 +1,5 @@
-# Stage 2: Serve the app with Node.js
-FROM node:22-alpine3.20
+# Stage 1: Build the React app
+FROM node:22-alpine3.20 AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -7,50 +7,23 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install only production dependencies
+# Install dependencies
 RUN npm install --omit=dev
 
-# Define build arguments to pass during the build process
-ARG PORT
-ARG NODE_ENV
-ARG MONGODB_URI
-ARG MONGODB_URI_ME
-ARG JWT_SECRET
-ARG CLOUDINARY_CLOUD_NAME
-ARG CLOUDINARY_API_KEY
-ARG CLOUDINARY_API_SECRET
-ARG EMAIL_USER
-ARG EMAIL_PASS
-ARG EMAIL_SERVICE
-ARG SITE_URL
-ARG PAYHERE_MERCHANT_ID
-ARG PAYHERE_MERCHANT_SECRET
-ARG CRYPTO_SECRET_KEY
-ARG STRIPE_SECRET_KEY
+# Copy all other files and build the React app
+COPY . .
 
-# Set the build arguments as environment variables in the container
-ENV PORT=${PORT}
-ENV NODE_ENV=${NODE_ENV}
-ENV MONGODB_URI=${MONGODB_URI}
-ENV MONGODB_URI_ME=${MONGODB_URI_ME}
-ENV JWT_SECRET=${JWT_SECRET}
-ENV CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
-ENV CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
-ENV CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
-ENV EMAIL_USER=${EMAIL_USER}
-ENV EMAIL_PASS=${EMAIL_PASS}
-ENV EMAIL_SERVICE=${EMAIL_SERVICE}
-ENV SITE_URL=${SITE_URL}
-ENV PAYHERE_MERCHANT_ID=${PAYHERE_MERCHANT_ID}
-ENV PAYHERE_MERCHANT_SECRET=${PAYHERE_MERCHANT_SECRET}
-ENV CRYPTO_SECRET_KEY=${CRYPTO_SECRET_KEY}
-ENV STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+# Stage 2: Serve the app 
+FROM node:22-alpine3.20
 
-# Copy the build files from the builder stage
+# Set the working directory
+WORKDIR /app
+
+# Copy the built files from the builder stage
 COPY --from=builder /app /app
 
-# Expose the port on which the app will run
-EXPOSE ${PORT}
+# Expose the application port
+EXPOSE 5002
 
 # Command to run the application
-CMD ["node", "server.js"]
+CMD ["node", "--watch", "--env-file=.env.prod", "server.js"] 
