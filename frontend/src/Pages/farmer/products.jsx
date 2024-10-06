@@ -25,7 +25,10 @@ const Products = () => {
                 }
 
                 const shopResponse = await axios.get(`/shops/${shopId}`, config)
-                setShopName(shopResponse.data.name)
+                const { name, email, contactNumber } = shopResponse.data
+                setShopName(name)
+                setShopEmail(email)
+                setShopContact(contactNumber)
 
                 const { data } = await axios.get(
                     `/shops/${shopId}/products`,
@@ -132,7 +135,7 @@ const Products = () => {
 
     return (
         <div className="flex min-h-screen bg-gray-50 ">
-            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-24 mt-16">
+            <aside className="fixed top-36 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 
@@ -156,22 +159,53 @@ const Products = () => {
                     </div>
                 </div>
                 {/* Printable Product Price List */}
-                <div ref={productRef} className="hidden print:block">
-                    <div className="float-left">
-                        <br />
-                        <img
-                            src={farmcartLogo}
-                            alt="Logo"
-                            className="h-5 w-auto mb-2 pl-4"
-                        />
+                <div ref={productRef} className="hidden print:block p-8">
+                    <div className="flex justify-between items-center ">
+                        {/* Logo Section */}
+                        <div className="flex items-center">
+                            <img
+                                src={farmcartLogo}
+                                alt="Logo"
+                                className="h-12 w-auto mr-4 pl-4"
+                            />
+                        </div>
+
+                        {/* Company Info Section */}
+                        <div className="text-right">
+                            <h2 className="font-semibold text-lg">
+                                FarmCart Lanka (PVT.) LTD
+                            </h2>
+                            <p className="text-gray-600">
+                                No.78, Malabe, Colombo <br />
+                                (+94) 011 34 56 837 <br />
+                                contact@farmcart.com <br />
+                                www.farmcart.com
+                            </p>
+                        </div>
                     </div>
+
+                    <hr className="my-4 border-t-2 border-black" />
+
+                    <div className="flex justify-between items-center mb-4">
+                        {/* Left side: Title and Shop Info */}
+                        <div className="text-left">
+                            <h3 className="font-bold">
+                                Product Price List <br />
+                                {shopName}
+                            </h3>
+                            <p>
+                                {shopEmail} <br />
+                                {shopContact}
+                            </p>
+                        </div>
+
+                        {/* Right side: Date */}
+                        <div className="text-right text-sm ">
+                            Generated on: <br /> {new Date().toLocaleString()}
+                        </div>
+                    </div>
+
                     <br />
-
-                    {/* Title */}
-                    <h1 className="text-center text-2xl font-bold mb-4 ">
-                        {shopName} - Product Price List
-                    </h1>
-
                     <div className="pl-16 pr-4">
                         {/* Product Table */}
                         <table className="table-auto w-full border-collapse">
