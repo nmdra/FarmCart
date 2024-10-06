@@ -26,6 +26,10 @@ services:
     ports:
       - 80:80  # HTTP port
       - 443:443  # HTTPS port for SSL
+    volumes:
+      - $PWD/frontend/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
     depends_on:
       - api
     networks:
@@ -34,3 +38,8 @@ services:
 networks:
   app-network-caddy:
     driver: bridge
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
