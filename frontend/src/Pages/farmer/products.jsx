@@ -258,12 +258,12 @@ const Products = () => {
                     {filteredProducts.map((product) => (
                         <div
                             key={product._id}
-                            className="relative bg-white rounded-lg shadow-md w-60 h-70 flex flex-col fixed"
+                            className="relative bg-white rounded-lg shadow-md w-60 h-70 flex flex-col"
                         >
                             {/* Upper half - Product Image */}
                             <div className="flex-shrink-0 w-full h-1/2 overflow-hidden">
                                 <img
-                                    src={product.image}
+                                    src={product.image.replace(/\.\w+$/, '.webp') || 'https://dummyimage.com/400x400'} // Placeholder if no image
                                     alt="Product"
                                     className="object-cover w-full h-full"
                                 />
