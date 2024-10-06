@@ -40,6 +40,7 @@ const OrderManager = () => {
     if (error) return <p>Error: {error}</p>
 
     return (
+        //this is for test order manager module.
         <div>
             <h1>Order Manager</h1>
             <table>
