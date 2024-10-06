@@ -34,7 +34,7 @@ const ProductPage = ({ onAddToCart }) => {
                 parseInt(cart[existingProductIndex].quantity) +
                 parseInt(quantity)
 
-            // console.log('existingProductIndex', existingProductIndex)
+            /// console.log('existingProductIndex', existingProductIndex)
         } else {
             cart.push(sanitizedProduct)
         }
