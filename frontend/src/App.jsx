@@ -9,6 +9,8 @@ import {
 import MainLayout from './Layouts/MainLayout'
 import SidebarLayout from './Layouts/SidebarLayout' // Layout with Sidebar
 import PrivateRoute from './Components/PrivateRoute'
+import FarmerLayout from './Layouts/FarmerLayout'
+import Farmer_sidebar from './Components/farmer/Farmer_sidebar'
 
 // Customer Pages
 import HomePage from './Pages/HomePage'
@@ -119,7 +121,7 @@ const router = createBrowserRouter(
             </Route>
 
             {/* Farmer Routes */}
-            <Route path="/">
+            <Route path="/" element={<FarmerLayout />}>
                 <Route path="/farmerLogin" element={<FarmerLogin />} />
                 <Route path="/farmerRegister" element={<FarmerRegister />} />
                 <Route path="/farmerdashboard" element={<FarmerDashboard />} />
