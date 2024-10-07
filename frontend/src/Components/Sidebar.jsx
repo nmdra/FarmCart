@@ -26,7 +26,7 @@ const Sidebar = () => {
     }
 
     return (
-        <nav className="p-6 w-64 min-h-fit max-h-96 bg-white shadow-lg mt-4 border-2 rounded-lg">
+        <nav className="p-6 w-64 max-w-64 min-w-64 min-h-fit max-h-96 bg-white shadow-lg mt-4 border-2 rounded-lg">
             <h2 className="text-xl font-semibold mb-6">Navigation</h2>
             <ul className="space-y-4">
                 <li>

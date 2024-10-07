@@ -3,7 +3,7 @@ import farmcartLogo from '../assets/logo.png'
 
 function Loading() {
     return (
-        <div className="flex justify-center items-center h-1/2">
+        <div className="flex justify-center items-center h-screen">
             <div className="flex flex-col items-center">
                 <img
                     src={farmcartLogo}

@@ -1,15 +1,13 @@
-import { FaFacebookSquare } from 'react-icons/fa'
+import { FaFacebookSquare, FaTwitter } from 'react-icons/fa'
 import { FaTiktok } from 'react-icons/fa'
-import { FaMedium } from 'react-icons/fa6'
-import logo from '../../assets/Logo.png'
+import { FaMedium, FaX } from 'react-icons/fa6'
 
-const Footer = () => {
+const FooterDashboard = () => {
     return (
-        <div className="mx-auto  max-w-7xl pb-3 pt-[1rem]">
-            <hr className="my-2 " />
-            <div className="grid grid-cols-2 pt-4 pb-8 md:grid-cols-4">
+        <div className="mx-auto  max-w-7xl pb-5 pt-[2rem]">
+            {/* <div className="grid grid-cols-2 pt-10 pb-8 md:grid-cols-4">
                 <div>
-                    <img src={logo} alt="Logo" width={160} height={160} />
+                    <h1 className="text-3xl font-bold ">FarmCart.</h1>
                 </div>
                 <div></div>
                 <div className="flex flex-col gap-y-4">
@@ -40,13 +38,14 @@ const Footer = () => {
                         About Farm cart
                     </p>
                 </div>
-            </div>
-            {/* <hr className="" />
+            </div> */}
+            <hr className="" />
             <div className="flex items-center justify-between ">
                 <div className="flex gap-5 pt-6 text-xl">
                     <FaFacebookSquare />
                     <FaTiktok />
                     <FaMedium />
+                    <FaTwitter/>
                 </div>
                 <div className="flex items-center gap-4 ">
                     <p className="hover:text-[#b8f724] hover:underline hover:cursor-pointer">
@@ -60,15 +59,16 @@ const Footer = () => {
                         href="https://status.nimendra.xyz/status/farmcart"
                         className="hover:text-[#b8f724] hover:underline hover:cursor-pointer"
                     >
-                        <p>status</p>
+                        <p>Status</p>
                     </a>
                 </div>
                 <div>
                     <p>© 2024 Farmcart Technologies Inc.</p>
                 </div>
-            </div> */}
+            </div>
         </div>
     )
 }
 
-export default Footer
+export default FooterDashboard
+

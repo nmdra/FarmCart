@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import path from 'path'; //DL
+// import path from 'path'; //DL
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
 
@@ -49,10 +49,10 @@ app.use(cookieParser())
 //Delivery image
 // TODO: Remove
 
-const __filename = fileURLToPath(import.meta.url); //DL
-const __dirname = path.dirname(__filename);//DL
+// const __filename = fileURLToPath(import.meta.url); //DL
+// const __dirname = path.dirname(__filename);//DL
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));//DL
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));//DL
 
 
 // routes

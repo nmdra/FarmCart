@@ -4,6 +4,7 @@ import Hero from '../Components/Home/Hero'
 import ProcessCTA from '../Components/Home/ProcessCTA'
 import ShopList from '../Components/Home/ShopList'
 import Testimonials from '../Components/Home/Testimonials'
+import Footer from '../Components/Home/Footer'
 
 const Homepage = () => {
     useEffect(() => {
@@ -16,6 +17,7 @@ const Homepage = () => {
             <ProcessCTA />
             <ShopList />
             <Testimonials />
+            <Footer/>
         </>
     )
 }
