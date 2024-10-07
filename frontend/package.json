@@ -3,7 +3,6 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
-    "proxy": "http://localhost:3000/api",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
@@ -22,9 +21,7 @@
         "framer-motion": "^11.5.4",
         "jspdf": "^2.5.2",
         "jspdf-autotable": "^3.8.3",
-
         "jspdf-invoice-template": "^1.4.4",
-
         "lucide": "^0.433.0",
         "lucide-react": "^0.436.0",
         "react": "^18.3.1",
