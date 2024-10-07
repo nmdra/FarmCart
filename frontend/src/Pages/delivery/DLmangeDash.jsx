@@ -21,7 +21,7 @@ const DLmanageDash = () => {
         const fetchStats = async () => {
             try {
                 // Log that the request is being made
-                console.log("Fetching data from the backend...")
+                console.log('Fetching data from the backend...')
 
                 // Fetch total drivers count
                 const totalDriversRes = await axios.get('/api/drivers/count')
@@ -38,9 +38,11 @@ const DLmanageDash = () => {
                     '/api/delivery/ongoing/count'
                 )
                 // Fetch pending forms count and data
-                const pendingFormsRes = await axios.get('/api/d_forms/pending-forms')
+                const pendingFormsRes = await axios.get(
+                    '/api/d_forms/pending-forms'
+                )
 
-                console.log("Backend data received: ", pendingFormsRes.data)
+                console.log('Backend data received: ', pendingFormsRes.data)
 
                 // Check if pending forms exist, if not set to 0
                 const pendingFormsCount = pendingFormsRes.data.length || 0
@@ -57,11 +59,16 @@ const DLmanageDash = () => {
                 setPendingForms(pendingFormsRes.data) // Store the pending forms
             } catch (error) {
                 // Log the full error response for debugging
-                console.error('Error fetching statistics:', error.response || error.message)
+                console.error(
+                    'Error fetching statistics:',
+                    error.response || error.message
+                )
 
                 if (error.response) {
                     // Server-side error (backend returned an error)
-                    setError(`Server error: ${error.response.data.message || 'Failed to fetch data'}`)
+                    setError(
+                        `Server error: ${error.response.data.message || 'Failed to fetch data'}`
+                    )
                 } else if (error.request) {
                     // Network error (the request was made but no response)
                     setError('Network error: Failed to reach the server')
@@ -160,7 +167,9 @@ const DLmanageDash = () => {
 
                     {/* Recent Pending Forms Section */}
                     <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-8">
-                        <h2 className="text-2xl font-bold mb-4">Recent Pending Forms</h2>
+                        <h2 className="text-2xl font-bold mb-4">
+                            Recent Pending Forms
+                        </h2>
                         <div className="overflow-x-auto">
                             {pendingForms.length > 0 ? (
                                 <table className="min-w-full bg-white border border-gray-200">
@@ -184,46 +193,54 @@ const DLmanageDash = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {pendingForms.slice(0, 5).map((form) => (
-                                            <tr
-                                                key={form._id}
-                                                className="bg-white hover:bg-gray-100"
-                                            >
-                                                <td className="px-4 py-2 border">
-                                                    {form.fullName}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {form.email}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {form.phone}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    {form.vehicleType}
-                                                </td>
-                                                <td className="px-4 py-2 border">
-                                                    <button
-                                                        className="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600"
-                                                        onClick={() =>
-                                                            handleViewForm(form._id)
-                                                        }
-                                                    >
-                                                        View Form
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {pendingForms
+                                            .slice(0, 5)
+                                            .map((form) => (
+                                                <tr
+                                                    key={form._id}
+                                                    className="bg-white hover:bg-gray-100"
+                                                >
+                                                    <td className="px-4 py-2 border">
+                                                        {form.fullName}
+                                                    </td>
+                                                    <td className="px-4 py-2 border">
+                                                        {form.email}
+                                                    </td>
+                                                    <td className="px-4 py-2 border">
+                                                        {form.phone}
+                                                    </td>
+                                                    <td className="px-4 py-2 border">
+                                                        {form.vehicleType}
+                                                    </td>
+                                                    <td className="px-4 py-2 border">
+                                                        <button
+                                                            className="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600"
+                                                            onClick={() =>
+                                                                handleViewForm(
+                                                                    form._id
+                                                                )
+                                                            }
+                                                        >
+                                                            View Form
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
                                     </tbody>
                                 </table>
                             ) : (
-                                <p className="text-gray-500">No pending forms available</p> // Display this message when no pending forms
+                                <p className="text-gray-500">
+                                    No pending forms available
+                                </p> // Display this message when no pending forms
                             )}
                         </div>
                     </div>
 
                     {/* Recent Ongoing Deliveries Section */}
                     <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-bold mb-4">Ongoing Deliveries</h2>
+                        <h2 className="text-2xl font-bold mb-4">
+                            Ongoing Deliveries
+                        </h2>
                         <div className="overflow-x-auto">
                             {stats.ongoingDeliveries > 0 ? (
                                 <table className="min-w-full bg-white border border-gray-200">
@@ -249,9 +266,15 @@ const DLmanageDash = () => {
                                     <tbody>
                                         {/* Example ongoing deliveries */}
                                         <tr className="bg-white hover:bg-gray-100">
-                                            <td className="px-4 py-2 border">#1234</td>
-                                            <td className="px-4 py-2 border">John Doe</td>
-                                            <td className="px-4 py-2 border">Bike</td>
+                                            <td className="px-4 py-2 border">
+                                                #1234
+                                            </td>
+                                            <td className="px-4 py-2 border">
+                                                John Doe
+                                            </td>
+                                            <td className="px-4 py-2 border">
+                                                Bike
+                                            </td>
                                             <td className="px-4 py-2 border">
                                                 <span className="bg-blue-500 text-white px-2 py-1 rounded">
                                                     In Progress
@@ -261,7 +284,9 @@ const DLmanageDash = () => {
                                                 <button
                                                     className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600"
                                                     onClick={() =>
-                                                        handleViewDelivery('1234')
+                                                        handleViewDelivery(
+                                                            '1234'
+                                                        )
                                                     }
                                                 >
                                                     View Delivery
@@ -272,7 +297,9 @@ const DLmanageDash = () => {
                                     </tbody>
                                 </table>
                             ) : (
-                                <p className="text-gray-500">No ongoing deliveries available</p> // Display this message when no ongoing deliveries
+                                <p className="text-gray-500">
+                                    No ongoing deliveries available
+                                </p> // Display this message when no ongoing deliveries
                             )}
                         </div>
                     </div>

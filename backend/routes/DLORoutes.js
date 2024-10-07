@@ -1,18 +1,23 @@
-import express from 'express';
-import { addOrder,getOrders ,deleteOrder,updateOrderStatus} from '../controllers/DLOcontroller.js';
+import express from 'express'
+import {
+    addOrder,
+    getOrders,
+    deleteOrder,
+    updateOrderStatus,
+} from '../controllers/DLOcontroller.js'
 
-const router = express.Router();
+const router = express.Router()
 
 // Route to add a new order
-router.post('/a', addOrder);
+router.post('/a', addOrder)
 
 // Fetch all orders
-router.get('/g', getOrders);
+router.get('/g', getOrders)
 
 // Update order status
-router.put('/u/:id/status', updateOrderStatus);
+router.put('/u/:id/status', updateOrderStatus)
 
 // Delete an order
-router.delete('/d/:id', deleteOrder);
+router.delete('/d/:id', deleteOrder)
 
-export default router;
+export default router
