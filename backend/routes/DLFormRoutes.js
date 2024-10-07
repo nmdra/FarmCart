@@ -6,6 +6,7 @@ import {
     updateDeliveryFormStatus,
     updateDeliveryForm,
     deleteDeliveryForm,
+    getPendingFormsCount,
 } from '../controllers/DLDriverFormController.js'
 import upload from '../utils/DLMulter.js'
 
@@ -24,6 +25,10 @@ router.post(
 
 // Route to get all pending forms
 router.get('/pending-forms', getPendingForms)
+
+// Add the new route to get the pending forms count
+router.get('/pending-forms/count', getPendingFormsCount)
+
 
 // Route to get a specific delivery form by ID
 router.get('/:id', getDeliveryFormById)
