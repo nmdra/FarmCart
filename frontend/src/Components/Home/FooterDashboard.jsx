@@ -45,7 +45,7 @@ const FooterDashboard = () => {
                     <FaFacebookSquare />
                     <FaTiktok />
                     <FaMedium />
-                    <FaTwitter/>
+                    <FaTwitter />
                 </div>
                 <div className="flex items-center gap-4 ">
                     <p className="hover:text-[#b8f724] hover:underline hover:cursor-pointer">
@@ -71,4 +71,3 @@ const FooterDashboard = () => {
 }
 
 export default FooterDashboard
-

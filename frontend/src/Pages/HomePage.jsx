@@ -17,7 +17,7 @@ const Homepage = () => {
             <ProcessCTA />
             <ShopList />
             <Testimonials />
-            <Footer/>
+            <Footer />
         </>
     )
 }
