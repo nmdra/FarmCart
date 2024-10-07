@@ -28,7 +28,7 @@ const DLImageUpload = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:3000/api/delivery/images/upload',
+                '/api/delivery/images/upload',
                 formData,
                 {
                     headers: {

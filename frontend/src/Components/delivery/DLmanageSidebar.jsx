@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import {
     FaTachometerAlt,
     FaTruck,
@@ -7,7 +7,7 @@ import {
     FaUserCheck,
     FaBell,
     FaSignOutAlt,
-} from 'react-icons/fa'; // Importing relevant icons
+} from 'react-icons/fa' // Importing relevant icons
 
 const DLmanageSidebar = () => {
     return (
@@ -19,7 +19,9 @@ const DLmanageSidebar = () => {
                             to="/manager/dashboard"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -32,7 +34,9 @@ const DLmanageSidebar = () => {
                             to="/DLAllDeliveries"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -45,7 +49,9 @@ const DLmanageSidebar = () => {
                             to="/alldrivers"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -58,7 +64,9 @@ const DLmanageSidebar = () => {
                             to="/manager/approve-driver"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -71,12 +79,14 @@ const DLmanageSidebar = () => {
                             to="/notifications"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
-                           {/* <FaBell className="w-5 h-5 mr-3" />
-                           Notifications*/ } 
+                            {/* <FaBell className="w-5 h-5 mr-3" />
+                           Notifications*/}
                         </NavLink>
                     </li>
                     <li>
@@ -91,7 +101,7 @@ const DLmanageSidebar = () => {
                 </ul>
             </nav>
         </aside>
-    );
-};
+    )
+}
 
-export default DLmanageSidebar;
+export default DLmanageSidebar

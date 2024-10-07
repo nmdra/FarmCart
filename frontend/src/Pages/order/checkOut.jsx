@@ -115,11 +115,11 @@ const CheckOut = () => {
                     ),
                     deliveryDateObj: date,
                 }
-                
+
                 console.log(data.user)
 
                 const response = await axios.post(
-                 'http://localhost:3000/api/orders/create-payment-intent',
+                    'http://localhost:3000/api/orders/create-payment-intent',
                     {
                         totalPrice: (data.totalPrice / 300).toFixed(2),
                         user: data.user,

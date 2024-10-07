@@ -65,23 +65,26 @@ const Dashboard = () => {
         fetchFarmerDetails()
     }, []) // Empty dependency array ensures this effect runs only once when the component mounts
 
-useEffect(() => {
-    const getShopByFarmer = async () => {
-        try {
-            if (farmer && farmer._id) {  // Check if farmer and farmer._id are defined
-                console.log(farmer._id)
+    useEffect(() => {
+        const getShopByFarmer = async () => {
+            try {
+                if (farmer && farmer._id) {
+                    // Check if farmer and farmer._id are defined
+                    console.log(farmer._id)
 
-                const res = await axios.get(`/orders/get-shop/${farmer._id}`)
-                setFarmersShop(res.data)
+                    const res = await axios.get(
+                        `/orders/get-shop/${farmer._id}`
+                    )
+                    setFarmersShop(res.data)
+                }
+            } catch (error) {
+                console.error('Error fetching farmer details:', error)
+                setLoading(false)
             }
-        } catch (error) {
-            console.error('Error fetching farmer details:', error)
-            setLoading(false)
         }
-    }
 
-    getShopByFarmer()
-}, [farmer])
+        getShopByFarmer()
+    }, [farmer])
 
     // Render a loading state until farmer details are fetched
     const [loading, setLoading] = useState(true)
@@ -122,9 +125,7 @@ useEffect(() => {
         const fetchUserOrders = async () => {
             try {
                 farmersShop.forEach(async (shop) => {
-                    const res = await axios.get(
-                        `/orders?shopId=${shop._id}`
-                    )
+                    const res = await axios.get(`/orders?shopId=${shop._id}`)
 
                     setOrders((prevOrders) => {
                         const updatedOrders = prevOrders.map((order) => {
