@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from '../../axios'
+import axios from 'axios'
 
 const CreateOrderForm = () => {
     const [orderID, setOrderID] = useState('')
@@ -36,7 +36,7 @@ const CreateOrderForm = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:3000/api/od/a',
+                '/api/od/a',
                 newOrder
             )
             console.log('Order created:', response.data)

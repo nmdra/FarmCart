@@ -9,7 +9,7 @@ const OrdersTable = () => {
         const fetchOrders = async () => {
             try {
                 const response = await axios.get(
-                    'http://localhost:3000/api/od/g'
+                    '/api/od/g'
                 ) // Ensure this route is correct
                 setOrders(response.data)
             } catch (error) {
@@ -25,7 +25,7 @@ const OrdersTable = () => {
         if (window.confirm('Are you sure you want to delete this order?')) {
             try {
                 // Send DELETE request to the backend
-                await axios.delete(`http://localhost:3000/api/od/d/${id}`)
+                await axios.delete(`/api/od/d/${id}`)
 
                 // Remove the order from the UI after successful deletion
                 setOrders(orders.filter((order) => order._id !== id))
