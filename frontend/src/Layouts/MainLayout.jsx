@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import CategoryBar from '../Components/Home/CategoryBar'
-import Footer from '../Components/Home/Footer'
+import Footer from '../Components/Home/FooterDashboard'
 import Header from '../Components/Home/Header'
 
 function MainLayout() {

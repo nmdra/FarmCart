@@ -67,7 +67,7 @@ const Shop = () => {
 
     return (
         <div className="flex  min-h-screen bg-gray-50">
-            <aside className="fixed top-36 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
+            <aside className="fixed top-16 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 

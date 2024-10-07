@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import Footer from '../Components/Home/Footer'
+import Footer from '../Components/Home/FooterDashboard'
 import Header from '../Components/farmer/Header'
 
 function FarmerLayout() {
