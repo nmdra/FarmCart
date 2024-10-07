@@ -2,6 +2,9 @@ import DLDriver from '../models/DLDriverModel.js'
 import dOrder from '../models/DLOModel.js'
 import DLDelivery from '../models/DLDeliveryModel.js'
 import asyncHandler from 'express-async-handler'
+import nodemailer from 'nodemailer'
+
+
 
 // Function to generate a tracking ID starting with 'TR' followed by 5 digits
 const generateTrackingID = () => {
@@ -57,13 +60,67 @@ export const assignDriverToOrder = async () => {
         await driver.save()
 
         // Delete the order after assignment
-        await Order.deleteOne({ _id: order._id })
+        await dOrder.deleteOne({ _id: order._id })
+
+           // Call the function to send an email to the driver
+           await sendEmailToDriver(driver, delivery)
 
         /* console.log(`Assigned driver ${driver.fullName} to order ${order._id} with tracking ID ${trackingID}`); */
     } catch (error) {
         console.error('Error assigning driver to order:', error)
     }
 }
+
+
+
+// Function to send an email to the driver
+export const sendEmailToDriver = async (driver, delivery) => {
+    try {
+        // Set up the Nodemailer transporter using your environment variables
+        const transporter = nodemailer.createTransport({
+            service: process.env.EMAIL_SERVICE,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        })
+
+        // Set up the email options
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: driver.email,
+            subject: `Order Assignment: Order ${delivery.oID} Assigned to You`,
+            html: `
+                <h2>Hi ${driver.fullName},</h2>
+                <p>We are excited to inform you that you have been assigned to deliver the following order:</p>
+                <h3>Order Details</h3>
+                <ul>
+                    <li><strong>Order ID:</strong> ${delivery.oID}</li>
+                    <li><strong>Tracking ID:</strong> ${delivery.trackingID}</li>
+                    <li><strong>Shop Name:</strong> ${delivery.shopName}</li>
+                    <li><strong>Pickup Address:</strong> ${delivery.pickupAddress}</li>
+                    <li><strong>Customer Name:</strong> ${delivery.customerName}</li>
+                    <li><strong>Drop-Off Address:</strong> ${delivery.dropOffAddress}</li>
+                </ul>
+                <p>For more details, please log in to the delivery portal or contact support if needed.</p>
+                <br/>
+                <p>Thank you for being part of our delivery team!</p>
+                <p>Best Regards,</p>
+                <p><strong>Your Company Name</strong></p>
+            `,
+        }
+
+        // Send the email
+        await transporter.sendMail(mailOptions)
+        console.log(`Email sent to driver: ${driver.email}`)
+    } catch (error) {
+        console.error('Error sending email to driver:', error)
+    }
+}
+
+
+
+
 
 // Function to constantly check for available drivers and assign them to oldest orders
 export const checkForAvailableDrivers = async () => {
