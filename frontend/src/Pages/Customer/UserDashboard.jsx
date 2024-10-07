@@ -7,6 +7,7 @@ import silver from '../../assets/premiumSilver.png'
 import regular from '../../assets/regular.png'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
+import ProductCarousel from '../../Components/ProductCarosul'
 
 function Dashboard() {
     const [page, setPage] = useState(1)
@@ -14,7 +15,7 @@ function Dashboard() {
     const [orders, setOrders] = useState([])
     const user = JSON.parse(localStorage.getItem('user'))
 
-    const rowsPerPage = 2
+    const rowsPerPage = 1
     const pages = Math.ceil(orders?.length / rowsPerPage)
 
     const items = useMemo(() => {
@@ -51,7 +52,7 @@ function Dashboard() {
     }
 
     return (
-        <div className="relative min-h-screen bg-neutral-100 pr-8 pl-8">
+        <div className="relative min-h-screen bg-neutral-100 pr-8 pl-8 pb-6">
             {/* Main Content */}
             <Breadcrumbs /> {/* Breadcrumbs at the top */}
             {/* Membership Banner */}
@@ -137,6 +138,7 @@ function Dashboard() {
             </div>
             {/* Recent Orders */}
             {/* Recent Orders */}
+            <ProductCarousel />
             <div className="max-w-full mx-2 p-6 bg-white rounded-lg shadow-lg border-2 border-green-400 mt-6">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold text-gray-900">
@@ -152,7 +154,7 @@ function Dashboard() {
                 <OrderTable
                     items={items}
                     page={page}
-                    pages={pages}
+                    pages={1}
                     setPage={setPage}
                 />
             </div>

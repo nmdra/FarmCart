@@ -98,6 +98,12 @@ const ProfilePage = () => {
         }
 
         if (name === 'contactNumber') {
+            if (!/^\d*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+            if (value.length > 10) {
+                return // Prevent setting values longer than 10 digits
+            }
             if (!/^0\d{9}$/.test(value)) {
                 error = 'Contact number must be 10 digits and start with 0.'
             }
@@ -147,6 +153,7 @@ const ProfilePage = () => {
                 error = 'Passwords do not match.'
             }
         }
+
         // Handle changes for nested address fields
         if (name.startsWith('Address.')) {
             const addressField = name.split('.')[1]
@@ -321,7 +328,7 @@ const ProfilePage = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Fixed Sidebar */}
-            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
+            <aside className="fixed top-20 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 

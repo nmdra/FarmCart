@@ -69,7 +69,7 @@ const ShopPage = () => {
                         placeholder="Search products..."
                         value={searchTerm}
                         onChange={handleSearch}
-                        className="border border-gray-300 rounded-lg p-2 w-full"
+                        className="border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                     />
                 </div>
 
@@ -77,10 +77,12 @@ const ShopPage = () => {
                     {filteredProducts?.map((product) => (
                         <div
                             key={product._id}
-                            className="product-card border rounded-lg shadow-lg p-4 bg-white"
+                            className="product-card border border-gray-300 rounded-lg shadow-lg p-4 bg-white flex flex-col justify-between hover:border-2 hover:border-green-500 transition duration-200"
+
+                            /* Using flex and justify-between for vertical spacing */
                         >
                             <img
-                                src={product.image}
+                                src={product.image.replace(/\.\w+$/, '.webp')}
                                 alt={product.name}
                                 className="w-full h-40 object-cover rounded-lg mb-2"
                             />
@@ -93,12 +95,17 @@ const ShopPage = () => {
                             <p className="text-lg font-bold mt-2">
                                 Price: LKR {product.pricePerKg.toFixed(2)}
                             </p>
-                            <Link
-                                to={`/shops/${id}/product/${product._id}`}
-                                className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
-                            >
-                                View Details
-                            </Link>
+
+                            {/* Wrapping the button in a flex container with justify-center */}
+                            <div className="mt-auto flex justify-center">
+                                <Link
+                                    to={`/shops/${id}/product/${product._id}`}
+                                    className="w-35 block bg-green-500 text-white py-2 px-4 rounded-lg mt-4 hover:bg-green-600 transition duration-200 text-center"
+                                    /* Button is now centered within the card */
+                                >
+                                    View Details
+                                </Link>
+                            </div>
                         </div>
                     ))}
                 </div>

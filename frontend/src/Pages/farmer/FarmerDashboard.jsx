@@ -63,6 +63,7 @@ const Dashboard = () => {
         }
 
         fetchFarmerDetails()
+        console.log(`Fetch ${farmer._id}`)
     }, []) // Empty dependency array ensures this effect runs only once when the component mounts
 
     useEffect(() => {
@@ -171,6 +172,7 @@ const Dashboard = () => {
     const generatePDF = () => {
         const doc = new jsPDF()
 
+        doc.setFontSize(18)
         doc.text('Sales Report', 14, 10)
 
         const tableColumn = [
@@ -219,14 +221,14 @@ const Dashboard = () => {
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
             {/* Main Content Container */}
-            <div className="flex flex-1 mt-16">
+            <div className="flex flex-1 ">
                 {/* Fixed Sidebar */}
-                <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
+                <aside className="fixed top-20 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                     <Sidebar />
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
+                <main className="flex-1 ml-60 p-24 pt-16 overflow-y-auto">
                     <div className="mb-8">
                         {/* Profile and Details Section */}
                         <div className="flex space-x-8 mb-8">
@@ -246,7 +248,7 @@ const Dashboard = () => {
                                     </span>
                                     <Link
                                         to="/farmerprofile"
-                                        className="text-green-500 mt-2 inline-block"
+                                        className="text-green-500 mt-2 inline-block font-bold"
                                     >
                                         Edit details
                                     </Link>
@@ -266,7 +268,7 @@ const Dashboard = () => {
                                 </p>
                                 <Link
                                     to="/farmerprofile"
-                                    className="text-green-500"
+                                    className="text-green-500 font-bold"
                                 >
                                     Edit Address
                                 </Link>
@@ -275,12 +277,12 @@ const Dashboard = () => {
                     </div>
 
                     {/* Orders Section */}
-                    <div className="bg-white p-6 rounded-lg shadow-md w-full">
+                    <div className="bg-white p-6 rounded-lg shadow-md w-full border-2  focus:outline-none focus:ring-2 focus:ring-green-500">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold text-gray-800">
                                 My Orders
                             </h3>
-                            <div>
+                            <div className="w-96">
                                 <Input
                                     isClearable
                                     radius="full"
@@ -291,9 +293,9 @@ const Dashboard = () => {
                             </div>
                             <div
                                 onClick={generatePDF}
-                                className=" mt-2 inline-block cursor-pointer bg-red-500 p-2 rounded-md text-white ring-0"
+                                className=" mt-2 inline-block cursor-pointer hover:bg-red-600 bg-red-500 p-2 rounded-md text-white ring-0"
                             >
-                                download sales report
+                                Download Sales Report
                             </div>
                         </div>
                         <Table
@@ -371,25 +373,25 @@ const Dashboard = () => {
                                                 className={
                                                     item.orderStatus ===
                                                     'Pending'
-                                                        ? 'bg-yellow-500 p-1 rounded-md text-white ring-0'
+                                                        ? 'bg-yellow-500  pr-5 p-1 rounded-md text-white ring-0'
                                                         : item.orderStatus ===
                                                             'Delivered'
-                                                          ? 'bg-green-500 p-1 rounded-md text-white ring-0'
+                                                          ? 'bg-green-500  pr-5 p-1 rounded-md text-white ring-0'
                                                           : item.orderStatus ===
                                                               'Accept'
-                                                            ? 'bg-blue-500 p-1 rounded-md text-white ring-0'
+                                                            ? 'bg-blue-500  pr-5 p-1 rounded-md text-white ring-0'
                                                             : item.orderStatus ===
                                                                 'Ready'
-                                                              ? 'bg-purple-500 p-1 rounded-md text-white ring-0'
+                                                              ? 'bg-purple-500  pr-5 p-1 rounded-md text-white ring-0'
                                                               : item.orderStatus ===
                                                                   'Pickup'
-                                                                ? 'bg-orange-500 p-1 rounded-md text-white ring-0'
+                                                                ? 'bg-orange-500  pr-5 p-1 rounded-md text-white ring-0'
                                                                 : item.orderStatus ===
                                                                     'OnTheWay'
-                                                                  ? 'bg-indigo-500 p-1 rounded-md text-white ring-0'
+                                                                  ? 'bg-indigo-500  pr-5 p-1 rounded-md text-white ring-0'
                                                                   : item.orderStatus ===
                                                                       'Rejected'
-                                                                    ? 'bg-red-500 p-1 rounded-md text-white ring-0'
+                                                                    ? 'bg-red-500 pr-5 p-1 rounded-md text-white ring-0'
                                                                     : 'bg-gray-500 p-1 rounded-md text-white ring-0'
                                                 }
                                                 value={item.orderStatus}

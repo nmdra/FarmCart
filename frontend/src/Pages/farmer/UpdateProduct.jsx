@@ -167,7 +167,7 @@ const UpdateProduct = () => {
                         'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
                 },
             })
-            navigate(`/shop/${shopId}/productpage`)
+            navigate(`/farmerShop/${shopId}/productpage`)
         } catch (err) {
             setError(
                 err.response?.data?.message ||
@@ -179,22 +179,22 @@ const UpdateProduct = () => {
 
     // Handle cancel action
     const handleCancel = () => {
-        navigate(`/shop/${shopId}/productpage`)
+        navigate(`/farmerShop/${shopId}/productpage`)
     }
 
     return (
         <div className="flex min-h-screen w-screen bg-gray-100">
             {/* Sidebar */}
-            <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-24 mt-16">
+            <aside className="fixed top-36 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 ml-64 p-24 overflow-y-auto">
+            <div className="flex-1 ml-64 p-32 overflow-y-auto">
                 {/* Update Product Form */}
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-6 pl-8 rounded-lg shadow-md w-2/3 mb-12"
+                    className="bg-white p-16 pl-6 rounded-lg shadow-md w-full "
                 >
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         Update Product

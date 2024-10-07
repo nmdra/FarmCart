@@ -7,7 +7,7 @@
     "transform": {}
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node --env-file=.env server.js",
     "dev": "nodemon --verbose --env-file=.env server.js",
     "watch": "node --watch --env-file=.env server",
     "lint": "eslint ",
@@ -34,6 +34,7 @@
     "mongoose": "^8.4.3",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.14",
+    "react-hot-toast": "^2.4.1",
     "stripe": "^16.10.0",
     "uuid": "^10.0.0"
   },
