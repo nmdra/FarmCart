@@ -11,7 +11,6 @@ const DLViewDriver = () => {
     const [isEditing, setIsEditing] = useState(false)
     const [errors, setErrors] = useState({}) // Error state for validation
     const navigate = useNavigate()
-    
 
     // Fetch driver details on component load
     useEffect(() => {
@@ -137,38 +136,37 @@ const DLViewDriver = () => {
 
     // Handler for input changes with validation
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        let errorMessage = '';
-    
+        const { name, value } = e.target
+        let errorMessage = ''
+
         // Validate Name
         if (name === 'fullName') {
             if (!/^[A-Za-z\s]*$/.test(value)) {
-                errorMessage = 'Name should only contain alphabets and spaces.';
-                return;
+                errorMessage = 'Name should only contain alphabets and spaces.'
+                return
             }
         }
-    
+
         // Validate Contact Number
         if (name === 'phone') {
             if (!/^0\d{9}$/.test(value)) {
-                errorMessage = 'Contact number must be 10 digits and start with 0.';
+                errorMessage =
+                    'Contact number must be 10 digits and start with 0.'
             }
         }
-    
-    
+
         setDriverDetails((prevDetails) => ({
             ...prevDetails,
             [name]: value,
-        }));
-    
+        }))
+
         // Set error message for the field
         setErrors((prevErrors) => ({
             ...prevErrors,
             [name]: errorMessage,
-        }));
-    };
-    
-    
+        }))
+    }
+
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Sidebar */}
@@ -194,9 +192,12 @@ const DLViewDriver = () => {
                                     handleImageClick(personalImageUrl)
                                 } // Click to enlarge
                             />
-                            <h3 className="text-2xl font-bold"> {driverDetails.firstName} {driverDetails.lastName} </h3>
-                                
-                            
+                            <h3 className="text-2xl font-bold">
+                                {' '}
+                                {driverDetails.firstName}{' '}
+                                {driverDetails.lastName}{' '}
+                            </h3>
+
                             <p className="text-gray-500">
                                 {driverDetails.email}
                             </p>
@@ -206,7 +207,9 @@ const DLViewDriver = () => {
                             <p className="text-gray-500">
                                 {driverDetails.vehicleType}
                             </p>
-                            <p className="text-gray-600">{driverDetails.driverID}</p>
+                            <p className="text-gray-600">
+                                {driverDetails.driverID}
+                            </p>
                         </div>
 
                         {/* Detailed Information Form */}
@@ -228,7 +231,9 @@ const DLViewDriver = () => {
                                     className="p-2 border border-gray-300 rounded-md"
                                 />
                                 {errors.fullName && (
-                                    <p className="text-red-500">{errors.fullName}</p>
+                                    <p className="text-red-500">
+                                        {errors.fullName}
+                                    </p>
                                 )}
                             </div>
 
@@ -259,7 +264,9 @@ const DLViewDriver = () => {
                                     className="p-2 border border-gray-300 rounded-md"
                                 />
                                 {errors.phone && (
-                                    <p className="text-red-500">{errors.phone}</p>
+                                    <p className="text-red-500">
+                                        {errors.phone}
+                                    </p>
                                 )}
                             </div>
 
@@ -277,9 +284,7 @@ const DLViewDriver = () => {
                                     )}
                                     readOnly // Make email field non-editable
                                     className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
- 
                                 />
-                                
                             </div>
 
                             {/* ID Card Number */}
@@ -293,9 +298,7 @@ const DLViewDriver = () => {
                                     value={driverDetails.idCardNumber}
                                     readOnly // Make email field non-editable
                                     className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
- 
                                 />
-                               
                             </div>
 
                             {/* License Card Number */}
@@ -309,9 +312,7 @@ const DLViewDriver = () => {
                                     value={driverDetails.licenseCardNumber}
                                     readOnly // Make email field non-editable
                                     className="p-2 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed"
- 
                                 />
-                                
                             </div>
 
                             {/* Address */}
@@ -327,7 +328,9 @@ const DLViewDriver = () => {
                                     className="p-2 border border-gray-300 rounded-md"
                                 />
                                 {errors.address && (
-                                    <p className="text-red-500">{errors.address}</p>
+                                    <p className="text-red-500">
+                                        {errors.address}
+                                    </p>
                                 )}
                             </div>
 
@@ -344,7 +347,9 @@ const DLViewDriver = () => {
                                     className="p-2 border border-gray-300 rounded-md"
                                 />
                                 {errors.vehicleNumber && (
-                                    <p className="text-red-500">{errors.vehicleNumber}</p>
+                                    <p className="text-red-500">
+                                        {errors.vehicleNumber}
+                                    </p>
                                 )}
                             </div>
 
@@ -366,7 +371,9 @@ const DLViewDriver = () => {
                                     <option value="Lorry">Lorry</option>
                                 </select>
                                 {errors.vehicleType && (
-                                    <p className="text-red-500">{errors.vehicleType}</p>
+                                    <p className="text-red-500">
+                                        {errors.vehicleType}
+                                    </p>
                                 )}
                             </div>
                         </div>

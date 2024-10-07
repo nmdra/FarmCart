@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import DeliverySidebar from '../../Components/delivery/DeliverySidebar';
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import DeliverySidebar from '../../Components/delivery/DeliverySidebar'
+import Swal from 'sweetalert2'
 
 const DLEditProfile = () => {
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [driver, setDriver] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+    const [currentPassword, setCurrentPassword] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [driver, setDriver] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [message, setMessage] = useState('')
+    const navigate = useNavigate()
 
     // Fetch driver profile for sidebar
     useEffect(() => {
         const fetchDriverProfile = async () => {
-            const driverToken = localStorage.getItem('driverToken');
+            const driverToken = localStorage.getItem('driverToken')
             if (!driverToken) {
-                navigate('/driver/login'); // Redirect to login if not authenticated
-                return;
+                navigate('/driver/login') // Redirect to login if not authenticated
+                return
             }
 
             try {
@@ -27,22 +27,22 @@ const DLEditProfile = () => {
                     headers: {
                         Authorization: `Bearer ${driverToken}`,
                     },
-                });
-                setDriver(data); // Set driver data for the sidebar
-                setLoading(false);
+                })
+                setDriver(data) // Set driver data for the sidebar
+                setLoading(false)
             } catch (error) {
-                console.error('Error fetching driver profile:', error);
-                localStorage.removeItem('driverToken');
-                navigate('/driver/login');
+                console.error('Error fetching driver profile:', error)
+                localStorage.removeItem('driverToken')
+                navigate('/driver/login')
             }
-        };
+        }
 
-        fetchDriverProfile();
-    }, [navigate]);
+        fetchDriverProfile()
+    }, [navigate])
 
     // Handle form submission for updating the password
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         const confirmChange = await Swal.fire({
             title: 'Are you sure?',
@@ -58,11 +58,11 @@ const DLEditProfile = () => {
                     'bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-gray-600',
             },
             buttonsStyling: false,
-        });
+        })
 
-        if (!confirmChange.isConfirmed) return;
+        if (!confirmChange.isConfirmed) return
 
-        const driverToken = localStorage.getItem('driverToken');
+        const driverToken = localStorage.getItem('driverToken')
         try {
             await axios.put(
                 '/api/drivers/profile/password',
@@ -72,7 +72,7 @@ const DLEditProfile = () => {
                         Authorization: `Bearer ${driverToken}`,
                     },
                 }
-            );
+            )
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
@@ -81,12 +81,12 @@ const DLEditProfile = () => {
                     confirmButton:
                         'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
                 },
-            });
-            navigate('/driver/profile');
+            })
+            navigate('/driver/profile')
         } catch (error) {
-            setMessage(error.response.data.message || 'Error updating password');
+            setMessage(error.response.data.message || 'Error updating password')
         }
-    };
+    }
 
     // Handle account deletion
     const handleDeleteAccount = async () => {
@@ -104,16 +104,16 @@ const DLEditProfile = () => {
                     'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
             },
             buttonsStyling: false,
-        });
+        })
 
         if (confirmDelete.isConfirmed) {
-            const driverToken = localStorage.getItem('driverToken');
+            const driverToken = localStorage.getItem('driverToken')
             try {
                 await axios.delete('/api/drivers/delete', {
                     headers: {
                         Authorization: `Bearer ${driverToken}`,
                     },
-                });
+                })
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -122,40 +122,44 @@ const DLEditProfile = () => {
                         confirmButton:
                             'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
                     },
-                });
-                localStorage.removeItem('driverToken');
-                navigate('/');
+                })
+                localStorage.removeItem('driverToken')
+                navigate('/')
             } catch (error) {
-                setMessage(error.response.data.message || 'Error deleting account');
+                setMessage(
+                    error.response.data.message || 'Error deleting account'
+                )
             }
         }
-    };
-// New onChange handler for password validation
-const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-    let errorMessage = '';
+    }
+    // New onChange handler for password validation
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target
+        let errorMessage = ''
 
-    // Password validation
-    if (name === 'newPassword') {
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        if (!passwordRegex.test(value)) {
-            errorMessage = 'Password must be at least 8 characters long and include at least one special character and one number.';
+        // Password validation
+        if (name === 'newPassword') {
+            const passwordRegex =
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+            if (!passwordRegex.test(value)) {
+                errorMessage =
+                    'Password must be at least 8 characters long and include at least one special character and one number.'
+            }
+            setNewPassword(value) // Update newPassword state
         }
-        setNewPassword(value); // Update newPassword state
+
+        // Confirm password validation
+        if (name === 'confirmPassword') {
+            if (value !== newPassword) {
+                errorMessage = 'Passwords do not match.'
+            }
+            setConfirmPassword(value) // Update confirmPassword state
+        }
+
+        setMessage(errorMessage) // Set validation error message
     }
 
-    // Confirm password validation
-    if (name === 'confirmPassword') {
-        if (value !== newPassword) {
-            errorMessage = 'Passwords do not match.';
-        }
-        setConfirmPassword(value); // Update confirmPassword state
-    }
-
-    setMessage(errorMessage); // Set validation error message
-};
-
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div>Loading...</div>
 
     return (
         <div className="flex min-h-screen bg-gray-100">
@@ -163,63 +167,74 @@ const handlePasswordChange = (e) => {
                 <DeliverySidebar driver={driver} />
             </aside>
 
-            
             <div className="flex-grow ml-64 p-24">
-
-                 {/* Security Message */}
-                 <div className="bg-red-500 text-white p-4 rounded-md mb-6 text-center">
-                    <strong>Because of security reasons, you cannot change your details. If you have anything to update, contact us through email.</strong>
+                {/* Security Message */}
+                <div className="bg-red-500 text-white p-4 rounded-md mb-6 text-center">
+                    <strong>
+                        Because of security reasons, you cannot change your
+                        details. If you have anything to update, contact us
+                        through email.
+                    </strong>
                 </div>
                 <div className="bg-white p-6 rounded-md shadow-md w-full mb-12">
-                    <h2 className="text-2xl font-semibold text-center mb-6">Edit Profile</h2>
+                    <h2 className="text-2xl font-semibold text-center mb-6">
+                        Edit Profile
+                    </h2>
                     {message && <p className="text-red-500 mb-4">{message}</p>}
 
                     <form onSubmit={handleSubmit}>
-    <div className="mb-4">
-        <label className="block mb-2 text-gray-700 text-left font-semibold">Current Password</label>
-        <input
-            type="password"
-            className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            required
-        />
-    </div>
+                        <div className="mb-4">
+                            <label className="block mb-2 text-gray-700 text-left font-semibold">
+                                Current Password
+                            </label>
+                            <input
+                                type="password"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={currentPassword}
+                                onChange={(e) =>
+                                    setCurrentPassword(e.target.value)
+                                }
+                                required
+                            />
+                        </div>
 
-    <div className="mb-4">
-        <label className="block mb-2 text-gray-700 text-left font-semibold">New Password</label>
-        <input
-            type="password"
-            name="newPassword"
-            className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-            value={newPassword}
-            onChange={handlePasswordChange} // Trigger validation on change
-            required
-        />
-    </div>
+                        <div className="mb-4">
+                            <label className="block mb-2 text-gray-700 text-left font-semibold">
+                                New Password
+                            </label>
+                            <input
+                                type="password"
+                                name="newPassword"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={newPassword}
+                                onChange={handlePasswordChange} // Trigger validation on change
+                                required
+                            />
+                        </div>
 
-    <div className="mb-4">
-        <label className="block mb-2 text-gray-700 text-left font-semibold">Confirm New Password</label>
-        <input
-            type="password"
-            name="confirmPassword"
-            className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
-            value={confirmPassword}
-            onChange={handlePasswordChange} // Trigger validation on change
-            required
-        />
-    </div>
+                        <div className="mb-4">
+                            <label className="block mb-2 text-gray-700 text-left font-semibold">
+                                Confirm New Password
+                            </label>
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
+                                value={confirmPassword}
+                                onChange={handlePasswordChange} // Trigger validation on change
+                                required
+                            />
+                        </div>
 
-    {message && <p className="text-red-500">{message}</p>}
+                        {message && <p className="text-red-500">{message}</p>}
 
-    <button
-        type="submit"
-        className="w-full py-2 mt-6 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-    >
-        Change Password
-    </button>
-</form>
-
+                        <button
+                            type="submit"
+                            className="w-full py-2 mt-6 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+                        >
+                            Change Password
+                        </button>
+                    </form>
                 </div>
 
                 <div className="mt-6 bg-white p-6 rounded-md shadow-md w-full">
@@ -239,7 +254,7 @@ const handlePasswordChange = (e) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default DLEditProfile;
+export default DLEditProfile

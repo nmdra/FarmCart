@@ -1,37 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const OrdersTable = () => {
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState([])
 
     useEffect(() => {
         // Fetch orders from the backend
         const fetchOrders = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/od/g'); // Ensure this route is correct
-                setOrders(response.data);
+                const response = await axios.get(
+                    'http://localhost:3000/api/od/g'
+                ) // Ensure this route is correct
+                setOrders(response.data)
             } catch (error) {
-                console.error('Error fetching orders:', error);
+                console.error('Error fetching orders:', error)
             }
-        };
+        }
 
-        fetchOrders();
-    }, []);
+        fetchOrders()
+    }, [])
 
     // Function to delete an order
     const deleteOrder = async (id) => {
         if (window.confirm('Are you sure you want to delete this order?')) {
             try {
                 // Send DELETE request to the backend
-                await axios.delete(`http://localhost:3000/api/od/d/${id}`);
-                
+                await axios.delete(`http://localhost:3000/api/od/d/${id}`)
+
                 // Remove the order from the UI after successful deletion
-                setOrders(orders.filter((order) => order._id !== id));
+                setOrders(orders.filter((order) => order._id !== id))
             } catch (error) {
-                console.error('Error deleting order:', error);
+                console.error('Error deleting order:', error)
             }
         }
-    };
+    }
 
     return (
         <div className="container">
@@ -72,7 +74,7 @@ const OrdersTable = () => {
                 </tbody>
             </table>
         </div>
-    );
-};
+    )
+}
 
-export default OrdersTable;
+export default OrdersTable

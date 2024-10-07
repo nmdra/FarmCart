@@ -1,6 +1,6 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom'; // Using NavLink for active link detection
-import Swal from 'sweetalert2';
+import React from 'react'
+import { NavLink, useNavigate } from 'react-router-dom' // Using NavLink for active link detection
+import Swal from 'sweetalert2'
 import {
     FaTachometerAlt,
     FaTruck,
@@ -8,27 +8,29 @@ import {
     FaUser,
     FaCog,
     FaSignOutAlt,
-} from 'react-icons/fa'; // Importing icons from react-icons
+} from 'react-icons/fa' // Importing icons from react-icons
 
 const DeliverySidebar = ({ driver }) => {
-    const navigate = useNavigate(); // Using useNavigate to redirect
+    const navigate = useNavigate() // Using useNavigate to redirect
 
     const handleLogout = () => {
         Swal.fire({
             title: 'Are you sure?',
-            text: "You will be logged out of the system!",
+            text: 'You will be logged out of the system!',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'OK',
             cancelButtonText: 'Cancel',
             customClass: {
-                confirmButton: 'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
-                cancelButton: 'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
+                confirmButton:
+                    'bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-600',
+                cancelButton:
+                    'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
             },
             buttonsStyling: false, // Disable default SweetAlert button styling
         }).then((result) => {
             if (result.isConfirmed) {
-                navigate('/driver/logout'); // Navigate to the logout page if confirmed
+                navigate('/driver/logout') // Navigate to the logout page if confirmed
             } else {
                 Swal.fire({
                     title: 'Cancelled',
@@ -36,16 +38,16 @@ const DeliverySidebar = ({ driver }) => {
                     icon: 'info',
                     confirmButtonText: 'OK',
                     customClass: {
-                        confirmButton: 'bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600',
+                        confirmButton:
+                            'bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600',
                     },
                     buttonsStyling: false,
-                });
+                })
             }
-        });
-    };
+        })
+    }
 
-    
-    const personalImageUrl = `${driver?.personalImageUrl}`;
+    const personalImageUrl = `${driver?.personalImageUrl}`
 
     return (
         <aside className="absolute top-6 left-6 w-60 bg-white rounded-lg shadow-lg p-4 mt-8">
@@ -67,7 +69,9 @@ const DeliverySidebar = ({ driver }) => {
                             to="/driver/dashboard"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -80,7 +84,9 @@ const DeliverySidebar = ({ driver }) => {
                             to="/ongoing"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -93,7 +99,9 @@ const DeliverySidebar = ({ driver }) => {
                             to="/driver/deliveries"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -106,7 +114,9 @@ const DeliverySidebar = ({ driver }) => {
                             to="/driver/profile"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -119,7 +129,9 @@ const DeliverySidebar = ({ driver }) => {
                             to="/driver/settings"
                             className={({ isActive }) =>
                                 `flex items-center p-2 text-gray-700 rounded-md hover:bg-gray-100 ${
-                                    isActive ? 'bg-gray-100 border-l-4 border-green-700' : ''
+                                    isActive
+                                        ? 'bg-gray-100 border-l-4 border-green-700'
+                                        : ''
                                 }`
                             }
                         >
@@ -139,7 +151,7 @@ const DeliverySidebar = ({ driver }) => {
                 </ul>
             </nav>
         </aside>
-    );
-};
+    )
+}
 
-export default DeliverySidebar;
+export default DeliverySidebar

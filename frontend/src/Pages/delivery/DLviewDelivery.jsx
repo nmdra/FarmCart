@@ -62,7 +62,10 @@ const DLViewDelivery = () => {
                 ['Pickup Address', delivery.pickupAddress],
                 ['Customer Name', delivery.customerName || 'N/A'],
                 ['Dropoff Address', delivery.dropOffAddress],
-                ['Assigned Time', new Date(delivery.assignDateTime).toLocaleString()],
+                [
+                    'Assigned Time',
+                    new Date(delivery.assignDateTime).toLocaleString(),
+                ],
                 ['Delivery Status', delivery.deliveryStatus],
                 [
                     'Delivered Time',
@@ -88,14 +91,16 @@ const DLViewDelivery = () => {
             </aside>
 
             {/* Main content */}
-            
+
             <main className="flex-1 ml-64 p-10 md:p-16 overflow-y-auto">
-    <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg border-l-4 border-green-500"> {/* Added a green left border */}
-        <h2 className="text-4xl font-bold mb-8 text-center text-gray-900"> {/* Increased font size and made it bolder */}
-         
+                <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg border-l-4 border-green-500">
+                    {' '}
+                    {/* Added a green left border */}
+                    <h2 className="text-4xl font-bold mb-8 text-center text-gray-900">
+                        {' '}
+                        {/* Increased font size and made it bolder */}
                         Delivery Details
                     </h2>
-
                     {delivery ? (
                         <div className="overflow-x-auto">
                             <table className="mx-auto w-full text-left text-gray-700">
@@ -105,18 +110,34 @@ const DLViewDelivery = () => {
                                         ['Order ID', delivery.oID],
                                         ['Driver ID', delivery.drID],
                                         ['Shop Name', delivery.shopName],
-                                        ['Pickup Address', delivery.pickupAddress],
-                                        ['Customer Name', delivery.customerName || 'N/A'],
-                                        ['Dropoff Address', delivery.dropOffAddress],
+                                        [
+                                            'Pickup Address',
+                                            delivery.pickupAddress,
+                                        ],
+                                        [
+                                            'Customer Name',
+                                            delivery.customerName || 'N/A',
+                                        ],
+                                        [
+                                            'Dropoff Address',
+                                            delivery.dropOffAddress,
+                                        ],
                                         [
                                             'Assigned Time',
-                                            new Date(delivery.assignDateTime).toLocaleString(),
+                                            new Date(
+                                                delivery.assignDateTime
+                                            ).toLocaleString(),
                                         ],
-                                        ['Delivery Status', delivery.deliveryStatus],
+                                        [
+                                            'Delivery Status',
+                                            delivery.deliveryStatus,
+                                        ],
                                         [
                                             'Delivered Time',
                                             delivery.deliveredDateTime
-                                                ? new Date(delivery.deliveredDateTime).toLocaleString()
+                                                ? new Date(
+                                                      delivery.deliveredDateTime
+                                                  ).toLocaleString()
                                                 : 'Ongoing',
                                         ],
                                     ].map(([field, value], index) => (
@@ -138,7 +159,6 @@ const DLViewDelivery = () => {
                     ) : (
                         <p>No delivery details found.</p>
                     )}
-
                     {/* Download Button */}
                     <div className="mt-6 text-center">
                         <button
