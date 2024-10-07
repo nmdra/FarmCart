@@ -104,7 +104,6 @@ const DLDriverAccept = () => {
         return <div className="text-center mt-10">Loading...</div>
 
     // Construct the full URL for each image
-    // const baseUrl = 'http://localhost:3000/'
     const idCardImageUrl = `${driverDetails.idCardImageUrl}`
     const licenseImageUrl = `${driverDetails.licenseImageUrl}`
     const personalImageUrl = `${driverDetails.personalImageUrl}`
