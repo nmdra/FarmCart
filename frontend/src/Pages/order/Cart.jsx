@@ -57,12 +57,9 @@ const Cart = () => {
         e.preventDefault()
 
         try {
-            const res = await axios.post(
-                '/api/coupon/valid-coupon',
-                {
-                    couponCode: coupon,
-                }
-            )
+            const res = await axios.post('/api/coupon/valid-coupon', {
+                couponCode: coupon,
+            })
 
             if (res.data.coupon) {
                 const couponDiscount = res.data.coupon.discount

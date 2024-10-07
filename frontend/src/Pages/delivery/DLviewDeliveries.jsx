@@ -83,11 +83,11 @@ const DLAllDeliveries = () => {
         }
     }
 
-    const navigate = useNavigate(); // Added navigate hook
+    const navigate = useNavigate() // Added navigate hook
 
     const handleView = (id) => {
-        navigate(`/manager/delivery/${id}`); // Redirect to the view delivery page with the delivery ID
-    };
+        navigate(`/manager/delivery/${id}`) // Redirect to the view delivery page with the delivery ID
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-50">

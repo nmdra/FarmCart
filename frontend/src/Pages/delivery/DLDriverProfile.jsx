@@ -125,8 +125,9 @@ const DLDriverProfile = () => {
                             <p className="text-gray-600">
                                 {driverDetails.vehicleType}
                             </p>
-                            <p className="text-gray-600">{driverDetails.driverID}</p>
-
+                            <p className="text-gray-600">
+                                {driverDetails.driverID}
+                            </p>
                         </div>
 
                         {/* Driver Details in Two-Column Layout */}
@@ -254,20 +255,20 @@ const DLDriverProfile = () => {
                 {/* Image Modal */}
                 {selectedImage && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-4 rounded-lg shadow-lg relative max-w-xl max-h-[90vh]">
-                        <button
-                            className="absolute top-2 right-2 bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600"
-                            onClick={handleCloseModal}
-                        >
-                            X
-                        </button>
-                        <img
-                            src={selectedImage}
-                            alt="Full View"
-                            className="max-w-full max-h-full object-contain"
-                        />
+                        <div className="bg-white p-4 rounded-lg shadow-lg relative max-w-xl max-h-[90vh]">
+                            <button
+                                className="absolute top-2 right-2 bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-600"
+                                onClick={handleCloseModal}
+                            >
+                                X
+                            </button>
+                            <img
+                                src={selectedImage}
+                                alt="Full View"
+                                className="max-w-full max-h-full object-contain"
+                            />
+                        </div>
                     </div>
-                </div>
                 )}
             </div>
         </div>
