@@ -93,3 +93,18 @@ export const getShopProductById = asyncHandler(async (req, res) => {
         throw new Error('Shop not found')
     }
 })
+
+export const getRandomProducts = asyncHandler(async (req, res) => {
+    try {
+        // Get random 6 products
+        const randomProducts = await Shop.aggregate([
+            { $unwind: '$products' },
+            { $sample: { size: 6 } }, // Fetch 6 random products
+        ])
+
+        res.json(randomProducts)
+    } catch (error) {
+        console.error('Error fetching products:', error)
+        res.status(500).json({ message: 'Failed to fetch products' })
+    }
+})

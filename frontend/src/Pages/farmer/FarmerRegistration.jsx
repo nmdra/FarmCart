@@ -57,6 +57,12 @@ const Register = () => {
         }
 
         if (name === 'contactNumber') {
+            if (!/^\d*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+            if (value.length > 10) {
+                return // Prevent setting values longer than 10 digits
+            }
             if (!/^0\d{9}$/.test(value)) {
                 errorMessage =
                     'Contact number must be 10 digits and start with 0.'
@@ -177,11 +183,11 @@ const Register = () => {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 pt-32 p-64">
-            <div className="bg-white p-8 rounded-lg shadow-md w-2/3 ">
+        <div className="flex min-h-screen items-center justify-center bg-gray-50 p-8">
+            <div className="bg-white p-16 rounded-lg shadow-md w-2/3 ">
                 <div className="text-center mb-8">
-                    <img src={logo} alt="Logo" className="mx-auto w-24" />
-                    <h1 className="text-2xl font-semibold text-gray-800 mt-4">
+                    <img src={logo} alt="Logo" className="mx-auto w-48" />
+                    <h1 className="text-4xl font-semibold text-gray-800 mt-4">
                         Register
                     </h1>
                 </div>

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const DLDeliverySchema = new mongoose.Schema({
     trackingID: {
@@ -9,8 +9,8 @@ const DLDeliverySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order',
     },
-    
-    oID:{type: String,},
+
+    oID: { type: String },
 
     driverID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -19,14 +19,14 @@ const DLDeliverySchema = new mongoose.Schema({
 
     drID: {
         type: String,
-    },    
+    },
     shopName: String,
-    
+
     pickupAddress: {
         type: String,
     },
     customerName: String,
-    
+
     dropOffAddress: {
         type: String,
     },
@@ -43,8 +43,8 @@ const DLDeliverySchema = new mongoose.Schema({
         type: Date,
         default: null,
     },
-});
+})
 
-const DLDelivery = mongoose.model('DLDelivery', DLDeliverySchema);
+const DLDelivery = mongoose.model('DLDelivery', DLDeliverySchema)
 
-export default DLDelivery;
+export default DLDelivery

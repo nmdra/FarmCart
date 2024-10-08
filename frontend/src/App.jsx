@@ -11,6 +11,8 @@ import DLayout from './Layouts/DLayout'
 
 import SidebarLayout from './Layouts/SidebarLayout' // Layout with Sidebar
 import PrivateRoute from './Components/PrivateRoute'
+import FarmerLayout from './Layouts/FarmerLayout'
+import Farmer_sidebar from './Components/farmer/Farmer_sidebar'
 
 // Customer Pages
 import HomePage from './Pages/HomePage'
@@ -29,6 +31,7 @@ import OrderStatus from './Pages/Customer/OrderStatus'
 import Address from './Components/Address'
 import PaymentConfirmation from './Pages/Customer/PaymentConfirmation'
 import PaymentComplete from './Pages/Customer/PaymentComplete'
+import { Toaster } from 'react-hot-toast'
 
 // Shop Pages
 import ShopList from './Pages/Shop/ShopList'
@@ -145,7 +148,7 @@ const router = createBrowserRouter(
             </Route>
 
             {/* Farmer Routes */}
-            <Route path="/">
+            <Route path="/" element={<FarmerLayout />}>
                 <Route path="/farmerLogin" element={<FarmerLogin />} />
                 <Route path="/farmerRegister" element={<FarmerRegister />} />
                 <Route path="/farmerdashboard" element={<FarmerDashboard />} />
@@ -254,7 +257,12 @@ const router = createBrowserRouter(
 )
 
 const App = () => {
-    return <RouterProvider router={router}></RouterProvider>
+    return (
+        <>
+            <RouterProvider router={router} />
+            <Toaster position="top-center" reverseOrder={false} />
+        </>
+    )
 }
 
 export default App

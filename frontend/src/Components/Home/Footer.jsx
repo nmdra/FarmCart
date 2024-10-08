@@ -41,7 +41,7 @@ const Footer = () => {
                     </p>
                 </div>
             </div>
-            <hr className="" />
+            {/* <hr className="" />
             <div className="flex items-center justify-between ">
                 <div className="flex gap-5 pt-6 text-xl">
                     <FaFacebookSquare />
@@ -55,15 +55,18 @@ const Footer = () => {
                     <p className="hover:text-[#b8f724] hover:underline hover:cursor-pointer">
                         Terms
                     </p>
-                    <p className="hover:text-[#b8f724] hover:underline hover:cursor-pointer">
-                        Pricing
-                    </p>
+
+                    <a
+                        href="https://status.nimendra.xyz/status/farmcart"
+                        className="hover:text-[#b8f724] hover:underline hover:cursor-pointer"
+                    >
+                        <p>status</p>
+                    </a>
                 </div>
                 <div>
                     <p>© 2024 Farmcart Technologies Inc.</p>
                 </div>
-            </div>
-            <div className="h-1 bg-custom-green" />
+            </div> */}
         </div>
     )
 }

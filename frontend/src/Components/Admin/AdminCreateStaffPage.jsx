@@ -98,17 +98,11 @@ const AdminCreateStaffPage = () => {
 
         try {
             if (editMode) {
-                await axios.put(
-                    `http://localhost:3000/api/staff/${staffToEdit._id}`,
-                    formData
-                )
+                await axios.put(`/api/staff/${staffToEdit._id}`, formData)
             } else {
-                await axios.post(
-                    'http://localhost:3000/api/staff/Addstaff',
-                    formData
-                )
+                await axios.post('/api/staff/Addstaff', formData)
             }
-            navigate('/staff') // Redirect to StaffPage after successful submission
+            navigate('/Admindashboard/staff') // Redirect to StaffPage after successful submission
         } catch (error) {
             console.error('Error submitting staff data:', error)
         }

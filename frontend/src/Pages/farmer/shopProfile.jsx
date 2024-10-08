@@ -100,6 +100,12 @@ const ShopProfile = () => {
         }
 
         if (name === 'contactNumber') {
+            if (!/^\d*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+            if (value.length > 10) {
+                return // Prevent setting values longer than 10 digits
+            }
             if (!/^0\d{9}$/.test(value)) {
                 error = 'Contact number must be 10 digits and start with 0.'
             }
@@ -245,7 +251,7 @@ const ShopProfile = () => {
                         'bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600',
                 },
             })
-            navigate(`/shop/${id}`)
+            navigate(`/farmerShop/${id}`)
         } catch (error) {
             console.error('Error updating shop details:', error)
         } finally {
@@ -309,11 +315,11 @@ const ShopProfile = () => {
     }
     // Handle cancel action
     const handleCancel = () => {
-        navigate(`/shop/${id}`)
+        navigate(`/farmerShop/${id}`)
     }
     return (
         <div className="flex min-h-screen  bg-gray-50">
-            <aside className="fixed top-0 pt-16 mt-16 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
+            <aside className="fixed top-28 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 
