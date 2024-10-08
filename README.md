@@ -44,6 +44,7 @@
   - [Technologies](#technologies)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
+  - [System Design Diagram](#system-design-diagram)
   - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
@@ -67,6 +68,18 @@
 - **User Feedback**: Collect and analyze user feedback.
 - **Product Catalog**: Comprehensive catalog of all products.
 
+## System Design Diagram
+
+<details>
+<summary>Click Me</summary>
+
+[![Diagram-2](https://github.com/user-attachments/assets/53bf02e1-cf86-4c12-8b64-8d97187b34dc)](https://excalidraw.com/#json=pIDjSIXEcYZ4rRh2eBW6B,SFv-6rNpKP1HBClEt2vTZw)
+
+</details>
+
+
+---
+
 ## Getting Started
 
 ### Prerequisites
@@ -78,6 +91,7 @@
 ### Installation
 <details>
 <summary>Click me</summary>
+
 1. Clone the repository:
     ```bash
     git clone https://github.com/yourusername/itp-project.git
@@ -94,6 +108,7 @@
     npm install
     npm run dev
     ```
+
 </details>
 
 ### Docker Installation Guide
@@ -101,7 +116,9 @@
 To run FarmCart using Docker, follow these steps:
 
 <details>
-<summary> 1. Install Docker </summary>
+<summary>Click Me</summary>
+
+1. Install Docker
 
    - **For Windows and Mac**:
      - Download Docker Desktop from [Docker's official website](https://www.docker.com/products/docker-desktop).
@@ -118,10 +135,8 @@ To run FarmCart using Docker, follow these steps:
        sudo apt update
        sudo apt install docker-ce
        ```
-</details>
 
-<details>
-<summary>2. Verify Installation </summary>
+1. Verify Installation
 
    - After installing Docker, verify that it is installed correctly by running:
      ```bash
@@ -129,7 +144,6 @@ To run FarmCart using Docker, follow these steps:
      ```
    - You should see the installed Docker version.
   
-  </details>
 
 1. Run FarmCart with Docker Compose:
    - Navigate to the root directory of the cloned repository:
@@ -146,6 +160,10 @@ To run FarmCart using Docker, follow these steps:
    - Open your web browser and go to:
      - Frontend: [http://localhost:3001](http://localhost:3001)
      - API: [http://localhost:5001](http://localhost:5001)
+
+  </details>
+
+---
 
 ## Docker Configuration
 
@@ -187,4 +205,5 @@ services:
 networks:
   mern-app:
     driver: bridge
+
 
