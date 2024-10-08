@@ -14,7 +14,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { getLocalTimeZone, today } from '@internationalized/date'
 
-import ProgressBar from "../../Components/Order/ProgressBar";
+import ProgressBar from '../../Components/Order/ProgressBar'
 
 const CheckOut = () => {
     const stripe = useStripe()
@@ -293,322 +293,333 @@ const CheckOut = () => {
 
     return (
         <div>
-<ProgressBar currentStep={2} />
-            
-        <div className="flex w-full justify-center ">
-            
-            <div className=" flex w-3/4 justify-center p-2 mt-3 items-center border rounded-lg ">
-                <div className="w-1/2 bg-white ">
-                
-                    <div className=" flex justify-center items-center p-10 ">
-                        <div className=" w-[600px]">
-                            <form className="flex flex-col gap-2">
-                                <div className="flex gap-3">
-                                    <Input
-                                        label="Your name"
-                                        placeholder="Enter your name"
-                                        type="text"
-                                        variant="bordered"
-                                        onChange={handleNameChange}
-                                        value={name}
-                                        isInvalid={!!errors.name}
-                                        errorMessage={errors.name}
-                                    />
-                                    <Input
-                                        value={email}
-                                        type="email"
-                                        label="Email"
-                                        variant="bordered"
-                                        onChange={handleEmailChange}
-                                        isInvalid={!!errors.email}
-                                        errorMessage={errors.email}
-                                    />
-                                </div>
-                                <div className="flex gap-3">
-                                    <Input
-                                        label="Your city"
-                                        placeholder="Enter your city"
-                                        type="text"
-                                        variant="bordered"
-                                        onChange={handleCityChange}
-                                        value={city}
-                                        isInvalid={!!errors.city}
-                                        errorMessage={errors.city}
-                                    />
-                                    <Input
-                                        className="hover:border-green-400 focus:border-green-400"
-                                        label="Your phone number"
-                                        placeholder="Enter your phone number"
-                                        type="text"
-                                        variant="bordered"
-                                        onChange={handlePhoneChange}
-                                        value={phone}
-                                        isInvalid={!!errors.phone}
-                                        errorMessage={errors.phone}
-                                    />
-                                </div>
-                                <div className="flex gap-3">
-                                    <DatePicker
-                                        label="Pick Delivery Date"
-                                        variant="bordered"
-                                        minValue={today(getLocalTimeZone()).add(
-                                            { days: 3 }
-                                        )}
-                                        defaultValue={today(
-                                            getLocalTimeZone()
-                                        ).subtract({ days: 3 })}
-                                        onChange={(date) => setDate(date)}
-                                    />
-                                </div>
-                                <div className="flex gap-3">
-                                    <Textarea
-                                        label="Your address"
-                                        placeholder="Enter your address"
-                                        type="text"
-                                        variant="bordered"
-                                        onChange={handleAddressChange}
-                                        value={address}
-                                        isInvalid={!!errors.address}
-                                        errorMessage={errors.address}
-                                    />
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <p className="text-xs text-blue-500">
-                                        Online Pay Credit/Debit Card
-                                    </p>
-                                    <div className="flex gap-2">
-                                        <FaCcVisa className="text-2xl text-blue-500" />
-                                        <FaCcMastercard className="text-2xl text-[#f1e427]" />
-                                    </div>
-                                </div>
-                                <div className="gap-2 flex flex-col text-white  rounded-lg">
-                                    <div className=" p-2 rounded-lg border-2 ">
-                                        <CardNumberElement
-                                            options={{
-                                                style: {
-                                                    base: {
-                                                        iconColor: '#c4f0ff',
-                                                        color: 'black',
-                                                        fontWeight: '400',
-                                                        fontSize: '16px',
+            <ProgressBar currentStep={2} />
 
-                                                        '::placeholder': {
-                                                            color: '#d3d3d3',
-                                                        },
-                                                    },
-                                                    invalid: {
-                                                        iconColor: '#FFC7EE',
-                                                        color: 'red',
-                                                    },
-                                                    complete: {
-                                                        color: 'green',
-                                                        iconColor: 'green',
-                                                        '::-webkit-input-placeholder':
-                                                            {
-                                                                color: 'green',
-                                                            },
-                                                        '::placeholder': {
-                                                            color: 'green',
-                                                        },
-                                                        ':-webkit-autofill': {
-                                                            color: 'green',
-                                                            backgroundColor:
-                                                                'green',
-                                                        },
-                                                    },
-                                                },
-                                            }}
+            <div className="flex w-full justify-center ">
+                <div className=" flex w-3/4 justify-center p-2 mt-3 items-center border rounded-lg ">
+                    <div className="w-1/2 bg-white ">
+                        <div className=" flex justify-center items-center p-10 ">
+                            <div className=" w-[600px]">
+                                <form className="flex flex-col gap-2">
+                                    <div className="flex gap-3">
+                                        <Input
+                                            label="Your name"
+                                            placeholder="Enter your name"
+                                            type="text"
+                                            variant="bordered"
+                                            onChange={handleNameChange}
+                                            value={name}
+                                            isInvalid={!!errors.name}
+                                            errorMessage={errors.name}
+                                        />
+                                        <Input
+                                            value={email}
+                                            type="email"
+                                            label="Email"
+                                            variant="bordered"
+                                            onChange={handleEmailChange}
+                                            isInvalid={!!errors.email}
+                                            errorMessage={errors.email}
                                         />
                                     </div>
-                                    <div className="flex w-full gap-2 ">
-                                        <div className="flex-wrap w-full p-2 rounded-lg border-2">
-                                            <CardExpiryElement
-                                                options={{
-                                                    style: {
-                                                        base: {
-                                                            iconColor:
-                                                                '#c4f0ff',
-                                                            color: 'black',
-                                                            fontWeight: '400',
-
-                                                            fontSize: '16px',
-
-                                                            '::placeholder': {
-                                                                color: '#d3d3d3',
-                                                            },
-                                                        },
-                                                        invalid: {
-                                                            iconColor:
-                                                                '#FFC7EE',
-                                                            color: 'red',
-                                                        },
-                                                        complete: {
-                                                            color: 'green',
-                                                            iconColor: 'green',
-                                                            '::-webkit-input-placeholder':
-                                                                {
-                                                                    color: 'green',
-                                                                },
-                                                            '::placeholder': {
-                                                                color: 'green',
-                                                            },
-                                                            ':-webkit-autofill':
-                                                                {
-                                                                    color: 'green',
-                                                                    backgroundColor:
-                                                                        'green',
-                                                                },
-                                                        },
-                                                    },
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="flex-wrap w-full p-2 rounded-lg border-2 ">
-                                            <CardCvcElement
-                                                options={{
-                                                    style: {
-                                                        base: {
-                                                            iconColor:
-                                                                '#c4f0ff',
-                                                            color: 'black',
-                                                            fontWeight: '400',
-
-                                                            fontSize: '16px',
-
-                                                            '::placeholder': {
-                                                                color: '#d3d3d3',
-                                                            },
-                                                        },
-                                                        invalid: {
-                                                            iconColor:
-                                                                '#FFC7EE',
-                                                            color: 'red',
-                                                        },
-                                                        complete: {
-                                                            color: 'green',
-                                                            iconColor: 'green',
-                                                            '::-webkit-input-placeholder':
-                                                                {
-                                                                    color: 'green',
-                                                                },
-                                                            '::placeholder': {
-                                                                color: 'green',
-                                                            },
-                                                            ':-webkit-autofill':
-                                                                {
-                                                                    color: 'green',
-                                                                    backgroundColor:
-                                                                        'green',
-                                                                },
-                                                        },
-                                                    },
-                                                }}
-                                            />
+                                    <div className="flex gap-3">
+                                        <Input
+                                            label="Your city"
+                                            placeholder="Enter your city"
+                                            type="text"
+                                            variant="bordered"
+                                            onChange={handleCityChange}
+                                            value={city}
+                                            isInvalid={!!errors.city}
+                                            errorMessage={errors.city}
+                                        />
+                                        <Input
+                                            className="hover:border-green-400 focus:border-green-400"
+                                            label="Your phone number"
+                                            placeholder="Enter your phone number"
+                                            type="text"
+                                            variant="bordered"
+                                            onChange={handlePhoneChange}
+                                            value={phone}
+                                            isInvalid={!!errors.phone}
+                                            errorMessage={errors.phone}
+                                        />
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <DatePicker
+                                            label="Pick Delivery Date"
+                                            variant="bordered"
+                                            minValue={today(
+                                                getLocalTimeZone()
+                                            ).add({ days: 3 })}
+                                            defaultValue={today(
+                                                getLocalTimeZone()
+                                            ).subtract({ days: 3 })}
+                                            onChange={(date) => setDate(date)}
+                                        />
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <Textarea
+                                            label="Your address"
+                                            placeholder="Enter your address"
+                                            type="text"
+                                            variant="bordered"
+                                            onChange={handleAddressChange}
+                                            value={address}
+                                            isInvalid={!!errors.address}
+                                            errorMessage={errors.address}
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <p className="text-xs text-blue-500">
+                                            Online Pay Credit/Debit Card
+                                        </p>
+                                        <div className="flex gap-2">
+                                            <FaCcVisa className="text-2xl text-blue-500" />
+                                            <FaCcMastercard className="text-2xl text-[#f1e427]" />
                                         </div>
                                     </div>
+                                    <div className="gap-2 flex flex-col text-white  rounded-lg">
+                                        <div className=" p-2 rounded-lg border-2 ">
+                                            <CardNumberElement
+                                                options={{
+                                                    style: {
+                                                        base: {
+                                                            iconColor:
+                                                                '#c4f0ff',
+                                                            color: 'black',
+                                                            fontWeight: '400',
+                                                            fontSize: '16px',
+
+                                                            '::placeholder': {
+                                                                color: '#d3d3d3',
+                                                            },
+                                                        },
+                                                        invalid: {
+                                                            iconColor:
+                                                                '#FFC7EE',
+                                                            color: 'red',
+                                                        },
+                                                        complete: {
+                                                            color: 'green',
+                                                            iconColor: 'green',
+                                                            '::-webkit-input-placeholder':
+                                                                {
+                                                                    color: 'green',
+                                                                },
+                                                            '::placeholder': {
+                                                                color: 'green',
+                                                            },
+                                                            ':-webkit-autofill':
+                                                                {
+                                                                    color: 'green',
+                                                                    backgroundColor:
+                                                                        'green',
+                                                                },
+                                                        },
+                                                    },
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="flex w-full gap-2 ">
+                                            <div className="flex-wrap w-full p-2 rounded-lg border-2">
+                                                <CardExpiryElement
+                                                    options={{
+                                                        style: {
+                                                            base: {
+                                                                iconColor:
+                                                                    '#c4f0ff',
+                                                                color: 'black',
+                                                                fontWeight:
+                                                                    '400',
+
+                                                                fontSize:
+                                                                    '16px',
+
+                                                                '::placeholder':
+                                                                    {
+                                                                        color: '#d3d3d3',
+                                                                    },
+                                                            },
+                                                            invalid: {
+                                                                iconColor:
+                                                                    '#FFC7EE',
+                                                                color: 'red',
+                                                            },
+                                                            complete: {
+                                                                color: 'green',
+                                                                iconColor:
+                                                                    'green',
+                                                                '::-webkit-input-placeholder':
+                                                                    {
+                                                                        color: 'green',
+                                                                    },
+                                                                '::placeholder':
+                                                                    {
+                                                                        color: 'green',
+                                                                    },
+                                                                ':-webkit-autofill':
+                                                                    {
+                                                                        color: 'green',
+                                                                        backgroundColor:
+                                                                            'green',
+                                                                    },
+                                                            },
+                                                        },
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="flex-wrap w-full p-2 rounded-lg border-2 ">
+                                                <CardCvcElement
+                                                    options={{
+                                                        style: {
+                                                            base: {
+                                                                iconColor:
+                                                                    '#c4f0ff',
+                                                                color: 'black',
+                                                                fontWeight:
+                                                                    '400',
+
+                                                                fontSize:
+                                                                    '16px',
+
+                                                                '::placeholder':
+                                                                    {
+                                                                        color: '#d3d3d3',
+                                                                    },
+                                                            },
+                                                            invalid: {
+                                                                iconColor:
+                                                                    '#FFC7EE',
+                                                                color: 'red',
+                                                            },
+                                                            complete: {
+                                                                color: 'green',
+                                                                iconColor:
+                                                                    'green',
+                                                                '::-webkit-input-placeholder':
+                                                                    {
+                                                                        color: 'green',
+                                                                    },
+                                                                '::placeholder':
+                                                                    {
+                                                                        color: 'green',
+                                                                    },
+                                                                ':-webkit-autofill':
+                                                                    {
+                                                                        color: 'green',
+                                                                        backgroundColor:
+                                                                            'green',
+                                                                    },
+                                                            },
+                                                        },
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Button
+                                        color="primary"
+                                        onClick={onSubmit}
+                                        className="hover:bg-green-600 bg-green-500"
+                                    >
+                                        PAY NOW
+                                    </Button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6 border-b border-gray-300 pb-4 mb-4 ml-10 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        Order Summary
+                        <div className="w-[400px] gap-2 ">
+                            {cart.length > 0 ? (
+                                cart.map((product) => (
+                                    <div
+                                        key={product.id}
+                                        className="mx-auto flex-none mt-2"
+                                    >
+                                        <div className="rounded-lg p-2">
+                                            <div className="flex items-center justify-between gap-4">
+                                                <div className="flex items-center space-x-4">
+                                                    <img
+                                                        src={product.image}
+                                                        alt=""
+                                                        className="w-16 h-16 rounded-lg object-cover"
+                                                    />
+                                                    <div className="text-base font-medium text-gray-900">
+                                                        {product.name} x
+                                                        {product.quantity}
+                                                    </div>
+                                                </div>
+                                                <div className="text-base font-bold text-gray-900 text-right">
+                                                    LKR.{' '}
+                                                    {(
+                                                        product.price *
+                                                        product.quantity
+                                                    ).toLocaleString('en-US', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2,
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="mx-auto w-[800px] flex-none mt-5">
+                                    <p>Your cart is currently empty.</p>
                                 </div>
-                                <Button
-                                    color="primary"
-                                    onClick={onSubmit}
-                                    className="hover:bg-green-600 bg-green-500"
-                                >
-                                    PAY NOW
-                                </Button>
-                            </form>
+                            )}
+                        </div>
+                        {/* Price Summary */}
+                        <div className="mt-4 w-[400px] flex flex-col">
+                            <dl className="flex items-center justify-between gap-4">
+                                <dt className="text-base font-normal text-gray-700">
+                                    Subtotal:
+                                </dt>
+                                <dd className="text-base font-medium text-gray-900 text-right">
+                                    LKR.{' '}
+                                    {originalPrice.toLocaleString('en-US', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })}
+                                </dd>
+                            </dl>
+                            <br></br>
+
+                            <dl className="flex items-center justify-between gap-4">
+                                <dt className="text-base font-normal text-gray-700">
+                                    Coupon Discount:
+                                </dt>
+                                <dd className="text-base font-medium text-green-600 text-right">
+                                    LKR.{' '}
+                                    {couponDiscount.toLocaleString('en-US', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })}
+                                </dd>
+                            </dl>
+                            <br></br>
+
+                            <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                                <dt className="text-base font-bold text-gray-900">
+                                    Total:
+                                </dt>
+                                <dd className="text-base font-bold text-gray-900 text-right">
+                                    LKR.{' '}
+                                    {total > 0
+                                        ? total.toLocaleString('en-US', {
+                                              minimumFractionDigits: 2,
+                                              maximumFractionDigits: 2,
+                                          })
+                                        : 0}
+                                </dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
-
-                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6 border-b border-gray-300 pb-4 mb-4 ml-10 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    Order Summary
-                    <div className="w-[400px] gap-2 ">
-                        {cart.length > 0 ? (
-                            cart.map((product) => (
-                                <div
-                                    key={product.id}
-                                    className="mx-auto flex-none mt-2"
-                                >
-                                    <div className="rounded-lg p-2">
-                                        <div className="flex items-center justify-between gap-4">
-                                            <div className="flex items-center space-x-4">
-                                                <img
-                                                    src={product.image}
-                                                    alt=""
-                                                    className="w-16 h-16 rounded-lg object-cover"
-                                                />
-                                                <div className="text-base font-medium text-gray-900">
-                                                    {product.name} x
-                                                    {product.quantity}
-                                                </div>
-                                            </div>
-                                            <div className="text-base font-bold text-gray-900 text-right">
-                                                LKR.{' '}
-                                                {(
-                                                    product.price *
-                                                    product.quantity
-                                                ).toLocaleString('en-US', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2,
-                                                })}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <div className="mx-auto w-[800px] flex-none mt-5">
-                                <p>Your cart is currently empty.</p>
-                            </div>
-                        )}
-                    </div>
-                    {/* Price Summary */}
-                    <div className="mt-4 w-[400px] flex flex-col">
-                        <dl className="flex items-center justify-between gap-4">
-                            <dt className="text-base font-normal text-gray-700">
-                                Subtotal:
-                            </dt>
-                            <dd className="text-base font-medium text-gray-900 text-right">
-                                LKR.{' '}
-                                {originalPrice.toLocaleString('en-US', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                })}
-                            </dd>
-                        </dl>
-                        <br></br>
-
-                        <dl className="flex items-center justify-between gap-4">
-                            <dt className="text-base font-normal text-gray-700">
-                                Coupon Discount:
-                            </dt>
-                            <dd className="text-base font-medium text-green-600 text-right">
-                                LKR.{' '}
-                                {couponDiscount.toLocaleString('en-US', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                })}
-                            </dd>
-                        </dl>
-                        <br></br>
-
-                        <dl className="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-                            <dt className="text-base font-bold text-gray-900">
-                                Total:
-                            </dt>
-                            <dd className="text-base font-bold text-gray-900 text-right">
-                                LKR.{' '}
-                                {total > 0
-                                    ? total.toLocaleString('en-US', {
-                                          minimumFractionDigits: 2,
-                                          maximumFractionDigits: 2,
-                                      })
-                                    : 0}
-                            </dd>
-                        </dl>
-                    </div>
-                </div>
             </div>
-        </div>
         </div>
     )
 }

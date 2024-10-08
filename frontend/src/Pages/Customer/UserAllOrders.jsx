@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import OrderTable from '../../Components/UserOrderTable'
 import Loading from '../../Components/Loading'
-import ProgressBar from "../../Components/Order/ProgressBar";
+import ProgressBar from '../../Components/Order/ProgressBar'
 
 function UserAllOrders() {
     const [page, setPage] = useState(1)
@@ -49,7 +49,7 @@ function UserAllOrders() {
     return (
         <div className="relative min-h-screen bg-neutral-100 pr-18 pl-18">
             <div>
-            <ProgressBar currentStep={3} />
+                <ProgressBar currentStep={3} />
             </div>
             <div className="p-1 mt-0">
                 <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg border-2 border-green-400 mt-4">

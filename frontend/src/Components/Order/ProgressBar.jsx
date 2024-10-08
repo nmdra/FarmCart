@@ -1,30 +1,39 @@
-import React from 'react';
+import React from 'react'
+import { FaShoppingCart, FaShippingFast, FaCreditCard } from 'react-icons/fa'
 
 const ProgressBar = ({ currentStep }) => {
-    const totalSteps = 3;  // Number of steps (e.g., Cart, Shipping, Payment)
+    const totalSteps = 3 // Number of steps (e.g., Cart, Shipping, Payment)
+    
+    const icons = [
+        <FaShoppingCart key="cart" />,
+        <FaShippingFast key="shipping" />,
+        <FaCreditCard key="payment" />,
+    ]
 
     return (
         <div className="flex items-center justify-center mt-3 mb-0">
             {Array.from({ length: totalSteps }, (_, index) => (
                 <div key={index} className="flex items-center">
                     <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-colors duration-300 ${
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-lg transition-colors duration-300 ${
                             index < currentStep ? 'bg-green-500' : 'bg-gray-300'
                         }`}
                     >
-                        {index + 1}
+                        {icons[index]}
                     </div>
                     {index < totalSteps - 1 && (
                         <div
-                            className={`w-12 h-1 mx-2 transition-colors duration-300 ${
-                                index < currentStep - 1 ? 'bg-green-600' : 'bg-gray-300'
+                            className={`w-10 h-1 mx-1.5 transition-colors duration-300 ${
+                                index < currentStep - 1
+                                    ? 'bg-green-600'
+                                    : 'bg-gray-300'
                             }`}
                         />
                     )}
                 </div>
             ))}
         </div>
-    );
-};
+    )
+}
 
-export default ProgressBar;
+export default ProgressBar
