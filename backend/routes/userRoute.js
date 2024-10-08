@@ -2,9 +2,9 @@ import express from 'express'
 import {
     authUser,
     forgotPassword,
-    generateHash,
     getUserById,
     logoutUser,
+    paymentUser,
     registerUser,
     resetPassword,
     sendVerifyEmail,
@@ -24,7 +24,7 @@ router.route('/forgot-password').post(forgotPassword)
 router.route('/reset-pass').post(resetPassword)
 router.route('/resendEmail').post(sendVerifyEmail)
 router.route('/upgrade').post(protect, upgradeMembership)
-router.route('/genHash').post(protect, generateHash)
+router.route('/paymentIntent').post(protect, paymentUser)
 
 router.route('/:id').get(protect, getUserById)
 

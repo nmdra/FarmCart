@@ -367,9 +367,9 @@ function Settings() {
                             >
                                 Save Changes
                             </button>
-                            <button className="bg-red-500 text-white p-2 rounded-md">
+                            {/* <button className="bg-red-500 text-white p-2 rounded-md">
                                 Delete My Account
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                 </div>

@@ -40,11 +40,11 @@ const MyShop = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Fixed Sidebar */}
-            <aside className="fixed top-28 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
+            <aside className="fixed top-16 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 
-            <div className="flex-1 p-8 pt-24 overflow-y-auto ml-64">
+            <div className="flex-1 p-8 pt-16 overflow-y-auto ml-64">
                 {/* Add New Shop Section */}
                 <div className="flex items-start space-x-4 mb-12">
                     {/* Add New Shop Card */}
