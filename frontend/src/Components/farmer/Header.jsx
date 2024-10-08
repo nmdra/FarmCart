@@ -13,13 +13,7 @@ const Header = () => {
                 <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-4">
                         <Link
-                            to="/farmerRegister"
-                            className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm"
-                        >
-                            Become a Seller
-                        </Link>
-                        <Link
-                            to="/become-a-driver"
+                            to="/register-driver"
                             className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm"
                         >
                             Become a Driver

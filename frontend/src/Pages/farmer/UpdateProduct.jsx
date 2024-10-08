@@ -185,12 +185,12 @@ const UpdateProduct = () => {
     return (
         <div className="flex min-h-screen w-screen bg-gray-100">
             {/* Sidebar */}
-            <aside className="fixed top-36 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
+            <aside className="fixed top-16 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-24">
                 <Sidebar />
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 ml-64 p-32 overflow-y-auto">
+            <div className="flex-1 ml-64 p-32 pt-20 overflow-y-auto">
                 {/* Update Product Form */}
                 <form
                     onSubmit={handleSubmit}
