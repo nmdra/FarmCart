@@ -1,4 +1,4 @@
-// src/DLImageUpload.jsx
+/*// src/DLImageUpload.jsx
 import React, { useState } from 'react'
 import axios from 'axios'
 
@@ -74,3 +74,4 @@ const DLImageUpload = () => {
 }
 
 export default DLImageUpload
+*/

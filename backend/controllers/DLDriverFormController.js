@@ -62,11 +62,8 @@ const submitDLDeliveryForm = asyncHandler(async (req, res) => {
 const getPendingForms = asyncHandler(async (req, res) => {
     const pendingForms = await DLDeliveryForm.find({ status: 'Pending' })
 
-    if (pendingForms.length > 0) {
-        res.json(pendingForms)
-    } else {
-        res.status(404).json({ message: 'No pending forms found' })
-    }
+    // Instead of returning a 404, return an empty array with status 200
+    res.status(200).json(pendingForms)
 })
 
 // Function to get a specific delivery form by ID
@@ -124,6 +121,15 @@ const deleteDeliveryForm = asyncHandler(async (req, res) => {
     }
 })
 
+
+// Function to get the count of pending forms
+const getPendingFormsCount = asyncHandler(async (req, res) => {
+    const pendingFormsCount = await DLDeliveryForm.countDocuments({ status: 'Pending' })
+
+    res.json({ count: pendingFormsCount })
+})
+
+
 export {
     submitDLDeliveryForm,
     getPendingForms,
@@ -131,4 +137,5 @@ export {
     updateDeliveryFormStatus,
     updateDeliveryForm,
     deleteDeliveryForm,
+    getPendingFormsCount,
 }
