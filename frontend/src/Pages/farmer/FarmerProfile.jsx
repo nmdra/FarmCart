@@ -328,11 +328,11 @@ const ProfilePage = () => {
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Fixed Sidebar */}
-            <aside className="fixed top-20 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
+            <aside className="fixed top-16 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 
-            <div className="flex-1  ml-64 p-24 overflow-y-auto">
+            <div className="flex-1  ml-64 p-12 overflow-y-auto">
                 {/* Account Settings Card */}
                 <form
                     onSubmit={handleSubmit}
