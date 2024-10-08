@@ -53,7 +53,7 @@ const Cart = () => {
 
         try {
             const res = await axios.post(
-                'http://localhost:3000/api/coupon/valid-coupon',
+                '/api/coupon/valid-coupon',
                 {
                     couponCode: coupon,
                 }
