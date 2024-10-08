@@ -67,11 +67,11 @@ const Shop = () => {
 
     return (
         <div className="flex  min-h-screen bg-gray-50">
-            <aside className="fixed top-16 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
+            <aside className="fixed top-28 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 
-            <div className="flex-1 ml-64 p-24 pt-24 overflow-y-auto">
+            <div className="flex-1 ml-64 p-24 pt-12 overflow-y-auto">
                 {/* Shop Name and Cover Image Card */}
                 <div className="bg-white p-6 rounded-lg shadow-md mb-6 w-full ">
                     <div className="relative">
