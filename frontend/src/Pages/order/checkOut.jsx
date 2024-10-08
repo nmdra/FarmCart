@@ -292,10 +292,14 @@ const CheckOut = () => {
     }
 
     return (
+        <div>
+<ProgressBar currentStep={2} />
+            
         <div className="flex w-full justify-center ">
-            <div className=" flex w-3/4 justify-center p-2 mt-10 items-center border rounded-lg ">
+            
+            <div className=" flex w-3/4 justify-center p-2 mt-3 items-center border rounded-lg ">
                 <div className="w-1/2 bg-white ">
-                <ProgressBar currentStep={2} />
+                
                     <div className=" flex justify-center items-center p-10 ">
                         <div className=" w-[600px]">
                             <form className="flex flex-col gap-2">
@@ -604,6 +608,7 @@ const CheckOut = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     )
 }
