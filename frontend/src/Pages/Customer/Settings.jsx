@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Address from '../../Components/Address'
 import toast from 'react-hot-toast'
+import PasswordUpdate from '../../Components/PasswordUpdate'
 
 function Settings() {
     const [previewUrl, setPreviewUrl] = useState(null)
@@ -374,6 +375,7 @@ function Settings() {
                     </div>
                 </div>
                 <Address />
+                <PasswordUpdate />
             </div>
         </div>
     )
