@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
-import CategoryBar from '../Components/Home/CategoryBar'
-import Footer from '../Components/Home/Footer'
+// import Footer from '../Components/Home/Footer'
+import Footer from '../Components/Home/FooterDashboard'
 import DHeader from '../Components/Home/DHeader'
 
 function DLayout() {

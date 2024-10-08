@@ -4,8 +4,6 @@ import DLDelivery from '../models/DLDeliveryModel.js'
 import asyncHandler from 'express-async-handler'
 import nodemailer from 'nodemailer'
 
-
-
 // Function to generate a tracking ID starting with 'TR' followed by 5 digits
 const generateTrackingID = () => {
     const randomNum = Math.floor(10000 + Math.random() * 90000)
@@ -62,16 +60,14 @@ export const assignDriverToOrder = async () => {
         // Delete the order after assignment
         await dOrder.deleteOne({ _id: order._id })
 
-           // Call the function to send an email to the driver
-           await sendEmailToDriver(driver, delivery)
+        // Call the function to send an email to the driver
+        await sendEmailToDriver(driver, delivery)
 
         /* console.log(`Assigned driver ${driver.fullName} to order ${order._id} with tracking ID ${trackingID}`); */
     } catch (error) {
         console.error('Error assigning driver to order:', error)
     }
 }
-
-
 
 // Function to send an email to the driver
 export const sendEmailToDriver = async (driver, delivery) => {
@@ -117,10 +113,6 @@ export const sendEmailToDriver = async (driver, delivery) => {
         console.error('Error sending email to driver:', error)
     }
 }
-
-
-
-
 
 // Function to constantly check for available drivers and assign them to oldest orders
 export const checkForAvailableDrivers = async () => {
@@ -240,11 +232,9 @@ export const updateDeliveryStatus = asyncHandler(async (req, res) => {
 
         // Prevent moving back to previous statuses
         if (delivery.deliveryStatus === 'Delivered') {
-            return res
-                .status(400)
-                .json({
-                    message: 'Cannot update the status of a delivered order',
-                })
+            return res.status(400).json({
+                message: 'Cannot update the status of a delivered order',
+            })
         }
 
         // Update the delivery status

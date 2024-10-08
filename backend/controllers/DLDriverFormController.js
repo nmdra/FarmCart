@@ -119,6 +119,7 @@ const deleteDeliveryForm = asyncHandler(async (req, res) => {
     }
 })
 
+// Function to get the count of pending forms
 const getPendingFormsCount = asyncHandler(async (req, res) => {
     const pendingFormsCount = await DLDeliveryForm.countDocuments({
         status: 'Pending',
@@ -126,7 +127,6 @@ const getPendingFormsCount = asyncHandler(async (req, res) => {
 
     res.json({ count: pendingFormsCount })
 })
-
 
 export {
     submitDLDeliveryForm,
