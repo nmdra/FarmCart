@@ -4,6 +4,10 @@ import { sendEmail } from '../utils/sendEmail.js'
 import { addDays } from 'date-fns' // Use this for adding days to the current date
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto-js'
+import Stripe from 'stripe'
+
+// Initialize the Stripe instance with the secret key
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -421,36 +425,33 @@ export const resetPassword = async (req, res) => {
     }
 }
 
-export const generateHash = async (req, res) => {
-    const { amount } = req.body
+export const paymentUser = async (req, res) => {
+    const { amount, id, email } = req.body
 
-    // Replace with your actual Merchant ID and Secret
-    const merchantId = process.env.PAYHERE_MERCHANT_ID
-    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET
+    try {
+        // Create a Payment Intent with the specified amount and currency
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount, // Amount in cents (smallest currency unit)
+            currency: 'lkr', // Sri Lankan Rupees
+            description: `FarmCart order for ${email}`, // Payment description
+            payment_method: id, // Stripe Payment Method ID
+            confirm: true, // Confirm payment automatically
+            return_url: `${process.env.SITE_URL}/paymentComplete`, // Redirect after payment completion
+        })
 
-    // Generate a unique order ID
-    const orderId = Math.random().toString(36).substring(2, 11)
-
-    // Format the amount
-    const formattedAmount = parseFloat(amount).toFixed(2)
-
-    const currency = 'LKR'
-
-    // Generate the hash
-    const hash = crypto
-        .MD5(
-            merchantId +
-                orderId +
-                formattedAmount +
-                currency +
-                crypto.MD5(merchantSecret).toString().toUpperCase()
-        )
-        .toString()
-        .toUpperCase()
-
-    // Return the hash and order ID
-    res.json({
-        orderId,
-        hash,
-    })
+        // Send a success response with the Payment Intent details
+        res.json({
+            success: true,
+            message: 'Payment Intent created successfully!',
+            paymentIntent,
+        })
+    } catch (error) {
+        console.error('Error creating Payment Intent:', error)
+        // Send an error response if the payment creation fails
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create Payment Intent',
+            error: error.message,
+        })
+    }
 }
