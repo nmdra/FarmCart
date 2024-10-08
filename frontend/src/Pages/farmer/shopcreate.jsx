@@ -57,6 +57,12 @@ const CreateShopPage = () => {
         }
 
         if (name === 'contactNumber') {
+            if (!/^\d*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+            if (value.length > 10) {
+                return // Prevent setting values longer than 10 digits
+            }
             if (!/^0\d{9}$/.test(value)) {
                 errorMessage =
                     'Contact number must be 10 digits and start with 0.'
@@ -234,12 +240,12 @@ const CreateShopPage = () => {
     return (
         <div className="flex  min-h-screen bg-gray-50">
             {/* Sidebar */}
-            <aside className="fixed top-0 pt-16 mt-16 pl-8 left-0 bottom-0 w-64 bg-gray-50 shadow-md">
+            <aside className="fixed top-20 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
                 <Sidebar />
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 top-0 ml-64 p-32 pt-24 overflow-y-auto">
+            <div className="flex-1 top-0 ml-64 p-32 pt-16 overflow-y-auto">
                 {/* Create Shop Form */}
                 <form
                     onSubmit={handleSubmit}

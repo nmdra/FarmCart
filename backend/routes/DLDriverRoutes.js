@@ -6,20 +6,18 @@ import {
     deleteDriverById,
     loginDriver,
     getDriverProfile,
-
     updateDriverAvailability,
-    logoutDriver, 
+    logoutDriver,
     updateDriverProfile,
     updateDriverPassword,
     deleteDriverAccount,
     getAllDrivers,
     verifyPassword,
-    getDriversCount, 
-    getAvailableDriversCount, 
+    getDriversCount,
+    getAvailableDriversCount,
 
     // Add logout driver function
-} from '../controllers/DLDriverController.js';
-
+} from '../controllers/DLDriverController.js'
 
 import { protectDriver } from '../middlewares/DLauthMiddleware.js'
 
@@ -39,36 +37,30 @@ router.put('/update/:id', updateDriverById)
 // Route to delete a driver by ID
 router.delete('/delete/:id', deleteDriverById)
 
-
-
-router.route('/profile')
+router
+    .route('/profile')
     .get(protectDriver, getDriverProfile) // GET profile
     .put(protectDriver, updateDriverProfile) // PUT (update) profile
 
-
-    
 // Route to logout the driver
 router.post('/logout', logoutDriver) // Add logout route
 
 // Route to toggle the driver's availability
 
-router.put('/:id/availability', protectDriver, updateDriverAvailability);
+router.put('/:id/availability', protectDriver, updateDriverAvailability)
 
-router.put('/profile/password', protectDriver, updateDriverPassword);
+router.put('/profile/password', protectDriver, updateDriverPassword)
 
-router.delete('/delete', protectDriver, deleteDriverAccount);
+router.delete('/delete', protectDriver, deleteDriverAccount)
 
-router.delete('/verifyPass', protectDriver, verifyPassword);
+router.delete('/verifyPass', protectDriver, verifyPassword)
 
-router.get('/drivers', getAllDrivers);
+router.get('/drivers', getAllDrivers)
 
 // Route to get the total number of drivers
-router.get('/count', getDriversCount);
+router.get('/count', getDriversCount)
 
 // Route to get the number of available drivers
-router.get('/available/count', getAvailableDriversCount);
-
-
-
+router.get('/available/count', getAvailableDriversCount)
 
 export default router

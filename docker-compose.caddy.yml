@@ -1,0 +1,45 @@
+name: FarmCart-Caddy
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    env_file: ./backend/.env.prod
+    networks:
+      - app-network-caddy
+    deploy:
+      mode: replicated
+      replicas: 2
+    # ports:
+    #   - "5002:5002"  # Expose the API on port 5002 for internal communication
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod  # This Dockerfile serves React with Caddy
+      args:
+        - VITE_STRIPE_PUBLIC_KEY=pk_test_51LMEvTC05RrpHY1zUINiBb70Oue9TVmbH9LoKTZKKa0Ra3a8J188Ph3kouCpSeLJUr7qCgndpWlAXwt5GVlZOLIY00SkMj6avh
+    restart: unless-stopped
+    env_file: ./frontend/.env.prod
+    ports:
+      - 80:80  # HTTP port
+      - 443:443  # HTTPS port for SSL
+    volumes:
+      - $PWD/frontend/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+    networks:
+      - app-network-caddy
+
+networks:
+  app-network-caddy:
+    driver: bridge
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:

@@ -29,6 +29,10 @@ const Register = () => {
     }
 
     useEffect(() => {
+        document.title = 'FarmCart : Register'
+    }, [])
+
+    useEffect(() => {
         if (error) {
             toast.error(error)
             setEmail('')

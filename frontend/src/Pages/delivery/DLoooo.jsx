@@ -35,10 +35,7 @@ const CreateOrderForm = () => {
         }
 
         try {
-            const response = await axios.post(
-                '/api/od/a',
-                newOrder
-            )
+            const response = await axios.post('/api/od/a', newOrder)
             console.log('Order created:', response.data)
         } catch (error) {
             console.error('Error creating order:', error)

@@ -27,12 +27,8 @@ export const sendApprovalEmail = asyncHandler(async (req, res) => {
         },
     })
 
-
-
-        // The URL for the driver to follow (this could be your site's login or another relevant page)
+    // The URL for the driver to follow (this could be your site's login or another relevant page)
     const loginUrl = `http://localhost:5000/driver/login`
-
-
 
     // Email content
     const mailOptions = {
@@ -54,7 +50,8 @@ export const sendApprovalEmail = asyncHandler(async (req, res) => {
         </a>
         <p>Alternatively, you can enter your ID to log in for the first time.</p>
         <p>Regards,<br/>FarmCart Team</p>
-    `,    }
+    `,
+    }
 
     // Send the email
     try {

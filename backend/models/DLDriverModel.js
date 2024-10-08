@@ -82,9 +82,7 @@ const DLDriverSchema = mongoose.Schema(
     {
         timestamps: true,
     }
-
-);
-
+)
 
 const DLDriver = mongoose.model('DLDriver', DLDriverSchema)
 

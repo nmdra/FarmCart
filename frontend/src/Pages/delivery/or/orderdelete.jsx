@@ -8,9 +8,7 @@ const OrdersTable = () => {
         // Fetch orders from the backend
         const fetchOrders = async () => {
             try {
-                const response = await axios.get(
-                    '/api/od/g'
-                ) // Ensure this route is correct
+                const response = await axios.get('/api/od/g') // Ensure this route is correct
                 setOrders(response.data)
             } catch (error) {
                 console.error('Error fetching orders:', error)

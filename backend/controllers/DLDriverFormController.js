@@ -16,9 +16,9 @@ const submitDLDeliveryForm = asyncHandler(async (req, res) => {
         address,
         vehicleNumber,
         vehicleType,
-        idCardImageUrl,    // Image URLs passed from front-end
-        licenseImageUrl,   // Image URLs passed from front-end
-        personalImageUrl,  // Image URLs passed from front-end
+        idCardImageUrl, // Image URLs passed from front-end
+        licenseImageUrl, // Image URLs passed from front-end
+        personalImageUrl, // Image URLs passed from front-end
     } = req.body
 
     // Check if a form with the same email already exists
@@ -44,9 +44,9 @@ const submitDLDeliveryForm = asyncHandler(async (req, res) => {
         address,
         vehicleNumber,
         vehicleType,
-        idCardImageUrl,    // Directly saving the image URL passed from front-end
-        licenseImageUrl,   // Directly saving the image URL passed from front-end
-        personalImageUrl,  // Directly saving the image URL passed from front-end
+        idCardImageUrl, // Directly saving the image URL passed from front-end
+        licenseImageUrl, // Directly saving the image URL passed from front-end
+        personalImageUrl, // Directly saving the image URL passed from front-end
     })
 
     // Respond with success message and saved form
@@ -55,8 +55,6 @@ const submitDLDeliveryForm = asyncHandler(async (req, res) => {
         deliveryForm,
     })
 })
-
-
 
 // Function to get all pending forms
 const getPendingForms = asyncHandler(async (req, res) => {
@@ -121,10 +119,10 @@ const deleteDeliveryForm = asyncHandler(async (req, res) => {
     }
 })
 
-
-// Function to get the count of pending forms
 const getPendingFormsCount = asyncHandler(async (req, res) => {
-    const pendingFormsCount = await DLDeliveryForm.countDocuments({ status: 'Pending' })
+    const pendingFormsCount = await DLDeliveryForm.countDocuments({
+        status: 'Pending',
+    })
 
     res.json({ count: pendingFormsCount })
 })
