@@ -27,18 +27,20 @@ export const sendApprovalEmail = asyncHandler(async (req, res) => {
         },
     })
 
-    // The URL for the driver to follow (this could be your site's login or another relevant page)
-    const loginUrl = `http://localhost:5000/driver/login`
+
+
+        // The URL for the driver to follow (this could be your site's login or another relevant page)
+    const loginUrl = `/driver/login`
 
     // Email content
     const mailOptions = {
-        from: process.env.EMAIL_USER,
+        from: `'FarmCart 🌱' <${process.env.EMAIL_USER}`,
         to: driver.email,
-        subject: 'Approval Confirmation',
+        subject: 'Farmcart: Approval Confirmation',
         html: `
         <p>Dear ${driver.fullName},</p>
         <p>Congratulations! Your driver registration has been approved. Please click the button below to log in and complete your registration:</p>
-        <a href="${loginUrl}" style="
+        <a href="${process.env.SITE_URL}${loginUrl}" style="
             background-color: #4CAF50; 
             color: white; 
             padding: 10px 20px; 

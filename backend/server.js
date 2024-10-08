@@ -71,14 +71,12 @@ app.use('/api/images', imageHandler)
 app.use('/api/coupon', couponRouter)
 
 //Admin Routes
-// Routes
 app.use('/api/promotion', promotionRoutes)
 app.use('/api/product', productRoutes)
 app.use('/api/staff', staffRoutes)
 app.use('/api/customer', customerRoutes)
 
 //Delivery Routes
-// Routes
 app.use('/api/images', imageHandler) //DL
 app.use('/api/d_forms', DLFormRoutes) //DL
 app.use('/api/drivers', driverRoutes) // Added driver routes
