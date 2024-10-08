@@ -217,12 +217,14 @@ const CheckOut = () => {
     }
 
     const validatePhone = (phone) => {
-        const phoneRegex = /^[0-9]{10}$/
+        const phoneRegex = /^0[0-9]{9}$/
+
         if (!phone) {
             return 'Phone number is required.'
         } else if (!phoneRegex.test(phone)) {
-            return 'Phone number must contain 10 numbers'
+            return 'Phone number must contain 10 digits and start with 0'
         }
+
         return ''
     }
 
@@ -327,6 +329,7 @@ const CheckOut = () => {
                                         errorMessage={errors.city}
                                     />
                                     <Input
+                                        className="hover:border-green-400 focus:border-green-400"
                                         label="Your phone number"
                                         placeholder="Enter your phone number"
                                         type="text"
@@ -502,14 +505,14 @@ const CheckOut = () => {
                                     onClick={onSubmit}
                                     className="hover:bg-green-600 bg-green-500"
                                 >
-                                    Proceed to Checkout
+                                    PAY NOW
                                 </Button>
                             </form>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6">
+                <div className="flex flex-col font-semibold text-2xl font-poppins border rounded-lg p-6 border-b border-gray-300 pb-4 mb-4 ml-10 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
                     Order Summary
                     <div className="w-[400px] gap-2 ">
                         {cart.length > 0 ? (
