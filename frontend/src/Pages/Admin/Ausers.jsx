@@ -44,11 +44,7 @@ const CustomerList = () => {
     // Search functionality
     const filteredCustomers = useMemo(() => {
         return customers.filter(
-            (customer) =>
-                customer.firstname
-                    .toLowerCase()
-                    .includes(search.toLowerCase()) ||
-                customer.lastname.toLowerCase().includes(search.toLowerCase())
+            (customer) => customer.firstname || customer.lastname
         )
     }, [search, customers])
 

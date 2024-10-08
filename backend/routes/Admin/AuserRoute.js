@@ -5,7 +5,7 @@ import {
     updateUserById,
     deleteUserById,
     validateUserPassword,
-} from '../../controllers/Admin/AcustomerController'
+} from '../../controllers/Admin/AcustomerController.js'
 
 const router = express.Router()
 
