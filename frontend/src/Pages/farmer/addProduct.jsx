@@ -182,7 +182,7 @@ const AddProduct = () => {
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 p-32 ml-64 overflow-y-auto">
+            <div className="flex-1 p-32 pt-24 ml-64 overflow-y-auto">
                 {/* Add Product Form */}
                 <form
                     onSubmit={handleSubmit}

@@ -137,11 +137,11 @@ const Products = () => {
 
     return (
         <div className="flex min-h-screen bg-gray-50 ">
-            <aside className="fixed top-36 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
+            <aside className="fixed top-24 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-16">
                 <Sidebar />
             </aside>
 
-            <div className="flex-1 ml-64 p-8 pt-24 overflow-y-auto">
+            <div className="flex-1 ml-64 p-8 pt-12 overflow-y-auto">
                 <div>
                     {/* Search Bar */}
                     <div className="flex justify-end pe-24 mb-6">

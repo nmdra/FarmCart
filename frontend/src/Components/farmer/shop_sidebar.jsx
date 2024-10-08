@@ -72,6 +72,7 @@ const Sidebar = () => {
                             <span>Add Products</span>
                         </Link>
                     </li>
+                    {/* 
                     <li>
                         <Link
                             to="#"
@@ -80,7 +81,7 @@ const Sidebar = () => {
                             <FaDollarSign className="w-5 h-5 mr-3" />
                             <span>My Earnings</span>
                         </Link>
-                    </li>
+                    </li>*/}
                     <li>
                         <Link
                             to="/farmerShop/profile"
