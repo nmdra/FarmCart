@@ -32,34 +32,37 @@ const ShopPage = () => {
     )
 
     return (
-        <div className="relative min-h-screen bg-gray-50 grid grid-cols-1 justify-center px-32">
-            <div className="shop-page p-6">
-                <div className="shop-details mb-8 bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="relative min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 grid grid-cols-1 justify-center px-32 py-12">
+            <div className="shop-page p-8">
+                <div className="shop-details mb-10 bg-white shadow-xl rounded-xl overflow-hidden transition-transform transform hover:scale-105 duration-300 ease-in-out">
                     <img
                         src={shop.image}
                         alt={shop.name}
-                        className="w-full h-64 object-cover"
+                        className="w-full h-48 object-cover"
                     />
-                    <div className="p-6">
-                        <h1 className="text-4xl font-extrabold text-gray-800 mb-2">
+                    <div className="p-8">
+                        <h1 className="text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
                             {shop.name}
                         </h1>
-                        <p className="text-gray-700 text-lg mb-4">
+                        <p className="text-gray-700 text-lg mb-6">
                             {shop.description}
                         </p>
-                        <p className="text-gray-600 text-md mb-2">
-                            <span className="font-semibold">Address:</span>{' '}
-                            {shop.address?.houseNo} {shop.address?.streetName},{' '}
-                            {shop.address?.city}, {shop.district}
-                        </p>
-                        <p className="text-gray-600 text-md mb-2">
-                            <span className="font-semibold">Contact:</span>{' '}
-                            {shop.contactNumber}
-                        </p>
-                        <p className="text-gray-600 text-md">
-                            <span className="font-semibold">Email:</span>{' '}
-                            {shop.email}
-                        </p>
+                        <div className="text-gray-600 text-md space-y-3">
+                            <p>
+                                <span className="font-semibold">Address:</span>{' '}
+                                {shop.address?.houseNo}{' '}
+                                {shop.address?.streetName}, {shop.address?.city}
+                                , {shop.district}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Contact:</span>{' '}
+                                {shop.contactNumber}
+                            </p>
+                            <p>
+                                <span className="font-semibold">Email:</span>{' '}
+                                {shop.email}
+                            </p>
+                        </div>
                     </div>
                 </div>
 

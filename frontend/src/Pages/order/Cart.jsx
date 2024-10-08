@@ -30,17 +30,11 @@ const Cart = () => {
         console.log(productId)
         setCart(updatedCart)
         localStorage.setItem('cart', JSON.stringify(updatedCart))
-        // setRefetch()
-        // setGlobalRefetch(!globalRefetch);
     }
-    // console.log('cart', cart)
 
     useEffect(() => {
         const calculateOriginalPrice = () => {
             const originalPrice = cart.reduce((acc, item) => {
-                //remove kg from string and convert to number
-                // item.kg = parseInt(item.kg.match(/\d+/)) || 0
-
                 return acc + item.price * item.quantity
             }, 0)
             console.log('originalPrice', originalPrice)
@@ -58,9 +52,12 @@ const Cart = () => {
         e.preventDefault()
 
         try {
-            const res = await axios.post('/api/coupon/valid-coupon', {
-                couponCode: coupon,
-            })
+            const res = await axios.post(
+                'http://localhost:3000/api/coupon/valid-coupon',
+                {
+                    couponCode: coupon,
+                }
+            )
 
             if (res.data.coupon) {
                 const couponDiscount = res.data.coupon.discount
@@ -86,8 +83,8 @@ const Cart = () => {
 
     return (
         <div>
-            <section className="bg-white py-8 antialiased  md:py-16">
-                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
+            <section className="bg-white py-4 antialiased md:py-8">
+                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 ml-10 p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl">
                         My Shopping Cart
                     </h2>
@@ -139,7 +136,7 @@ const Cart = () => {
                                         </td>
                                         <td className="py-4 text-right">
                                             <span
-                                                className="text-red-600 cursor-pointer hover:text-red-700 font-semibold"
+                                                className="text-red-500 cursor-pointer hover:text-red-600 font-semibold"
                                                 onClick={() =>
                                                     handleRemove(product._id)
                                                 }
@@ -152,7 +149,7 @@ const Cart = () => {
                             </tbody>
                         </table>
 
-                        <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+                        <div className="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
                             <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm  sm:p-6">
                                 <p className="text-xl font-semibold text-gray-900 ">
                                     Order summary
