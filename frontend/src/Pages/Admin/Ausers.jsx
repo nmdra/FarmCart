@@ -1,7 +1,7 @@
-import { useEffect, useState, useMemo } from 'react';
-import axios from '../../axios';
-import Sidebar from '../../Components/Admin/AsideBar';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, useMemo } from 'react'
+import axios from '../../axios'
+import Sidebar from '../../Components/Admin/AsideBar'
+import { useNavigate } from 'react-router-dom'
 import {
     Input,
     Pagination,
@@ -13,50 +13,53 @@ import {
     TableRow,
     Tooltip,
     Button,
-} from '@nextui-org/react';
-import Swal from 'sweetalert2';
+} from '@nextui-org/react'
+import Swal from 'sweetalert2'
 
 const CustomerList = () => {
-    const [customers, setCustomers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('');
-    const rowsPerPage = 3;
-    const navigate = useNavigate();
+    const [customers, setCustomers] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [page, setPage] = useState(1)
+    const [search, setSearch] = useState('')
+    const rowsPerPage = 3
+    const navigate = useNavigate()
 
     // Fetch customers
     useEffect(() => {
         const fetchCustomers = async () => {
-            setLoading(true);
+            setLoading(true)
             try {
-                const { data } = await axios.get('/customers'); // Adjust endpoint as necessary
-                setCustomers(data);
+                const { data } = await axios.get('/customers') // Adjust endpoint as necessary
+                setCustomers(data)
             } catch (error) {
-                console.error('Error fetching customers:', error);
+                console.error('Error fetching customers:', error)
             } finally {
-                setLoading(false);
+                setLoading(false)
             }
-        };
+        }
 
-        fetchCustomers();
-    }, []);
+        fetchCustomers()
+    }, [])
 
     // Search functionality
     const filteredCustomers = useMemo(() => {
-        return customers.filter((customer) =>
-            customer.firstname.toLowerCase().includes(search.toLowerCase()) ||
-            customer.lastname.toLowerCase().includes(search.toLowerCase())
-        );
-    }, [search, customers]);
+        return customers.filter(
+            (customer) =>
+                customer.firstname
+                    .toLowerCase()
+                    .includes(search.toLowerCase()) ||
+                customer.lastname.toLowerCase().includes(search.toLowerCase())
+        )
+    }, [search, customers])
 
     // Pagination
     const items = useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        return filteredCustomers.slice(start, end);
-    }, [page, filteredCustomers]);
+        const start = (page - 1) * rowsPerPage
+        const end = start + rowsPerPage
+        return filteredCustomers.slice(start, end)
+    }, [page, filteredCustomers])
 
-    const pages = Math.ceil(filteredCustomers.length / rowsPerPage);
+    const pages = Math.ceil(filteredCustomers.length / rowsPerPage)
 
     const handleDeleteCustomer = async (customerId) => {
         const result = await Swal.fire({
@@ -66,26 +69,30 @@ const CustomerList = () => {
             showCancelButton: true,
             confirmButtonText: 'Yes',
             cancelButtonText: 'Cancel',
-        });
+        })
 
         if (result.isConfirmed) {
             try {
-                await axios.delete(`/customers/${customerId}`); // Adjust the endpoint
-                Swal.fire('Deleted!', 'Customer has been deleted.', 'success');
-                setCustomers(customers.filter(c => c._id !== customerId));
+                await axios.delete(`/customers/${customerId}`) // Adjust the endpoint
+                Swal.fire('Deleted!', 'Customer has been deleted.', 'success')
+                setCustomers(customers.filter((c) => c._id !== customerId))
             } catch (error) {
-                console.error('Error deleting customer:', error);
-                Swal.fire('Error!', 'There was an error deleting the customer.', 'error');
+                console.error('Error deleting customer:', error)
+                Swal.fire(
+                    'Error!',
+                    'There was an error deleting the customer.',
+                    'error'
+                )
             }
         }
-    };
+    }
 
     const handleEditCustomer = (customerId) => {
-        navigate(`/updateCustomer/${customerId}`);
-    };
+        navigate(`/updateCustomer/${customerId}`)
+    }
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Loading...</div>
     }
 
     return (
@@ -118,8 +125,21 @@ const CustomerList = () => {
                                 <TableCell>{customer.lastname}</TableCell>
                                 <TableCell>{customer.email}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => handleEditCustomer(customer._id)}>Edit</Button>
-                                    <Button color="danger" onClick={() => handleDeleteCustomer(customer._id)}>Delete</Button>
+                                    <Button
+                                        onClick={() =>
+                                            handleEditCustomer(customer._id)
+                                        }
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        color="danger"
+                                        onClick={() =>
+                                            handleDeleteCustomer(customer._id)
+                                        }
+                                    >
+                                        Delete
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -134,7 +154,7 @@ const CustomerList = () => {
                 />
             </main>
         </div>
-    );
-};
+    )
+}
 
-export default CustomerList;
+export default CustomerList

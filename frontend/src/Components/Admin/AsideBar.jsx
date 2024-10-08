@@ -1,12 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-    FaHome,
-    FaUsers,
-    FaStore,
-    FaCog,
-    FaSignOutAlt,
-} from 'react-icons/fa';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { FaHome, FaUsers, FaStore, FaCog, FaSignOutAlt } from 'react-icons/fa'
 
 const AdminSidebar = () => {
     return (
@@ -61,7 +55,7 @@ const AdminSidebar = () => {
                 </ul>
             </nav>
         </div>
-    );
-};
+    )
+}
 
-export default AdminSidebar;
+export default AdminSidebar

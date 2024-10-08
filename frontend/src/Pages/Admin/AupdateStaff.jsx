@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from '../../axios';
-import Swal from 'sweetalert2';
-import Sidebar from '../../Components/Admin/AsideBar';
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import axios from '../../axios'
+import Swal from 'sweetalert2'
+import Sidebar from '../../Components/Admin/AsideBar'
 
 const UpdateStaff = () => {
-    const navigate = useNavigate();
-    const { id } = useParams(); // Get the staff ID from the URL
+    const navigate = useNavigate()
+    const { id } = useParams() // Get the staff ID from the URL
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -18,98 +18,104 @@ const UpdateStaff = () => {
         street: '',
         city: '',
         role: '',
-    });
-    const [loading, setLoading] = useState(true);
+    })
+    const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState({
         nic: '',
         email: '',
         phone: '',
         birthday: '',
         role: '',
-    });
+    })
 
     // Fetch staff member details
     useEffect(() => {
         const fetchStaffDetails = async () => {
             try {
-                const { data } = await axios.get(`/staff/${id}`);
-                setFormData(data);
+                const { data } = await axios.get(`/staff/${id}`)
+                setFormData(data)
             } catch (err) {
-                console.error('Error fetching staff details:', err);
-                Swal.fire('Error', 'Error fetching staff details', 'error');
+                console.error('Error fetching staff details:', err)
+                Swal.fire('Error', 'Error fetching staff details', 'error')
             } finally {
-                setLoading(false);
+                setLoading(false)
             }
-        };
+        }
 
-        fetchStaffDetails();
-    }, [id]);
+        fetchStaffDetails()
+    }, [id])
 
     // Helper for validation
     const validateField = (name, value) => {
-        let error = '';
+        let error = ''
 
         if (name === 'nic') {
-            const nicRegex = /^[0-9]{0,11}[0-9v]?$/i;
-            error = !nicRegex.test(value) ? 'Invalid NIC format' : '';
+            const nicRegex = /^[0-9]{0,11}[0-9v]?$/i
+            error = !nicRegex.test(value) ? 'Invalid NIC format' : ''
         }
 
         if (name === 'email') {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            error = !emailRegex.test(value) ? 'Invalid email format' : '';
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            error = !emailRegex.test(value) ? 'Invalid email format' : ''
         }
 
         if (name === 'phone') {
-            const phoneRegex = /^\d+$/;
-            error = !phoneRegex.test(value) ? 'Phone number must be digits only' : '';
+            const phoneRegex = /^\d+$/
+            error = !phoneRegex.test(value)
+                ? 'Phone number must be digits only'
+                : ''
         }
 
         if (name === 'birthday') {
-            const minDate = new Date('1980-01-01');
-            const maxDate = new Date('2006-12-31');
-            const selectedDate = new Date(value);
+            const minDate = new Date('1980-01-01')
+            const maxDate = new Date('2006-12-31')
+            const selectedDate = new Date(value)
             if (selectedDate < minDate || selectedDate > maxDate) {
-                error = 'Birthday must be between 1980 and 2006';
+                error = 'Birthday must be between 1980 and 2006'
             }
         }
 
-        return error;
-    };
+        return error
+    }
 
     // Handle input change with validation
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        const error = validateField(name, value);
+        const { name, value } = e.target
+        const error = validateField(name, value)
 
-        setFormData({ ...formData, [name]: value });
-        setErrors({ ...errors, [name]: error });
-    };
+        setFormData({ ...formData, [name]: value })
+        setErrors({ ...errors, [name]: error })
+    }
 
     // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         if (Object.values(errors).some((err) => err)) {
-            Swal.fire('Validation Error', 'Please fix the errors', 'error');
-            return;
+            Swal.fire('Validation Error', 'Please fix the errors', 'error')
+            return
         }
 
         try {
             await axios.put(`/staff/${id}`, formData, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-            });
-            Swal.fire('Success', 'Staff member updated successfully', 'success');
-            navigate('/staff');
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            })
+            Swal.fire('Success', 'Staff member updated successfully', 'success')
+            navigate('/staff')
         } catch (err) {
-            console.error('Error updating staff:', err);
-            Swal.fire('Error', 'Error updating staff member, please try again', 'error');
+            console.error('Error updating staff:', err)
+            Swal.fire(
+                'Error',
+                'Error updating staff member, please try again',
+                'error'
+            )
         }
-    };
+    }
 
     const handleCancel = () => {
-        navigate('/staff');
-    };
-
-   
+        navigate('/staff')
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -118,13 +124,20 @@ const UpdateStaff = () => {
             </aside>
 
             <div className="flex-1 p-32 ml-64 overflow-y-auto">
-                <form onSubmit={handleSubmit} className="bg-white p-12 pl-6 rounded-lg shadow-md w-full">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Update Staff Member</h3>
+                <form
+                    onSubmit={handleSubmit}
+                    className="bg-white p-12 pl-6 rounded-lg shadow-md w-full"
+                >
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                        Update Staff Member
+                    </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="md:col-span-2 space-y-4">
                             <div>
-                                <label className="block text-gray-700">First Name</label>
+                                <label className="block text-gray-700">
+                                    First Name
+                                </label>
                                 <input
                                     type="text"
                                     name="firstName"
@@ -135,7 +148,9 @@ const UpdateStaff = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700">Last Name</label>
+                                <label className="block text-gray-700">
+                                    Last Name
+                                </label>
                                 <input
                                     type="text"
                                     name="lastName"
@@ -146,7 +161,9 @@ const UpdateStaff = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700">NIC</label>
+                                <label className="block text-gray-700">
+                                    NIC
+                                </label>
                                 <input
                                     type="text"
                                     name="nic"
@@ -155,10 +172,16 @@ const UpdateStaff = () => {
                                     onChange={handleChange}
                                     required
                                 />
-                                {errors.nic && <p className="text-red-500 text-xs">{errors.nic}</p>}
+                                {errors.nic && (
+                                    <p className="text-red-500 text-xs">
+                                        {errors.nic}
+                                    </p>
+                                )}
                             </div>
                             <div>
-                                <label className="block text-gray-700">Email</label>
+                                <label className="block text-gray-700">
+                                    Email
+                                </label>
                                 <input
                                     type="email"
                                     name="email"
@@ -167,10 +190,16 @@ const UpdateStaff = () => {
                                     onChange={handleChange}
                                     required
                                 />
-                                {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+                                {errors.email && (
+                                    <p className="text-red-500 text-xs">
+                                        {errors.email}
+                                    </p>
+                                )}
                             </div>
                             <div>
-                                <label className="block text-gray-700">Phone</label>
+                                <label className="block text-gray-700">
+                                    Phone
+                                </label>
                                 <input
                                     type="text"
                                     name="phone"
@@ -179,10 +208,16 @@ const UpdateStaff = () => {
                                     onChange={handleChange}
                                     required
                                 />
-                                {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+                                {errors.phone && (
+                                    <p className="text-red-500 text-xs">
+                                        {errors.phone}
+                                    </p>
+                                )}
                             </div>
                             <div className="mb-4">
-                                <label className="block text-gray-700">Birthday</label>
+                                <label className="block text-gray-700">
+                                    Birthday
+                                </label>
                                 <input
                                     type="date"
                                     name="birthday"
@@ -193,10 +228,16 @@ const UpdateStaff = () => {
                                     min="1980-01-01"
                                     max="2006-12-31"
                                 />
-                                {errors.birthday && <p className="text-red-500 text-sm">{errors.birthday}</p>}
+                                {errors.birthday && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.birthday}
+                                    </p>
+                                )}
                             </div>
                             <div>
-                                <label className="block text-gray-700">Role</label>
+                                <label className="block text-gray-700">
+                                    Role
+                                </label>
                                 <select
                                     name="role"
                                     value={formData.role}
@@ -204,20 +245,36 @@ const UpdateStaff = () => {
                                     className="w-full mt-1 p-2 border border-gray-300 rounded"
                                     required
                                 >
-                                    <option value="" disabled>Select a role</option>
+                                    <option value="" disabled>
+                                        Select a role
+                                    </option>
                                     <option value="Manager">Manager</option>
-                                    <option value="Deliver">Delivery Guy</option>
-                                    <option value="Finance Manager">Finance Manager</option>
-                                    <option value="Blog Manager">Blog Manager</option>
-                                    <option value="Order Manager">Order Manager</option>
+                                    <option value="Deliver">
+                                        Delivery Guy
+                                    </option>
+                                    <option value="Finance Manager">
+                                        Finance Manager
+                                    </option>
+                                    <option value="Blog Manager">
+                                        Blog Manager
+                                    </option>
+                                    <option value="Order Manager">
+                                        Order Manager
+                                    </option>
                                 </select>
-                                {errors.role && <p className="text-red-500 text-sm">{errors.role}</p>}
+                                {errors.role && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.role}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
                         <div className="md:col-span-1 space-y-4">
                             <div>
-                                <label className="block text-gray-700">Home</label>
+                                <label className="block text-gray-700">
+                                    Home
+                                </label>
                                 <input
                                     type="text"
                                     name="home"
@@ -228,7 +285,9 @@ const UpdateStaff = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700">Street</label>
+                                <label className="block text-gray-700">
+                                    Street
+                                </label>
                                 <input
                                     type="text"
                                     name="street"
@@ -239,7 +298,9 @@ const UpdateStaff = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700">City</label>
+                                <label className="block text-gray-700">
+                                    City
+                                </label>
                                 <input
                                     type="text"
                                     name="city"
@@ -270,7 +331,7 @@ const UpdateStaff = () => {
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default UpdateStaff;
+export default UpdateStaff

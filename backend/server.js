@@ -14,7 +14,7 @@ import imageHandler from './routes/imageHandlerRoute.js'
 import couponRouter from './routes/couponRouter.js'
 
 //Admin imports
-import staffRoutes from'./routes/Admin/AstaffRoute.js'
+import staffRoutes from './routes/Admin/AstaffRoute.js'
 
 //Delivery imports
 import DLFormRoutes from './routes/DLFormRoutes.js' //DL

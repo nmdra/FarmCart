@@ -1,6 +1,6 @@
 // models/Admin/AstaffModel.js
 
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 // Define the Address sub-schema
 const AddressSchema = new mongoose.Schema({
@@ -16,7 +16,7 @@ const AddressSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-});
+})
 
 // Define the Staff schema
 const StaffSchema = new mongoose.Schema({
@@ -32,7 +32,7 @@ const StaffSchema = new mongoose.Schema({
     nic: {
         type: String,
         unique: true,
-        required: true // Ensure that NIC is always provided
+        required: true, // Ensure that NIC is always provided
     },
     email: {
         type: String,
@@ -55,8 +55,8 @@ const StaffSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-});
+})
 
 // Create and export the Staff model
-const Staff = mongoose.model('Staff', StaffSchema);
-export default Staff;
+const Staff = mongoose.model('Staff', StaffSchema)
+export default Staff

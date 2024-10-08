@@ -41,15 +41,15 @@ import Cart from './Pages/order/Cart'
 import CheckOut from './Pages/order/checkOut'
 
 //Admin
-import Staff from './Pages/Admin/Astaff';
-import AdminDashboard from './Pages/Admin/Adashboard';
-import Users from './Pages/Admin/Ausers';
-import Finance from './Pages/Admin/Afinance';
-import Coupens from './Pages/Admin/Acoupons';
-import AddStaff from './Pages/Admin/AaddStaff';
-import UpdateStaff from './Pages/Admin/AupdateStaff';
-import AddCoupon from './Pages/Admin/AaddCoupons';
-import UpdateCoupon from './Pages/Admin/AupdateCoupon';
+import Staff from './Pages/Admin/Astaff'
+import AdminDashboard from './Pages/Admin/Adashboard'
+import Users from './Pages/Admin/Ausers'
+import Finance from './Pages/Admin/Afinance'
+import Coupens from './Pages/Admin/Acoupons'
+import AddStaff from './Pages/Admin/AaddStaff'
+import UpdateStaff from './Pages/Admin/AupdateStaff'
+import AddCoupon from './Pages/Admin/AaddCoupons'
+import UpdateCoupon from './Pages/Admin/AupdateCoupon'
 
 // Farmer Pages
 import FarmerLogin from './Pages/farmer/FarmerLogin'
@@ -176,22 +176,23 @@ const router = createBrowserRouter(
                 <Route path="/AdminDashboard" element={<AdminDashboard />} />
 
                 {/* Staff */}
-                <Route path="/staff" element={< Staff/>} />
+                <Route path="/staff" element={<Staff />} />
                 <Route path="/addstaff" element={<AddStaff />} />
                 <Route path="/UpdateStaff/:id" element={<UpdateStaff />} />
 
                 {/* users */}
-                <Route path="/users" element={< Users/>} />
+                <Route path="/users" element={<Users />} />
 
                 {/* Coupon */}
-                <Route path="/coupons" element={< Coupens/>} />
-                <Route path="/addcoupons" element={< AddCoupon/>} />
-                <Route path="/updatecoupon/:id" element={< UpdateCoupon/>} />
-                <Route path="/coupens" element={< Coupens/>} />
-                <Route path="/finance" element={< Finance/>} />{/* 
+                <Route path="/coupons" element={<Coupens />} />
+                <Route path="/addcoupons" element={<AddCoupon />} />
+                <Route path="/updatecoupon/:id" element={<UpdateCoupon />} />
+                <Route path="/coupens" element={<Coupens />} />
+                <Route path="/finance" element={<Finance />} />
+                {/* 
                 <Route path="/dashboard" element={< Dashboard/>} />
                  */}
-                
+
                 {/* Catch-all for 404 */}
                 <Route path="*" element={<NotFound />} />
             </Route>

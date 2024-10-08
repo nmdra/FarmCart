@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
-import axios from '../../axios';
-import Sidebar from '../../Components/Admin/AsideBar.jsx'; 
-import { useNavigate } from 'react-router-dom';
-import { useDisclosure } from '@nextui-org/react';
+import { useEffect, useMemo, useState } from 'react'
+import axios from '../../axios'
+import Sidebar from '../../Components/Admin/AsideBar.jsx'
+import { useNavigate } from 'react-router-dom'
+import { useDisclosure } from '@nextui-org/react'
 import {
     Input,
     Pagination,
@@ -14,54 +14,56 @@ import {
     TableRow,
     Tooltip,
     Button,
-} from '@nextui-org/react';
-import { FaRegEye } from 'react-icons/fa';
-import { MdDeleteSweep } from 'react-icons/md';
-import Loading from '../../Components/Loading';
-import Swal from 'sweetalert2';
+} from '@nextui-org/react'
+import { FaRegEye } from 'react-icons/fa'
+import { MdDeleteSweep } from 'react-icons/md'
+import Loading from '../../Components/Loading'
+import Swal from 'sweetalert2'
 
 const Staff = () => {
-    const [staffMembers, setStaffMembers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [refetch, setRefetch] = useState(false);
-    const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('');
+    const [staffMembers, setStaffMembers] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [refetch, setRefetch] = useState(false)
+    const [page, setPage] = useState(1)
+    const [search, setSearch] = useState('')
 
-    const rowsPerPage = 5;
-    const navigate = useNavigate();
+    const rowsPerPage = 5
+    const navigate = useNavigate()
 
     // Fetch staff members
     useEffect(() => {
         const fetchStaffMembers = async () => {
-            setLoading(true);
+            setLoading(true)
             try {
-                const { data } = await axios.get('/staff');
-                setStaffMembers(data);
+                const { data } = await axios.get('/staff')
+                setStaffMembers(data)
             } catch (error) {
-                console.error('Error fetching staff members:', error);
+                console.error('Error fetching staff members:', error)
             } finally {
-                setLoading(false);
+                setLoading(false)
             }
-        };
+        }
 
-        fetchStaffMembers();
-    }, [refetch]);
+        fetchStaffMembers()
+    }, [refetch])
 
     // Search functionality
     const filteredStaff = useMemo(() => {
         return staffMembers.filter((member) =>
-            `${member.firstName} ${member.lastName}`.toLowerCase().includes(search.toLowerCase())
-        );
-    }, [search, staffMembers]);
+            `${member.firstName} ${member.lastName}`
+                .toLowerCase()
+                .includes(search.toLowerCase())
+        )
+    }, [search, staffMembers])
 
     // Pagination
     const items = useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        return filteredStaff.slice(start, end);
-    }, [page, filteredStaff]);
+        const start = (page - 1) * rowsPerPage
+        const end = start + rowsPerPage
+        return filteredStaff.slice(start, end)
+    }, [page, filteredStaff])
 
-    const pages = Math.ceil(filteredStaff.length / rowsPerPage);
+    const pages = Math.ceil(filteredStaff.length / rowsPerPage)
 
     const handleDeleteStaff = async (staffId) => {
         const result = await Swal.fire({
@@ -71,34 +73,42 @@ const Staff = () => {
             showCancelButton: true,
             confirmButtonText: 'Yes',
             cancelButtonText: 'Cancel',
-        });
+        })
 
         if (result.isConfirmed) {
             try {
-                await axios.delete(`/staff/${staffId}`);
-                Swal.fire('Deleted!', 'Staff member has been deleted.', 'success');
-                setRefetch((prev) => !prev);
+                await axios.delete(`/staff/${staffId}`)
+                Swal.fire(
+                    'Deleted!',
+                    'Staff member has been deleted.',
+                    'success'
+                )
+                setRefetch((prev) => !prev)
             } catch (error) {
-                console.error('Error deleting staff:', error);
-                Swal.fire('Error!', 'There was an error deleting the staff member.', 'error');
+                console.error('Error deleting staff:', error)
+                Swal.fire(
+                    'Error!',
+                    'There was an error deleting the staff member.',
+                    'error'
+                )
             }
         }
-    };
+    }
 
     const handleAddNewStaff = () => {
-        navigate('/AddStaff');
-    };
+        navigate('/AddStaff')
+    }
 
     const handleEditStaff = (memberId) => {
-        navigate(`/updatestaff/${memberId}`);
-    };
+        navigate(`/updatestaff/${memberId}`)
+    }
 
     if (loading) {
         return (
             <div className="flex flex-1 min-h-screen justify-center items-center">
                 <Loading />
             </div>
-        );
+        )
     }
 
     return (
@@ -110,7 +120,9 @@ const Staff = () => {
 
                 <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
                     <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-lg font-semibold text-gray-800">Staff Members</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">
+                            Staff Members
+                        </h3>
                         <button
                             onClick={handleAddNewStaff}
                             className="bg-green-500 text-white hover:bg-green-600 font-semibold py-2 px-4 rounded text-center"
@@ -127,19 +139,22 @@ const Staff = () => {
                         />
                     </div>
 
-                    <Table aria-label="Staff Members Table" bottomContent={
-                        <div className="flex w-full justify-center">
-                            <Pagination
-                                isCompact
-                                showControls
-                                showShadow
-                                color="primary"
-                                page={page}
-                                total={pages}
-                                onChange={(page) => setPage(page)}
-                            />
-                        </div>
-                    }>
+                    <Table
+                        aria-label="Staff Members Table"
+                        bottomContent={
+                            <div className="flex w-full justify-center">
+                                <Pagination
+                                    isCompact
+                                    showControls
+                                    showShadow
+                                    color="primary"
+                                    page={page}
+                                    total={pages}
+                                    onChange={(page) => setPage(page)}
+                                />
+                            </div>
+                        }
+                    >
                         <TableHeader>
                             <TableColumn>Id</TableColumn>
                             <TableColumn>Full Name</TableColumn>
@@ -149,13 +164,19 @@ const Staff = () => {
                         </TableHeader>
                         <TableBody>
                             {items.map((member, index) => (
-                                <TableRow key={member._id} className="border-b-1">
+                                <TableRow
+                                    key={member._id}
+                                    className="border-b-1"
+                                >
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{`${member.firstName} ${member.lastName}`}</TableCell>
                                     <TableCell>{member.email}</TableCell>
                                     <TableCell>{member.role}</TableCell>
                                     <TableCell className="flex gap-6 justify-center items-center h-16">
-                                        <Tooltip color="secondary" content="More details">
+                                        <Tooltip
+                                            color="secondary"
+                                            content="More details"
+                                        >
                                             <span className="text-lg text-blue-700 cursor-pointer active:opacity-50">
                                                 <FaRegEye
                                                     onClick={() => {
@@ -164,16 +185,32 @@ const Staff = () => {
                                                 />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip color="warning" content="Edit staff">
+                                        <Tooltip
+                                            color="warning"
+                                            content="Edit staff"
+                                        >
                                             <span className="text-lg text-warning cursor-pointer active:opacity-50">
-                                                <Button onClick={() => handleEditStaff(member._id)}>Edit</Button>
+                                                <Button
+                                                    onClick={() =>
+                                                        handleEditStaff(
+                                                            member._id
+                                                        )
+                                                    }
+                                                >
+                                                    Edit
+                                                </Button>
                                             </span>
                                         </Tooltip>
-                                        <Tooltip color="danger" content="Delete staff">
+                                        <Tooltip
+                                            color="danger"
+                                            content="Delete staff"
+                                        >
                                             <span className="text-lg text-danger cursor-pointer active:opacity-50">
                                                 <MdDeleteSweep
                                                     onClick={() => {
-                                                        handleDeleteStaff(member._id);
+                                                        handleDeleteStaff(
+                                                            member._id
+                                                        )
                                                     }}
                                                 />
                                             </span>
@@ -188,7 +225,7 @@ const Staff = () => {
                 </main>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Staff;
+export default Staff

@@ -6,14 +6,14 @@ import {
     updateStaffMember,
     deleteStaffMember,
     getRoleOptions,
-    getStaffCount
+    getStaffCount,
 } from '../../controllers/Admin/AstaffController.js'
 
 const router = express.Router()
 
 // Fetch all staff members
 router.get('/', getAllStaff)
-router.get('/count',getStaffCount)
+router.get('/count', getStaffCount)
 
 // Fetch a single staff member by ID
 router.get('/:id', getStaffById)
@@ -27,10 +27,6 @@ router.put('/:id', updateStaffMember)
 // Delete a staff member by ID
 router.delete('/:id', deleteStaffMember)
 
-
-
-router.get('/email-options', getRoleOptions);
-
-
+router.get('/email-options', getRoleOptions)
 
 export default router
