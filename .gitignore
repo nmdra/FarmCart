@@ -36,3 +36,5 @@ dist-ssr
 certs
 
 docker-compose.caddy.yml
+
+uploads

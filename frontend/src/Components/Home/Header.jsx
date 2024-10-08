@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import logo from '../../assets/Logo.png'
+import logo from '../../assets/logo.png'
 import CartButton from './CartButton'
 
 const Header = () => {
@@ -179,7 +179,7 @@ const Header = () => {
                                     Become a Seller
                                 </Link>
                                 <Link
-                                    to="/become-a-driver"
+                                    to="/register-driver"
                                     className="text-black hover:text-[#99DD05] cursor-pointer hover:underline text-sm"
                                 >
                                     Become a Driver
