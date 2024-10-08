@@ -27,9 +27,7 @@ export const sendApprovalEmail = asyncHandler(async (req, res) => {
         },
     })
 
-
-
-        // The URL for the driver to follow (this could be your site's login or another relevant page)
+    // The URL for the driver to follow (this could be your site's login or another relevant page)
     const loginUrl = `/driver/login`
 
     // Email content
