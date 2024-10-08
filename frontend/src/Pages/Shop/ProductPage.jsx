@@ -44,8 +44,6 @@ const ProductPage = ({ onAddToCart }) => {
         /*navigate(`/cart`)*/
 
         toast.success('Item added to cart!')
-
-
     }
 
     useEffect(() => {
