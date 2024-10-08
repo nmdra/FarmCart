@@ -27,7 +27,7 @@ export const useLogin = () => {
             dispatch({ type: 'LOGIN', payload: json })
 
             setIsLoading(false)
-            navigate('/settings')
+            navigate('/userDashboard')
         } catch (error) {
             console.error(error)
             if (

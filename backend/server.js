@@ -15,6 +15,7 @@ import couponRouter from './routes/couponRouter.js'
 
 //Admin imports
 import staffRoutes from './routes/Admin/AstaffRoute.js'
+import customerRoute from './routes/Admin/AuserRoute.js'
 
 //Delivery imports
 import DLFormRoutes from './routes/DLFormRoutes.js' //DL
@@ -69,6 +70,7 @@ app.use('/api/coupon', couponRouter)
 
 //Admin Routes
 app.use('/api/staff', staffRoutes)
+app.use('/api/customers', customerRoute)
 
 //Delivery Routes
 app.use('/api/images', imageHandler) //DL

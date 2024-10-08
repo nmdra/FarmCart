@@ -35,7 +35,7 @@ function UserAllOrders() {
         if (user?._id) {
             fetchUserOrders()
         }
-    }, [user])
+    }, [])
 
     if (loading) {
         return (

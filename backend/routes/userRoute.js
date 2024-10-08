@@ -8,8 +8,10 @@ import {
     registerUser,
     resetPassword,
     sendVerifyEmail,
+    updatePassword,
     updateUser,
     upgradeMembership,
+    validatePassword,
     verifyEmail,
 } from '../controllers/userController.js'
 import protect from '../middlewares/authMiddleware.js'
@@ -25,6 +27,8 @@ router.route('/reset-pass').post(resetPassword)
 router.route('/resendEmail').post(sendVerifyEmail)
 router.route('/upgrade').post(protect, upgradeMembership)
 router.route('/paymentIntent').post(protect, paymentUser)
+router.route('/validate-password').post(protect, validatePassword) // Route to validate the current password
+router.route('/update-password').put(protect, updatePassword) // Route to update the password
 
 router.route('/:id').get(protect, getUserById)
 

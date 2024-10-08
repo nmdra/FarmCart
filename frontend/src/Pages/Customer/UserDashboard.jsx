@@ -15,7 +15,7 @@ function Dashboard() {
     const [orders, setOrders] = useState([])
     const user = JSON.parse(localStorage.getItem('user'))
 
-    const rowsPerPage = 1
+    const rowsPerPage = 2
     const pages = Math.ceil(orders?.length / rowsPerPage)
 
     const items = useMemo(() => {
@@ -45,7 +45,7 @@ function Dashboard() {
         if (user?._id) {
             fetchUserOrders()
         }
-    }, [user])
+    }, [])
 
     if (loading) {
         return <Loading />
@@ -153,7 +153,7 @@ function Dashboard() {
                 </div>
                 <OrderTable
                     items={items}
-                    page={page}
+                    page={pages}
                     pages={1}
                     setPage={setPage}
                 />

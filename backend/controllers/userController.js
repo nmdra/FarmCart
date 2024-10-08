@@ -3,7 +3,6 @@ import { generateToken, tokenToVerify } from '../utils/generateToken.js'
 import { sendEmail } from '../utils/sendEmail.js'
 import { addDays } from 'date-fns' // Use this for adding days to the current date
 import jwt from 'jsonwebtoken'
-import crypto from 'crypto-js'
 import Stripe from 'stripe'
 
 // Initialize the Stripe instance with the secret key
@@ -453,5 +452,67 @@ export const paymentUser = async (req, res) => {
             message: 'Failed to create Payment Intent',
             error: error.message,
         })
+    }
+}
+
+// Function to validate the current password
+export const validatePassword = async (req, res) => {
+    const { currentPassword } = req.body
+
+    try {
+        const user = await User.findById(req.user._id) // Ensure req.user is populated with the logged-in user's information
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        console.log(currentPassword)
+        // Check if the provided password matches the stored hashed password
+        const isMatch = await user.matchPassword(currentPassword) // Define this method in your user model
+        console.log(isMatch)
+
+        if (!isMatch) {
+            return res.status(400).json({ valid: false })
+        }
+
+        return res.json({ valid: true })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Server error' })
+    }
+}
+
+// Update function for changing password
+export const updatePassword = async (req, res) => {
+    const { newPassword } = req.body
+
+    try {
+        const user = await User.findById(req.user._id) // Get the user
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        // Hash the new password before saving
+        user.password = newPassword
+
+        // Save updated user
+        const updatedUser = await user.save()
+
+        if (updatedUser) {
+            res.status(200).json({
+                message: 'Password updated successfully',
+                user: {
+                    _id: updatedUser._id,
+                    email: updatedUser.email,
+                },
+            })
+        } else {
+            res.status(500)
+            throw new Error('User update failed')
+        }
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ message: 'Server error' })
     }
 }
