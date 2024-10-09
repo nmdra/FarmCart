@@ -9,21 +9,34 @@ import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sideb
 const DLViewDelivery = () => {
     const { id } = useParams() // Get the delivery ID from the URL
     const [delivery, setDelivery] = useState(null) // State for storing delivery data
+    const [driver, setDriver] = useState(null) // State for storing driver data
+
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate() // To handle navigation if needed
 
+    // Fetch delivery data and then fetch driver details
     useEffect(() => {
-        const fetchDelivery = async () => {
+        const fetchDeliveryAndDriver = async () => {
             try {
-                const { data } = await axios.get(`/api/delivery/d/${id}`) // Fetch delivery by ID
-                setDelivery(data)
-                setLoading(false)
+                // Fetch delivery by ID
+                const { data: deliveryData } = await axios.get(`/api/delivery/d/${id}`)
+                setDelivery(deliveryData)
+
+                // Extract the driver ID from the delivery data
+                const driverId = deliveryData.driverID
+
+                // Fetch the driver details using the driver ID
+                const { data: driverData } = await axios.get(`/api/drivers/get/${driverId}`)
+                setDriver(driverData)
+
+                setLoading(false) // Set loading to false after both data are fetched
             } catch (error) {
-                console.error('Error fetching delivery:', error)
+                console.error('Error fetching delivery or driver details:', error)
+                setLoading(false)
             }
         }
 
-        fetchDelivery()
+        fetchDeliveryAndDriver()
     }, [id])
 
     if (loading) return <div className="text-center mt-10">Loading...</div>
@@ -58,6 +71,8 @@ const DLViewDelivery = () => {
                 ['Tracking ID', delivery.trackingID],
                 ['Order ID', delivery.oID],
                 ['Driver ID', delivery.drID],
+                ['Driver Name', driver.fullName],
+
                 ['Shop Name', delivery.shopName],
                 ['Pickup Address', delivery.pickupAddress],
                 ['Customer Name', delivery.customerName || 'N/A'],
@@ -91,7 +106,6 @@ const DLViewDelivery = () => {
             </aside>
 
             {/* Main content */}
-
             <main className="flex-1 ml-64 p-10 md:p-16 overflow-y-auto">
                 <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg border-l-4 border-green-500">
                     {' '}
@@ -101,7 +115,7 @@ const DLViewDelivery = () => {
                         {/* Increased font size and made it bolder */}
                         Delivery Details
                     </h2>
-                    {delivery ? (
+                    {delivery && driver ? (
                         <div className="overflow-x-auto">
                             <table className="mx-auto w-full text-left text-gray-700">
                                 <tbody>
@@ -109,6 +123,8 @@ const DLViewDelivery = () => {
                                         ['Tracking ID', delivery.trackingID],
                                         ['Order ID', delivery.oID],
                                         ['Driver ID', delivery.drID],
+                                        ['Driver Name', driver.fullName],
+
                                         ['Shop Name', delivery.shopName],
                                         [
                                             'Pickup Address',
