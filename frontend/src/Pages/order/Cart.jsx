@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 // import { useGlobalRefetch } from '../Context/GlobalRefetch'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import ProgressBar from '../../Components/Order/ProgressBar'
 
 const Cart = () => {
     const [cart, setCart] = useState([])
@@ -80,8 +81,9 @@ const Cart = () => {
 
     return (
         <div>
-            <section className="bg-white py-4 antialiased md:py-8">
-                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 ml-10 p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <ProgressBar currentStep={1} />
+            <section className="bg-white py-2 md:py-4 antialiased">
+                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 ml-10 p-4 bg-gray-100 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl">
                         My Shopping Cart
                     </h2>
