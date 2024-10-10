@@ -5,12 +5,14 @@ import jsPDF from 'jspdf'
 import 'jspdf-autotable' // Import jsPDF-autotable for table formatting
 import farmcartLogo from '../../../assets/logo.png' // Make sure you have your logo here
 import DLmanageSidebar from '../../../Components/delivery/DeliverySidebar' // Sidebar component
+import Loading from '../../../Components/Loading'
 
 const DLViewDelivery = () => {
     const { id } = useParams() // Get the delivery ID from the URL
     const [delivery, setDelivery] = useState(null) // State for storing delivery data
     const [driver, setDriver] = useState(null) // State for driver info
     const [loading, setLoading] = useState(true)
+
     const driverToken = localStorage.getItem('driverToken') // Get driver token from localStorage
     const navigate = useNavigate()
 
@@ -47,7 +49,13 @@ const DLViewDelivery = () => {
         fetchDelivery()
     }, [driverToken, id, navigate])
 
-    if (loading) return <div className="text-center mt-10">Loading...</div>
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
 
     // Function to generate the PDF
     const generatePDF = () => {
@@ -103,6 +111,14 @@ const DLViewDelivery = () => {
 
         // Save the PDF with a dynamic name based on the delivery tracking ID
         doc.save(`Delivery_${delivery.trackingID}.pdf`)
+    }
+
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
     }
 
     return (

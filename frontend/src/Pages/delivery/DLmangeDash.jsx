@@ -87,9 +87,13 @@ const DLmanageDash = () => {
     }, [])
 
     if (loading) {
-        return <div className="flex flex-1 min-h-screen justify-center items-center">
-        <Loading />
-    </div> // Display a loading message while fetching data
+
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+
     }
 
     if (error) {

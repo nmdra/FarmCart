@@ -70,7 +70,6 @@ import DLDriverRegistrationForm from './Pages/delivery/DLDriverRegistrationForm'
 import DLApproveDriver from './Pages/delivery/DLApproveDriver' // Ensure the path is correct
 import DLDriverAccept from './Pages/delivery/DLDriverAccept'
 import DLImageUpload from './Pages/delivery/DLImageUpload'
-import DLSendEmail from './Pages/delivery/DLSendEmail' // Import the DLSendEmail component
 import DLLogin from './Pages/delivery/DLLogin' // Added DLLogin import
 
 import DeliveryDashboard from './Pages/delivery/DLDriverDashboard'
@@ -89,6 +88,8 @@ import DLViewDelivery from './Pages/delivery/DLviewDelivery' // Import the
 import OngoingDelivery from './Pages/delivery/driver/OngoingDelivery' // Import the OngoingDelivery component
 import ViewDelivery from './Pages/delivery/driver/ViewDelivery' // Import the ViewDelivery page
 import ViewDeliveries from './Pages/delivery/driver/ViewDeliveries' // Import the ViewDeliveries page
+import DLMap from './Pages/delivery/DLMap' // Import the DLMap component
+import IncomePage from './Pages/delivery/driver/incomepage' // Import the DLList component
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -248,6 +249,8 @@ const router = createBrowserRouter(
                 />{' '}
                 {/* Route for viewing a specific delivery */}
                 <Route path="/driver/deliveries" element={<ViewDeliveries />} />
+                <Route path="/driver/income" element={<IncomePage />} />
+                <Route path="/driver/map" element={<DLMap />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
 

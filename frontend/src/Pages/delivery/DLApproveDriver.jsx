@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import axios from '../../axios' // Ensure the path matches your project structure
 import { useNavigate } from 'react-router-dom'
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Import the DeliverySidebar component
+import Loading from '../../Components/Loading'
 
 const DLApproveDriver = () => {
     const [pendingForms, setPendingForms] = useState([])
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
 
     // Fetch pending forms when the component loads
     useEffect(() => {
@@ -13,8 +15,10 @@ const DLApproveDriver = () => {
             try {
                 const { data } = await axios.get('/d_forms/pending-forms')
                 setPendingForms(data)
+                setLoading(false)
             } catch (error) {
                 console.error('Error fetching pending forms:', error)
+                setLoading(false)
             }
         }
 
@@ -26,6 +30,13 @@ const DLApproveDriver = () => {
         navigate(`/manager/approve-driver/${id}`)
     }
 
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
     // Display a message if there are no pending forms
     if (pendingForms.length === 0) {
         return (
