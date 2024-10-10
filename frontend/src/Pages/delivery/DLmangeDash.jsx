@@ -46,7 +46,7 @@ const DLmanageDash = () => {
 
                 // Fetch deliveries that are not "Delivered"
                 const { data } = await axios.get('/api/delivery/deliveries', {
-                    params: { status: 'notDelivered' }, // Assuming you have a backend filter by status
+                    params: { status: 'notDelivered' }, // Assuming have a backend filter by status
                 })
 
                 // Filter deliveries with status other than "Delivered"

@@ -50,6 +50,7 @@ import AddStaff from './Pages/Admin/AaddStaff'
 import UpdateStaff from './Pages/Admin/AupdateStaff'
 import AddCoupon from './Pages/Admin/AaddCoupons'
 import UpdateCoupon from './Pages/Admin/AupdateCoupon'
+import AdminLogin from './Components/Admin/admnlogins'
 
 // Farmer Pages
 import FarmerLogin from './Pages/farmer/FarmerLogin'
@@ -190,6 +191,8 @@ const router = createBrowserRouter(
                 <Route path="/updatecoupon/:id" element={<UpdateCoupon />} />
                 <Route path="/coupens" element={<Coupens />} />
                 <Route path="/finance" element={<Finance />} />
+                <Route path="/adl" element={<AdminLogin />} />
+
                 {/* 
                 <Route path="/dashboard" element={< Dashboard/>} />
                  */}
