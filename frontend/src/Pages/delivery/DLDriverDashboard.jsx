@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import DeliverySidebar from '../../Components/delivery/DeliverySidebar'
+import Loading from '../../Components/Loading'
+
 import {
     FaCheck,
     FaTruck,
@@ -115,7 +117,13 @@ const DLDriverDashboard = () => {
         navigate(`/driver/delivery/${deliveryId}`) // Redirect to delivery view page
     }
 
-    if (loading) return <div>Loading...</div>
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
 
     // Helper function to render delivery status with icons
     const renderDeliveryStatus = (status) => {
@@ -151,6 +159,9 @@ const DLDriverDashboard = () => {
             </div>
         )
     }
+
+
+    
 
     return (
         <div className="flex min-h-screen bg-gray-50">

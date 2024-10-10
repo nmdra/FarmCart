@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import DeliverySidebar from '../../../Components/delivery/DeliverySidebar'
+import Loading from '../../../Components/Loading'
+
 
 const DriverIncomePage = () => {
     const [driver, setDriver] = useState(null)
@@ -39,7 +41,14 @@ const DriverIncomePage = () => {
         fetchDriverProfile() // Fetch the driver profile on component load
     }, [navigate])
 
-    if (loading) return <div>Loading...</div>
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
+
 
     return (
         <div className="flex min-h-screen bg-gray-50">

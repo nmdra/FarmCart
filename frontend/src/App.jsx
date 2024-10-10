@@ -68,7 +68,6 @@ import DLDriverRegistrationForm from './Pages/delivery/DLDriverRegistrationForm'
 import DLApproveDriver from './Pages/delivery/DLApproveDriver' // Ensure the path is correct
 import DLDriverAccept from './Pages/delivery/DLDriverAccept'
 import DLImageUpload from './Pages/delivery/DLImageUpload'
-import DLSendEmail from './Pages/delivery/DLSendEmail' // Import the DLSendEmail component
 import DLLogin from './Pages/delivery/DLLogin' // Added DLLogin import
 
 import DeliveryDashboard from './Pages/delivery/DLDriverDashboard'

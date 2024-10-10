@@ -3,11 +3,15 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from '../../axios' // Corrected path
 import Swal from 'sweetalert2' // For sweet alerts
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Import the DeliverySidebar component
+import Loading from '../../Components/Loading'
+
 
 const DLDriverAccept = () => {
     const { id } = useParams() // Get the form ID from the URL
     const [driverDetails, setDriverDetails] = useState(null)
     const [selectedImage, setSelectedImage] = useState(null)
+    const [loading, setLoading] = useState(true)
+
     const navigate = useNavigate()
 
     const handleImageClick = (imageUrl) => {
@@ -23,8 +27,12 @@ const DLDriverAccept = () => {
             try {
                 const { data } = await axios.get(`/d_forms/${id}`)
                 setDriverDetails(data)
+                setLoading(false)
+
             } catch (error) {
                 console.error('Error fetching driver details:', error)
+                setLoading(false)
+
             }
         }
 
@@ -100,6 +108,14 @@ const DLDriverAccept = () => {
         }
     }
 
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
+    
     if (!driverDetails)
         return <div className="text-center mt-10">Loading...</div>
 

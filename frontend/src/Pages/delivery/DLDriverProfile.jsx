@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import DeliverySidebar from '../../Components/delivery/DeliverySidebar'
 import Swal from 'sweetalert2'
+import Loading from '../../Components/Loading'
+
 
 const DLDriverProfile = () => {
     const [driverDetails, setDriverDetails] = useState({
@@ -25,6 +27,7 @@ const DLDriverProfile = () => {
     const [loading, setLoading] = useState(true)
     const [selectedImage, setSelectedImage] = useState(null) // State for image modal
     const navigate = useNavigate()
+    
 
     // Fetch driver details on component mount
     useEffect(() => {
@@ -86,7 +89,13 @@ const DLDriverProfile = () => {
     const licenseImageUrl = `${driverDetails.licenseImageUrl}`
     const personalImageUrl = `${driverDetails.personalImageUrl}`
 
-    if (loading) return <div>Loading...</div>
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-50">

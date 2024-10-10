@@ -5,6 +5,7 @@ import jsPDF from 'jspdf'
 import 'jspdf-autotable' // Import jsPDF-autotable for table formatting
 import farmcartLogo from '../../assets/logo.png' // Make sure you have your logo here
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sidebar component
+import Loading from '../../Components/Loading'
 
 const DLViewDelivery = () => {
     const { id } = useParams() // Get the delivery ID from the URL
@@ -39,8 +40,13 @@ const DLViewDelivery = () => {
         fetchDeliveryAndDriver()
     }, [id])
 
-    if (loading) return <div className="text-center mt-10">Loading...</div>
-
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
     // Function to generate the PDF
     const generatePDF = () => {
         const doc = new jsPDF()
