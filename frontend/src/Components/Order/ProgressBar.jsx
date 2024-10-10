@@ -2,12 +2,12 @@ import React from 'react'
 import { FaShoppingCart, FaShippingFast, FaCheckCircle } from 'react-icons/fa'
 
 const ProgressBar = ({ currentStep }) => {
-    const totalSteps = 3 
-    
+    const totalSteps = 3
+
     const icons = [
         <FaShoppingCart key="cart" />,
         <FaShippingFast key="shipping" />,
-        <FaCheckCircle key="done" />, 
+        <FaCheckCircle key="done" />,
     ]
 
     return (

@@ -226,20 +226,24 @@ const UpdateProduct = () => {
                                         name="pricePerKg"
                                         className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                         value={formData.pricePerKg}
-                                        onChange={handleChange} onKeyDown={(e) => {
+                                        onChange={handleChange}
+                                        onKeyDown={(e) => {
                                             // Prevent typing negative, 'e', or zero at the start
                                             if (
-                                                e.key === '-' || e.key === '+' || e.key === 'e' || 
-                                                (e.key === '0' && !formData.pricePerKg)  // prevent typing zero at the start
+                                                e.key === '-' ||
+                                                e.key === '+' ||
+                                                e.key === 'e' ||
+                                                (e.key === '0' &&
+                                                    !formData.pricePerKg) // prevent typing zero at the start
                                             ) {
-                                                e.preventDefault();
+                                                e.preventDefault()
                                             }
                                         }}
                                         onInput={(e) => {
-                                            const value = e.target.value;
+                                            const value = e.target.value
                                             // Prevent numbers less than 1
                                             if (parseFloat(value) < 1) {
-                                                e.target.value = '1'; // Reset to 1 if the value is less than 1
+                                                e.target.value = '1' // Reset to 1 if the value is less than 1
                                             }
                                         }}
                                         required
