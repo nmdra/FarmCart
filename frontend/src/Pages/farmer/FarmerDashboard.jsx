@@ -337,6 +337,8 @@ const Dashboard = () => {
                                     placeholder="Search orders..."
                                     startContent={<IoSearch />}
                                     onChange={(e) => setSearch(e.target.value)}
+                                    className="border border-gray-50 hover:border-green-500 focus:border-green-500 focus:outline-none transition duration-200 rounded-full"
+
                                 />
                             </div>
                             <div

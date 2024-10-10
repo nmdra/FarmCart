@@ -11,7 +11,7 @@ const ProgressBar = ({ currentStep }) => {
     ]
 
     return (
-        <div className="flex items-center justify-center mt-3 mb-0">
+        <div className="flex items-center justify-center mt-3 mb-0 ">
             {Array.from({ length: totalSteps }, (_, index) => (
                 <div key={index} className="flex items-center">
                     <div
