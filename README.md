@@ -73,7 +73,7 @@
 <details>
 <summary>Click Me</summary>
 
-[![Diagram-2](https://github.com/user-attachments/assets/53bf02e1-cf86-4c12-8b64-8d97187b34dc)](https://excalidraw.com/#json=pIDjSIXEcYZ4rRh2eBW6B,SFv-6rNpKP1HBClEt2vTZw)
+[![Diagram-2](https://github.com/user-attachments/assets/bd6483e1-58c5-4ec0-9e02-f56f7f8feb78)](https://excalidraw.com/#json=2FhyHBhIRC7GNhxnmV4U6,VCwEk9O0trP7QRRWLxu6OA)
 
 </details>
 
