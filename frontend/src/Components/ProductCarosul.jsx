@@ -15,13 +15,16 @@ const ProductCarousel = () => {
             try {
                 const { data } = await axios.get('/api/userShops/random')
                 setProducts(data)
+                console.log(data)
             } catch (error) {
                 console.error('Failed to fetch products', error)
+                // Set error message to state if required
+                setError('Failed to load products. Please try again later.')
             }
         }
 
         fetchProducts()
-    }, [])
+    }, []) // This will only run once
 
     const handleProductClick = (shopId, productId) => {
         // Navigate to product details page

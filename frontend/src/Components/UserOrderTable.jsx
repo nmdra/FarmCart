@@ -148,9 +148,12 @@ const UserOrderTable = ({ items, page, pages, setPage }) => {
                                                         'OnTheWay'
                                                       ? 'bg-indigo-500 p-1 rounded-md text-white ring-0'
                                                       : item.orderStatus ===
-                                                          'Rejected'
-                                                        ? 'bg-red-500 p-1 rounded-md text-white ring-0'
-                                                        : 'bg-gray-500 p-1 rounded-md text-white ring-0'
+                                                          'Assigning'
+                                                        ? 'bg-indigo-500 p-1 rounded-md text-white ring-0'
+                                                        : item.orderStatus ===
+                                                            'Rejected'
+                                                          ? 'bg-red-500 p-1 rounded-md text-white ring-0'
+                                                          : 'bg-gray-500 p-1 rounded-md text-white ring-0'
                                     }
                                 >
                                     {item.orderStatus}

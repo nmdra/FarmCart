@@ -3,7 +3,10 @@ import { generateToken, tokenToVerify } from '../utils/generateToken.js'
 import { sendEmail } from '../utils/sendEmail.js'
 import { addDays } from 'date-fns' // Use this for adding days to the current date
 import jwt from 'jsonwebtoken'
-import crypto from 'crypto-js'
+import Stripe from 'stripe'
+
+// Initialize the Stripe instance with the secret key
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 // @desc    Register a new user
 // @route   POST /api/users
@@ -421,36 +424,95 @@ export const resetPassword = async (req, res) => {
     }
 }
 
-export const generateHash = async (req, res) => {
-    const { amount } = req.body
+export const paymentUser = async (req, res) => {
+    const { amount, id, email } = req.body
 
-    // Replace with your actual Merchant ID and Secret
-    const merchantId = process.env.PAYHERE_MERCHANT_ID
-    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET
+    try {
+        // Create a Payment Intent with the specified amount and currency
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount, // Amount in cents (smallest currency unit)
+            currency: 'lkr', // Sri Lankan Rupees
+            description: `FarmCart order for ${email}`, // Payment description
+            payment_method: id, // Stripe Payment Method ID
+            confirm: true, // Confirm payment automatically
+            return_url: `${process.env.SITE_URL}/paymentComplete`, // Redirect after payment completion
+        })
 
-    // Generate a unique order ID
-    const orderId = Math.random().toString(36).substring(2, 11)
+        // Send a success response with the Payment Intent details
+        res.json({
+            success: true,
+            message: 'Payment Intent created successfully!',
+            paymentIntent,
+        })
+    } catch (error) {
+        console.error('Error creating Payment Intent:', error)
+        // Send an error response if the payment creation fails
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create Payment Intent',
+            error: error.message,
+        })
+    }
+}
 
-    // Format the amount
-    const formattedAmount = parseFloat(amount).toFixed(2)
+// Function to validate the current password
+export const validatePassword = async (req, res) => {
+    const { currentPassword } = req.body
 
-    const currency = 'LKR'
+    try {
+        const user = await User.findById(req.user._id) // Ensure req.user is populated with the logged-in user's information
 
-    // Generate the hash
-    const hash = crypto
-        .MD5(
-            merchantId +
-                orderId +
-                formattedAmount +
-                currency +
-                crypto.MD5(merchantSecret).toString().toUpperCase()
-        )
-        .toString()
-        .toUpperCase()
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
 
-    // Return the hash and order ID
-    res.json({
-        orderId,
-        hash,
-    })
+        console.log(currentPassword)
+        // Check if the provided password matches the stored hashed password
+        const isMatch = await user.matchPassword(currentPassword) // Define this method in your user model
+        console.log(isMatch)
+
+        if (!isMatch) {
+            return res.status(400).json({ valid: false })
+        }
+
+        return res.json({ valid: true })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Server error' })
+    }
+}
+
+// Update function for changing password
+export const updatePassword = async (req, res) => {
+    const { newPassword } = req.body
+
+    try {
+        const user = await User.findById(req.user._id) // Get the user
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' })
+        }
+
+        // Hash the new password before saving
+        user.password = newPassword
+
+        // Save updated user
+        const updatedUser = await user.save()
+
+        if (updatedUser) {
+            res.status(200).json({
+                message: 'Password updated successfully',
+                user: {
+                    _id: updatedUser._id,
+                    email: updatedUser.email,
+                },
+            })
+        } else {
+            res.status(500)
+            throw new Error('User update failed')
+        }
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ message: 'Server error' })
+    }
 }

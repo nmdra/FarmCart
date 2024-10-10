@@ -19,7 +19,7 @@ router.get('/', cache('5 minutes'), getShops)
 
 // Route to fetch details of a specific shop by ID with caching
 // GET /api/shops/:id
-router.get('/random', cache('3 minutes'), getRandomProducts)
+router.get('/random', getRandomProducts)
 
 router.get('/:id', cache('5 minutes'), getShopById)
 

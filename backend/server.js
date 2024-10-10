@@ -14,10 +14,8 @@ import imageHandler from './routes/imageHandlerRoute.js'
 import couponRouter from './routes/couponRouter.js'
 
 //Admin imports
-import promotionRoutes from './routes/Admin/AdminPromotionRoutes.js'
-import productRoutes from './routes/Admin/AdminProductRoutes.js'
-import staffRoutes from './routes/Admin/AdminStaffRoutes.js'
-import customerRoutes from './routes/Admin/AdminCustomerRoutes.js'
+import staffRoutes from './routes/Admin/AstaffRoute.js'
+import customerRoute from './routes/Admin/AuserRoute.js'
 
 //Delivery imports
 import DLFormRoutes from './routes/DLFormRoutes.js' //DL
@@ -71,10 +69,8 @@ app.use('/api/images', imageHandler)
 app.use('/api/coupon', couponRouter)
 
 //Admin Routes
-app.use('/api/promotion', promotionRoutes)
-app.use('/api/product', productRoutes)
 app.use('/api/staff', staffRoutes)
-app.use('/api/customer', customerRoutes)
+app.use('/api/customers', customerRoute)
 
 //Delivery Routes
 app.use('/api/images', imageHandler) //DL

@@ -185,12 +185,12 @@ const UpdateProduct = () => {
     return (
         <div className="flex min-h-screen w-screen bg-gray-100">
             {/* Sidebar */}
-            <aside className="fixed top-36 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-8">
+            <aside className="fixed top-16 left-0 bottom-0 w-64 o bg-gray-50 shadow-md pl-8 pt-24">
                 <Sidebar />
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 ml-64 p-32 overflow-y-auto">
+            <div className="flex-1 ml-64 p-32 pt-20 overflow-y-auto">
                 {/* Update Product Form */}
                 <form
                     onSubmit={handleSubmit}
@@ -227,6 +227,25 @@ const UpdateProduct = () => {
                                         className="w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black"
                                         value={formData.pricePerKg}
                                         onChange={handleChange}
+                                        onKeyDown={(e) => {
+                                            // Prevent typing negative, 'e', or zero at the start
+                                            if (
+                                                e.key === '-' ||
+                                                e.key === '+' ||
+                                                e.key === 'e' ||
+                                                (e.key === '0' &&
+                                                    !formData.pricePerKg) // prevent typing zero at the start
+                                            ) {
+                                                e.preventDefault()
+                                            }
+                                        }}
+                                        onInput={(e) => {
+                                            const value = e.target.value
+                                            // Prevent numbers less than 1
+                                            if (parseFloat(value) < 1) {
+                                                e.target.value = '1' // Reset to 1 if the value is less than 1
+                                            }
+                                        }}
                                         required
                                     />
                                     {error.pricePerKg && (

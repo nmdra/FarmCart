@@ -34,14 +34,16 @@ const ProductPage = ({ onAddToCart }) => {
                 parseInt(cart[existingProductIndex].quantity) +
                 parseInt(quantity)
 
-            // console.log('existingProductIndex', existingProductIndex)
+            /// console.log('existingProductIndex', existingProductIndex)
         } else {
             cart.push(sanitizedProduct)
         }
 
         localStorage.setItem('cart', JSON.stringify(cart))
         // setRefetch()
-        navigate(`/cart`)
+        /*navigate(`/cart`)*/
+
+        toast.success('Item added to cart!')
     }
 
     useEffect(() => {
@@ -64,11 +66,12 @@ const ProductPage = ({ onAddToCart }) => {
     }
 
     const decreaseCount = () => {
-        setQuantity((prevCount) => (prevCount > 0 ? prevCount - 1 : 0))
+        setQuantity((prevCount) => (prevCount > 1 ? prevCount - 1 : 1))
     }
+
     return (
-        <section className="text-gray-600 body-font overflow-hidden mb-0">
-            <div className="container px-5 py-24 mx-auto ml-0">
+        <section className="text-gray-600 body-font overflow-hidden mb-0 mt-0">
+            <div className="container px-2 py-8 mx-auto border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="lg:w-4/5 mx-auto flex flex-wrap">
                     <img
                         alt={product.name}
@@ -176,7 +179,9 @@ const ProductPage = ({ onAddToCart }) => {
                     <p class="text-sm text-gray-700">
                         "This product is amazing! Very fresh and top quality."
                     </p>
-                    <p class="text-xs text-gray-500 mt-2">- John Doe</p>
+                    <p class="text-xs text-gray-500 mt-2">
+                        - Janith wijethunga
+                    </p>
                 </div>
 
                 <div class="border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
@@ -186,7 +191,7 @@ const ProductPage = ({ onAddToCart }) => {
                     <p class="text-sm text-gray-700">
                         "Good product but a bit pricey."
                     </p>
-                    <p class="text-xs text-gray-500 mt-2">- Jane Smith</p>
+                    <p class="text-xs text-gray-500 mt-2">- Sashika prasad</p>
                 </div>
 
                 <div class="border-b border-gray-300 pb-4 mb-4 ml-10 p-4 bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
@@ -196,8 +201,14 @@ const ProductPage = ({ onAddToCart }) => {
                     <p class="text-sm text-gray-700">
                         "Highly recommend! Will definitely buy again."
                     </p>
-                    <p class="text-xs text-gray-500 mt-2">- Alex Brown</p>
+                    <p class="text-xs text-gray-500 mt-2">- Chathura milan</p>
                 </div>
+            </div>
+
+            <div class="ml-10 p-4">
+                <button class="bg-yellow-500 ml-6 text-white font-semibold py-2 px-4 rounded-lg shadow-sm hover:bg-yellow-600 transition-colors duration-300">
+                    See More Reviews
+                </button>
             </div>
         </section>
     )

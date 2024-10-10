@@ -8,12 +8,14 @@ import {
     DeleteOrder,
     getShopByFarmerId,
     getOrderById,
+    getDailyOrders,
 } from '../controllers/orderController.js'
 const orderRouter = express.Router()
 
 orderRouter.get('/', getAllOrders)
 orderRouter.post('/', createOrder)
 orderRouter.post('/create-payment-intent', createPaymentIntent)
+orderRouter.get('/daily-orders', getDailyOrders)
 orderRouter.get('/get-user-orders/:id', getOrdersByUserId)
 orderRouter.put('/:id', updateOrderStatus)
 orderRouter.delete('/:id', DeleteOrder)
