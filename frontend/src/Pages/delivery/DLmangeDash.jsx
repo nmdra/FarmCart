@@ -18,6 +18,8 @@ const DLmanageDash = () => {
     const [loading, setLoading] = useState(true) // Loading state
     const [error, setError] = useState(null) // Error state
     const navigate = useNavigate() // Navigate hook
+    const [ongoingDeliveries, setOngoingDeliveries] = useState([]) // Ongoing deliveries state
+
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -44,6 +46,19 @@ const DLmanageDash = () => {
                     '/api/d_forms/pending-forms'
                 )
 
+
+
+                  // Fetch deliveries that are not "Delivered"
+            const { data } = await axios.get('/api/delivery/deliveries', {
+                params: { status: 'notDelivered' } // Assuming you have a backend filter by status
+            });
+
+            // Filter deliveries with status other than "Delivered"
+            const filteredOngoingDeliveries = data.deliveries
+            .filter(delivery => delivery.deliveryStatus !== 'Delivered')
+            .sort((a, b) => new Date(b.assignDateTime) - new Date(a.assignDateTime))
+
+
                 console.log('Backend data received: ', pendingFormsRes.data)
 
                 // Check if pending forms exist, if not set to 0
@@ -58,6 +73,8 @@ const DLmanageDash = () => {
                     pendingForms: pendingFormsCount, // Set pending forms count to 0 if empty
                 })
 
+                 // Limit to 5 ongoing deliveries
+            setOngoingDeliveries(filteredOngoingDeliveries.slice(0, 5));
                 setPendingForms(pendingFormsRes.data) // Store the pending forms
             } catch (error) {
                 // Log the full error response for debugging
@@ -250,67 +267,42 @@ const DLmanageDash = () => {
                             Ongoing Deliveries
                         </h2>
                         <div className="overflow-x-auto">
-                            {stats.ongoingDeliveries > 0 ? (
-                                <table className="min-w-full bg-white border border-gray-200">
-                                    <thead>
-                                        <tr className="bg-gray-200">
-                                            <th className="px-4 py-2 text-left border">
-                                                Delivery ID
-                                            </th>
-                                            <th className="px-4 py-2 text-left border">
-                                                Driver Name
-                                            </th>
-                                            <th className="px-4 py-2 text-left border">
-                                                Vehicle Type
-                                            </th>
-                                            <th className="px-4 py-2 text-left border">
-                                                Status
-                                            </th>
-                                            <th className="px-4 py-2 text-left border">
-                                                Actions
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {/* Example ongoing deliveries */}
-                                        <tr className="bg-white hover:bg-gray-100">
-                                            <td className="px-4 py-2 border">
-                                                #1234
-                                            </td>
-                                            <td className="px-4 py-2 border">
-                                                John Doe
-                                            </td>
-                                            <td className="px-4 py-2 border">
-                                                Bike
-                                            </td>
-                                            <td className="px-4 py-2 border">
-                                                <span className="bg-blue-500 text-white px-2 py-1 rounded">
-                                                    In Progress
-                                                </span>
-                                            </td>
-                                            <td className="px-4 py-2 border">
-                                                <button
-                                                    className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600"
-                                                    onClick={() =>
-                                                        handleViewDelivery(
-                                                            '1234'
-                                                        )
-                                                    }
-                                                >
-                                                    View Delivery
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {/* Add more rows dynamically as needed */}
-                                    </tbody>
-                                </table>
-                            ) : (
-                                <p className="text-gray-500">
-                                    No ongoing deliveries available
-                                </p> // Display this message when no ongoing deliveries
-                            )}
-                        </div>
-                    </div>
+    {ongoingDeliveries.length > 0 ? (
+        <table className="min-w-full bg-white border border-gray-200">
+            <thead>
+                <tr className="bg-gray-200">
+                    <th className="px-4 py-2 text-left border">Tracking ID</th>
+                    <th className="px-4 py-2 text-left border">Order ID</th>
+                    <th className="px-4 py-2 text-left border">Driver ID</th>
+                    <th className="px-4 py-2 text-left border">Assigned Time</th>
+                    <th className="px-4 py-2 text-left border">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {ongoingDeliveries.map((delivery) => (
+                    <tr key={delivery._id} className="bg-white hover:bg-gray-100">
+                        <td className="px-4 py-2 border">{delivery.trackingID}</td>
+                        <td className="px-4 py-2 border">{delivery.oID}</td>
+                        <td className="px-4 py-2 border">{delivery.drID}</td>
+                        <td className="px-4 py-2 border">{new Date(delivery.assignDateTime).toLocaleString()}</td>
+                        <td className="px-4 py-2 border">
+                            <button
+                                className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600"
+                                onClick={() => navigate(`/manager/delivery/${delivery._id}`)}
+                            >
+                                View
+                            </button>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    ) : (
+        <p className="text-gray-500">No ongoing deliveries available</p>
+    )}
+</div>
+
+</div>
                 </div>
             </main>
         </div>
