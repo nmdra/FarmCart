@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from '../../axios.jsx'
 import Sidebar from '../../Components/Admin/AsideBar.jsx'
 import Loading from '../../Components/Loading.jsx'
+import DailyOrdersChart from '../../Components/Admin/DailyOrdersChart.jsx'
 
 const Dashboard = () => {
     const [customerCount, setCustomerCount] = useState(0)
@@ -68,6 +69,7 @@ const Dashboard = () => {
                     </div>
 
                     {/* Additional dashboard content can be added here */}
+                    <DailyOrdersChart/>
                 </main>
             </div>
         </div>
