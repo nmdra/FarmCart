@@ -486,7 +486,7 @@ const RegisterDriverForm = () => {
                         )}
                         {previewIdCard && (
                             <img
-                                src={previewIdCard}
+                                src={`${idCardImageUrl}`}
                                 alt="ID Card Preview"
                                 className="mt-2 w-32 h-32 object-cover"
                             />
@@ -537,7 +537,7 @@ const RegisterDriverForm = () => {
                         )}
                         {previewLicense && (
                             <img
-                                src={previewLicense}
+                                src={`${licenseImageUrl}`}
                                 alt="License Preview"
                                 className="mt-2 w-32 h-32 object-cover"
                             />
@@ -588,7 +588,7 @@ const RegisterDriverForm = () => {
                         )}
                         {previewPersonal && (
                             <img
-                                src={previewPersonal}
+                                src={`${personalImageUrl}`}
                                 alt="Personal Preview"
                                 className="mt-2 w-32 h-32 object-cover"
                             />
