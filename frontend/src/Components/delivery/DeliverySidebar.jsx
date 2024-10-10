@@ -137,7 +137,7 @@ const DeliverySidebar = ({ driver }) => {
                             }
                         >
                             <FaDollarSign className="w-5 h-5 mr-3" />
-                            Income 
+                            Income
                         </NavLink>
                     </li>
                     <li>

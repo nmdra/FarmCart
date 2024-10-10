@@ -5,7 +5,6 @@ import DeliverySidebar from '../../../Components/delivery/DeliverySidebar'
 import Swal from 'sweetalert2'
 import Loading from '../../../Components/Loading'
 
-
 const OngoingDelivery = () => {
     const [deliveries, setDeliveries] = useState([])
     const [loading, setLoading] = useState(true)
@@ -116,7 +115,6 @@ const OngoingDelivery = () => {
             </div>
         )
     }
-
 
     return (
         <div className="flex min-h-screen bg-gray-50">

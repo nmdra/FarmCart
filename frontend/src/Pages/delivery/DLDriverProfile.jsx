@@ -5,7 +5,6 @@ import DeliverySidebar from '../../Components/delivery/DeliverySidebar'
 import Swal from 'sweetalert2'
 import Loading from '../../Components/Loading'
 
-
 const DLDriverProfile = () => {
     const [driverDetails, setDriverDetails] = useState({
         driverID: '',
@@ -27,7 +26,6 @@ const DLDriverProfile = () => {
     const [loading, setLoading] = useState(true)
     const [selectedImage, setSelectedImage] = useState(null) // State for image modal
     const navigate = useNavigate()
-    
 
     // Fetch driver details on component mount
     useEffect(() => {

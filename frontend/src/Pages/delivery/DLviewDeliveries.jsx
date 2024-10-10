@@ -4,7 +4,6 @@ import axios from 'axios' // Ensure correct path to axios
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sidebar component
 import Loading from '../../Components/Loading'
 
-
 const DLAllDeliveries = () => {
     const [deliveries, setDeliveries] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
@@ -13,7 +12,6 @@ const DLAllDeliveries = () => {
     const [totalPages, setTotalPages] = useState(1)
     const [filterStatus, setFilterStatus] = useState('All Deliveries') // State for current status filter
     const [loading, setLoading] = useState(true)
-
 
     // Fetch all deliveries
     useEffect(() => {
@@ -26,11 +24,9 @@ const DLAllDeliveries = () => {
                 setTotalPages(data.pages)
                 setFilteredDeliveries(data.deliveries) // Initialize with all deliveries
                 setLoading(false)
-
             } catch (error) {
                 console.error('Error fetching deliveries:', error)
                 setLoading(false)
-
             }
         }
 

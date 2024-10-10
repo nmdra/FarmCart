@@ -4,12 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Import the DeliverySidebar component
 import Loading from '../../Components/Loading'
 
-
 const DLApproveDriver = () => {
     const [pendingForms, setPendingForms] = useState([])
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
-
 
     // Fetch pending forms when the component loads
     useEffect(() => {
@@ -18,11 +16,9 @@ const DLApproveDriver = () => {
                 const { data } = await axios.get('/d_forms/pending-forms')
                 setPendingForms(data)
                 setLoading(false)
-
             } catch (error) {
                 console.error('Error fetching pending forms:', error)
                 setLoading(false)
-
             }
         }
 
@@ -33,7 +29,6 @@ const DLApproveDriver = () => {
     const handleReview = (id) => {
         navigate(`/manager/approve-driver/${id}`)
     }
-
 
     if (loading) {
         return (
@@ -60,8 +55,6 @@ const DLApproveDriver = () => {
             </div>
         )
     }
-
-    
 
     return (
         <div className="flex min-h-screen bg-gray-50">

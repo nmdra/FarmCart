@@ -5,7 +5,6 @@ import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sideb
 import Swal from 'sweetalert2'
 import Loading from '../../Components/Loading'
 
-
 const DLViewDriver = () => {
     const { id } = useParams() // Get the driver ID from the URL
     const [driverDetails, setDriverDetails] = useState(null)
@@ -21,17 +20,14 @@ const DLViewDriver = () => {
                 const { data } = await axios.get(`/drivers/get/${id}`) // Fetch driver details by ID
                 setDriverDetails(data)
                 setLoading(false)
-
             } catch (error) {
                 console.error('Error fetching driver details:', error)
                 setLoading(false)
-
             }
         }
 
         fetchDriverDetails()
     }, [id])
-
 
     if (loading) {
         return (

@@ -5,7 +5,6 @@ import Swal from 'sweetalert2' // For sweet alerts
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Import the DeliverySidebar component
 import Loading from '../../Components/Loading'
 
-
 const DLDriverAccept = () => {
     const { id } = useParams() // Get the form ID from the URL
     const [driverDetails, setDriverDetails] = useState(null)
@@ -28,11 +27,9 @@ const DLDriverAccept = () => {
                 const { data } = await axios.get(`/d_forms/${id}`)
                 setDriverDetails(data)
                 setLoading(false)
-
             } catch (error) {
                 console.error('Error fetching driver details:', error)
                 setLoading(false)
-
             }
         }
 
@@ -115,7 +112,7 @@ const DLDriverAccept = () => {
             </div>
         )
     }
-    
+
     if (!driverDetails)
         return <div className="text-center mt-10">Loading...</div>
 

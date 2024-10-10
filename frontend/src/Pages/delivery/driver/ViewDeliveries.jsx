@@ -5,7 +5,6 @@ import DeliverySidebar from '../../../Components/delivery/DeliverySidebar'
 import Swal from 'sweetalert2'
 import Loading from '../../../Components/Loading'
 
-
 const ViewDeliveries = () => {
     const [deliveries, setDeliveries] = useState([])
     const [filteredDeliveries, setFilteredDeliveries] = useState([])
@@ -103,7 +102,6 @@ const ViewDeliveries = () => {
             </div>
         )
     }
-
 
     return (
         <div className="flex min-h-screen bg-gray-50">

@@ -20,19 +20,26 @@ const DLViewDelivery = () => {
         const fetchDeliveryAndDriver = async () => {
             try {
                 // Fetch delivery by ID
-                const { data: deliveryData } = await axios.get(`/api/delivery/d/${id}`)
+                const { data: deliveryData } = await axios.get(
+                    `/api/delivery/d/${id}`
+                )
                 setDelivery(deliveryData)
 
                 // Extract the driver ID from the delivery data
                 const driverId = deliveryData.driverID
 
                 // Fetch the driver details using the driver ID
-                const { data: driverData } = await axios.get(`/api/drivers/get/${driverId}`)
+                const { data: driverData } = await axios.get(
+                    `/api/drivers/get/${driverId}`
+                )
                 setDriver(driverData)
 
                 setLoading(false) // Set loading to false after both data are fetched
             } catch (error) {
-                console.error('Error fetching delivery or driver details:', error)
+                console.error(
+                    'Error fetching delivery or driver details:',
+                    error
+                )
                 setLoading(false)
             }
         }

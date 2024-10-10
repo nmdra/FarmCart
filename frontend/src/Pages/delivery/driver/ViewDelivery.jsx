@@ -7,13 +7,12 @@ import farmcartLogo from '../../../assets/logo.png' // Make sure you have your l
 import DLmanageSidebar from '../../../Components/delivery/DeliverySidebar' // Sidebar component
 import Loading from '../../../Components/Loading'
 
-
 const DLViewDelivery = () => {
     const { id } = useParams() // Get the delivery ID from the URL
     const [delivery, setDelivery] = useState(null) // State for storing delivery data
     const [driver, setDriver] = useState(null) // State for driver info
     const [loading, setLoading] = useState(true)
-    
+
     const driverToken = localStorage.getItem('driverToken') // Get driver token from localStorage
     const navigate = useNavigate()
 
@@ -57,7 +56,6 @@ const DLViewDelivery = () => {
             </div>
         )
     }
-
 
     // Function to generate the PDF
     const generatePDF = () => {
@@ -122,7 +120,6 @@ const DLViewDelivery = () => {
             </div>
         )
     }
-
 
     return (
         <div className="flex min-h-screen bg-gray-50">

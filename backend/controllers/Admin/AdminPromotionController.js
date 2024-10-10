@@ -36,11 +36,9 @@ export const addPromotion = async (req, res) => {
         }
         // Validate discount percentage
         if (discountPercentage < 0 || discountPercentage > 100) {
-            return res
-                .status(400)
-                .json({
-                    message: 'Discount percentage must be between 0 and 100',
-                })
+            return res.status(400).json({
+                message: 'Discount percentage must be between 0 and 100',
+            })
         }
 
         // Calculate the new price based on the discount
@@ -74,11 +72,9 @@ export const updatePromotion = async (req, res) => {
         }
         // Validate discount percentage
         if (discountPercentage < 0 || discountPercentage > 100) {
-            return res
-                .status(400)
-                .json({
-                    message: 'Discount percentage must be between 0 and 100',
-                })
+            return res.status(400).json({
+                message: 'Discount percentage must be between 0 and 100',
+            })
         }
 
         // Update the promotion details

@@ -4,7 +4,6 @@ import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sideb
 import { useNavigate } from 'react-router-dom' // For navigating between pages
 import Loading from '../../Components/Loading'
 
-
 const DLmanageDash = () => {
     const [stats, setStats] = useState({
         totalDrivers: 0,

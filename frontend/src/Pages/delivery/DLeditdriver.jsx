@@ -5,7 +5,6 @@ import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sideb
 import Swal from 'sweetalert2'
 import Loading from '../../Components/Loading'
 
-
 const DLViewDriver = () => {
     const { id } = useParams() // Get the driver ID from the URL
     const [driverDetails, setDriverDetails] = useState(null)
@@ -15,8 +14,6 @@ const DLViewDriver = () => {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
 
-    
-
     // Fetch driver details on component load
     useEffect(() => {
         const fetchDriverDetails = async () => {
@@ -24,17 +21,14 @@ const DLViewDriver = () => {
                 const { data } = await axios.get(`/drivers/get/${id}`) // Fetch driver details by ID
                 setDriverDetails(data)
                 setLoading(false)
-
             } catch (error) {
                 console.error('Error fetching driver details:', error)
                 setLoading(false)
-
             }
         }
 
         fetchDriverDetails()
     }, [id])
-
 
     if (loading) {
         return (
@@ -44,13 +38,11 @@ const DLViewDriver = () => {
         )
     }
     if (!driverDetails) {
-        
         return (
             <div className="flex flex-1 min-h-screen justify-center items-center">
                 <Loading />
             </div>
         )
-    
     }
 
     // Construct the full URL for each image
@@ -190,7 +182,6 @@ const DLViewDriver = () => {
         }))
     }
 
-    
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Sidebar */}

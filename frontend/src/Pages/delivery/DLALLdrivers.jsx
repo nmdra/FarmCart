@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sidebar component
 import Loading from '../../Components/Loading'
 
-
 const DLALLdrivers = () => {
     const [drivers, setDrivers] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
@@ -27,11 +26,9 @@ const DLALLdrivers = () => {
                 setFilteredDrivers(data)
                 setTotalPages(Math.ceil(data.length / rowsPerPage)) // Set total pages based on rows per page
                 setLoading(false)
-
             } catch (error) {
                 console.error('Error fetching drivers:', error)
                 setLoading(false)
-
             }
         }
 
@@ -118,7 +115,6 @@ const DLALLdrivers = () => {
             </div>
         )
     }
-
 
     return (
         <div className="flex min-h-screen bg-gray-50">

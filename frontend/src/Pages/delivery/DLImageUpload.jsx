@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 const DLImageUpload = () => {
-   /* const [file, setFile] = useState(null)
+    /* const [file, setFile] = useState(null)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [message, setMessage] = useState('')
 

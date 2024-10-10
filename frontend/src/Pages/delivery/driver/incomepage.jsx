@@ -4,7 +4,6 @@ import axios from 'axios'
 import DeliverySidebar from '../../../Components/delivery/DeliverySidebar'
 import Loading from '../../../Components/Loading'
 
-
 const DriverIncomePage = () => {
     const [driver, setDriver] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -49,7 +48,6 @@ const DriverIncomePage = () => {
         )
     }
 
-
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Sidebar */}
@@ -69,26 +67,44 @@ const DriverIncomePage = () => {
                         <table className="min-w-full bg-white border border-gray-200">
                             <thead>
                                 <tr className="bg-gray-200">
-                                    <th className="px-4 py-2 border">Description</th>
-                                    <th className="px-4 py-2 border">Amount (Rs.)</th>
+                                    <th className="px-4 py-2 border">
+                                        Description
+                                    </th>
+                                    <th className="px-4 py-2 border">
+                                        Amount (Rs.)
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr className="hover:bg-gray-100">
-                                    <td className="px-4 py-2 border">Total Deliveries</td>
-                                    <td className="px-4 py-2 border">{deliveryCount}</td>
+                                    <td className="px-4 py-2 border">
+                                        Total Deliveries
+                                    </td>
+                                    <td className="px-4 py-2 border">
+                                        {deliveryCount}
+                                    </td>
                                 </tr>
                                 <tr className="hover:bg-gray-100">
-                                    <td className="px-4 py-2 border">Delivery Profits</td>
-                                    <td className="px-4 py-2 border">Rs. {deliveryProfits}</td>
+                                    <td className="px-4 py-2 border">
+                                        Delivery Profits
+                                    </td>
+                                    <td className="px-4 py-2 border">
+                                        Rs. {deliveryProfits}
+                                    </td>
                                 </tr>
                                 <tr className="hover:bg-gray-100">
-                                    <td className="px-4 py-2 border">Other Earnings</td>
+                                    <td className="px-4 py-2 border">
+                                        Other Earnings
+                                    </td>
                                     <td className="px-4 py-2 border">Rs. 0</td>
                                 </tr>
                                 <tr className="hover:bg-gray-100 font-bold">
-                                    <td className="px-4 py-2 border">Total Income</td>
-                                    <td className="px-4 py-2 border">Rs. {totalIncome}</td>
+                                    <td className="px-4 py-2 border">
+                                        Total Income
+                                    </td>
+                                    <td className="px-4 py-2 border">
+                                        Rs. {totalIncome}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

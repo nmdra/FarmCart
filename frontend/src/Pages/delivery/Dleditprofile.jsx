@@ -5,7 +5,6 @@ import DeliverySidebar from '../../Components/delivery/DeliverySidebar'
 import Swal from 'sweetalert2'
 import Loading from '../../Components/Loading'
 
-
 const DLEditProfile = () => {
     const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
