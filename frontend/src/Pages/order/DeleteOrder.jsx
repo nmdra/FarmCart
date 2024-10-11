@@ -37,7 +37,7 @@ const DeleteOrder = ({
                                 Close
                             </Button>
                             <Button
-                                color="primary"
+                                className={`bg-green-500 hover:bg-green-600 text-white`}
                                 disabled={!orderId}
                                 onClick={async () => {
                                     if (orderId) {

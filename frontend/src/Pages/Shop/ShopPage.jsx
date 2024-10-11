@@ -69,10 +69,10 @@ const ShopPage = () => {
                 <div className="product-search mb-6 w-2/4">
                     <input
                         type="text"
-                        placeholder="Search products..."
+                        placeholder=" Search products..."
                         value={searchTerm}
                         onChange={handleSearch}
-                        className="border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        className="border border-gray-300 rounded-full p-2 w-full hover:border-green-500 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition duration-200"
                     />
                 </div>
 
