@@ -66,5 +66,4 @@ router.get('/available/count', getAvailableDriversCount)
 
 router.get('/nic-password-check', protectDriver, checkNicPassword)
 
-
 export default router

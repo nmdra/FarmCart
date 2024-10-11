@@ -5,7 +5,6 @@ import Shop from '../models/shopModel.js' // Import the Shop model
 import User from '../models/userModel.js' // Import the User model
 import DLDelivery from '../models/DLDeliveryModel.js'
 
-
 // @desc    Create a new order
 // @route   POST /api/orders
 // @access  Public
@@ -184,14 +183,12 @@ const assignReadyOrders = async () => {
     }
 }
 
-
-
 // Helper function to update the order status based on delivery status
 const syncDeliveryAndOrderStatus = async () => {
     try {
         // Fetch all deliveries where the status is 'Picked Up', 'On The Way', or 'Delivered'
         const deliveries = await DLDelivery.find({
-            deliveryStatus: { $in: ['Picked Up', 'On The Way', 'Delivered'] }
+            deliveryStatus: { $in: ['Picked Up', 'On The Way', 'Delivered'] },
         })
 
         // Iterate over each delivery and update the corresponding order
@@ -214,7 +211,9 @@ const syncDeliveryAndOrderStatus = async () => {
                 if (order.orderStatus !== newOrderStatus) {
                     order.orderStatus = newOrderStatus
                     await order.save() // Save the updated order
-                    console.log(`Order ${order._id} updated to ${newOrderStatus}`)
+                    console.log(
+                        `Order ${order._id} updated to ${newOrderStatus}`
+                    )
                 }
             }
         }
@@ -222,8 +221,6 @@ const syncDeliveryAndOrderStatus = async () => {
         console.error('Error syncing delivery and order status:', error)
     }
 }
-
-
 
 // Function to repeatedly check for ready orders every 5 seconds
 const startOrderAssignment = () => {
@@ -236,7 +233,6 @@ const startSyncDeliveryOrderStatus = () => {
 }
 
 export { startSyncDeliveryOrderStatus }
-
 
 export { startOrderAssignment }
 

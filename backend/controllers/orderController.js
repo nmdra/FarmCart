@@ -173,20 +173,25 @@ export const getOrderById = async (req, res) => {
 }
 
 export const getDailyOrders = async (req, res) => {
-  try {
-    const orders = await Order.aggregate([
-      {
-        $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-          totalOrders: { $sum: 1 },
-          totalSales: { $sum: "$totalPrice" }
-        }
-      },
-      { $sort: { _id: 1 } }
-    ]);
+    try {
+        const orders = await Order.aggregate([
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: '%Y-%m-%d',
+                            date: '$createdAt',
+                        },
+                    },
+                    totalOrders: { $sum: 1 },
+                    totalSales: { $sum: '$totalPrice' },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ])
 
-    res.json(orders);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
-  }
-};
+        res.json(orders)
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error })
+    }
+}
