@@ -3,6 +3,7 @@ import dOrder from '../models/DLOModel.js'
 import Order from '../models/OrderModel.js' // Import the Order model
 import Shop from '../models/shopModel.js' // Import the Shop model
 import User from '../models/userModel.js' // Import the User model
+import DLDelivery from '../models/DLDeliveryModel.js'
 
 // @desc    Create a new order
 // @route   POST /api/orders
@@ -108,14 +109,23 @@ const assignReadyOrders = async () => {
         for (const order of readyOrders) {
             // console.log(`Processing order with ID: ${order._id}`)
 
+            // First check if the order exists in DLDelivery
+            const existingDelivery = await DLDelivery.findOne({
+                orderID: order._id.toString(),
+            })
+            if (existingDelivery) {
+                console.log(
+                    `Order with ID ${order._id} already exists in DLDelivery.`
+                )
+                continue // Skip this order if it already exists in DLDelivery
+            }
+
             // Check if this order has already been assigned in dOrder
             const existingOrder = await dOrder.findOne({
                 oID: order._id.toString(),
             })
-
             if (existingOrder) {
-                // console.log(`Order with ID ${order._id} already exists in dOrder.`)
-                continue // Skip this order if it already exists
+                continue // Skip this order if it already exists in dOrder
             }
 
             // Find the shop associated with this order (via shopId)
@@ -173,7 +183,7 @@ const assignReadyOrders = async () => {
             /*console.log(`Order with ID ${order._id} has been successfully assigned to dOrder with new orderID ${newDOrder.orderID}.`)*/
 
             // After saving the new dOrder, update the order status to "Assigning" in the Order model
-            order.orderStatus = 'Assigning'
+            order.orderStatus = ' .Ready. '
             await order.save() // Save the updated order
             // console.log(`Order with ID ${order._id} has been marked as "Assigning" in the Order model.`)
         }
@@ -182,11 +192,56 @@ const assignReadyOrders = async () => {
     }
 }
 
+// Helper function to update the order status based on delivery status
+const syncDeliveryAndOrderStatus = async () => {
+    try {
+        // Fetch all deliveries where the status is 'Picked Up', 'On The Way', or 'Delivered'
+        const deliveries = await DLDelivery.find({
+            deliveryStatus: { $in: ['Picked Up', 'On The Way', 'Delivered'] },
+        })
+
+        // Iterate over each delivery and update the corresponding order
+        for (const delivery of deliveries) {
+            const order = await Order.findById(delivery.orderID)
+
+            if (order) {
+                // Map delivery status to corresponding order status
+                let newOrderStatus
+
+                if (delivery.deliveryStatus === 'Picked Up') {
+                    newOrderStatus = 'Picked Up'
+                } else if (delivery.deliveryStatus === 'On The Way') {
+                    newOrderStatus = 'On The Way'
+                } else if (delivery.deliveryStatus === 'Delivered') {
+                    newOrderStatus = 'Delivered'
+                }
+
+                // Update the order's status if it's different
+                if (order.orderStatus !== newOrderStatus) {
+                    order.orderStatus = newOrderStatus
+                    await order.save() // Save the updated order
+                    console.log(
+                        `Order ${order._id} updated to ${newOrderStatus}`
+                    )
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error syncing delivery and order status:', error)
+    }
+}
+
 // Function to repeatedly check for ready orders every 5 seconds
 const startOrderAssignment = () => {
     /* console.log('Starting periodic check for ready orders...')*/
     setInterval(assignReadyOrders, 5000) // Run the check every 5 seconds
 }
+
+const startSyncDeliveryOrderStatus = () => {
+    setInterval(syncDeliveryAndOrderStatus, 5000) // Run every 5 seconds
+}
+
+export { startSyncDeliveryOrderStatus }
 
 export { startOrderAssignment }
 
