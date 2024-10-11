@@ -55,28 +55,28 @@ const DLViewDelivery = () => {
         )
     }
     const generatePDF = () => {
-        const doc = new jsPDF('p', 'mm', 'a4'); // Set to A4 size (portrait orientation)
-    
+        const doc = new jsPDF('p', 'mm', 'a4') // Set to A4 size (portrait orientation)
+
         // Add logo
-        doc.addImage(farmcartLogo, 'PNG', 10, 10, 50, 20); // Add logo with width and height
-    
+        doc.addImage(farmcartLogo, 'PNG', 10, 10, 50, 20) // Add logo with width and height
+
         // Add report title
-        doc.setFontSize(24);
-        doc.setTextColor(40);
-        doc.text('Delivery Details Report', 105, 40, null, null, 'center'); // Centered title
-    
+        doc.setFontSize(24)
+        doc.setTextColor(40)
+        doc.text('Delivery Details Report', 105, 40, null, null, 'center') // Centered title
+
         // Add company information
-        doc.setFontSize(12);
-        doc.text('FarmCart Lanka (PVT.) LTD', 105, 50, null, null, 'center');
-        doc.text('No.78, Malabe, Colombo', 105, 55, null, null, 'center');
-        doc.text('Phone: (+94) 011 34 56 837', 105, 60, null, null, 'center');
-        doc.text('Website: www.farmcart.com', 105, 65, null, null, 'center');
-    
+        doc.setFontSize(12)
+        doc.text('FarmCart Lanka (PVT.) LTD', 105, 50, null, null, 'center')
+        doc.text('No.78, Malabe, Colombo', 105, 55, null, null, 'center')
+        doc.text('Phone: (+94) 011 34 56 837', 105, 60, null, null, 'center')
+        doc.text('Website: www.farmcart.com', 105, 65, null, null, 'center')
+
         // Section for "Delivery Information"
-        doc.setFontSize(18);
-        doc.setTextColor(0, 51, 102); // Dark blue color
-        doc.text('Delivery Information', 14, 80); // Section title left-aligned
-    
+        doc.setFontSize(18)
+        doc.setTextColor(0, 51, 102) // Dark blue color
+        doc.text('Delivery Information', 14, 80) // Section title left-aligned
+
         // Delivery details table
         doc.autoTable({
             startY: 90, // Positioning below "Delivery Information"
@@ -107,22 +107,26 @@ const DLViewDelivery = () => {
             bodyStyles: { textColor: [0, 0, 0] }, // Black text color for the table body
             alternateRowStyles: { fillColor: [245, 245, 245] }, // Light grey for alternate rows
             margin: { top: 10 },
-        });
-    
+        })
+
         // Add footer section for generated date and signature space
-        const finalY = doc.autoTable.previous.finalY + 20; // Get Y position after the table
-        doc.setFontSize(12);
-        doc.text(`Report Generated on: ${new Date().toLocaleString()}`, 14, finalY);
-    
+        const finalY = doc.autoTable.previous.finalY + 20 // Get Y position after the table
+        doc.setFontSize(12)
+        doc.text(
+            `Report Generated on: ${new Date().toLocaleString()}`,
+            14,
+            finalY
+        )
+
         // Add "Approved by" section with signature line
-        doc.text('Approved by:', 14, finalY + 10);
-        doc.text('__________________________', 14, finalY + 20); // Placeholder for signature
-        doc.text('Signature', 14, finalY + 25);
-    
+        doc.text('Approved by:', 14, finalY + 10)
+        doc.text('__________________________', 14, finalY + 20) // Placeholder for signature
+        doc.text('Signature', 14, finalY + 25)
+
         // Save the PDF with a dynamic name based on the delivery tracking ID
-        doc.save(`Delivery_${delivery.trackingID}.pdf`);
-    };
-    
+        doc.save(`Delivery_${delivery.trackingID}.pdf`)
+    }
+
     return (
         <div className="flex min-h-screen bg-gray-50">
             {/* Sidebar */}

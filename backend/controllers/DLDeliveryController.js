@@ -309,3 +309,56 @@ export const getDeliveriesByDriver = async (req, res) => {
         })
     }
 }
+
+//
+// deleteing the  duplicated ones
+// Function to clean up duplicate deliveries by orderID
+export const cleanUpDuplicateDeliveries = async () => {
+    try {
+        // Find all deliveries grouped by orderID and check for duplicates
+        const duplicates = await DLDelivery.aggregate([
+            {
+                $group: {
+                    _id: '$orderID', // Group by orderID
+                    count: { $sum: 1 }, // Count occurrences of each orderID
+                    docs: { $push: '$$ROOT' }, // Push all documents with the same orderID
+                },
+            },
+            {
+                $match: {
+                    count: { $gt: 1 }, // Filter groups that have more than 1 occurrence
+                },
+            },
+        ])
+
+        // Loop through each duplicate and keep the first created, delete the rest
+        for (const duplicate of duplicates) {
+            const sortedDocs = duplicate.docs.sort(
+                (a, b) =>
+                    new Date(a.assignDateTime) - new Date(b.assignDateTime)
+            ) // Sort by creation date (assignDateTime)
+
+            const [firstDoc, ...duplicatesToDelete] = sortedDocs
+
+            // Keep the first document and delete the rest
+            for (const doc of duplicatesToDelete) {
+                await DLDelivery.findByIdAndDelete(doc._id)
+                console.log(
+                    `Deleted duplicate delivery with orderID: ${doc.orderID}`
+                )
+            }
+
+            console.log(
+                `Kept delivery for orderID: ${firstDoc.orderID}, removed ${duplicatesToDelete.length} duplicates`
+            )
+        }
+
+        if (duplicates.length === 0) {
+            /*
+            //  console.log('No duplicate deliveries found.')
+       */
+        }
+    } catch (error) {
+        console.error('Error cleaning up duplicate deliveries:', error)
+    }
+}

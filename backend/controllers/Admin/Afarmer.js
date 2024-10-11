@@ -1,4 +1,3 @@
-
 import Farmer from '../../models/farmerModel'
 import mongoose from 'mongoose'
 export const getFarmersCount = async (req, res) => {

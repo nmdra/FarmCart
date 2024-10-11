@@ -114,9 +114,9 @@ const assignReadyOrders = async () => {
                 orderID: order._id.toString(),
             })
             if (existingDelivery) {
-                console.log(
-                    `Order with ID ${order._id} already exists in DLDelivery.`
-                )
+                // console.log(
+                // `Order with ID ${order._id} already exists in DLDelivery.`
+                // )
                 continue // Skip this order if it already exists in DLDelivery
             }
 
@@ -182,13 +182,10 @@ const assignReadyOrders = async () => {
             await newDOrder.save()
             /*console.log(`Order with ID ${order._id} has been successfully assigned to dOrder with new orderID ${newDOrder.orderID}.`)*/
 
-
-
-             // After saving the new dOrder, update the order status to "Assigning" in the Order model
-             order.orderStatus = ' Ready. '
-             await order.save() // Save the updated order
-             // console.log(`Order with ID ${order._id} has been marked as "Assigning" in the Order model.`)
-
+            // After saving the new dOrder, update the order status to "Assigning" in the Order model
+            order.orderStatus = ' Ready. '
+            await order.save() // Save the updated order
+            // console.log(`Order with ID ${order._id} has been marked as "Assigning" in the Order model.`)
         }
     } catch (error) {
         console.error('Error assigning ready orders to dOrder:', error)
@@ -237,11 +234,11 @@ const syncDeliveryAndOrderStatus = async () => {
 // Function to repeatedly check for ready orders every 5 seconds
 const startOrderAssignment = () => {
     /* console.log('Starting periodic check for ready orders...')*/
-    setInterval(assignReadyOrders, 5000) // Run the check every 5 seconds
+    setInterval(assignReadyOrders, 1000) // Run the check every 5 seconds
 }
 
 const startSyncDeliveryOrderStatus = () => {
-    setInterval(syncDeliveryAndOrderStatus, 5000) // Run every 5 seconds
+    setInterval(syncDeliveryAndOrderStatus, 1000) // Run every 5 seconds
 }
 
 export { startSyncDeliveryOrderStatus }

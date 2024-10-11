@@ -213,7 +213,10 @@ const router = createBrowserRouter(
 
             {/* delivery and driver Routes */}
             <Route path="/" element={<DLayout />}>
-                 <Route path="/manager" element={<AdminLogin manager={true} />} />
+                <Route
+                    path="/manager"
+                    element={<AdminLogin manager={true} />}
+                />
                 <Route element={<StaffPrivateRoute manager={true} />}>
                     <Route
                         path="/manager/approve-driver"

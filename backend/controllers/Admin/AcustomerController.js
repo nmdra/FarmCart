@@ -11,8 +11,6 @@ export const getAllUsers = async (req, res) => {
     }
 }
 
-
-
 // Fetch single user by ID
 export const getUserById = async (req, res) => {
     try {
@@ -25,7 +23,6 @@ export const getUserById = async (req, res) => {
         res.status(500).json({ message: 'Error fetching user', error })
     }
 }
-
 
 // Update user by ID
 export const updateUserById = async (req, res) => {
