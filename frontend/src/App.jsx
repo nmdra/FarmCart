@@ -50,6 +50,7 @@ import AddStaff from './Pages/Admin/AaddStaff'
 import UpdateStaff from './Pages/Admin/AupdateStaff'
 import AddCoupon from './Pages/Admin/AaddCoupons'
 import UpdateCoupon from './Pages/Admin/AupdateCoupon'
+import AdminLayout from './Layouts/Alayout'
 import AdminLogin from './Components/Admin/admnlogins'
 
 // Farmer Pages
@@ -174,7 +175,8 @@ const router = createBrowserRouter(
             </Route>
 
             {/* Admin Routes */}
-            <Route path="/">
+            <Route path="/" element={<AdminLayout/>}>
+            
                 <Route path="/AdminDashboard" element={<AdminDashboard />} />
 
                 {/* Staff */}

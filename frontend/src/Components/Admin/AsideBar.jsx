@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FaHome, FaUsers, FaStore, FaCog, FaSignOutAlt } from 'react-icons/fa'
+import { FaHome, FaUsers, FaUserAlt, FaTags, FaChartLine, FaSignOutAlt } from 'react-icons/fa'
 
 const AdminSidebar = () => {
     return (
@@ -13,7 +13,7 @@ const AdminSidebar = () => {
                             className="flex items-center px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded text-left"
                         >
                             <FaHome className="w-5 h-5 mr-3" />
-                            <span>Home</span>
+                            <span>Dashboard</span>
                         </Link>
                     </li>
                     <li>
@@ -30,17 +30,17 @@ const AdminSidebar = () => {
                             to="/users"
                             className="flex items-center px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded text-left"
                         >
-                            <FaStore className="w-5 h-5 mr-3" />
+                            <FaUserAlt className="w-5 h-5 mr-3" />
                             <span>Users</span>
                         </Link>
                     </li>
                     <li>
                         <Link
-                            to="/coupens"
+                            to="/coupons"
                             className="flex items-center px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded text-left"
                         >
-                            <FaCog className="w-5 h-5 mr-3" />
-                            <span>Coupens</span>
+                            <FaTags className="w-5 h-5 mr-3" />
+                            <span>Coupons</span>
                         </Link>
                     </li>
                     <li>
@@ -48,8 +48,17 @@ const AdminSidebar = () => {
                             to="/finance"
                             className="flex items-center px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded text-left"
                         >
-                            <FaSignOutAlt className="w-5 h-5 mr-3" />
+                            <FaChartLine className="w-5 h-5 mr-3" />
                             <span>Finance</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to="/logout"
+                            className="flex items-center px-4 py-2 text-gray-700 hover:bg-green-500 hover:text-white rounded text-left"
+                        >
+                            <FaSignOutAlt className="w-5 h-5 mr-3" />
+                            <span>Logout</span>
                         </Link>
                     </li>
                 </ul>
