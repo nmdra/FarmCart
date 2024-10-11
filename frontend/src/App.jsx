@@ -92,6 +92,7 @@ import ViewDelivery from './Pages/delivery/driver/ViewDelivery' // Import the Vi
 import ViewDeliveries from './Pages/delivery/driver/ViewDeliveries' // Import the ViewDeliveries page
 import DLMap from './Pages/delivery/DLMap' // Import the DLMap component
 import IncomePage from './Pages/delivery/driver/incomepage' // Import the DLList component
+import StaffPrivateRoute from './Components/Admin/AstaffPrivateRoute'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -176,23 +177,31 @@ const router = createBrowserRouter(
 
             {/* Admin Routes */}
             <Route path="/" element={<AdminLayout />}>
-                <Route path="/AdminDashboard" element={<AdminDashboard />} />
+                <Route path="/Admin" element={<AdminLogin />} />
+                <Route element={<StaffPrivateRoute />}>
+                    <Route
+                        path="/AdminDashboard"
+                        element={<AdminDashboard />}
+                    />
 
-                {/* Staff */}
-                <Route path="/staff" element={<Staff />} />
-                <Route path="/addstaff" element={<AddStaff />} />
-                <Route path="/UpdateStaff/:id" element={<UpdateStaff />} />
+                    {/* Staff */}
+                    <Route path="/staff" element={<Staff />} />
+                    <Route path="/addstaff" element={<AddStaff />} />
+                    <Route path="/UpdateStaff/:id" element={<UpdateStaff />} />
 
-                {/* users */}
-                <Route path="/users" element={<Users />} />
+                    {/* users */}
+                    <Route path="/users" element={<Users />} />
 
-                {/* Coupon */}
-                <Route path="/coupons" element={<Coupens />} />
-                <Route path="/addcoupons" element={<AddCoupon />} />
-                <Route path="/updatecoupon/:id" element={<UpdateCoupon />} />
-                <Route path="/coupens" element={<Coupens />} />
-                <Route path="/finance" element={<Finance />} />
-                <Route path="/adl" element={<AdminLogin />} />
+                    {/* Coupon */}
+                    <Route path="/coupons" element={<Coupens />} />
+                    <Route path="/addcoupons" element={<AddCoupon />} />
+                    <Route
+                        path="/updatecoupon/:id"
+                        element={<UpdateCoupon />}
+                    />
+                    <Route path="/coupens" element={<Coupens />} />
+                    <Route path="/finance" element={<Finance />} />
+                </Route>
 
                 {/* 
                 <Route path="/dashboard" element={< Dashboard/>} />

@@ -15,17 +15,14 @@ const AdminLogin = () => {
         {
             email: 'sanjeewa@gmail.com',
             password: 'sanjeewa',
-            navigateTo: '/manager/dashboard' // Admin 1's dashboard
         },
         {
-            email: 'admin2@example.com',
+            email: 'admin@farmcart.com',
             password: 'password123',
-            navigateTo: '/manager/dashboard' // Admin 2's dashboard
         },
         {
             email: 'admin3@example.com',
             password: 'securePass',
-            navigateTo: '/superuser/dashboard' // Admin 3's dashboard
         },
     ]
 
@@ -39,9 +36,12 @@ const AdminLogin = () => {
         )
 
         if (user) {
-            // If user exists, navigate to their specific dashboard
+            // If user exists, save token and navigate to /Admin
+            const token =
+                'd0ahfFiO0dPMd1StZ0W7fqYhxxuIJYtEDXgi6t39Pp2J2qaWyfcFT0gJKO3iT6pz' // Replace with actual token logic
+            localStorage.setItem('staffToken', token) // Save token in local storage
+            navigate('/admindashboard')
             toast.success('Login successful!')
-            navigate(user.navigateTo)
         } else {
             // If no match, show error message
             setError('Invalid email or password.')
