@@ -25,7 +25,10 @@ import DLEmailRoutes from './routes/DLEmailRoutes.js' //DL
 import oRoutes from './routes/DLORoutes.js' // DL
 import { checkForAvailableDrivers } from './controllers/DLDeliveryController.js' //DL THIS IS CHECKING ALL ODRS AND ASSIGN DRIVERS
 import deliveryRoutes from './routes/DLDeliveryRoute.js' //DL
-import { startOrderAssignment,startSyncDeliveryOrderStatus } from './controllers/DLOcontroller.js' // Import the periodic check
+import {
+    startOrderAssignment,
+    startSyncDeliveryOrderStatus,
+} from './controllers/DLOcontroller.js' // Import the periodic check
 
 checkForAvailableDrivers() //DL
 startOrderAssignment()

@@ -5,7 +5,6 @@ import Shop from '../models/shopModel.js' // Import the Shop model
 import User from '../models/userModel.js' // Import the User model
 import DLDelivery from '../models/DLDeliveryModel.js'
 
-
 // @desc    Create a new order
 // @route   POST /api/orders
 // @access  Public
@@ -114,10 +113,8 @@ const assignReadyOrders = async () => {
             const existingOrder = await dOrder.findOne({
                 oID: order._id.toString(),
             })
-
             if (existingOrder) {
-                // console.log(`Order with ID ${order._id} already exists in dOrder.`)
-                continue // Skip this order if it already exists
+                continue // Skip this order if it already exists in dOrder
             }
 
             // Find the shop associated with this order (via shopId)
@@ -173,25 +170,18 @@ const assignReadyOrders = async () => {
             // Save the new dOrder
             await newDOrder.save()
             /*console.log(`Order with ID ${order._id} has been successfully assigned to dOrder with new orderID ${newDOrder.orderID}.`)*/
-
-            // After saving the new dOrder, update the order status to "Assigning" in the Order model
-            order.orderStatus = 'Assigning'
-            await order.save() // Save the updated order
-            // console.log(`Order with ID ${order._id} has been marked as "Assigning" in the Order model.`)
         }
     } catch (error) {
         console.error('Error assigning ready orders to dOrder:', error)
     }
 }
 
-
-
 // Helper function to update the order status based on delivery status
 const syncDeliveryAndOrderStatus = async () => {
     try {
         // Fetch all deliveries where the status is 'Picked Up', 'On The Way', or 'Delivered'
         const deliveries = await DLDelivery.find({
-            deliveryStatus: { $in: ['Picked Up', 'On The Way', 'Delivered'] }
+            deliveryStatus: { $in: ['Picked Up', 'On The Way', 'Delivered'] },
         })
 
         // Iterate over each delivery and update the corresponding order
@@ -214,7 +204,9 @@ const syncDeliveryAndOrderStatus = async () => {
                 if (order.orderStatus !== newOrderStatus) {
                     order.orderStatus = newOrderStatus
                     await order.save() // Save the updated order
-                    console.log(`Order ${order._id} updated to ${newOrderStatus}`)
+                    console.log(
+                        `Order ${order._id} updated to ${newOrderStatus}`
+                    )
                 }
             }
         }
@@ -222,8 +214,6 @@ const syncDeliveryAndOrderStatus = async () => {
         console.error('Error syncing delivery and order status:', error)
     }
 }
-
-
 
 // Function to repeatedly check for ready orders every 5 seconds
 const startOrderAssignment = () => {
@@ -236,7 +226,6 @@ const startSyncDeliveryOrderStatus = () => {
 }
 
 export { startSyncDeliveryOrderStatus }
-
 
 export { startOrderAssignment }
 
