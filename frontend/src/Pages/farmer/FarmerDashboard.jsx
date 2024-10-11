@@ -455,6 +455,9 @@ const Dashboard = () => {
                                                 <option value="Accept">
                                                     Accept
                                                 </option>
+                                                <option value="Rejected">
+                                                    Rejected
+                                                </option>
                                                 <option value="Ready">
                                                     Ready
                                                 </option>
@@ -466,9 +469,6 @@ const Dashboard = () => {
                                                 </option>
                                                 <option value="Delivered">
                                                     Delivered
-                                                </option>
-                                                <option value="Rejected">
-                                                    Rejected
                                                 </option>
                                             </select>
                                         </TableCell>
