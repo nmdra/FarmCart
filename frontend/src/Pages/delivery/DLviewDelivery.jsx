@@ -54,38 +54,38 @@ const DLViewDelivery = () => {
             </div>
         )
     }
-    // Function to generate the PDF
     const generatePDF = () => {
-        const doc = new jsPDF()
+        const doc = new jsPDF('p', 'mm', 'a4') // Set to A4 size (portrait orientation)
 
         // Add logo
         doc.addImage(farmcartLogo, 'PNG', 10, 10, 50, 20) // Add logo with width and height
 
-        // Add title
-        doc.setFontSize(22)
-        doc.text('Delivery Details', 105, 40, null, null, 'center') // Title centered at the top
+        // Add report title
+        doc.setFontSize(24)
+        doc.setTextColor(40)
+        doc.text('Delivery Details Report', 105, 40, null, null, 'center') // Centered title
 
-        // Add company name
+        // Add company information
         doc.setFontSize(12)
         doc.text('FarmCart Lanka (PVT.) LTD', 105, 50, null, null, 'center')
         doc.text('No.78, Malabe, Colombo', 105, 55, null, null, 'center')
-        doc.text('(+94) 011 34 56 837', 105, 60, null, null, 'center')
-        doc.text('www.farmcart.com', 105, 65, null, null, 'center')
+        doc.text('Phone: (+94) 011 34 56 837', 105, 60, null, null, 'center')
+        doc.text('Website: www.farmcart.com', 105, 65, null, null, 'center')
 
-        // Move down to add delivery details table
-        doc.setFontSize(12)
-        doc.text('Delivery Information', 14, 80) // Left-aligned delivery information
+        // Section for "Delivery Information"
+        doc.setFontSize(18)
+        doc.setTextColor(0, 51, 102) // Dark blue color
+        doc.text('Delivery Information', 14, 80) // Section title left-aligned
 
-        // Create a table with delivery details
+        // Delivery details table
         doc.autoTable({
-            startY: 85, // Starting position on the Y-axis
+            startY: 90, // Positioning below "Delivery Information"
             head: [['Field', 'Details']], // Table headers
             body: [
                 ['Tracking ID', delivery.trackingID],
                 ['Order ID', delivery.oID],
                 ['Driver ID', delivery.drID],
                 ['Driver Name', driver.fullName],
-
                 ['Shop Name', delivery.shopName],
                 ['Pickup Address', delivery.pickupAddress],
                 ['Customer Name', delivery.customerName || 'N/A'],
@@ -102,12 +102,28 @@ const DLViewDelivery = () => {
                         : 'Ongoing',
                 ],
             ],
-            theme: 'grid', // Use grid theme for the table
-            headStyles: { fillColor: [46, 204, 113] }, // Green background for headers
-            bodyStyles: { textColor: [0, 0, 0] }, // Black text color for table body
+            theme: 'grid', // Use the grid theme for a clean table format
+            headStyles: { fillColor: [46, 204, 113] }, // Green background for table headers
+            bodyStyles: { textColor: [0, 0, 0] }, // Black text color for the table body
+            alternateRowStyles: { fillColor: [245, 245, 245] }, // Light grey for alternate rows
+            margin: { top: 10 },
         })
 
-        // Save the PDF with a dynamic name based on the delivery ID
+        // Add footer section for generated date and signature space
+        const finalY = doc.autoTable.previous.finalY + 20 // Get Y position after the table
+        doc.setFontSize(12)
+        doc.text(
+            `Report Generated on: ${new Date().toLocaleString()}`,
+            14,
+            finalY
+        )
+
+        // Add "Approved by" section with signature line
+        doc.text('Approved by:', 14, finalY + 10)
+        doc.text('__________________________', 14, finalY + 20) // Placeholder for signature
+        doc.text('Signature', 14, finalY + 25)
+
+        // Save the PDF with a dynamic name based on the delivery tracking ID
         doc.save(`Delivery_${delivery.trackingID}.pdf`)
     }
 

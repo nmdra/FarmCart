@@ -1,8 +1,5 @@
 import express from 'express'
-import {
-    getFarmersCount,
-getAllFarmers,
-} from '../../controllers/Admin/Afarmer'
+import { getFarmersCount, getAllFarmers } from '../../controllers/Admin/Afarmer'
 
 const router = express.Router()
 

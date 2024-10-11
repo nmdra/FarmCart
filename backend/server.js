@@ -23,16 +23,22 @@ import driverRoutes from './routes/DLDriverRoutes.js' //DL
 import { fileURLToPath } from 'url' //DL
 import DLEmailRoutes from './routes/DLEmailRoutes.js' //DL
 import oRoutes from './routes/DLORoutes.js' // DL
-import { checkForAvailableDrivers } from './controllers/DLDeliveryController.js' //DL THIS IS CHECKING ALL ODRS AND ASSIGN DRIVERS
+import {
+    checkForAvailableDrivers,
+    cleanUpDuplicateDeliveries,
+} from './controllers/DLDeliveryController.js' //DL THIS IS CHECKING ALL ODRS AND ASSIGN DRIVERS
 import deliveryRoutes from './routes/DLDeliveryRoute.js' //DL
 import {
     startOrderAssignment,
     startSyncDeliveryOrderStatus,
 } from './controllers/DLOcontroller.js' // Import the periodic check
 
-// checkForAvailableDrivers() //DL
+
+// {/*checkForAvailableDrivers() //DL
 // startOrderAssignment()
 // startSyncDeliveryOrderStatus() //DL
+// cleanUpDuplicateDeliveries() */}
+
 
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 

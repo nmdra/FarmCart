@@ -81,15 +81,26 @@ const RegisterDriverForm = () => {
             // Remove any leading or trailing spaces
             const trimmedValue = value.trim()
 
+            // Advanced email validation regex
+            const emailRegex =
+                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
             // Check if there are any spaces in the email
             if (/\s/.test(trimmedValue)) {
                 errorMessage = 'Email cannot contain spaces.'
-            } else if (!/^.*@gmail\.com$/.test(trimmedValue)) {
-                errorMessage = 'Email must be a valid @gmail.com address.'
+            } else if (!emailRegex.test(trimmedValue)) {
+                errorMessage =
+                    'Email must be a valid address (e.g., name@example.com).'
             }
         }
 
         if (name === 'phone') {
+            if (!/^\d*$/.test(value)) {
+                return // Prevent setting invalid value
+            }
+            if (value.length > 10) {
+                return // Prevent setting values longer than 10 digits
+            }
             if (!/^0\d{9}$/.test(value)) {
                 errorMessage =
                     'Contact number must be 10 digits and start with 0.'
@@ -119,12 +130,18 @@ const RegisterDriverForm = () => {
                 .getFullYear()
                 .toString()
 
-            if (!nicRegex.test(value)) {
-                errorMessage = 'Please Enter valid NIC'
+            // Ensure the NIC is not longer than 12 characters
+            if (value.length > 12) {
+                return
+                errorMessage = 'NIC cannot exceed 12 characters.'
+            } else if (!nicRegex.test(value)) {
+                errorMessage = 'Please enter a valid NIC.'
             } else if (!value.startsWith(birthYear)) {
-                errorMessage = 'Please Enter valid NIC'
+                errorMessage =
+                    'Please enter a valid NIC that matches your birth year.'
             }
         }
+
         // Validate Vehicle Number
         if (name === 'vehicleNumber') {
             const vehicleRegex6 = /^[A-Z]{2}[0-9]{4}$/ // For 6 characters (AA0000 to ZZ9999)
@@ -133,6 +150,9 @@ const RegisterDriverForm = () => {
             if (!(vehicleRegex6.test(value) || vehicleRegex7.test(value))) {
                 errorMessage =
                     'Vehicle number must be in uppercase and follow the format AA0000 or AAA0000.'
+            }
+            if (value.length > 7) {
+                return // Prevent setting values longer than 10 digits
             }
         }
 
