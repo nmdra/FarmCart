@@ -20,6 +20,18 @@ export const assignDriverToOrder = async () => {
             return
         }
 
+        const existingDelivery = await DLDelivery.findOne({
+            orderID: order.oID,
+        })
+        if (existingDelivery) {
+            // If the order is already assigned, delete the order from dOrder table
+            await dOrder.deleteOne({ _id: order._id })
+            console.log(
+                `Order ${order.oID} is already assigned, deleted from dOrder table.`
+            )
+            return
+        }
+
         // Find an available driver
         const driver = await DLDriver.findOne({ isAvailable: true }).sort({
             createdAt: 1,

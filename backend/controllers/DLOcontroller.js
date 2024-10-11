@@ -113,10 +113,8 @@ const assignReadyOrders = async () => {
             const existingOrder = await dOrder.findOne({
                 oID: order._id.toString(),
             })
-
             if (existingOrder) {
-                // console.log(`Order with ID ${order._id} already exists in dOrder.`)
-                continue // Skip this order if it already exists
+                continue // Skip this order if it already exists in dOrder
             }
 
             // Find the shop associated with this order (via shopId)
@@ -172,11 +170,6 @@ const assignReadyOrders = async () => {
             // Save the new dOrder
             await newDOrder.save()
             /*console.log(`Order with ID ${order._id} has been successfully assigned to dOrder with new orderID ${newDOrder.orderID}.`)*/
-
-            // After saving the new dOrder, update the order status to "Assigning" in the Order model
-            order.orderStatus = 'Assigning'
-            await order.save() // Save the updated order
-            // console.log(`Order with ID ${order._id} has been marked as "Assigning" in the Order model.`)
         }
     } catch (error) {
         console.error('Error assigning ready orders to dOrder:', error)

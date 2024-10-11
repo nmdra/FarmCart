@@ -141,7 +141,7 @@ const DLmanageDash = () => {
             {/* Main content */}
             <main className="flex-1 ml-64 p-16 overflow-y-auto">
                 <div className="max-w-7xl mx-auto p-6 bg-white shadow-md rounded-md">
-                    <h1 className="text-3xl font-bold mb-8 text-gray-800">
+                    <h1 className="text-3xl font-bold mb-8 text-gray-800 bg-center">
                         Delivery Manager Dashboard
                     </h1>
 
