@@ -2,16 +2,16 @@ import React from 'react'
 import { FaShoppingCart, FaShippingFast, FaCheckCircle } from 'react-icons/fa'
 
 const ProgressBar = ({ currentStep }) => {
-    const totalSteps = 3
-
+    const totalSteps = 3 
+    
     const icons = [
         <FaShoppingCart key="cart" />,
         <FaShippingFast key="shipping" />,
-        <FaCheckCircle key="done" />,
+        <FaCheckCircle key="done" />, 
     ]
 
     return (
-        <div className="flex items-center justify-center mt-3 mb-0">
+        <div className="flex items-center justify-center mt-3 mb-0 ">
             {Array.from({ length: totalSteps }, (_, index) => (
                 <div key={index} className="flex items-center">
                     <div
