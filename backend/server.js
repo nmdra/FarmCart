@@ -47,14 +47,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-//Delivery image
-// TODO: Remove
-
-// const __filename = fileURLToPath(import.meta.url); //DL
-// const __dirname = path.dirname(__filename);//DL
-
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));//DL
-
 // routes
 app.get('/', (_req, res) => {
     res.send('FarmCart API is Running...')
