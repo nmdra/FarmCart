@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios' // Ensure correct path to axios
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sidebar component
+import Loading from '../../Components/Loading'
 
 const DLAllDeliveries = () => {
     const [deliveries, setDeliveries] = useState([])
@@ -10,19 +11,22 @@ const DLAllDeliveries = () => {
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
     const [filterStatus, setFilterStatus] = useState('All Deliveries') // State for current status filter
+    const [loading, setLoading] = useState(true)
 
     // Fetch all deliveries
     useEffect(() => {
         const fetchDeliveries = async () => {
             try {
                 const { data } = await axios.get('/api/delivery/deliveries', {
-                    params: { search: searchTerm, page, limit: 20 },
+                    params: { search: searchTerm, page, limit: 10 },
                 })
                 setDeliveries(data.deliveries)
                 setTotalPages(data.pages)
                 setFilteredDeliveries(data.deliveries) // Initialize with all deliveries
+                setLoading(false)
             } catch (error) {
                 console.error('Error fetching deliveries:', error)
+                setLoading(false)
             }
         }
 
@@ -87,6 +91,14 @@ const DLAllDeliveries = () => {
 
     const handleView = (id) => {
         navigate(`/manager/delivery/${id}`) // Redirect to the view delivery page with the delivery ID
+    }
+
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
     }
 
     return (

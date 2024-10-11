@@ -21,6 +21,7 @@ services:
       dockerfile: Dockerfile.prod  # This Dockerfile serves React with Caddy
       args:
         - VITE_STRIPE_PUBLIC_KEY=pk_test_51LMEvTC05RrpHY1zUINiBb70Oue9TVmbH9LoKTZKKa0Ra3a8J188Ph3kouCpSeLJUr7qCgndpWlAXwt5GVlZOLIY00SkMj6avh
+        - VITE_MAPBOX_API_KEY=pk.eyJ1IjoibGtzbmp3IiwiYSI6ImNtMjA2c3ZkOTBiYWwyaXF2M2lqM2tleTQifQ.DZLGqlXwdK7VmyE1zlpxDg
     restart: unless-stopped
     env_file: ./frontend/.env.prod
     ports:

@@ -25,10 +25,11 @@ import DLEmailRoutes from './routes/DLEmailRoutes.js' //DL
 import oRoutes from './routes/DLORoutes.js' // DL
 import { checkForAvailableDrivers } from './controllers/DLDeliveryController.js' //DL THIS IS CHECKING ALL ODRS AND ASSIGN DRIVERS
 import deliveryRoutes from './routes/DLDeliveryRoute.js' //DL
-import { startOrderAssignment } from './controllers/DLOcontroller.js' // Import the periodic check
+import { startOrderAssignment,startSyncDeliveryOrderStatus } from './controllers/DLOcontroller.js' // Import the periodic check
 
 checkForAvailableDrivers() //DL
 startOrderAssignment()
+startSyncDeliveryOrderStatus() //DL
 
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
@@ -45,14 +46,6 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-
-//Delivery image
-// TODO: Remove
-
-// const __filename = fileURLToPath(import.meta.url); //DL
-// const __dirname = path.dirname(__filename);//DL
-
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));//DL
 
 // routes
 app.get('/', (_req, res) => {

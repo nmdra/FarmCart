@@ -341,6 +341,26 @@ const getAvailableDriversCount = asyncHandler(async (req, res) => {
     res.json({ count })
 })
 
+// Add this function to check if NIC number and password are equal
+export const checkNicPassword = asyncHandler(async (req, res) => {
+    const driver = await DLDriver.findById(req.driver._id)
+
+    if (driver) {
+        // Compare the NIC number (idCardNumber) and password
+        const isMatch = await bcrypt.compare(
+            driver.idCardNumber,
+            driver.password
+        )
+        if (isMatch) {
+            res.json({ nicMatchesPassword: true }) // If they are the same
+        } else {
+            res.json({ nicMatchesPassword: false }) // If they are different
+        }
+    } else {
+        res.status(404).json({ message: 'Driver not found' })
+    }
+})
+
 export { getDriversCount, getAvailableDriversCount }
 
 export {

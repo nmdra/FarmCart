@@ -138,7 +138,7 @@ const Dashboard = () => {
 
 
                     {/* Additional dashboard content can be added here */}
-                    <DailyOrdersChart/>
+                    <DailyOrdersChart />
                 </main>
             </div>
         </div>

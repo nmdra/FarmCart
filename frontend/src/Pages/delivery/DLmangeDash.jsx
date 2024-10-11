@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios' // Ensure this path is correct
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sidebar component
 import { useNavigate } from 'react-router-dom' // For navigating between pages
+import Loading from '../../Components/Loading'
 
 const DLmanageDash = () => {
     const [stats, setStats] = useState({
@@ -16,6 +17,7 @@ const DLmanageDash = () => {
     const [loading, setLoading] = useState(true) // Loading state
     const [error, setError] = useState(null) // Error state
     const navigate = useNavigate() // Navigate hook
+    const [ongoingDeliveries, setOngoingDeliveries] = useState([]) // Ongoing deliveries state
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -42,6 +44,22 @@ const DLmanageDash = () => {
                     '/api/d_forms/pending-forms'
                 )
 
+                // Fetch deliveries that are not "Delivered"
+                const { data } = await axios.get('/api/delivery/deliveries', {
+                    params: { status: 'notDelivered' }, // Assuming have a backend filter by status
+                })
+
+                // Filter deliveries with status other than "Delivered"
+                const filteredOngoingDeliveries = data.deliveries
+                    .filter(
+                        (delivery) => delivery.deliveryStatus !== 'Delivered'
+                    )
+                    .sort(
+                        (a, b) =>
+                            new Date(b.assignDateTime) -
+                            new Date(a.assignDateTime)
+                    )
+
                 console.log('Backend data received: ', pendingFormsRes.data)
 
                 // Check if pending forms exist, if not set to 0
@@ -56,6 +74,8 @@ const DLmanageDash = () => {
                     pendingForms: pendingFormsCount, // Set pending forms count to 0 if empty
                 })
 
+                // Limit to 5 ongoing deliveries
+                setOngoingDeliveries(filteredOngoingDeliveries.slice(0, 5))
                 setPendingForms(pendingFormsRes.data) // Store the pending forms
             } catch (error) {
                 // Log the full error response for debugging
@@ -85,7 +105,11 @@ const DLmanageDash = () => {
     }, [])
 
     if (loading) {
-        return <div>Loading...</div> // Display a loading message while fetching data
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
     }
 
     if (error) {
@@ -117,7 +141,7 @@ const DLmanageDash = () => {
             {/* Main content */}
             <main className="flex-1 ml-64 p-16 overflow-y-auto">
                 <div className="max-w-7xl mx-auto p-6 bg-white shadow-md rounded-md">
-                    <h1 className="text-3xl font-bold mb-8 text-gray-800">
+                    <h1 className="text-3xl font-bold mb-8 text-gray-800 bg-center">
                         Delivery Manager Dashboard
                     </h1>
 
@@ -242,21 +266,21 @@ const DLmanageDash = () => {
                             Ongoing Deliveries
                         </h2>
                         <div className="overflow-x-auto">
-                            {stats.ongoingDeliveries > 0 ? (
+                            {ongoingDeliveries.length > 0 ? (
                                 <table className="min-w-full bg-white border border-gray-200">
                                     <thead>
                                         <tr className="bg-gray-200">
                                             <th className="px-4 py-2 text-left border">
-                                                Delivery ID
+                                                Tracking ID
                                             </th>
                                             <th className="px-4 py-2 text-left border">
-                                                Driver Name
+                                                Order ID
                                             </th>
                                             <th className="px-4 py-2 text-left border">
-                                                Vehicle Type
+                                                Driver ID
                                             </th>
                                             <th className="px-4 py-2 text-left border">
-                                                Status
+                                                Assigned Time
                                             </th>
                                             <th className="px-4 py-2 text-left border">
                                                 Actions
@@ -264,42 +288,45 @@ const DLmanageDash = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* Example ongoing deliveries */}
-                                        <tr className="bg-white hover:bg-gray-100">
-                                            <td className="px-4 py-2 border">
-                                                #1234
-                                            </td>
-                                            <td className="px-4 py-2 border">
-                                                John Doe
-                                            </td>
-                                            <td className="px-4 py-2 border">
-                                                Bike
-                                            </td>
-                                            <td className="px-4 py-2 border">
-                                                <span className="bg-blue-500 text-white px-2 py-1 rounded">
-                                                    In Progress
-                                                </span>
-                                            </td>
-                                            <td className="px-4 py-2 border">
-                                                <button
-                                                    className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600"
-                                                    onClick={() =>
-                                                        handleViewDelivery(
-                                                            '1234'
-                                                        )
-                                                    }
-                                                >
-                                                    View Delivery
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {/* Add more rows dynamically as needed */}
+                                        {ongoingDeliveries.map((delivery) => (
+                                            <tr
+                                                key={delivery._id}
+                                                className="bg-white hover:bg-gray-100"
+                                            >
+                                                <td className="px-4 py-2 border">
+                                                    {delivery.trackingID}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {delivery.oID}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {delivery.drID}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    {new Date(
+                                                        delivery.assignDateTime
+                                                    ).toLocaleString()}
+                                                </td>
+                                                <td className="px-4 py-2 border">
+                                                    <button
+                                                        className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600"
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/manager/delivery/${delivery._id}`
+                                                            )
+                                                        }
+                                                    >
+                                                        View
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             ) : (
                                 <p className="text-gray-500">
                                     No ongoing deliveries available
-                                </p> // Display this message when no ongoing deliveries
+                                </p>
                             )}
                         </div>
                     </div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import DeliverySidebar from '../../Components/delivery/DeliverySidebar'
 import Swal from 'sweetalert2'
+import Loading from '../../Components/Loading'
 
 const DLEditProfile = () => {
     const [currentPassword, setCurrentPassword] = useState('')
@@ -159,7 +160,13 @@ const DLEditProfile = () => {
         setMessage(errorMessage) // Set validation error message
     }
 
-    if (loading) return <div>Loading...</div>
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-100">

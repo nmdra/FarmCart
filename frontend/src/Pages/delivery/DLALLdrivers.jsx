@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react'
 import axios from '../../axios' // Ensure correct path to axios
 import { useNavigate } from 'react-router-dom'
 import DLmanageSidebar from '../../Components/delivery/DLmanageSidebar' // Sidebar component
+import Loading from '../../Components/Loading'
 
 const DLALLdrivers = () => {
     const [drivers, setDrivers] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
+    const [loading, setLoading] = useState(true)
+
     const [filteredDrivers, setFilteredDrivers] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
@@ -22,8 +25,10 @@ const DLALLdrivers = () => {
                 setDrivers(data)
                 setFilteredDrivers(data)
                 setTotalPages(Math.ceil(data.length / rowsPerPage)) // Set total pages based on rows per page
+                setLoading(false)
             } catch (error) {
                 console.error('Error fetching drivers:', error)
+                setLoading(false)
             }
         }
 
@@ -101,6 +106,14 @@ const DLALLdrivers = () => {
 
     const handleViewDriver = (id) => {
         navigate(`/manager/view-driver/${id}`) // Redirect to DLViewDriver page with the driver ID
+    }
+
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
     }
 
     return (

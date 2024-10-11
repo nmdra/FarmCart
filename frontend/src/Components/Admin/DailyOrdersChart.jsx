@@ -1,99 +1,106 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { Line } from 'react-chartjs-2';
+import React, { useState, useEffect, useRef } from 'react'
+import axios from 'axios'
+import { Line } from 'react-chartjs-2'
 import farmcartLogo from '../../assets/logo.png'
-import 'chart.js/auto'; // Importing chart.js
+import 'chart.js/auto' // Importing chart.js
 
 const DailyOrdersChart = () => {
-  const [chartData, setChartData] = useState({});
-  const chartRef = useRef(null); // Reference to capture the chart instance
+    const [chartData, setChartData] = useState({})
+    const chartRef = useRef(null) // Reference to capture the chart instance
 
-  useEffect(() => {
-    const fetchDailyOrders = async () => {
-      try {
-        const { data } = await axios.get('/api/orders/daily-orders');
+    useEffect(() => {
+        const fetchDailyOrders = async () => {
+            try {
+                const { data } = await axios.get('/api/orders/daily-orders')
 
-        const dates = data.map(order => order._id);
-        const totalOrders = data.map(order => order.totalOrders);
-        const totalSales = data.map(order => order.totalSales);
+                const dates = data.map((order) => order._id)
+                const totalOrders = data.map((order) => order.totalOrders)
+                const totalSales = data.map((order) => order.totalSales)
 
-        setChartData({
-          labels: dates,
-          datasets: [
-            {
-              label: 'Total Orders',
-              data: totalOrders,
-              borderColor: 'rgba(34, 197, 94, 1)', // Tailwind Green (Accent color)
-              backgroundColor: 'rgba(34, 197, 94, 0.1)',
-              fill: true,
-              tension: 0.8,
-            },
-            {
-              label: 'Total Sales ($)',
-              data: totalSales,
-              borderColor: 'rgba(16, 185, 129, 1)',
-              backgroundColor: 'rgba(16, 185, 129, 0.1)',
-              fill: true,
-              tension: 0.8,
-            },
-          ],
-        });
-      } catch (error) {
-        console.error('Error fetching daily orders', error);
-      }
-    };
+                setChartData({
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: 'Total Orders',
+                            data: totalOrders,
+                            borderColor: 'rgba(34, 197, 94, 1)', // Tailwind Green (Accent color)
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            fill: true,
+                            tension: 0.8,
+                        },
+                        {
+                            label: 'Total Sales ($)',
+                            data: totalSales,
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.8,
+                        },
+                    ],
+                })
+            } catch (error) {
+                console.error('Error fetching daily orders', error)
+            }
+        }
 
-    fetchDailyOrders();
-  }, []);
+        fetchDailyOrders()
+    }, [])
 
-  // Function to download the chart as a PNG image with a white background and a logo
-  const downloadChart = () => {
-    const chartInstance = chartRef.current;
+    // Function to download the chart as a PNG image with a white background and a logo
+    const downloadChart = () => {
+        const chartInstance = chartRef.current
 
-    if (chartInstance) {
-      const canvas = chartInstance.canvas; // Get the chart canvas
-      const imageData = canvas.toDataURL('image/png'); // Get chart image as PNG
+        if (chartInstance) {
+            const canvas = chartInstance.canvas // Get the chart canvas
+            const imageData = canvas.toDataURL('image/png') // Get chart image as PNG
 
-      // Create a new canvas to add the white background and the logo
-      const newCanvas = document.createElement('canvas');
-      newCanvas.width = canvas.width;
-      newCanvas.height = canvas.height;
+            // Create a new canvas to add the white background and the logo
+            const newCanvas = document.createElement('canvas')
+            newCanvas.width = canvas.width
+            newCanvas.height = canvas.height
 
-      const ctx = newCanvas.getContext('2d');
-      
-      // Fill the new canvas with a white background
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, newCanvas.width, newCanvas.height);
+            const ctx = newCanvas.getContext('2d')
 
-      // Draw the original chart on top of the white background
-      const img = new Image();
-      img.src = imageData;
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0); // Draw the chart image
+            // Fill the new canvas with a white background
+            ctx.fillStyle = 'white'
+            ctx.fillRect(0, 0, newCanvas.width, newCanvas.height)
 
-        // Now load the logo and add it to the canvas
-        const logo = new Image();
-        logo.src = farmcartLogo; // Replace this with the path or URL of your logo
-        console.log(logo.src);
-        logo.onload = () => {
-          // Draw the logo at the bottom-right corner of the chart
-          const logoWidth = 150; // Width of the logo
-          const logoHeight = 50; // Height of the logo
-          const xPosition = newCanvas.width - logoWidth - 10; // 10px padding from right
-          const yPosition = 10; // 10px padding from bottom
+            // Draw the original chart on top of the white background
+            const img = new Image()
+            img.src = imageData
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0) // Draw the chart image
 
-          ctx.drawImage(logo, xPosition, yPosition, logoWidth, logoHeight); // Draw logo
+                // Now load the logo and add it to the canvas
+                const logo = new Image()
+                logo.src = farmcartLogo // Replace this with the path or URL of your logo
+                console.log(logo.src)
+                logo.onload = () => {
+                    // Draw the logo at the bottom-right corner of the chart
+                    const logoWidth = 150 // Width of the logo
+                    const logoHeight = 50 // Height of the logo
+                    const xPosition = newCanvas.width - logoWidth - 10 // 10px padding from right
+                    const yPosition = 10 // 10px padding from bottom
 
-          // Convert the new canvas with white background and logo to PNG
-          const newDataUrl = newCanvas.toDataURL('image/png');
+                    ctx.drawImage(
+                        logo,
+                        xPosition,
+                        yPosition,
+                        logoWidth,
+                        logoHeight
+                    ) // Draw logo
 
-          // Trigger download
-          const link = document.createElement('a');
-          link.href = newDataUrl;
-          link.download = 'daily-orders-chart.png'; // Set the filename
-          link.click(); // Programmatically trigger the download
-        };
-      };
+                    // Convert the new canvas with white background and logo to PNG
+                    const newDataUrl = newCanvas.toDataURL('image/png')
+
+                    // Trigger download
+                    const link = document.createElement('a')
+                    link.href = newDataUrl
+                    link.download = 'daily-orders-chart.png' // Set the filename
+                    link.click() // Programmatically trigger the download
+                }
+            }
+        }
     }
   };
 

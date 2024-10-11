@@ -15,6 +15,7 @@ import {
     verifyPassword,
     getDriversCount,
     getAvailableDriversCount,
+    checkNicPassword,
 
     // Add logout driver function
 } from '../controllers/DLDriverController.js'
@@ -62,5 +63,7 @@ router.get('/count', getDriversCount)
 
 // Route to get the number of available drivers
 router.get('/available/count', getAvailableDriversCount)
+
+router.get('/nic-password-check', protectDriver, checkNicPassword)
 
 export default router
