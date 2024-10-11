@@ -37,11 +37,14 @@ const DLDriverDashboard = () => {
                 setIsAvailable(data.isAvailable) // Set initial availability
 
                 // Check if NIC and password are the same
-                const nicCheckRes = await axios.get('/api/drivers/nic-password-check', {
-                    headers: {
-                        Authorization: `Bearer ${driverToken}`, // Pass token in headers
-                    },
-                })
+                const nicCheckRes = await axios.get(
+                    '/api/drivers/nic-password-check',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${driverToken}`, // Pass token in headers
+                        },
+                    }
+                )
                 setNicMatchesPassword(nicCheckRes.data.nicMatchesPassword) // Set NIC and password equality check result
 
                 // Fetch ongoing deliveries assigned to this driver
@@ -153,10 +156,10 @@ const DLDriverDashboard = () => {
             status === 'Ready'
                 ? 25
                 : status === 'Picked Up'
-                ? 50
-                : status === 'On The Way'
-                ? 75
-                : 100
+                  ? 50
+                  : status === 'On The Way'
+                    ? 75
+                    : 100
         const bgColor = progress === 100 ? 'bg-gray-400' : 'bg-green-500'
 
         return (
@@ -183,7 +186,8 @@ const DLDriverDashboard = () => {
                     <div className="bg-red-500 text-white p-4 rounded-md mb-6 text-center">
                         <strong>Warning:</strong> Your NIC number and password
                         are the same. Please update your password for better
-                        security. When you change the password, you can assign orders.
+                        security. When you change the password, you can assign
+                        orders.
                     </div>
                 )}
 
@@ -216,7 +220,9 @@ const DLDriverDashboard = () => {
                                                 : 'bg-red-500 hover:bg-red-600'
                                         }`}
                                     >
-                                        {isAvailable ? 'Available' : 'Unavailable'}
+                                        {isAvailable
+                                            ? 'Available'
+                                            : 'Unavailable'}
                                     </button>
                                 )}
                                 <button
@@ -273,12 +279,12 @@ const DLDriverDashboard = () => {
                                                             'Ready'
                                                                 ? 25
                                                                 : delivery.deliveryStatus ===
-                                                                  'Picked Up'
-                                                                ? 50
-                                                                : delivery.deliveryStatus ===
-                                                                  'On The Way'
-                                                                ? 75
-                                                                : 100
+                                                                    'Picked Up'
+                                                                  ? 50
+                                                                  : delivery.deliveryStatus ===
+                                                                      'On The Way'
+                                                                    ? 75
+                                                                    : 100
                                                         }%`,
                                                     }}
                                                     className={`${
@@ -295,12 +301,12 @@ const DLDriverDashboard = () => {
                                                 'Ready'
                                                     ? '25%'
                                                     : delivery.deliveryStatus ===
-                                                      'Picked Up'
-                                                    ? '50%'
-                                                    : delivery.deliveryStatus ===
-                                                      'On The Way'
-                                                    ? '75%'
-                                                    : '100% (Delivered)'}
+                                                        'Picked Up'
+                                                      ? '50%'
+                                                      : delivery.deliveryStatus ===
+                                                          'On The Way'
+                                                        ? '75%'
+                                                        : '100% (Delivered)'}
                                             </div>
                                         </div>
 
