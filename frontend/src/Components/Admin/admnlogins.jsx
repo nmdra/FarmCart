@@ -15,17 +15,17 @@ const AdminLogin = () => {
         {
             email: 'sanjeewa@gmail.com',
             password: 'sanjeewa',
-            navigateTo: '/manager/dashboard' // Admin 1's dashboard
+            navigateTo: '/manager/dashboard', // Admin 1's dashboard
         },
         {
             email: 'admin2@example.com',
             password: 'password123',
-            navigateTo: '/manager/dashboard' // Admin 2's dashboard
+            navigateTo: '/manager/dashboard', // Admin 2's dashboard
         },
         {
             email: 'admin3@example.com',
             password: 'securePass',
-            navigateTo: '/superuser/dashboard' // Admin 3's dashboard
+            navigateTo: '/superuser/dashboard', // Admin 3's dashboard
         },
     ]
 

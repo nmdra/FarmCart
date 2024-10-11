@@ -378,4 +378,3 @@ export {
     verifyPassword,
     getAllDrivers,
 }
-

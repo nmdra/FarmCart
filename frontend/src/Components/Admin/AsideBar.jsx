@@ -1,6 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FaHome, FaUsers, FaUserAlt, FaTags, FaChartLine, FaSignOutAlt } from 'react-icons/fa'
+import {
+    FaHome,
+    FaUsers,
+    FaUserAlt,
+    FaTags,
+    FaChartLine,
+    FaSignOutAlt,
+} from 'react-icons/fa'
 
 const AdminSidebar = () => {
     return (

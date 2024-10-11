@@ -21,9 +21,8 @@ import Loading from '../../Components/Loading'
 import Swal from 'sweetalert2'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
-import logo from '../../assets/logo.PNG';
-import { FaDownload } from 'react-icons/fa';
-
+import logo from '../../assets/logo.png'
+import { FaDownload } from 'react-icons/fa'
 
 const Finance = () => {
     const [staffMembers, setStaffMembers] = useState([])
@@ -111,17 +110,25 @@ const Finance = () => {
     // PDF Generation
     const generatePDF = () => {
         const doc = new jsPDF()
-        const img = new Image();
-        img.src = logo;
+        const img = new Image()
+        img.src = logo
         // Add logo
-        doc.addImage(img, 'PNG', 20, 35, 30, 5); // Adjust the X, Y, width, and height as needed // Adjust x, y, width, height as needed
+        doc.addImage(img, 'PNG', 20, 35, 30, 5) // Adjust the X, Y, width, and height as needed // Adjust x, y, width, height as needed
 
         // Add title below the logo
         doc.setFontSize(15)
         doc.text('Staff List', 105, 40, null, null, 'center') // Centered below logo
 
         // Prepare the table data
-        const tableColumn = ['Id', 'Full Name','NIC','Email','Birth Day','Address','Role']
+        const tableColumn = [
+            'Id',
+            'Full Name',
+            'NIC',
+            'Email',
+            'Birth Day',
+            'Address',
+            'Role',
+        ]
         const tableRows = []
 
         filteredStaff.forEach((member, index) => {
@@ -132,8 +139,7 @@ const Finance = () => {
                 member.email,
                 member.birthday.split('T')[0],
                 `${member.Address.home} ${member.Address.street} ${member.Address.city}`,
-                member.role
-                
+                member.role,
             ]
             tableRows.push(memberData)
         })
@@ -144,8 +150,8 @@ const Finance = () => {
             body: tableRows,
             startY: 50, // Positioning the table after the logo and title
             styles: {
-                fontSize: 9 // Adjust this value to make the table content smaller
-            }
+                fontSize: 9, // Adjust this value to make the table content smaller
+            },
         })
 
         doc.save('staff-list.pdf')
@@ -159,7 +165,6 @@ const Finance = () => {
         )
     }
 
-  
     return (
         <div className="flex flex-col min-h-screen bg-gray-50">
             <div className="flex flex-1 mt-16">
@@ -168,22 +173,21 @@ const Finance = () => {
                 </aside>
 
                 <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
-                <div className="flex justify-center mb-8">
-                    <h3 className="text-2xl font-semibold text-gray-800">
-                         STAFF
-                    </h3>
-                </div>
+                    <div className="flex justify-center mb-8">
+                        <h3 className="text-2xl font-semibold text-gray-800">
+                            STAFF
+                        </h3>
+                    </div>
 
-                <div className="w-96 mb-6">
-    <Input
-        isClearable
-        radius="full"
-        placeholder="Search staff..."
-        onChange={(e) => setSearch(e.target.value)}
-        className="rounded-full border-[#99DD05] border-2 focus:border-[#99DD05] focus:ring-[#99DD05] placeholder-green-500" // Add custom classes here
-    />
-</div>
-
+                    <div className="w-96 mb-6">
+                        <Input
+                            isClearable
+                            radius="full"
+                            placeholder="Search staff..."
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="rounded-full border-[#99DD05] border-2 focus:border-[#99DD05] focus:ring-[#99DD05] placeholder-green-500" // Add custom classes here
+                        />
+                    </div>
 
                     <Table
                         aria-label="Staff Members Table"
@@ -210,8 +214,6 @@ const Finance = () => {
                             <TableColumn>Address</TableColumn>
                             <TableColumn>Role</TableColumn>
                             <TableColumn>Action</TableColumn>
-
-                            
                         </TableHeader>
                         <TableBody>
                             {items.map((member, index) => (
@@ -223,7 +225,9 @@ const Finance = () => {
                                     <TableCell>{`${member.firstName} ${member.lastName}`}</TableCell>
                                     <TableCell>{member.nic}</TableCell>
                                     <TableCell>{member.email}</TableCell>
-                                    <TableCell>{member.birthday.split('T')[0]}</TableCell>
+                                    <TableCell>
+                                        {member.birthday.split('T')[0]}
+                                    </TableCell>
                                     <TableCell>{`${member.Address.home} ${member.Address.street} ${member.Address.city}`}</TableCell>
                                     <TableCell>{member.role}</TableCell>
                                     <TableCell className="flex gap-6 justify-center items-center h-16">
@@ -275,24 +279,20 @@ const Finance = () => {
                         </TableBody>
                     </Table>
                     <div className="flex justify-end space-x-4 mt-5">
-                    <button
-        onClick={handleAddNewStaff}
-        className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
-    >
-        Add New Staff
-    </button>
-    <button
-        onClick={generatePDF}
-        className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
-    >
-        <FaDownload size={20} />
-        Export Staff list
-    </button>
-
-</div>
-
-
-
+                        <button
+                            onClick={handleAddNewStaff}
+                            className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
+                        >
+                            Add New Staff
+                        </button>
+                        <button
+                            onClick={generatePDF}
+                            className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
+                        >
+                            <FaDownload size={20} />
+                            Export Staff list
+                        </button>
+                    </div>
                 </main>
             </div>
         </div>
@@ -300,4 +300,3 @@ const Finance = () => {
 }
 
 export default Finance
-

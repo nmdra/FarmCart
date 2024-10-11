@@ -175,8 +175,7 @@ const router = createBrowserRouter(
             </Route>
 
             {/* Admin Routes */}
-            <Route path="/" element={<AdminLayout/>}>
-            
+            <Route path="/" element={<AdminLayout />}>
                 <Route path="/AdminDashboard" element={<AdminDashboard />} />
 
                 {/* Staff */}

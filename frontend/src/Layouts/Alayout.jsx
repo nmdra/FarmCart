@@ -7,7 +7,6 @@ function AdminLayout() {
         <>
             <div className="sticky top-0 bg-white shadow-md bg-opacity-70 backdrop-blur-md z-50">
                 <Header />
-                
             </div>
 
             <Outlet />
