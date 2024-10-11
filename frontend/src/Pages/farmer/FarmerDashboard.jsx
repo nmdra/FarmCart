@@ -368,13 +368,14 @@ const Dashboard = () => {
                                 <TableColumn>Id</TableColumn>
                                 <TableColumn>Order Item</TableColumn>
                                 <TableColumn>Shipping Address</TableColumn>
+                                <TableColumn>Quantity</TableColumn>
 
                                 <TableColumn>Total Price</TableColumn>
                                 <TableColumn>Deliver Date</TableColumn>
                                 <TableColumn>Order Status</TableColumn>
                                 <TableColumn>Action</TableColumn>
                             </TableHeader>
-                            <TableBody>
+                            <TableBody >
                                 {items.map((item, index) => (
                                     <TableRow
                                         key={item._id}
@@ -400,6 +401,11 @@ const Dashboard = () => {
                                         </TableCell>
                                         <TableCell>
                                             {item.shippingAddress.address}
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                            {item.orderItems.map((p) => (
+                                                <div key={p.name}>{p.quantity}</div>
+                                            ))}
                                         </TableCell>
                                         <TableCell>
                                             LKR:{' '}
