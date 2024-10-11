@@ -5,9 +5,12 @@ import {
     updateUserById,
     deleteUserById,
     validateUserPassword,
+    getUserCount
 } from '../../controllers/Admin/AcustomerController.js'
 
 const router = express.Router()
+
+router.get('/count',getUserCount)
 
 // Get all users
 router.get('/', getAllUsers)

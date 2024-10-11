@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+    getCouponCount,
     createCoupon,
     validCoupon,
     getAllCoupons,
@@ -10,6 +11,7 @@ import {
 
 const couponRouter = express.Router()
 
+couponRouter.get('/count', getCouponCount)
 couponRouter.post('/valid-coupon', validCoupon)
 couponRouter.post('/', createCoupon)
 couponRouter.get('/', getAllCoupons)

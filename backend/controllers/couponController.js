@@ -90,3 +90,11 @@ export const deleteCoupon = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+export const getCouponCount = async (req, res) => {
+    try {
+        const count = await Coupon.countDocuments()
+        res.status(200).json({ count })
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching coupon count' })
+    }
+}
