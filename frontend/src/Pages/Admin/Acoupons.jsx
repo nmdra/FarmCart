@@ -20,6 +20,10 @@ import { FaRegEye } from 'react-icons/fa'
 import { MdDeleteSweep } from 'react-icons/md'
 import Loading from '../../Components/Loading.jsx'
 import Swal from 'sweetalert2'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
+import logo from '../../assets/logo.png'
+import { FaDownload } from 'react-icons/fa'
 
 const Acoupon = () => {
     const [coupons, setCoupons] = useState([])
@@ -97,6 +101,81 @@ const Acoupon = () => {
         }
     }
 
+    const generateCouponPDF = () => {
+        const doc = new jsPDF()
+        const img = new Image()
+
+        // Check if the logo is defined correctly
+        img.src = logo
+
+        // Ensure the image loads before adding it to the PDF
+        img.onload = () => {
+            // Add the logo after it's loaded
+            doc.addImage(img, 'PNG', 20, 35, 30, 5)
+
+            // Add title below the logo
+            doc.setFontSize(15)
+            doc.text('Coupon List', 105, 40, null, null, 'center')
+
+            // Prepare the table data
+            const tableColumn = ['Id', 'Coupon Code', 'Discount', 'Expiry Date']
+            const tableRows = []
+
+            filteredCoupons.forEach((coupon, index) => {
+                const couponData = [
+                    index + 1,
+                    coupon.couponCode,
+                    `${coupon.discount}%`, // Assuming discount is a percentage
+                    coupon.expiryDate.split('T')[0], // Assuming expiryDate is in ISO format
+                ]
+                tableRows.push(couponData)
+            })
+
+            // Add table to PDF
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 50, // Positioning the table after the logo and title
+                styles: {
+                    fontSize: 9, // Adjust the table font size as needed
+                },
+            })
+
+            // Save the generated PDF
+            doc.save('coupon-list.pdf')
+        }
+
+        // If the logo image doesn't load or isn't available, you can skip adding it:
+        img.onerror = () => {
+            doc.setFontSize(15)
+            doc.text('Coupon List', 105, 40, null, null, 'center')
+
+            const tableColumn = ['Id', 'Coupon Code', 'Discount', 'Expiry Date']
+            const tableRows = []
+
+            filteredCoupons.forEach((coupon, index) => {
+                const couponData = [
+                    index + 1,
+                    coupon.couponCode,
+                    `${coupon.discount}%`,
+                    coupon.expiryDate.split('T')[0],
+                ]
+                tableRows.push(couponData)
+            })
+
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 50,
+                styles: {
+                    fontSize: 9,
+                },
+            })
+
+            doc.save('coupon-list.pdf')
+        }
+    }
+
     const handleAddNewCoupon = () => {
         navigate('/addcoupons') // Adjust to your route for adding coupons
     }
@@ -121,23 +200,18 @@ const Acoupon = () => {
                 </aside>
 
                 <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
-                    <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                            Coupons
+                    <div className="flex justify-center items-center mb-8">
+                        <h3 className="text-2xl font-semibold text-gray-800">
+                            COUPON
                         </h3>
-                        <button
-                            onClick={handleAddNewCoupon}
-                            className="bg-green-500 text-white hover:bg-green-600 font-semibold py-2 px-4 rounded text-center"
-                        >
-                            Add New Coupon
-                        </button>
                     </div>
                     <div className="w-96 mb-6">
                         <Input
                             isClearable
                             radius="full"
-                            placeholder="Search coupons..."
+                            placeholder="Search staff..."
                             onChange={(e) => setSearch(e.target.value)}
+                            className="rounded-full border-[#99DD05] border-2 focus:border-[#99DD05] focus:ring-[#99DD05] placeholder-green-500" // Add custom classes here
                         />
                     </div>
 
@@ -226,6 +300,21 @@ const Acoupon = () => {
                             ))}
                         </TableBody>
                     </Table>
+                    <div className="mt-8 flex justify-end space-x-4">
+                        <button
+                            onClick={handleAddNewCoupon}
+                            className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
+                        >
+                            Add Coupon
+                        </button>
+                        <button
+                            onClick={generateCouponPDF}
+                            className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
+                        >
+                            <FaDownload size={20} />
+                            Download
+                        </button>
+                    </div>
 
                     {/* Add modal for confirmation if required */}
                 </main>

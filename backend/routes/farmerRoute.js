@@ -7,6 +7,8 @@ import {
     logoutFarmer,
     deleteFarmerAccount,
     getFarmerById,
+    getAllFarmers,
+    getFarmersCount,
 } from '../controllers/farmerController.js'
 import { protect } from '../middlewares/farmerauthMiddleware.js'
 
@@ -14,6 +16,9 @@ const router = express.Router()
 
 // Register a new farmer
 router.post('/register', registerFarmer)
+
+router.get('/', getAllFarmers)
+router.get('/count', getFarmersCount)
 
 // Authenticate farmer and get token
 router.post('/login', authFarmer)
