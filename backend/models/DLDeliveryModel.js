@@ -8,9 +8,14 @@ const DLDeliverySchema = new mongoose.Schema({
     orderID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Order',
+        required: [true,'Order ID is required'],
+        unique: [true,'Order ID is unique'],
     },
 
-    oID: { type: String },
+    oID: { type: String , 
+         required: [true,'Order ID is required'],
+        unique: [true,'Order ID is unique'],
+    },
 
     driverID: {
         type: mongoose.Schema.Types.ObjectId,

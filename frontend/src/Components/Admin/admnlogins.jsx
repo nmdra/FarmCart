@@ -15,14 +15,18 @@ const AdminLogin = ({ manager }) => { // Receive the manager prop
         {
             email: 'sanjeewa@gmail.com',
             password: 'sanjeewa',
+
+
         },
         {
             email: 'admin@farmcart.com',
             password: 'password123',
+
         },
         {
             email: 'admin3@example.com',
             password: 'securePass',
+
         },
     ];
 
