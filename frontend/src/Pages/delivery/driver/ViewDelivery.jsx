@@ -57,45 +57,47 @@ const DLViewDelivery = () => {
         )
     }
 
-    // Function to generate the PDF
     const generatePDF = () => {
-        const doc = new jsPDF()
-
-        // Add logo
-        doc.addImage(farmcartLogo, 'PNG', 10, 10, 50, 20) // Add logo with width and height
-
-        // Add title
-        doc.setFontSize(22)
-        doc.text('Delivery Details', 105, 40, null, null, 'center') // Title centered at the top
-
-        // Add company name
-        doc.setFontSize(12)
-        doc.text('FarmCart Lanka (PVT.) LTD', 105, 50, null, null, 'center')
-        doc.text('No.78, Malabe, Colombo', 105, 55, null, null, 'center')
-        doc.text('(+94) 011 34 56 837', 105, 60, null, null, 'center')
-        doc.text('www.farmcart.com', 105, 65, null, null, 'center')
-
-        // Move down to add delivery details table
-        doc.setFontSize(12)
-        doc.text('Delivery Information', 14, 80) // Left-aligned delivery information
-
-        // Create a table with delivery details
+        const doc = new jsPDF('p', 'mm', 'a4'); // Ensure A4 size document
+    
+        // Add logo at the top
+        doc.addImage(farmcartLogo, 'PNG', 10, 10, 50, 20); // Add logo with width and height
+    
+        // Add main title (Delivery Details Report)
+        doc.setFontSize(24);
+        doc.setTextColor(40);
+        doc.text('Delivery Details Report', 105, 40, null, null, 'center'); // Title centered at the top
+    
+        // Add subtitle (e.g., Report generated on)
+        doc.setFontSize(12);
+        doc.text(`Report generated on: ${new Date().toLocaleDateString()}`, 105, 47, null, null, 'center');
+    
+        // Add company name and contact info
+        doc.setFontSize(12);
+        doc.text('FarmCart Lanka (PVT.) LTD', 105, 55, null, null, 'center');
+        doc.text('No.78, Malabe, Colombo', 105, 60, null, null, 'center');
+        doc.text('Phone: (+94) 011 34 56 837', 105, 65, null, null, 'center');
+        doc.text('Website: www.farmcart.com', 105, 70, null, null, 'center');
+    
+        // Add section for "Delivery Information"
+        doc.setFontSize(16);
+        doc.setTextColor(0, 51, 102); // Set dark blue color
+        doc.text('Delivery Information', 14, 85); // Left-aligned section title
+    
+        // Add a table for delivery details
         doc.autoTable({
-            startY: 85, // Starting position on the Y-axis
-            head: [['Field', 'Details']], // Table headers
+            startY: 90, // Positioning the table below the section title
+            head: [['Field', 'Details']],
             body: [
                 ['Tracking ID', delivery.trackingID],
                 ['Order ID', delivery.oID],
-                ['Driver Name', driver?.firstName + ' ' + driver?.lastName], // Adding driver name
+                ['Driver Name', driver?.firstName + ' ' + driver?.lastName],
                 ['Driver ID', delivery.drID],
                 ['Shop Name', delivery.shopName],
                 ['Pickup Address', delivery.pickupAddress],
                 ['Customer Name', delivery.customerName || 'N/A'],
                 ['Dropoff Address', delivery.dropOffAddress],
-                [
-                    'Assigned Time',
-                    new Date(delivery.assignDateTime).toLocaleString(),
-                ],
+                ['Assigned Time', new Date(delivery.assignDateTime).toLocaleString()],
                 ['Delivery Status', delivery.deliveryStatus],
                 [
                     'Delivered Time',
@@ -104,15 +106,27 @@ const DLViewDelivery = () => {
                         : 'Ongoing',
                 ],
             ],
-            theme: 'grid', // Use grid theme for the table
-            headStyles: { fillColor: [46, 204, 113] }, // Green background for headers
+            theme: 'grid', // Table theme
+            headStyles: { fillColor: [46, 204, 113] }, // Green background for table headers
             bodyStyles: { textColor: [0, 0, 0] }, // Black text color for table body
-        })
-
+        });
+    
+        // Add "Generated at" timestamp at the bottom
+        const generatedAt = new Date().toLocaleString();
+        doc.setFontSize(12);
+        doc.text(`Generated at: ${generatedAt}`, 14, doc.autoTable.previous.finalY + 20);
+    
+        // Add "Approved by" section at the bottom
+        doc.text('Approved by:', 14, doc.autoTable.previous.finalY + 30);
+        doc.text('__________________________', 14, doc.autoTable.previous.finalY + 40); // Placeholder for signature
+        doc.text('Signature', 14, doc.autoTable.previous.finalY + 45);
+    
         // Save the PDF with a dynamic name based on the delivery tracking ID
-        doc.save(`Delivery_${delivery.trackingID}.pdf`)
-    }
-
+        doc.save(`Delivery_${delivery.trackingID}.pdf`);
+    };
+    
+    
+    
     if (loading) {
         return (
             <div className="flex flex-1 min-h-screen justify-center items-center">
