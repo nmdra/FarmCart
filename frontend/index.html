@@ -9,7 +9,7 @@
     <!-- Relaxed CSP for testing: allows inline scripts, external scripts, and unsafe scripts -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src *; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data:;"
+      content="default-src *; font-src 'self' data:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data: blob:;"
     />
   </head>
   <body>
