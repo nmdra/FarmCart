@@ -109,6 +109,17 @@ const assignReadyOrders = async () => {
         for (const order of readyOrders) {
             // console.log(`Processing order with ID: ${order._id}`)
 
+            // First check if the order exists in DLDelivery
+            const existingDelivery = await DLDelivery.findOne({
+                orderID: order._id.toString(),
+            })
+            if (existingDelivery) {
+                console.log(
+                    `Order with ID ${order._id} already exists in DLDelivery.`
+                )
+                continue // Skip this order if it already exists in DLDelivery
+            }
+
             // Check if this order has already been assigned in dOrder
             const existingOrder = await dOrder.findOne({
                 oID: order._id.toString(),
