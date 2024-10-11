@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import DeliverySidebar from '../../../Components/delivery/DeliverySidebar'
 import Swal from 'sweetalert2'
+import Loading from '../../../Components/Loading'
 
 const ViewDeliveries = () => {
     const [deliveries, setDeliveries] = useState([])
@@ -94,7 +95,13 @@ const ViewDeliveries = () => {
         setPage(newPage)
     }
 
-    if (loading) return <div>Loading...</div>
+    if (loading) {
+        return (
+            <div className="flex flex-1 min-h-screen justify-center items-center">
+                <Loading />
+            </div>
+        )
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-50">

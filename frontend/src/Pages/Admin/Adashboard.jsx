@@ -69,7 +69,7 @@ const Dashboard = () => {
                     </div>
 
                     {/* Additional dashboard content can be added here */}
-                    <DailyOrdersChart/>
+                    <DailyOrdersChart />
                 </main>
             </div>
         </div>
