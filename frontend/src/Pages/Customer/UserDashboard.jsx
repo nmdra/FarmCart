@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import OrderTable from '../../Components/UserOrderTable'
-import Breadcrumbs from '../../Components/Breadcrumbs'
+// import Breadcrumbs from '../../Components/Breadcrumbs'
 import gold from '../../assets/premiumGold.png'
 import silver from '../../assets/premiumSilver.png'
 import regular from '../../assets/regular.png'
@@ -54,7 +54,7 @@ function Dashboard() {
     return (
         <div className="relative min-h-screen bg-neutral-100 pr-8 pl-8 pb-6">
             {/* Main Content */}
-            <Breadcrumbs /> {/* Breadcrumbs at the top */}
+            {/* <Breadcrumbs /> Breadcrumbs at the top */}
             {/* Membership Banner */}
             <div className="flex w-fit items-center max-md:flex-col gap-6 bg-gradient-to-tr from-green-800 to-green-600 text-white px-6 py-3.5  mx-6 rounded font-[sans-serif] mt-4 shadow-sm">
                 <p className="text-base flex-1 max-md:text-center">

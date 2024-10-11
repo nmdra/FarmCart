@@ -118,10 +118,11 @@ const ShopList = () => {
                     {/* Search Bar */}
                     <input
                         type="text"
-                        placeholder="Search shops..."
+                        placeholder="   Search shops..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="mb-5 border border-gray-300 rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        className="mb-5 border border-gray-300 rounded-full p-2 w-full hover:border-green-500 focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500 transition duration-200"
+
                     />
 
                     {/* Loading Message */}

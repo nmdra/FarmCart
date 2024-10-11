@@ -92,6 +92,7 @@ import ViewDelivery from './Pages/delivery/driver/ViewDelivery' // Import the Vi
 import ViewDeliveries from './Pages/delivery/driver/ViewDeliveries' // Import the ViewDeliveries page
 import DLMap from './Pages/delivery/DLMap' // Import the DLMap component
 import IncomePage from './Pages/delivery/driver/incomepage' // Import the DLList component
+import StaffPrivateRoute from './Components/Admin/AstaffPrivateRoute'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -176,23 +177,31 @@ const router = createBrowserRouter(
 
             {/* Admin Routes */}
             <Route path="/" element={<AdminLayout />}>
-                <Route path="/AdminDashboard" element={<AdminDashboard />} />
+                <Route path="/Admin" element={<AdminLogin />} />
+                <Route element={<StaffPrivateRoute />}>
+                    <Route
+                        path="/AdminDashboard"
+                        element={<AdminDashboard />}
+                    />
 
-                {/* Staff */}
-                <Route path="/staff" element={<Staff />} />
-                <Route path="/addstaff" element={<AddStaff />} />
-                <Route path="/UpdateStaff/:id" element={<UpdateStaff />} />
+                    {/* Staff */}
+                    <Route path="/staff" element={<Staff />} />
+                    <Route path="/addstaff" element={<AddStaff />} />
+                    <Route path="/UpdateStaff/:id" element={<UpdateStaff />} />
 
-                {/* users */}
-                <Route path="/users" element={<Users />} />
+                    {/* users */}
+                    <Route path="/users" element={<Users />} />
 
-                {/* Coupon */}
-                <Route path="/coupons" element={<Coupens />} />
-                <Route path="/addcoupons" element={<AddCoupon />} />
-                <Route path="/updatecoupon/:id" element={<UpdateCoupon />} />
-                <Route path="/coupens" element={<Coupens />} />
-                <Route path="/finance" element={<Finance />} />
-                <Route path="/adl" element={<AdminLogin />} />
+                    {/* Coupon */}
+                    <Route path="/coupons" element={<Coupens />} />
+                    <Route path="/addcoupons" element={<AddCoupon />} />
+                    <Route
+                        path="/updatecoupon/:id"
+                        element={<UpdateCoupon />}
+                    />
+                    <Route path="/coupens" element={<Coupens />} />
+                    <Route path="/finance" element={<Finance />} />
+                </Route>
 
                 {/* 
                 <Route path="/dashboard" element={< Dashboard/>} />
@@ -204,20 +213,37 @@ const router = createBrowserRouter(
 
             {/* delivery and driver Routes */}
             <Route path="/" element={<DLayout />}>
+                 <Route path="/manager" element={<AdminLogin manager={true} />} />
+                <Route element={<StaffPrivateRoute manager={true} />}>
+                    <Route
+                        path="/manager/approve-driver"
+                        element={<DLApproveDriver />}
+                    />
+                    <Route
+                        path="/manager/approve-driver/:id"
+                        element={<DLDriverAccept />}
+                    />
+                    {/*<Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />*/}
+                    <Route path="/alldrivers" element={<DLALLdrivers />} />
+                    <Route
+                        path="/manager/dashboard"
+                        element={<DLmanageDash />}
+                    />
+                    <Route
+                        path="/manager/view-driver/:id"
+                        element={<DLViewDriver />}
+                    />
+
+                    <Route
+                        path="/manager/delivery/:id"
+                        element={<DLViewDelivery />}
+                    />
+                </Route>
                 <Route
                     path="/register-driver"
                     element={<DLDriverRegistrationForm />}
                 />
                 <Route path="/upload-image" element={<DLImageUpload />} />
-                <Route
-                    path="/manager/approve-driver"
-                    element={<DLApproveDriver />}
-                />
-                <Route
-                    path="/manager/approve-driver/:id"
-                    element={<DLDriverAccept />}
-                />
-                {/*<Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />*/}
                 <Route path="/driver/login" element={<DLLogin />} />{' '}
                 {/* Driver Login Route */}
                 <Route
@@ -230,22 +256,12 @@ const router = createBrowserRouter(
                     path="/driver/profile/edit"
                     element={<DLEditProfile />}
                 />
-                <Route path="/alldrivers" element={<DLALLdrivers />} />
-                <Route path="/manager/dashboard" element={<DLmanageDash />} />
-                <Route
-                    path="/manager/view-driver/:id"
-                    element={<DLViewDriver />}
-                />
                 <Route path="/driver/logout" element={<DLlogout />} />
                 <Route path="/driver/edit/:id" element={<DLeditdriver />} />
                 <Route path="/a" element={<OrderForm />} />
                 <Route path="/b" element={<OrderTable />} />
                 <Route path="/d" element={<Od />} />
                 <Route path="/DLAllDeliveries" element={<DLAllDeliveries />} />
-                <Route
-                    path="/manager/delivery/:id"
-                    element={<DLViewDelivery />}
-                />
                 <Route path="/ongoing" element={<OngoingDelivery />} />
                 <Route
                     path="/driver/delivery/:id"

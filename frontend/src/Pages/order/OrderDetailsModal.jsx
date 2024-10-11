@@ -18,14 +18,14 @@ const OrderDetailsModal = ({ isOpen, onOpenChange, clickOrder }) => {
             <ModalContent>
                 {(onClose) => (
                     <>
-                        {/* Modal Header */}
+                        {/* Order modal Header */}
                         <ModalHeader className="flex flex-col gap-1 text-center">
                             <h4 className="text-xl font-bold text-gray-800">
                                 Order Details
                             </h4>
                         </ModalHeader>
 
-                        {/* Modal Body */}
+                        {/* Oeder modal Body */}
                         <ModalBody>
                             <div className="max-w-lg mx-auto bg-gray-50 p-6 rounded-lg shadow-sm">
                                 <div className="mb-2">
