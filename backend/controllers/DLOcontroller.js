@@ -182,13 +182,10 @@ const assignReadyOrders = async () => {
             await newDOrder.save()
             /*console.log(`Order with ID ${order._id} has been successfully assigned to dOrder with new orderID ${newDOrder.orderID}.`)*/
 
-
-
-             // After saving the new dOrder, update the order status to "Assigning" in the Order model
-             order.orderStatus = ' Ready. '
-             await order.save() // Save the updated order
-             // console.log(`Order with ID ${order._id} has been marked as "Assigning" in the Order model.`)
-
+            // After saving the new dOrder, update the order status to "Assigning" in the Order model
+            order.orderStatus = ' Ready. '
+            await order.save() // Save the updated order
+            // console.log(`Order with ID ${order._id} has been marked as "Assigning" in the Order model.`)
         }
     } catch (error) {
         console.error('Error assigning ready orders to dOrder:', error)

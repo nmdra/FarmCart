@@ -1,62 +1,60 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import farmcartLogo from '../../assets/logo.png'; // Update with correct path if needed
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import farmcartLogo from '../../assets/logo.png' // Update with correct path if needed
 
-const AdminLogin = ({ manager }) => { // Receive the manager prop
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+const AdminLogin = ({ manager }) => {
+    // Receive the manager prop
+    const navigate = useNavigate()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
     // Hardcoded usernames and passwords for three users
     const users = [
         {
             email: 'sanjeewa@gmail.com',
             password: 'sanjeewa',
-
-
         },
         {
             email: 'admin@farmcart.com',
             password: 'password123',
-
         },
         {
             email: 'admin3@example.com',
             password: 'securePass',
-
         },
-    ];
+    ]
 
     // Login handler
     const handleLogin = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         // Find matching user from the list
         const user = users.find(
             (user) => user.email === email && user.password === password
-        );
+        )
 
         if (user) {
             // If user exists, save token and navigate based on manager prop
-            const token = 'd0ahfFiO0dPMd1StZ0W7fqYhxxuIJYtEDXgi6t39Pp2J2qaWyfcFT0gJKO3iT6pz'; // Replace with actual token logic
-            localStorage.setItem('staffToken', token); // Save token in local storage
+            const token =
+                'd0ahfFiO0dPMd1StZ0W7fqYhxxuIJYtEDXgi6t39Pp2J2qaWyfcFT0gJKO3iT6pz' // Replace with actual token logic
+            localStorage.setItem('staffToken', token) // Save token in local storage
 
             // Navigate based on the manager prop
             if (manager) {
-                navigate('/manager/dashboard');
+                navigate('/manager/dashboard')
             } else {
-                navigate('/admindashboard');
+                navigate('/admindashboard')
             }
-            toast.success('Login successful!');
+            toast.success('Login successful!')
         } else {
             // If no match, show error message
-            setError('Invalid email or password.');
-            toast.error('Invalid email or password.');
+            setError('Invalid email or password.')
+            toast.error('Invalid email or password.')
         }
-    };
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -86,7 +84,10 @@ const AdminLogin = ({ manager }) => { // Receive the manager prop
                         />
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="password" className="block text-gray-700">
+                        <label
+                            htmlFor="password"
+                            className="block text-gray-700"
+                        >
                             Password
                         </label>
                         <input
@@ -109,7 +110,7 @@ const AdminLogin = ({ manager }) => { // Receive the manager prop
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default AdminLogin;
+export default AdminLogin
