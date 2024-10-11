@@ -7,10 +7,11 @@
     <title>FarmCart</title>
     
     <!-- Relaxed CSP for testing: allows inline scripts, external scripts, and unsafe scripts -->
-    <meta
+    <!--  <meta
       http-equiv="Content-Security-Policy"
-      content="default-src *; font-src 'self' data:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data: blob:;"
-    />
+      content="default-src *; font-src 'self' data:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data: blob:; worker-src 'self' blob:"
+    /> -->
+
   </head>
   <body>
     <div id="root"></div>
