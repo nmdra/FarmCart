@@ -301,7 +301,7 @@ const CheckOut = () => {
                         <div className=" flex justify-center items-center p-10 ">
                             <div className=" w-[600px]">
                                 <form className="flex flex-col gap-2">
-                                    <div className="flex gap-3">
+                                    <div className="flex gap-3 ">
                                         <Input
                                             label="Your name"
                                             placeholder="Enter your name"
