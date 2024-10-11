@@ -213,20 +213,37 @@ const router = createBrowserRouter(
 
             {/* delivery and driver Routes */}
             <Route path="/" element={<DLayout />}>
+                 <Route path="/manager" element={<AdminLogin manager={true} />} />
+                <Route element={<StaffPrivateRoute manager={true} />}>
+                    <Route
+                        path="/manager/approve-driver"
+                        element={<DLApproveDriver />}
+                    />
+                    <Route
+                        path="/manager/approve-driver/:id"
+                        element={<DLDriverAccept />}
+                    />
+                    {/*<Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />*/}
+                    <Route path="/alldrivers" element={<DLALLdrivers />} />
+                    <Route
+                        path="/manager/dashboard"
+                        element={<DLmanageDash />}
+                    />
+                    <Route
+                        path="/manager/view-driver/:id"
+                        element={<DLViewDriver />}
+                    />
+
+                    <Route
+                        path="/manager/delivery/:id"
+                        element={<DLViewDelivery />}
+                    />
+                </Route>
                 <Route
                     path="/register-driver"
                     element={<DLDriverRegistrationForm />}
                 />
                 <Route path="/upload-image" element={<DLImageUpload />} />
-                <Route
-                    path="/manager/approve-driver"
-                    element={<DLApproveDriver />}
-                />
-                <Route
-                    path="/manager/approve-driver/:id"
-                    element={<DLDriverAccept />}
-                />
-                {/*<Route path="/manager/approve-driver/:id/send-email" element={<DLSendEmail />} />*/}
                 <Route path="/driver/login" element={<DLLogin />} />{' '}
                 {/* Driver Login Route */}
                 <Route
@@ -239,22 +256,12 @@ const router = createBrowserRouter(
                     path="/driver/profile/edit"
                     element={<DLEditProfile />}
                 />
-                <Route path="/alldrivers" element={<DLALLdrivers />} />
-                <Route path="/manager/dashboard" element={<DLmanageDash />} />
-                <Route
-                    path="/manager/view-driver/:id"
-                    element={<DLViewDriver />}
-                />
                 <Route path="/driver/logout" element={<DLlogout />} />
                 <Route path="/driver/edit/:id" element={<DLeditdriver />} />
                 <Route path="/a" element={<OrderForm />} />
                 <Route path="/b" element={<OrderTable />} />
                 <Route path="/d" element={<Od />} />
                 <Route path="/DLAllDeliveries" element={<DLAllDeliveries />} />
-                <Route
-                    path="/manager/delivery/:id"
-                    element={<DLViewDelivery />}
-                />
                 <Route path="/ongoing" element={<OngoingDelivery />} />
                 <Route
                     path="/driver/delivery/:id"

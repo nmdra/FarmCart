@@ -1,13 +1,19 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom';
 
-const StaffPrivateRoute = () => {
-    // Check if user is authenticated (e.g., by checking for a token in local storage)
-    const staff = localStorage.getItem('staffToken') // Replace with your actual logic
+const StaffPrivateRoute = ({ manager }) => { // Destructure manager from props
+    // Check if the user is authenticated by checking for a token in local storage
+    const staff = localStorage.getItem('staffToken'); // Replace with your actual logic
 
     // Log the user state for debugging
-    console.log(staff)
+    console.log(staff);
 
-    return staff ? <Outlet /> : <Navigate to="/Admin" replace />
-}
+    // If staff token exists and manager prop is true, redirect to /manager
+    if (manager) {
+        return staff ? <Outlet /> : <Navigate to="/manager" replace />;
+    }
 
-export default StaffPrivateRoute
+    // If staff token exists, render the Outlet, otherwise navigate to /Admin
+    return staff ? <Outlet /> : <Navigate to="/Admin" replace />;
+};
+
+export default StaffPrivateRoute;
