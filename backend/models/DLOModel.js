@@ -4,7 +4,11 @@ const dorderSchema = new mongoose.Schema(
     {
         /* generate and store the  oID:{type: String,}, */
 
-        oID: { type: String },
+        oID: { type: String ,
+        required: [true,'Order ID is required'],
+        unique: [true,'Order ID is unique'],
+
+        },
 
         orderID: {
             type: String, // You can change this to any type or ObjectId if needed

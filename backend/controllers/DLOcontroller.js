@@ -184,7 +184,7 @@ const assignReadyOrders = async () => {
 
 
              // After saving the new dOrder, update the order status to "Assigning" in the Order model
-             order.orderStatus = ' .Ready. '
+             order.orderStatus = ' Ready. '
              await order.save() // Save the updated order
              // console.log(`Order with ID ${order._id} has been marked as "Assigning" in the Order model.`)
         }
