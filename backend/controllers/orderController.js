@@ -195,3 +195,56 @@ export const getDailyOrders = async (req, res) => {
         res.status(500).json({ message: 'Server error', error })
     }
 }
+
+// Function to calculate total sales for both today and yesterday and return as JSON
+export const getTotalSales = async (req, res) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0) // Set to the start of today
+
+    const yesterday = new Date(today)
+    yesterday.setDate(today.getDate() - 1) // Set to the start of yesterday
+
+    const now = new Date() // Current time for today's end
+
+    try {
+        // Get total sales for today
+        const todaySales = await Order.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: today, $lt: now },
+                },
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalSales: { $sum: '$totalPrice' },
+                },
+            },
+        ])
+
+        // Get total sales for yesterday
+        const yesterdaySales = await Order.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: yesterday, $lt: today },
+                },
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalSales: { $sum: '$totalPrice' },
+                },
+            },
+        ])
+
+        // Return total sales for today and yesterday in JSON format
+        return res.status(200).json({
+            today: todaySales.length > 0 ? todaySales[0].totalSales : 0,
+            yesterday:
+                yesterdaySales.length > 0 ? yesterdaySales[0].totalSales : 0,
+        })
+    } catch (error) {
+        console.error('Error fetching total sales:', error)
+        return res.status(500).json({ message: 'Error fetching total sales' })
+    }
+}

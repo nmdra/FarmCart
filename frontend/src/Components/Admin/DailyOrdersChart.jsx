@@ -29,7 +29,7 @@ const DailyOrdersChart = () => {
                             tension: 0.8,
                         },
                         {
-                            label: 'Total Sales ($)',
+                            label: 'Total Sales (Rs)',
                             data: totalSales,
                             borderColor: 'rgba(16, 185, 129, 1)',
                             backgroundColor: 'rgba(16, 185, 129, 0.1)',
@@ -105,15 +105,13 @@ const DailyOrdersChart = () => {
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-8">
-            <h2 className="text-2xl font-bold text-green-600 mb-6">
-                Daily Orders
-            </h2>
+            <h2 className="text-2xl font-bold text-black mb-6">Daily Orders</h2>
             {chartData.labels ? (
                 <>
                     <Line data={chartData} ref={chartRef} id="bidStatus" />
                     <button
                         onClick={downloadChart}
-                        className="mt-6 px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600"
+                        className="mt-6 px-6 py-2 ml-0 border-2 rounded-full border-[#99DD05] text-grey font-semibold flex items-center gap-2 hover:bg-[#f5fce6] hover:text-black transition-all"
                     >
                         Download Chart as PNG
                     </button>

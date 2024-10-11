@@ -11,6 +11,8 @@ export const getAllUsers = async (req, res) => {
     }
 }
 
+
+
 // Fetch single user by ID
 export const getUserById = async (req, res) => {
     try {
@@ -23,6 +25,7 @@ export const getUserById = async (req, res) => {
         res.status(500).json({ message: 'Error fetching user', error })
     }
 }
+
 
 // Update user by ID
 export const updateUserById = async (req, res) => {
@@ -94,5 +97,14 @@ export const validateUserPassword = async (req, res) => {
         res.status(200).json({ message: 'Password validated successfully' })
     } catch (error) {
         res.status(500).json({ message: 'Error validating password', error })
+    }
+}
+
+export const getUserCount = async (req, res) => {
+    try {
+        const count = await User.countDocuments()
+        res.status(200).json({ count })
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching user count' })
     }
 }

@@ -19,6 +19,11 @@ import { FaRegEye } from 'react-icons/fa'
 import { MdDeleteSweep } from 'react-icons/md'
 import Loading from '../../Components/Loading'
 import Swal from 'sweetalert2'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
+import logo from '../../assets/logo.png'
+import { FaDownload } from 'react-icons/fa'
+import Header from '../../Components/Admin/Aheader.jsx'
 
 const Staff = () => {
     const [staffMembers, setStaffMembers] = useState([])
@@ -27,7 +32,7 @@ const Staff = () => {
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState('')
 
-    const rowsPerPage = 5
+    const rowsPerPage = 4
     const navigate = useNavigate()
 
     // Fetch staff members
@@ -103,6 +108,56 @@ const Staff = () => {
         navigate(`/updatestaff/${memberId}`)
     }
 
+    // PDF Generation
+    const generatePDF = () => {
+        const doc = new jsPDF()
+        const img = new Image()
+        img.src = logo
+        // Add logo
+        doc.addImage(img, 'PNG', 20, 35, 30, 5) // Adjust the X, Y, width, and height as needed // Adjust x, y, width, height as needed
+
+        // Add title below the logo
+        doc.setFontSize(15)
+        doc.text('Staff List', 105, 40, null, null, 'center') // Centered below logo
+
+        // Prepare the table data
+        const tableColumn = [
+            'Id',
+            'Full Name',
+            'NIC',
+            'Email',
+            'Birth Day',
+            'Address',
+            'Role',
+        ]
+        const tableRows = []
+
+        filteredStaff.forEach((member, index) => {
+            const memberData = [
+                index + 1,
+                `${member.firstName} ${member.lastName}`,
+                member.nic,
+                member.email,
+                member.birthday.split('T')[0],
+                `${member.Address.home} ${member.Address.street} ${member.Address.city}`,
+                member.role,
+            ]
+            tableRows.push(memberData)
+        })
+
+        // Add table to PDF
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 50, // Positioning the table after the logo and title
+            styles: {
+                fontSize: 9, // Adjust this value to make the table content smaller
+            },
+        })
+
+        doc.save('staff-list.pdf')
+    }
+
     if (loading) {
         return (
             <div className="flex flex-1 min-h-screen justify-center items-center">
@@ -119,23 +174,19 @@ const Staff = () => {
                 </aside>
 
                 <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
-                    <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-lg font-semibold text-gray-800">
-                            Staff Members
+                    <div className="flex justify-center mb-8">
+                        <h3 className="text-2xl font-semibold text-gray-800">
+                            STAFF
                         </h3>
-                        <button
-                            onClick={handleAddNewStaff}
-                            className="bg-green-500 text-white hover:bg-green-600 font-semibold py-2 px-4 rounded text-center"
-                        >
-                            Add New Staff
-                        </button>
                     </div>
+
                     <div className="w-96 mb-6">
                         <Input
                             isClearable
                             radius="full"
                             placeholder="Search staff..."
                             onChange={(e) => setSearch(e.target.value)}
+                            className="rounded-full border-[#99DD05] border-2 focus:border-[#99DD05] focus:ring-[#99DD05] placeholder-green-500" // Add custom classes here
                         />
                     </div>
 
@@ -158,7 +209,10 @@ const Staff = () => {
                         <TableHeader>
                             <TableColumn>Id</TableColumn>
                             <TableColumn>Full Name</TableColumn>
+                            <TableColumn>NIC</TableColumn>
                             <TableColumn>Email</TableColumn>
+                            <TableColumn>Birthday</TableColumn>
+                            <TableColumn>Address</TableColumn>
                             <TableColumn>Role</TableColumn>
                             <TableColumn>Action</TableColumn>
                         </TableHeader>
@@ -170,7 +224,12 @@ const Staff = () => {
                                 >
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{`${member.firstName} ${member.lastName}`}</TableCell>
+                                    <TableCell>{member.nic}</TableCell>
                                     <TableCell>{member.email}</TableCell>
+                                    <TableCell>
+                                        {member.birthday.split('T')[0]}
+                                    </TableCell>
+                                    <TableCell>{`${member.Address.home} ${member.Address.street} ${member.Address.city}`}</TableCell>
                                     <TableCell>{member.role}</TableCell>
                                     <TableCell className="flex gap-6 justify-center items-center h-16">
                                         <Tooltip
@@ -220,8 +279,21 @@ const Staff = () => {
                             ))}
                         </TableBody>
                     </Table>
-
-                    {/* Add modal for confirmation if required */}
+                    <div className="flex justify-end space-x-4 mt-5">
+                        <button
+                            onClick={handleAddNewStaff}
+                            className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
+                        >
+                            Add New Staff
+                        </button>
+                        <button
+                            onClick={generatePDF}
+                            className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
+                        >
+                            <FaDownload size={20} />
+                            Export Staff list
+                        </button>
+                    </div>
                 </main>
             </div>
         </div>
