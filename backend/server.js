@@ -63,6 +63,10 @@ app.get('/', (_req, res) => {
     res.send('FarmCart API is Running...')
 })
 
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'UP' });
+});
+
 // Define API routes
 app.use('/api/users', userRoute)
 app.use('/api/orders', orderRoute)
