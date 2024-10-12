@@ -83,15 +83,16 @@ const Cart = () => {
         <div>
             <ProgressBar currentStep={1} />
            <section className="bg-white py-2 md:py-4 antialiased">
-           <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 ml-10 p-4 bg-gray-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+           <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 p-4 bg-gray-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
 
 
-                    <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl">
+
+                    <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl ml-5">
                         My Shopping Cart
                     </h2>
 
                     <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
-                        <table className="w-2/3 mr-4 table-auto border-collapse">
+                        <table className="w-2/3 mr-4 table-auto border-collapse ml-5">
                             <thead>
                                 <tr className="border-b">
                                     <th className="text-left py-4">Product</th>
