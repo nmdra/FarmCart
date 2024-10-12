@@ -274,7 +274,7 @@ const RegisterDriverForm = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div>
                 {/* New Login Section */}
-                <div className="max-w-1-md min-w-full bg-white p-4 rounded-lg shadow-lg border-2 border-green-600">
+                <div className="max-w-1-md min-w-full bg-white p-4 rounded-lg shadow-lg border-2">
                     <div className="flex items-center justify-between">
                         <p className="text-gray-700 text-sm">
                             Do you have an account?
