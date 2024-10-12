@@ -460,6 +460,9 @@ const Dashboard = () => {
                                                 <option value="Ready">
                                                     Ready
                                                 </option>
+                                                <option value=" Ready. ">
+                                                    Ready
+                                                </option> 
                                                 <option value="Pickup">
                                                     Pickup
                                                 </option>

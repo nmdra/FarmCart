@@ -52,7 +52,7 @@ function Dashboard() {
     }
 
     return (
-        <div className="relative min-h-screen bg-neutral-100 pr-8 pl-8 pb-6">
+        <div className="relative min-h-screen bg-neutral-100 pr-8 pl-8 pb-6 pt-6">
             {/* Main Content */}
             {/* <Breadcrumbs /> Breadcrumbs at the top */}
             {/* Membership Banner */}
