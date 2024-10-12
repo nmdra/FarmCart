@@ -34,10 +34,13 @@ import {
 } from './controllers/DLOcontroller.js' // Import the periodic check
 
 
-// checkForAvailableDrivers() //DL
-//  startOrderAssignment()
-// startSyncDeliveryOrderStatus() //DL
-// cleanUpDuplicateDeliveries() 
+// Production-only delivery task scheduling
+if (process.env.SERVER_ENV === 'production') {
+    checkForAvailableDrivers()
+    startOrderAssignment()
+    startSyncDeliveryOrderStatus()
+    cleanUpDuplicateDeliveries()
+}
 
 
 
