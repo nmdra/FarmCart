@@ -96,15 +96,13 @@ import StaffPrivateRoute from './Components/Admin/AstaffPrivateRoute'
 
 //Blog
 
-import Blog from "./Pages/blog manage/AddBlog"
-import BlogList from "./Pages/blog manage/BlogList"
-import TourismBlog from "./Pages/blog manage/UserBlog"
-import IndividualBlog from "./Pages/blog manage/InduvidualBlog"
-import Admin from "./Pages/dashboard/Admin"
-import UpdateBlogDashboard from "./Pages/dashboard/ishanka dahsbaord/UpdateBlogDashbaord"
-import SpeechGenerator from "./Pages/common/speech/SpeechGenerator"
-
-
+import Blog from './Pages/blog manage/AddBlog'
+import BlogList from './Pages/blog manage/BlogList'
+import TourismBlog from './Pages/blog manage/UserBlog'
+import IndividualBlog from './Pages/blog manage/InduvidualBlog'
+import Admin from './Pages/dashboard/Admin'
+import UpdateBlogDashboard from './Pages/dashboard/ishanka dahsbaord/UpdateBlogDashbaord'
+import SpeechGenerator from './Pages/common/speech/SpeechGenerator'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -290,32 +288,20 @@ const router = createBrowserRouter(
             </Route>
 
             {/* Add Other Roots Below */}
-                {/*Blog route*/}
-                
-    
-              
-                <Route path="/" element={<DLayout />}>
+            {/*Blog route*/}
+
+            <Route path="/" element={<DLayout />}>
                 <Route path="/add-blog" element={<Blog />} />
                 <Route path="/blog-list" element={<BlogList />} />
-                <Route path="/update-blog/:id" element={<UpdateBlogDashboard />} />
-                <Route path="/user-blog" element={<TourismBlog />} />
-                <Route path ="/blog/:id" element = {<IndividualBlog />} />
-                <Route path="/speechgenerator" element={<SpeechGenerator />} />
-                <Route 
-                    path="/dashboard" 
-                    element={
-                        
-                            <Admin />
-                        
-                    } 
+                <Route
+                    path="/update-blog/:id"
+                    element={<UpdateBlogDashboard />}
                 />
-
-                
+                <Route path="/user-blog" element={<TourismBlog />} />
+                <Route path="/blog/:id" element={<IndividualBlog />} />
+                <Route path="/speechgenerator" element={<SpeechGenerator />} />
+                <Route path="/dashboard" element={<Admin />} />
             </Route>
-       
-   
-
-
         </>
     )
 )
