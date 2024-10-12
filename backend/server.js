@@ -38,7 +38,15 @@ import {
 import {
     startOrderAssignment,
     startSyncDeliveryOrderStatus,
-} from './controllers/DLOcontroller.js'
+} from './controllers/DLOcontroller.js' // Import the periodic check
+
+// Production-only delivery task scheduling
+if (process.env.SERVER_ENV === 'production') {
+    checkForAvailableDrivers()
+    startOrderAssignment()
+    startSyncDeliveryOrderStatus()
+    cleanUpDuplicateDeliveries()
+}
 
 // Blog, Comments, and News Imports (Merged Content)
 import blogRouter from './routes/Blog.js'
