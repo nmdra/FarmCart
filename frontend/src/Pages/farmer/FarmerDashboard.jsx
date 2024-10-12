@@ -60,6 +60,7 @@ const Dashboard = () => {
             } catch (error) {
                 // Log any errors that occur during the API call
                 console.error('Error fetching farmer details:', error)
+                navigate('/farmerlogin')
             }
         }
 
@@ -460,16 +461,16 @@ const Dashboard = () => {
                                                 <option value="Ready">
                                                     Ready
                                                 </option>
-                                                <option value=" Ready. ">
+                                                <option value=" Ready. " disabled>
                                                     Ready
                                                 </option> 
-                                                <option value="Pickup">
+                                                 <option value="PickUp" disabled>
                                                     Pickup
                                                 </option>
-                                                <option value="OnTheWay">
+                                                <option value="OnTheWay" disabled>
                                                     On the way
                                                 </option>
-                                                <option value="Delivered">
+                                                <option value="Delivered" disabled>
                                                     Delivered
                                                 </option>
                                             </select>
