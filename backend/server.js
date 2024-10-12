@@ -33,10 +33,12 @@ import {
     startSyncDeliveryOrderStatus,
 } from './controllers/DLOcontroller.js' // Import the periodic check
 
+
 // {/*checkForAvailableDrivers() //DL
 // startOrderAssignment()
 // startSyncDeliveryOrderStatus() //DL
 // cleanUpDuplicateDeliveries() */}
+
 
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
