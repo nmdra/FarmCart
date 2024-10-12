@@ -29,8 +29,8 @@ import { checkForAvailableDrivers } from './controllers/DLDeliveryController.js'
 import deliveryRoutes from './routes/DLDeliveryRoute.js' //DL
 import { startOrderAssignment } from './controllers/DLOcontroller.js' // Import the periodic check
 
-checkForAvailableDrivers() //DL
-startOrderAssignment()
+//checkForAvailableDrivers() 
+//startOrderAssignment()
 
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 

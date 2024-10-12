@@ -265,11 +265,12 @@ const Cart = () => {
                                         <input
                                             type="text"
                                             id="voucher"
-                                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 "
-                                            placeholder=""
+                                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 "
+                                            placeholder="Enter code"
                                             onChange={(e) =>
                                                 setCoupon(e.target.value)
                                             }
+                                            autocomplete="off"
                                         />
                                     </div>
                                     <button
