@@ -95,14 +95,20 @@ export const sendEmailToDriver = async (driver, delivery) => {
 
         // Set up the email options
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `'FarmCart 🌱' <${process.env.EMAIL_USER}`,
             to: driver.email,
             subject: `Order Assignment: Order ${delivery.oID} Assigned to You`,
             html: `
-                <h2>Hi ${driver.fullName},</h2>
-                <p>We are excited to inform you that you have been assigned to deliver the following order:</p>
-                <h3>Order Details</h3>
-                <ul>
+                  <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; text-align: center;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); border: 2px solid #38A169;">
+               
+                <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #2D3748;">Hi ${driver.fullName},</h2>
+                <p style="font-size: 16px; line-height: 1.6; color: #4A5568;">
+                    We are excited to inform you that you have been assigned to deliver the following order:
+                </p>
+
+                <h3 style="font-size: 20px; font-weight: bold; color: #2D3748; margin-top: 20px; text-align: left;">Order Details:</h3>
+                <ul style="text-align: left; font-size: 16px; line-height: 1.8; color: #4A5568; list-style: none; padding: 0;">
                     <li><strong>Order ID:</strong> ${delivery.oID}</li>
                     <li><strong>Tracking ID:</strong> ${delivery.trackingID}</li>
                     <li><strong>Shop Name:</strong> ${delivery.shopName}</li>
@@ -110,11 +116,21 @@ export const sendEmailToDriver = async (driver, delivery) => {
                     <li><strong>Customer Name:</strong> ${delivery.customerName}</li>
                     <li><strong>Drop-Off Address:</strong> ${delivery.dropOffAddress}</li>
                 </ul>
-                <p>For more details, please log in to the delivery portal or contact support if needed.</p>
+
+                <p style="font-size: 16px; line-height: 1.6; color: #4A5568; margin-top: 20px;">
+                    For more details, please log in to the delivery portal or contact support if needed.
+                </p>
+
                 <br/>
-                <p>Thank you for being part of our delivery team!</p>
-                <p>Best Regards,</p>
-                <p><strong>Your Company Name</strong></p>
+                <p style="font-size: 16px; line-height: 1.6; color: #4A5568;">
+                    Thank you for being part of our delivery team!
+                </p>
+
+                <p style="font-size: 16px; line-height: 1.6; color: #2D3748; font-weight: bold; margin-top: 20px;">Best Regards,</p>
+                <p style="font-size: 16px; color: #4A5568;">The FarmCart Team 🌱</p>
+
+            </div>
+        </div>
             `,
         }
 
@@ -291,5 +307,58 @@ export const getDeliveriesByDriver = async (req, res) => {
             message: 'Error fetching deliveries',
             error: error.message,
         })
+    }
+}
+
+//
+// deleteing the  duplicated ones
+// Function to clean up duplicate deliveries by orderID
+export const cleanUpDuplicateDeliveries = async () => {
+    try {
+        // Find all deliveries grouped by orderID and check for duplicates
+        const duplicates = await DLDelivery.aggregate([
+            {
+                $group: {
+                    _id: '$orderID', // Group by orderID
+                    count: { $sum: 1 }, // Count occurrences of each orderID
+                    docs: { $push: '$$ROOT' }, // Push all documents with the same orderID
+                },
+            },
+            {
+                $match: {
+                    count: { $gt: 1 }, // Filter groups that have more than 1 occurrence
+                },
+            },
+        ])
+
+        // Loop through each duplicate and keep the first created, delete the rest
+        for (const duplicate of duplicates) {
+            const sortedDocs = duplicate.docs.sort(
+                (a, b) =>
+                    new Date(a.assignDateTime) - new Date(b.assignDateTime)
+            ) // Sort by creation date (assignDateTime)
+
+            const [firstDoc, ...duplicatesToDelete] = sortedDocs
+
+            // Keep the first document and delete the rest
+            for (const doc of duplicatesToDelete) {
+                await DLDelivery.findByIdAndDelete(doc._id)
+                console.log(
+                    `Deleted duplicate delivery with orderID: ${doc.orderID}`
+                )
+            }
+
+            console.log(
+                `Kept delivery for orderID: ${firstDoc.orderID}, removed ${duplicatesToDelete.length} duplicates`
+            )
+        }
+
+        if (duplicates.length === 0) {
+            /*
+            //  console.log('No duplicate deliveries found.')
+       */
+        }
+    } catch (error) {
+        console.error('Error cleaning up duplicate deliveries:', error)
     }
 }
