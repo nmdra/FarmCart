@@ -25,7 +25,7 @@ const FeedbackSubmitForm = () => {
         try {
             // Send form data to your backend API
             const response = await axios.post(
-                'http://localhost:3000/api/feedback',
+                `${import.meta.env.VITE_API_URL}/help/feedback`, // Corrected the backend route
                 formData
             )
             toast.success('Feedback submitted successfully!')
