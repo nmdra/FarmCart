@@ -31,7 +31,7 @@ function BlogList() {
         );
         if (confirmed) {
             try {
-                await axios.delete(`/blog/delete/${id}`);
+                await axios.delete(`/api/Blog/delete/${id}`);
                 alert('Blog deleted successfully!');
                 fetchBlogs(); // Refresh the blog list
             } catch (error) {
