@@ -13,7 +13,7 @@ const NavBar = () => {
             <div className="px-10 py-6 border-b">
                 <div className="flex items-center justify-between ">
                     <div>
-                        <Link to="/" className="flex items-center gap-x-3 ">
+                        <Link to="/help" className="flex items-center gap-x-3 ">
                             <img src={logo} alt="logo" className="w-10 h-10" />
                             <h1 className="text-3xl font-semibold">help</h1>
                         </Link>
@@ -26,19 +26,19 @@ const NavBar = () => {
                             Farmcart pro Help Center
                         </Link>
                         <Link
-                            to="/feedback"
+                            to="/help/feedback"
                             className="px-4 py-3 text-sm rounded-md hover:underline hover:text-[#99dd05]"
                         >
                             Send Feedback
                         </Link>
                         <Link
-                            to="/support-tickets"
+                            to="/"
                             className="px-4 py-3 text-sm rounded-md hover:text-[#99dd05] hover:underline"
                         >
                             Go to Farmcart.com
                         </Link>
                         <Link
-                            to="/support-tickets"
+                            to="/help/support-ticket"
                             className="px-4 py-3 bg-[#b8f724] rounded-md text-sm"
                         >
                             Support Ticket

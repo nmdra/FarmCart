@@ -45,7 +45,7 @@ const SupportTicketForm = () => {
         try {
             // Send form data to your backend API using the environment variable
             const response = await axios.post(
-                `${import.meta.env.VITE_API_URL}/help/support-tickets`,
+                `/api/help/support-tickets`,
                 formData
             )
             console.log('Ticket submitted successfully:', response.data)

@@ -42,7 +42,7 @@ const HelpHeroSection = () => {
                     </p>
                     <div className="flex flex-col mb-8 space-y-4 lg:mb-16 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                         <Link
-                            to="/support-ticket"
+                            to="/help/support-ticket"
                             className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-black hover:text-white rounded-lg bg-[#b8f724] hover:bg-[#588605] focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900"
                         >
                             Learn more
