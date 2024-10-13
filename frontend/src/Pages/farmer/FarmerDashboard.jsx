@@ -25,7 +25,6 @@ import Loading from '../../Components/Loading'
 import farmcartLogo from '../../assets/logo.png'
 
 const Dashboard = () => {
-    // State to store farmer details fetched from the backend
     const [farmer, setFarmer] = useState({
         name: '',
         email: '',
@@ -48,7 +47,7 @@ const Dashboard = () => {
                 console.log(token)
                 const config = {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                        Authorization: `Bearer ${token}`,
                     },
                 }
 
@@ -173,9 +172,9 @@ const Dashboard = () => {
     const generatePDF = () => {
         const doc = new jsPDF()
 
-        const imgWidth = 40
-        const imgHeight = 10
-        const imgX = 155
+        const imgWidth = 90
+        const imgHeight = 13
+        const imgX = 115
         const imgY = 5
 
         doc.addImage(farmcartLogo, 'PNG', imgX, imgY, imgWidth, imgHeight)
@@ -191,6 +190,15 @@ const Dashboard = () => {
         doc.text('www.farmcart.com', 14, 40)
 
         doc.setTextColor(0, 0, 0)
+
+        doc.setDrawColor(0)
+        doc.setLineWidth(0.5)
+        doc.line(14, 46, 200, 46)
+
+        doc.setFontSize(12)
+        doc.text('Invoice issued for:', 14, 55)
+        doc.setFontSize(14)
+        doc.text('Ishara Udayanaga', 14, 62)
 
         const tableColumn = [
             'Id',
@@ -221,13 +229,26 @@ const Dashboard = () => {
         doc.autoTable({
             head: [tableColumn],
             body: tableRows,
-            startY: 30,
+            startY: 70,
+            theme: 'grid',
+            styles: {
+                lineColor: [0, 0, 0],
+                lineWidth: 0.25,
+            },
+            headStyles: {
+                fillColor: [255, 255, 255],
+                textColor: [0, 0, 0],
+            },
+            alternateRowStyles: {
+                fillColor: [255, 255, 255],
+            },
+            tableLineColor: [0, 0, 0],
+            tableLineWidth: 0.25,
         })
 
         const finalY = doc.autoTable.previous.finalY + 15
 
-        // Adding text below the table
-        doc.setFontSize(8)
+        doc.setFontSize(10)
         doc.text(
             'If you ever need assistance or have any questions, our FarmCart Support Team is always here to help you.',
             14,
@@ -250,10 +271,10 @@ const Dashboard = () => {
         const formattedDate = currentDate.toLocaleDateString()
         const formattedTime = currentDate.toLocaleTimeString()
 
-        doc.setFontSize(8)
+        doc.setFontSize(10)
         doc.setTextColor(0, 0, 0)
-        doc.text(`Report Date: ${formattedDate}`, 166, 20)
-        doc.text(`Time: ${formattedTime}`, 171, 25)
+        doc.text(`Report Date: ${formattedDate}`, 164, 35)
+        doc.text(`Time: ${formattedTime}`, 172, 40)
 
         doc.save('orders-report.pdf')
     }
@@ -338,7 +359,6 @@ const Dashboard = () => {
                                     startContent={<IoSearch />}
                                     onChange={(e) => setSearch(e.target.value)}
                                     className="border border-gray-50 hover:border-green-500 focus:border-green-500 focus:outline-none transition duration-200 rounded-full"
-
                                 />
                             </div>
                             <div
@@ -375,7 +395,7 @@ const Dashboard = () => {
                                 <TableColumn>Order Status</TableColumn>
                                 <TableColumn>Action</TableColumn>
                             </TableHeader>
-                            <TableBody >
+                            <TableBody>
                                 {items.map((item, index) => (
                                     <TableRow
                                         key={item._id}
@@ -404,7 +424,9 @@ const Dashboard = () => {
                                         </TableCell>
                                         <TableCell className="text-center">
                                             {item.orderItems.map((p) => (
-                                                <div key={p.name}>{p.quantity}</div>
+                                                <div key={p.name}>
+                                                    {p.quantity}
+                                                </div>
                                             ))}
                                         </TableCell>
                                         <TableCell>
