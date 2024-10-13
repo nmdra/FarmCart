@@ -76,6 +76,11 @@ const ProductPage = ({ onAddToCart }) => {
                     <img
                         alt={product.name}
                         className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded-2xl"
+                        style={{
+                            width: '500px',
+                            height: '400px',
+                            objectFit: 'cover',
+                        }}
                         src={
                             product.image
                                 ? product.image.replace(/\.\w+$/, '.webp')
