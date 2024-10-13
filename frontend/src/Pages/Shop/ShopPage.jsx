@@ -36,7 +36,7 @@ const ShopPage = () => {
             <div className="shop-page p-8">
                 <div className="shop-details mb-10 bg-white shadow-xl rounded-xl overflow-hidden transition-transform transform hover:scale-105 duration-300 ease-in-out">
                     <img
-                        src={shop.image}
+                        src={shop.image.replace(/\.\w+$/, '.webp')}
                         alt={shop.name}
                         className="w-full h-48 object-cover"
                     />
