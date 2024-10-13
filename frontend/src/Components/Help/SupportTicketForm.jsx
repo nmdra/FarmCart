@@ -14,13 +14,22 @@ const SupportTicketForm = () => {
         description: '',
     })
 
+    // Handle input changes
     const handleChange = (e) => {
         const { name, value } = e.target
-        setFormData({ ...formData, [name]: value })
+
+        // Check if the input is for the phone number and limit to 10 digits
+        if (name === 'phone') {
+            if (value.length <= 10 && /^[0-9]*$/.test(value)) {
+                setFormData({ ...formData, [name]: value })
+            }
+        } else {
+            setFormData({ ...formData, [name]: value })
+        }
     }
 
     const validatePhoneNumber = (phone) => {
-        const phoneRegex = /^(?:\+94)?[0-9]{9}$/
+        const phoneRegex = /^[0-9]{10}$/ // Ensures exactly 10 digits
         return phoneRegex.test(phone)
     }
 
@@ -29,16 +38,14 @@ const SupportTicketForm = () => {
 
         // Validate the phone number
         if (!validatePhoneNumber(formData.phone)) {
-            toast.error(
-                'Please enter a valid phone number with 10 digits or in +94 format.'
-            )
+            toast.error('Please enter a valid 10-digit phone number.')
             return
         }
 
         try {
-            // Send form data to your backend API
+            // Send form data to your backend API using the environment variable
             const response = await axios.post(
-                'http://localhost:3000/api/support-tickets',
+                `${import.meta.env.VITE_API_URL}/help/support-tickets`,
                 formData
             )
             console.log('Ticket submitted successfully:', response.data)
@@ -86,6 +93,7 @@ const SupportTicketForm = () => {
                         className="block w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
+
                 <div className="flex items-center w-full gap-x-3">
                     <div className="w-full mb-4">
                         <label className="block text-sm font-medium text-gray-700">
@@ -100,6 +108,7 @@ const SupportTicketForm = () => {
                             className="block w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
+
                     <div className="w-full mb-4">
                         <label className="block text-sm font-medium text-gray-700">
                             Phone No:
@@ -110,10 +119,12 @@ const SupportTicketForm = () => {
                             value={formData.phone}
                             onChange={handleChange}
                             required
+                            maxLength={10} // Limit input to 10 characters
                             className="block w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
+
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
                         Subject:
@@ -127,6 +138,7 @@ const SupportTicketForm = () => {
                         className="block w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
+
                 <div className="flex items-center w-full gap-x-3">
                     <div className="w-full mb-4">
                         <label className="block text-sm font-medium text-gray-700">
@@ -145,6 +157,7 @@ const SupportTicketForm = () => {
                             <option value="high">High</option>
                         </select>
                     </div>
+
                     <div className="w-full mb-4">
                         <label className="block text-sm font-medium text-gray-700">
                             Category:
@@ -163,6 +176,7 @@ const SupportTicketForm = () => {
                         </select>
                     </div>
                 </div>
+
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
                         Description:
@@ -176,6 +190,7 @@ const SupportTicketForm = () => {
                         className="block w-full h-32 p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     ></textarea>
                 </div>
+
                 <button
                     type="submit"
                     className="w-full py-2 font-semibold text-[#1e3201] hover:text-white bg-[#b8f724] rounded-md hover:bg-[#1e3201] focus:outline-none focus:ring-2 focus:ring-blue-500"
