@@ -48,7 +48,7 @@ const FeedbackSubmitForm = () => {
     }
 
     return (
-        <div className="max-w-lg p-6 mx-auto mt-10 bg-white border rounded-lg">
+        <div className="max-w-lg p-4 mx-auto mt-10 bg-white border rounded-lg">
             <ToastContainer />
             <form onSubmit={handleSubmit}>
                 {/* Name (Optional) */}
