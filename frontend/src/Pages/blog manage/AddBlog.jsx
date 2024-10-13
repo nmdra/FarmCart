@@ -114,7 +114,7 @@ function AddNews() {
     return (
         <>
             {successMessage && (
-                <div className="p-4 mb-4 text-center text-black rounded-md bg-lime-600">
+                <div className="p-4 mb-4 text-center text-white rounded-md bg-lime-600">
                     {successMessage}
                 </div>
             )}
