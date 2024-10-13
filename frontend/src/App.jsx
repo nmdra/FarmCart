@@ -12,7 +12,7 @@ import DLayout from './Layouts/DLayout'
 import SidebarLayout from './Layouts/SidebarLayout' // Layout with Sidebar
 import PrivateRoute from './Components/PrivateRoute'
 import FarmerLayout from './Layouts/FarmerLayout'
-import Farmer_sidebar from './Components/farmer/Farmer_sidebar'
+// import Farmer_sidebar from './Components/farmer/Farmer_sidebar'
 
 // Customer Pages
 import HomePage from './Pages/HomePage'
@@ -104,6 +104,12 @@ import Admin from './Pages/dashboard/Admin'
 import UpdateBlogDashboard from './Pages/dashboard/ishanka dahsbaord/UpdateBlogDashbaord'
 import SpeechGenerator from './Pages/common/speech/SpeechGenerator'
 import BlogLayout from './Layouts/BlogLayout'
+
+//Help & Support
+import HelpLayout from './Layouts/HelpLayout'
+import Help from './Pages/Help/Help'
+import SupportTicket from './Pages/Help/SupportTicket'
+import Feedback from './Pages/Help/Feedback'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -289,6 +295,18 @@ const router = createBrowserRouter(
             </Route>
 
             {/* Add Other Roots Below */}
+
+            {/* Help & Support Routes */}
+            <Route path="/" element={<HelpLayout />}>
+                <Route path="/help" element={<Help />} />
+                <Route
+                    path="/help/support-ticket"
+                    element={<SupportTicket />}
+                />
+                <Route path="/help/feedback" element={<Feedback />} />
+                <Route path="*" element={<NotFound />} />
+            </Route>
+
             {/*Blog route*/}
 
             <Route path="/" element={<BlogLayout />}>
