@@ -1,52 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 function BlogList() {
-    const [blogs, setBlogs] = useState([]);
-    const [loading, setLoading] = useState(true); // Loading state
-    const [error, setError] = useState(null); // Error state
+    const [blogs, setBlogs] = useState([])
+    const [loading, setLoading] = useState(true) // Loading state
+    const [error, setError] = useState(null) // Error state
 
     useEffect(() => {
-        fetchBlogs();
-    }, []);
+        fetchBlogs()
+    }, [])
 
     const fetchBlogs = async () => {
-        setLoading(true);
+        setLoading(true)
         try {
-            const res = await axios.get('/api/Blog');
-            setBlogs(res.data);
-            console.log(res.data);
+            const res = await axios.get('/api/Blog')
+            setBlogs(res.data)
+            console.log(res.data)
         } catch (err) {
-            console.error(err);
-            setError('Failed to load blogs.'); // Set error message
+            console.error(err)
+            setError('Failed to load blogs.') // Set error message
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
     const deleteBlog = async (id) => {
         const confirmed = window.confirm(
             'Are you sure you want to delete this Blog?'
-        );
+        )
         if (confirmed) {
             try {
-                await axios.delete(`/api/Blog/delete/${id}`);
-                alert('Blog deleted successfully!');
-                fetchBlogs(); // Refresh the blog list
+                await axios.delete(`/api/Blog/delete/${id}`)
+                alert('Blog deleted successfully!')
+                fetchBlogs() // Refresh the blog list
             } catch (error) {
-                console.error('Error deleting blog:', error);
-                alert('Blog deletion failed.');
+                console.error('Error deleting blog:', error)
+                alert('Blog deletion failed.')
             }
         }
-    };
+    }
 
     if (loading) {
-        return <div className="text-center">Loading blogs...</div>; // Loading message
+        return <div className="text-center">Loading blogs...</div> // Loading message
     }
 
     if (error) {
-        return <div className="text-center text-red-500">{error}</div>; // Error message
+        return <div className="text-center text-red-500">{error}</div> // Error message
     }
 
     return (
@@ -103,7 +103,7 @@ function BlogList() {
                 </div>
             </section>
         </>
-    );
+    )
 }
 
-export default BlogList;
+export default BlogList

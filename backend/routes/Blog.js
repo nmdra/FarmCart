@@ -33,7 +33,10 @@ router.post('/add', async (req, res) => {
         })
 
         await newBlog.save()
-        res.status(201).json({ message: 'Blog post created successfully', newBlog })
+        res.status(201).json({
+            message: 'Blog post created successfully',
+            newBlog,
+        })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -66,13 +69,13 @@ router.get('/get/:id', async (req, res) => {
 // Route to update an existing blog post
 router.put('/update/:id', async (req, res) => {
     try {
-        const { id } = req.params; // Get the blog post ID from the request parameters
-        const { title, content, author, newsImage } = req.body; // Extract the updated fields from the request body
+        const { id } = req.params // Get the blog post ID from the request parameters
+        const { title, content, author, newsImage } = req.body // Extract the updated fields from the request body
 
         // Validate required fields
-        const errors = validateBlogFields(title, content, author);
+        const errors = validateBlogFields(title, content, author)
         if (Object.keys(errors).length) {
-            return res.status(400).json({ errors });
+            return res.status(400).json({ errors })
         }
 
         // Find the blog post by ID and update it
@@ -86,18 +89,21 @@ router.put('/update/:id', async (req, res) => {
                 updatedAt: Date.now(), // Update the timestamp
             },
             { new: true } // Return the updated document
-        );
+        )
 
         // If the blog post is not found, return a 404 error
         if (!updatedBlog) {
-            return res.status(404).json({ error: 'Blog post not found' });
+            return res.status(404).json({ error: 'Blog post not found' })
         }
 
-        res.status(200).json({ message: 'Blog post updated successfully', updatedBlog });
+        res.status(200).json({
+            message: 'Blog post updated successfully',
+            updatedBlog,
+        })
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message })
     }
-});
+})
 
 // Route to delete a blog post by ID
 router.delete('/delete/:id', async (req, res) => {

@@ -23,4 +23,3 @@ function BlogLayout() {
 }
 
 export default BlogLayout
-

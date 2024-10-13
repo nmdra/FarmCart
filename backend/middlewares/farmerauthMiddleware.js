@@ -16,10 +16,14 @@ export const protect = async (req, res, next) => {
                 // Verify token
                 const decoded = jwt.verify(token, process.env.JWT_SECRET)
                 // Get farmer from the token
-                req.user = await Farmer.findById(decoded.userId).select('-password')
+                req.user = await Farmer.findById(decoded.userId).select(
+                    '-password'
+                )
                 next()
             } catch (err) {
-                res.status(401).json({ message: 'Not authorized, token failed' })
+                res.status(401).json({
+                    message: 'Not authorized, token failed',
+                })
                 console.error('Token verification failed:', err)
                 throw new Error('Not authorized, token failed')
             }
