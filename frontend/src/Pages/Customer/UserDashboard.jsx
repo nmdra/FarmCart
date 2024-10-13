@@ -112,27 +112,51 @@ function Dashboard() {
                 </div>
 
                 {/* Billing Address */}
+                {/* Billing Address */}
                 <div className="flex p-4 bg-white border-l-4 border-green-700 rounded-lg shadow-sm basis-3/5">
                     <div className="flex flex-col">
                         <h3 className="text-sm font-semibold text-gray-500">
                             DEFAULT ADDRESS
                         </h3>
-                        <p className="mt-2 text-gray-700">
-                            {user.firstname} {user.lastname}
-                        </p>
-                        <p className="text-gray-500">
-                            {user.defaultAddress.streetAddress},
-                            {user.defaultAddress.city},
-                            {user.defaultAddress.district} <br />
-                            Postal Code: {user.defaultAddress.zipCode} <br />
-                            {user.contactNumber}
-                        </p>
-                        <Link
-                            to="/settings"
-                            className="text-sm text-green-600 hover:underline"
-                        >
-                            Edit Address
-                        </Link>
+                        {user?.defaultAddress &&
+                        user?.defaultAddress.streetAddress ? (
+                            <>
+                                <p className="mt-2 text-gray-700">
+                                    {user.firstname} {user.lastname}
+                                </p>
+                                <p className="text-gray-500">
+                                    {user.defaultAddress.streetAddress},{' '}
+                                    {user.defaultAddress.city},{' '}
+                                    {user.defaultAddress.district} <br />
+                                    Postal Code: {
+                                        user.defaultAddress.zipCode
+                                    }{' '}
+                                    <br />
+                                    {user.contactNumber}
+                                </p>
+                                <Link
+                                    to="/settings"
+                                    className="text-sm text-green-600 hover:underline"
+                                >
+                                    Edit Address
+                                </Link>
+                            </>
+                        ) : (
+                            <div>
+                                <p className="mt-2 text-red-500">
+                                    Complete your profile by adding a default
+                                    address.
+                                </p>
+                                <Link to="/settings">
+                                    <button
+                                        type="button"
+                                        className="mt-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
+                                    >
+                                        Click here
+                                    </button>
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

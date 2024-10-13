@@ -44,7 +44,7 @@ export default function TourismBlog() {
                 setCurrentSlide(
                     (prevSlide) => (prevSlide + 1) % latestBlogs.length
                 )
-            }, 3000) // Change slides every 3 seconds
+            }, 5000) // Change slides every 3 seconds
             return () => clearInterval(interval)
         }
     }, [latestBlogs])
