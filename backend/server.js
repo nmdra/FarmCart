@@ -3,7 +3,6 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
 
-
 // Import routes
 import userRoute from './routes/userRoute.js'
 import orderRoute from './routes/orderRoute.js'
@@ -33,6 +32,9 @@ import {
     startOrderAssignment,
     startSyncDeliveryOrderStatus,
 } from './controllers/DLOcontroller.js' // Import the periodic check
+
+//Help Routes
+import routes from './routes/Help/index.js'
 
 // Production-only delivery task scheduling
 if (process.env.SERVER_ENV === 'production') {
@@ -70,8 +72,8 @@ app.get('/', (_req, res) => {
 })
 
 app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'UP' });
-});
+    res.status(200).json({ status: 'UP' })
+})
 
 // Define API routes
 app.use('/api/users', userRoute)
@@ -97,6 +99,9 @@ app.use('/api/delivery', deliveryRoutes)
 app.use('/api/Blog', blogRouter) // Blog routes
 app.use('/api/comments', commentRoutes) // Comment routes
 app.use('/api/news', newsRoutes) // News routes
+
+//Help Routes
+app.use('/api/help', routes)
 
 // Middleware to handle errors and send appropriate responses
 app.use(notFound) // Handle 404 Not Found
