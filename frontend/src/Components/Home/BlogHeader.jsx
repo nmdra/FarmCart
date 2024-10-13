@@ -13,7 +13,7 @@ const BlogHeader = ({ loading }) => {
                     </Link>
                 </div>
                 <div>
-                    <Link to="/shop">
+                    <Link to="/">
                         {' '}
                         {/* Update the link to the shop */}
                         <button
