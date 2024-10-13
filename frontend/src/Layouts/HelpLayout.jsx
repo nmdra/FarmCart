@@ -14,7 +14,7 @@ function HelpLayout() {
         email: user.email,
         createdAt: Date.now(),
     } : {
-        id: null,
+        id: '01JA3JDNTD35GP144D83PPJVR6',
         name: 'Guest',
         email: 'guest@example.com',
         createdAt: Date.now(),
