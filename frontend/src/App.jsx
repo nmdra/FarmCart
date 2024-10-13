@@ -108,6 +108,8 @@ import BlogLayout from './Layouts/BlogLayout'
 //Help & Support
 import HelpLayout from './Layouts/HelpLayout'
 import Help from './Pages/Help/Help'
+import SupportTicket from './Pages/Help/SupportTicket'
+import Feedback from './Pages/Help/Feedback'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -297,6 +299,11 @@ const router = createBrowserRouter(
             {/* Help & Support Routes */}
             <Route path="/" element={<HelpLayout />}>
                 <Route path="/help" element={<Help />} />
+                <Route
+                    path="/help/support-ticket"
+                    element={<SupportTicket />}
+                />
+                <Route path="/help/feedback" element={<Feedback />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
 
