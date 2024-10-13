@@ -1,37 +1,52 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function BlogList() {
-    const [blogs, setBlogs] = useState([])
+    const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state
 
     useEffect(() => {
-        fetchBlogs()
-    }, [])
+        fetchBlogs();
+    }, []);
 
     const fetchBlogs = async () => {
+        setLoading(true);
         try {
-            const res = await axios.get('/blog/')
-            setBlogs(res.data)
+            const res = await axios.get('/api/Blog');
+            setBlogs(res.data);
+            console.log(res.data);
         } catch (err) {
-            console.log(err)
+            console.error(err);
+            setError('Failed to load blogs.'); // Set error message
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     const deleteBlog = async (id) => {
         const confirmed = window.confirm(
             'Are you sure you want to delete this Blog?'
-        )
+        );
         if (confirmed) {
             try {
-                await axios.delete(`/blog/delete/${id}`)
-                alert('Blog deleted successfully!')
-                fetchBlogs()
+                await axios.delete(`/blog/delete/${id}`);
+                alert('Blog deleted successfully!');
+                fetchBlogs(); // Refresh the blog list
             } catch (error) {
-                console.error('Error deleting blog:', error)
-                alert('Blog deletion failed.')
+                console.error('Error deleting blog:', error);
+                alert('Blog deletion failed.');
             }
         }
+    };
+
+    if (loading) {
+        return <div className="text-center">Loading blogs...</div>; // Loading message
+    }
+
+    if (error) {
+        return <div className="text-center text-red-500">{error}</div>; // Error message
     }
 
     return (
@@ -47,11 +62,11 @@ function BlogList() {
                     {blogs.map((blog) => (
                         <div
                             key={blog._id}
-                            className="flex items-start p-4 bg-white rounded-md shadow-md dark:bg-green--800"
+                            className="flex items-start p-4 bg-white rounded-md shadow-md dark:bg-green-800"
                         >
                             <div className="flex-shrink-0 mr-4">
                                 <img
-                                    src={'/blogImages/' + blog.image}
+                                    src={`${blog.newsImage}`}
                                     alt={blog.title}
                                     className="object-cover w-32 h-32 border border-green-300 rounded-md"
                                 />
@@ -63,8 +78,8 @@ function BlogList() {
                                 <p className="text-gray-600 dark:text-green-300">
                                     Author: {blog.author}
                                 </p>
-                                <p className="mt-2 text-gray-600 dark:text-green--400 line-clamp-3">
-                                    {blog.content.substring(0, 20)}...
+                                <p className="mt-2 text-gray-600 dark:text-green-400 line-clamp-3">
+                                    {blog.content.substring(0, 50)}...
                                 </p>
                             </div>
                             <div className="flex items-center ml-4 space-x-4">
@@ -74,21 +89,21 @@ function BlogList() {
                                 >
                                     Delete
                                 </button>
-                                <button className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
-                                    <Link
-                                        to={`/update-blog/${blog._id}`}
-                                        state={{ blogToEdit: blog }}
-                                    >
+                                <Link
+                                    to={`/update-blog/${blog._id}`}
+                                    state={{ blogToEdit: blog }}
+                                >
+                                    <button className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
                                         Update
-                                    </Link>
-                                </button>
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     ))}
                 </div>
             </section>
         </>
-    )
+    );
 }
 
-export default BlogList
+export default BlogList;

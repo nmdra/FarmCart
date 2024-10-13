@@ -90,7 +90,7 @@ import DLViewDelivery from './Pages/delivery/DLviewDelivery' // Import the
 import OngoingDelivery from './Pages/delivery/driver/OngoingDelivery' // Import the OngoingDelivery component
 import ViewDelivery from './Pages/delivery/driver/ViewDelivery' // Import the ViewDelivery page
 import ViewDeliveries from './Pages/delivery/driver/ViewDeliveries' // Import the ViewDeliveries page
-import DLMap from './Pages/delivery/DLMap' // Import the DLMap component
+// import DLMap from './Pages/delivery/DLMap' // Import the DLMap component
 import IncomePage from './Pages/delivery/driver/incomepage' // Import the DLList component
 import StaffPrivateRoute from './Components/Admin/AstaffPrivateRoute'
 
@@ -283,7 +283,7 @@ const router = createBrowserRouter(
                 {/* Route for viewing a specific delivery */}
                 <Route path="/driver/deliveries" element={<ViewDeliveries />} />
                 <Route path="/driver/income" element={<IncomePage />} />
-                <Route path="/driver/map" element={<DLMap />} />
+                {/* <Route path="/driver/map" element={<DLMap />} /> */}
                 <Route path="*" element={<NotFound />} />
             </Route>
 

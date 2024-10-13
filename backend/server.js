@@ -2,13 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectDB from './config/db.js'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
-// Utility to get the current directory in ES modules
-// Correct way to define __filename and __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url)
-const _dirname = path.dirname(_filename)
 
 // Import routes
 import userRoute from './routes/userRoute.js'
@@ -70,9 +64,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-// Serve static files for blog images (Merged content)
-app.use('/BlogImages', express.static(path.join(__dirname, 'BlogImages')))
-
 // Routes
 app.get('/', (_req, res) => {
     res.send('FarmCart API is Running...')
@@ -103,10 +94,17 @@ app.use('/api/od', oRoutes)
 app.use('/api/delivery', deliveryRoutes)
 
 // Blog, Comments, and News Routes (Merged content)
-app.use('/Blog', blogRouter) // Blog routes
-app.use('/comments', commentRoutes) // Comment routes
-app.use('/news', newsRoutes) // News routes
+app.use('/api/Blog', blogRouter) // Blog routes
+app.use('/api/comments', commentRoutes) // Comment routes
+app.use('/api/news', newsRoutes) // News routes
 
 // Middleware to handle errors and send appropriate responses
 app.use(notFound) // Handle 404 Not Found
 app.use(errorHandler) // Error handler middleware
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server currently is running on port ${PORT}`)
+}).on('error', (error) => {
+    console.error(`Error starting server: ${error.message}`)
+})

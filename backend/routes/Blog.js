@@ -1,54 +1,39 @@
-// routes/blogRoutes.js
-
 import { Router } from 'express'
 import Blog from '../models/Blog.js' // Blog model
-import multer from 'multer'
-import express from 'express'
-import cors from 'cors'
-import fs from 'fs'
-import path from 'path'
 
 const router = Router()
-const app = express()
-app.use(cors())
-app.use(express.json())
 
-// Setup for image uploads (optional if blogs include images)
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './BlogImages')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '_' + Date.now() + '_' + file.originalname)
-    },
-})
-
-const upload = multer({
-    storage: storage,
-}).single('blogImage')
-
-// Function to delete an image if necessary
-function deleteImage(filePath) {
-    fs.unlink(path.join(path.resolve(), 'BlogImages', filePath), (err) => {
-        if (err) {
-            console.error('Failed to delete the file:', err)
-        }
-    })
+// Function to validate required fields
+const validateBlogFields = (title, content, author) => {
+    const errors = {}
+    if (!title) errors.title = 'Title is required.'
+    if (!content) errors.content = 'Content is required.'
+    if (!author) errors.author = 'Author is required.'
+    return errors
 }
 
 // Route to add a new blog post
-router.post('/add', upload, async (req, res) => {
+router.post('/add', async (req, res) => {
     try {
+        const { title, content, author, newsImage } = req.body
+
+        // Validate required fields
+        const errors = validateBlogFields(title, content, author)
+        if (Object.keys(errors).length) {
+            return res.status(400).json({ errors })
+        }
+
         const newBlog = new Blog({
-            title: req.body.title,
-            content: req.body.content,
-            author: req.body.author,
-            image: req.file ? req.file.filename : null,
-            createdAt: req.body.createdAt,
+            title,
+            content,
+            author,
+            newsImage,
+            createdAt: Date.now(), // Set createdAt timestamp
+            updatedAt: Date.now(), // Set updatedAt timestamp
         })
 
         await newBlog.save()
-        res.status(200).json(newBlog)
+        res.status(201).json({ message: 'Blog post created successfully', newBlog })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
@@ -78,39 +63,41 @@ router.get('/get/:id', async (req, res) => {
     }
 })
 
-// Route to update a blog post by ID
-router.put('/update/:id', upload, async (req, res) => {
+// Route to update an existing blog post
+router.put('/update/:id', async (req, res) => {
     try {
-        const { title, content, author } = req.body
-        const existingBlog = await Blog.findById(req.params.id)
+        const { id } = req.params; // Get the blog post ID from the request parameters
+        const { title, content, author, newsImage } = req.body; // Extract the updated fields from the request body
 
-        if (!existingBlog) {
-            return res.status(404).json({ message: 'Blog post not found' })
+        // Validate required fields
+        const errors = validateBlogFields(title, content, author);
+        if (Object.keys(errors).length) {
+            return res.status(400).json({ errors });
         }
 
-        // If new image is uploaded, delete the old one and set the new one
-        let updatedImage = existingBlog.image
-        if (req.file) {
-            if (existingBlog.image) {
-                deleteImage(existingBlog.image) // Delete old image
-            }
-            updatedImage = req.file.filename // Set new image filename
+        // Find the blog post by ID and update it
+        const updatedBlog = await Blog.findByIdAndUpdate(
+            id,
+            {
+                title,
+                content,
+                author,
+                newsImage,
+                updatedAt: Date.now(), // Update the timestamp
+            },
+            { new: true } // Return the updated document
+        );
+
+        // If the blog post is not found, return a 404 error
+        if (!updatedBlog) {
+            return res.status(404).json({ error: 'Blog post not found' });
         }
 
-        const updatedBlog = {
-            title,
-            content,
-            author,
-            image: updatedImage,
-            updatedAt: Date.now(),
-        }
-
-        await Blog.findByIdAndUpdate(req.params.id, updatedBlog, { new: true })
-        res.status(200).json({ message: 'Blog post updated successfully' })
+        res.status(200).json({ message: 'Blog post updated successfully', updatedBlog });
     } catch (err) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ error: err.message });
     }
-})
+});
 
 // Route to delete a blog post by ID
 router.delete('/delete/:id', async (req, res) => {
@@ -119,10 +106,6 @@ router.delete('/delete/:id', async (req, res) => {
 
         if (!blogToDelete) {
             return res.status(404).json({ message: 'Blog post not found' })
-        }
-
-        if (blogToDelete.image) {
-            deleteImage(blogToDelete.image)
         }
 
         await Blog.findByIdAndDelete(req.params.id)

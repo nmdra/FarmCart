@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import Navbar from '../../Components/Home/NewsBar'
+// import Navbar from '../../Components/Home/NewsBar'
 import Footer from '../../Components/Home/Footer'
 import headerVideo from '../../assets/logo/header.mp4' // Adjusted import for the header video
 
@@ -18,8 +18,9 @@ export default function TourismBlog() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const blogResponse = await axios.get('/blog')
+                const blogResponse = await axios.get('/api/Blog/')
                 setBlogs(blogResponse.data)
+                console.log(blogResponse.data)
                 setLatestBlogs(blogResponse.data.slice(0, 5)) // Get the latest 5 blogs
             } catch (error) {
                 console.error('Error fetching data:', error)
@@ -50,7 +51,7 @@ export default function TourismBlog() {
 
     return (
         <div>
-            <Navbar />
+            {/* <Navbar /> */}
 
             {/* Header Video Section */}
             <div className="relative">
@@ -97,9 +98,9 @@ export default function TourismBlog() {
                                         style={{ width: '100%' }}
                                     >
                                         <div className="relative w-full h-25">
-                                            {blog.image && (
+                                            {blog.newsImage && (
                                                 <img
-                                                    src={`/BlogImages/${blog.image}`}
+                                                    src={`${blog.newsImage}`}
                                                     alt={blog.title}
                                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                                 />
@@ -178,9 +179,9 @@ export default function TourismBlog() {
                                 className="overflow-hidden transition duration-300 transform bg-white rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl"
                             >
                                 <div className="relative">
-                                    {blog.image && (
+                                    {blog.newsImage && (
                                         <img
-                                            src={`/BlogImages/${blog.image}`}
+                                            src={`${blog.newsImage}`}
                                             alt={blog.title}
                                             className="object-cover w-full h-64"
                                         />

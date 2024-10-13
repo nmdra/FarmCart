@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import jsPDF from 'jspdf'
-import Navbar from '../../Components/Navbar/Navbar'
+// import Navbar from '../../Components/Navbar/Navbar'
 import Footer from '../../Components/Home/Footer'
 import logo from '../../assets/logo/logo.png' // Your logo path
 
@@ -17,7 +17,7 @@ export default function IndividualBlog() {
 
         // Fetch blog data
         axios
-            .get(`/blog/get/${id}`)
+            .get(`/api/Blog/get/${id}`)
             .then((res) => {
                 setBlog(res.data)
             })
@@ -25,7 +25,7 @@ export default function IndividualBlog() {
 
         // Fetch comments for this blog post
         axios
-            .get(`/comments/${id}`)
+            .get(`/api/comments/${id}`)
             .then((res) => setComments(res.data))
             .catch((err) => console.log(err))
     }, [id])
@@ -72,8 +72,8 @@ export default function IndividualBlog() {
             ) // Date
 
             // Adding blog image if it exists
-            if (blog.image) {
-                const imageUrl = `/BlogImages/${blog.image}`
+            if (blog.newsImage) {
+                const imageUrl = `${blog.newsImage}`
                 const blogImg = new Image()
                 blogImg.src = imageUrl
 
@@ -129,7 +129,7 @@ export default function IndividualBlog() {
 
     return (
         <div>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="max-w-3xl px-4 pt-20 mx-auto mt-6 md:mt-10">
                 <h1 className="mb-8 text-4xl font-bold text-center">
                     {blog.title}
@@ -142,9 +142,9 @@ export default function IndividualBlog() {
                     </p>
                 </div>
 
-                {blog.image && (
+                {blog.newsImage && (
                     <img
-                        src={`/BlogImages/${blog.image}`}
+                        src={`${blog.newsImage}`}
                         alt={blog.title}
                         className="object-cover w-full h-auto mb-8 rounded-lg shadow-lg"
                     />

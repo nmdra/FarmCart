@@ -1,7 +1,6 @@
-// models/Blog.js
-
 import mongoose from 'mongoose'
 
+// Define blog schema with timestamps
 const blogSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -18,14 +17,11 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image: {
+    newsImage: {
         type: String,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-})
+}, { timestamps: true }) // Automatically adds createdAt and updatedAt fields
 
 const Blog = mongoose.model('Blog', blogSchema)
 export default Blog
+

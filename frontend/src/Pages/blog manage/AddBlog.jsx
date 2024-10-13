@@ -1,65 +1,114 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 function AddNews() {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [author, setAuthor] = useState('')
-    const [newsImage, setNewsImage] = useState(null)
+    const [selectedFile, setSelectedFile] = useState(null) // State for selected file
     const [imagePreview, setImagePreview] = useState(null) // State for image preview
-    const [errors, setErrors] = useState({})
+    const [uploadMessage, setUploadMessage] = useState('') // Message for file upload status
     const [successMessage, setSuccessMessage] = useState('')
+    const [loading, setLoading] = useState(false) // State to track loading
+    const [errors, setErrors] = useState({})
 
-    function addNews(e) {
-        e.preventDefault()
+    useEffect(() => {
+        // Cleanup function to revoke object URL to avoid memory leaks
+        return () => {
+            if (imagePreview) {
+                URL.revokeObjectURL(imagePreview)
+            }
+        }
+    }, [imagePreview])
 
-        const news = {
-            title,
-            content,
-            author,
-            newsImage,
+    // Function to handle image upload
+    const handleUpload = async () => {
+        if (!selectedFile) {
+            setUploadMessage('No file selected')
+            return null
         }
 
         const formData = new FormData()
-        formData.append('title', title)
-        formData.append('content', content)
-        formData.append('author', author)
-        if (newsImage) {
-            formData.append('newsImage', newsImage)
+        formData.append('image', selectedFile)
+        formData.append('folder', 'avatars') // Adjust folder if needed
+
+        setLoading(true) // Start loading
+
+        try {
+            const response = await axios.post('/api/images', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            setUploadMessage('Image uploaded successfully!')
+            console.log(response.data)
+            return response.data.url // Return the uploaded image URL
+        } catch (error) {
+            setUploadMessage('Upload failed: ' + error.message)
+            console.error('Upload error:', error) // Log the error for debugging
+            return null // Return null to signify failure
+        } finally {
+            setLoading(false) // Stop loading
         }
-
-        axios
-            .post('/news/add', formData)
-            .then(() => {
-                setSuccessMessage('✅ News added successfully!')
-                setTitle('')
-                setContent('')
-                setAuthor('')
-                setNewsImage(null)
-                setImagePreview(null) // Clear the image preview
-
-                setTimeout(() => {
-                    setSuccessMessage('')
-                }, 3000)
-            })
-            .catch((err) => {
-                alert(err)
-            })
     }
 
+    // Function to handle adding news
+    const addNews = async (e) => {
+        e.preventDefault()
+        
+        // Clear previous errors
+        setErrors({})
+
+        // Basic validation
+        if (!title || !content || !author) {
+            setErrors({
+                title: !title ? 'Title is required' : '',
+                content: !content ? 'Content is required' : '',
+                author: !author ? 'Author is required' : '',
+            })
+            return
+        }
+
+        // Upload the image first and get the URL
+        try {
+            const uploadedUrl = await handleUpload()
+
+            if (!uploadedUrl) return // Exit if image upload failed
+
+            const news = {
+                title,
+                content,
+                author,
+                newsImage: uploadedUrl, // Use the uploaded image URL
+            }
+
+            await axios.post('/api/blog/add', news)
+            setSuccessMessage('✅ News added successfully!')
+            resetForm()
+        } catch (err) {
+            console.error('Error adding news:', err)
+            alert('Failed to add news: ' + err.message)
+        }
+    }
+
+    // Function to handle image file selection and preview
     const handleImageChange = (e) => {
         const file = e.target.files[0]
         if (file) {
-            setNewsImage(file)
-            const reader = new FileReader()
-            reader.onloadend = () => {
-                setImagePreview(reader.result) // Set the image preview
-            }
-            reader.readAsDataURL(file)
-        } else {
-            setNewsImage(null)
-            setImagePreview(null) // Reset preview if no file is selected
+            setSelectedFile(file)
+            setImagePreview(URL.createObjectURL(file)) // Create preview URL for the selected image
         }
+    }
+
+    // Function to reset form fields
+    const resetForm = () => {
+        setTitle('')
+        setContent('')
+        setAuthor('')
+        setSelectedFile(null)
+        setImagePreview(null)
+        setUploadMessage('')
     }
 
     return (
@@ -77,10 +126,7 @@ function AddNews() {
                 <form onSubmit={addNews}>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                         <div>
-                            <label
-                                className="text-white dark:text-green-200"
-                                htmlFor="title"
-                            >
+                            <label className="text-white dark:text-green-200" htmlFor="title">
                                 Title
                             </label>
                             <input
@@ -90,16 +136,11 @@ function AddNews() {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
-                            {errors.title && (
-                                <p className="text-red-500">{errors.title}</p>
-                            )}
+                            {errors.title && <p className="text-red-500">{errors.title}</p>}
                         </div>
 
                         <div>
-                            <label
-                                className="text-white dark:text-gray-200"
-                                htmlFor="author"
-                            >
+                            <label className="text-white dark:text-gray-200" htmlFor="author">
                                 Author
                             </label>
                             <input
@@ -109,16 +150,11 @@ function AddNews() {
                                 value={author}
                                 onChange={(e) => setAuthor(e.target.value)}
                             />
-                            {errors.author && (
-                                <p className="text-red-500">{errors.author}</p>
-                            )}
+                            {errors.author && <p className="text-red-500">{errors.author}</p>}
                         </div>
 
                         <div className="col-span-2">
-                            <label
-                                className="text-white dark:text-gray-200"
-                                htmlFor="content"
-                            >
+                            <label className="text-white dark:text-gray-200" htmlFor="content">
                                 Content
                             </label>
                             <textarea
@@ -128,16 +164,11 @@ function AddNews() {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                             />
-                            {errors.content && (
-                                <p className="text-red-500">{errors.content}</p>
-                            )}
+                            {errors.content && <p className="text-red-500">{errors.content}</p>}
                         </div>
 
                         <div>
-                            <label
-                                className="block mb-2 font-medium text-white text-l dark:text-white"
-                                htmlFor="newsImage"
-                            >
+                            <label className="block mb-2 font-medium text-white text-l dark:text-white" htmlFor="newsImage">
                                 Upload Image
                             </label>
                             <input
@@ -145,16 +176,14 @@ function AddNews() {
                                 className="block w-full p-2.5"
                                 id="newsImage"
                                 type="file"
-                                onChange={handleImageChange} // Use the new handler
+                                onChange={handleImageChange}
                             />
                         </div>
 
                         {/* Image Preview Section */}
                         {imagePreview && (
                             <div className="col-span-2 mt-4">
-                                <h2 className="text-white dark:text-gray-200">
-                                    Image Preview:
-                                </h2>
+                                <h2 className="text-white dark:text-gray-200">Image Preview:</h2>
                                 <img
                                     src={imagePreview}
                                     alt="Preview"
@@ -168,8 +197,9 @@ function AddNews() {
                         <button
                             type="submit"
                             className="px-6 py-2 leading-5 text-white bg-blue-500 rounded-md hover:bg-blue-900"
+                            disabled={loading} // Disable button while loading
                         >
-                            Submit
+                            {loading ? 'Uploading...' : 'Submit'}
                         </button>
                     </div>
                 </form>
