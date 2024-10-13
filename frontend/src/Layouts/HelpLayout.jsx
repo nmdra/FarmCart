@@ -4,19 +4,29 @@ import HelpFooter from '../Components/Help/HelpFooter'
 import HelpChatIcon from '../Components/Help/HelpChatIcon'
 
 function HelpLayout() {
-    const user = {
-        id: '123',
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        createdAt: '2024-01-01T12:34:56.000Z',
+
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    // Handle the case where user is null or undefined
+    const customer = user ? {
+        id: user._id,
+        name: user.firstname,
+        email: user.email,
+        createdAt: Date.now(),
+    } : {
+        id: null,
+        name: 'Guest',
+        email: 'guest@example.com',
+        createdAt: Date.now(),
     }
+
     return (
         <div>
             <NavBar />
             <div>
                 <Outlet />
                 <div className="App">
-                    <HelpChatIcon user={user} />
+                    <HelpChatIcon user={customer} />
                 </div>
             </div>
             <HelpFooter />
