@@ -34,9 +34,9 @@ const CommentList = () => {
     }
 
     return (
-        <section className="p-6 mx-auto mt-20 bg-green-700 rounded-md shadow-md max-w-7xl dark:bg-green-800">
+        <section className="p-6 mx-auto mt-20 bg-gray-100 rounded-md shadow-md max-w-7xl dark:bg-gray-200">
             <div className="flex items-center justify-between mb-4">
-                <h1 className="text-4xl font-bold text-white capitalize dark:text-white">
+                <h1 className="text-4xl font-bold text-black capitalize dark:text-black">
                     Comments List
                 </h1>
             </div>
@@ -45,13 +45,13 @@ const CommentList = () => {
                 {comments.map((comment) => (
                     <div
                         key={comment._id}
-                        className="flex items-start p-4 bg-white rounded-md shadow-md dark:bg-green-800"
+                        className="flex items-start p-4 bg-white rounded-md shadow-md dark:bg-white"
                     >
                         <div className="flex-1">
-                            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+                            <h2 className="text-xl font-semibold text-gray-800 dark:text-black">
                                 Comment by: {comment.name}
                             </h2>
-                            <p className="text-gray-600 dark:text-green-300">
+                            <p className="text-gray-600 dark:text-black">
                                 {comment.comment}
                             </p>
                         </div>

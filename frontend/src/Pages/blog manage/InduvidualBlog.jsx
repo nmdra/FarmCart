@@ -196,7 +196,7 @@ const stopSpeech = () => {
 
                 <div className="mb-4 text-center">
                     <button
-                        className="px-6 py-3 font-bold text-white transition duration-300 ease-in-out transform bg-green-600 rounded-lg shadow-lg hover:bg-green-700 hover:scale-105"
+                        className="px-6 py-3 font-bold text-white transition duration-300 ease-in-out transform rounded-lg shadow-lg bg-lime-500 hover:bg-lime-600 hover:scale-105"
                         onClick={downloadPDF}
                     >
                         Download Blog as PDF
@@ -243,7 +243,7 @@ const stopSpeech = () => {
                         />
                         <button
                             type="submit"
-                            className="px-4 py-2 font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
+                            className="px-4 py-2 font-bold text-white rounded-lg bg-lime-500 hover:bg-lime-600"
                         >
                             Submit
                         </button>

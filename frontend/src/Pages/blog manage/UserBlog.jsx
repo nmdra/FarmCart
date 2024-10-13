@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-// import Navbar from '../../Components/Home/NewsBar'
 import Footer from '../../Components/Home/Footer'
-import headerVideo from '../../assets/logo/header.mp4' // Adjusted import for the header video
+import headerVideo from '../../assets/logo/header.mp4'
 
 export default function TourismBlog() {
     const [blogs, setBlogs] = useState([])
@@ -37,22 +36,19 @@ export default function TourismBlog() {
         blog.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
-    // Set interval for the slideshow of latest blogs
+    // Handle automatic slideshow
     useEffect(() => {
-        if (latestBlogs.length > 0) {
-            const interval = setInterval(() => {
-                setCurrentSlide(
-                    (prevSlide) => (prevSlide + 1) % latestBlogs.length
-                )
-            }, 3000) // Change slides every 3 seconds
-            return () => clearInterval(interval)
-        }
+        const interval = setInterval(() => {
+            setCurrentSlide((prevSlide) =>
+                prevSlide === latestBlogs.length - 1 ? 0 : prevSlide + 1
+            )
+        }, 3000) // Change slide every 3 seconds
+
+        return () => clearInterval(interval) // Clean up interval on unmount
     }, [latestBlogs])
 
     return (
         <div>
-            {/* <Navbar /> */}
-
             {/* Header Video Section */}
             <div className="relative">
                 <video
@@ -79,16 +75,14 @@ export default function TourismBlog() {
             {/* Latest News Section */}
             <div className="py-1 bg-gradient-to-r from-white">
                 <div className="container px-4 mx-auto">
-                    <h2 className="mb-6 text-3xl font-bold text-center text-sky-700">
+                    <h2 className="mb-6 text-3xl font-bold text-center text-black">
                         Trending Blogs!
                     </h2>
                     <div className="relative w-full h-48 overflow-hidden rounded-lg shadow-lg">
                         {latestBlogs.length > 0 && (
                             <div
                                 className="absolute inset-0 flex items-center justify-center transition-transform duration-1000"
-                                style={{
-                                    transform: `translateX(-${currentSlide * 100}%)`,
-                                }}
+                                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                             >
                                 {latestBlogs.map((blog) => (
                                     <Link
@@ -98,9 +92,9 @@ export default function TourismBlog() {
                                         style={{ width: '100%' }}
                                     >
                                         <div className="relative w-full h-25">
-                                            {blog.newsImage && (
+                                            {blog.image && (
                                                 <img
-                                                    src={`${blog.newsImage}`}
+                                                    src={`/BlogImages/${blog.image}`}
                                                     alt={blog.title}
                                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                                 />
@@ -112,10 +106,7 @@ export default function TourismBlog() {
                                                     </h3>
                                                     <p className="mt-1">
                                                         {blog.excerpt ||
-                                                            blog.content.substring(
-                                                                0,
-                                                                100
-                                                            ) + '...'}
+                                                            blog.content.substring(0, 100) + '...'}
                                                     </p>
                                                 </div>
                                             </div>
@@ -128,8 +119,9 @@ export default function TourismBlog() {
                 </div>
             </div>
 
-            <div className="min-h-screen pt-20 mt-6 bg-gradient-to-br from-sky-100 to-sky-200 md:mt-10 md:mx-10">
-                <nav className="sticky top-0 z-10 py-6 text-white shadow-md bg-sky-500">
+            {/* Blog Section */}
+            <div className="min-h-screen pt-20 mt-6 bg-gradient-to-br from-white to-gray-200 md:mt-10 md:mx-10">
+                <nav className="sticky top-0 z-10 py-6 text-white shadow-md bg-lime-600">
                     <div className="container px-4 mx-auto">
                         <div className="flex items-center justify-between ml-20">
                             <div className="relative w-full max-w-xs">
@@ -140,19 +132,19 @@ export default function TourismBlog() {
                                     id="search"
                                     type="text"
                                     placeholder="Search Blogs..."
-                                    className="w-full px-4 py-2 pr-10 text-black transition duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-sky-300"
+                                    className="w-full px-4 py-2 pr-10 text-black transition duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-300"
                                     value={searchTerm}
                                     onChange={(e) =>
                                         setSearchTerm(e.target.value)
                                     }
                                 />
                                 <Search
-                                    className="absolute transform -translate-y-1/2 right-3 top-1/2 text-sky-600"
+                                    className="absolute transform -translate-y-1/2 text-lime-500 right-3 top-1/2"
                                     size={20}
                                 />
                             </div>
                             <Link to="/speechgenerator">
-                                <button className="px-4 py-2 ml-4 text-white transition duration-300 bg-green-500 rounded-full hover:bg-green-800">
+                                <button className="px-4 py-2 ml-4 text-white transition duration-300 rounded-full bg-lime-800 hover:bg-green-800">
                                     Speech Generator
                                 </button>
                             </Link>
@@ -160,7 +152,6 @@ export default function TourismBlog() {
                     </div>
                 </nav>
 
-                {/* Blog Section */}
                 <div className="container px-4 py-8 mx-auto">
                     {loading && (
                         <p className="text-center text-gray-600">
@@ -187,10 +178,10 @@ export default function TourismBlog() {
                                         />
                                     )}
                                     <div className="p-6">
-                                        <h2 className="mb-2 text-2xl font-bold text-sky-700">
+                                        <h2 className="mb-2 text-2xl font-bold text-green-900">
                                             {blog.title}
                                         </h2>
-                                        <div className="flex items-center mb-2 text-gray-600">
+                                        <div className="flex items-center mb-2 text-gray-900">
                                             <span>{blog.author}</span>
                                             <span className="ml-4">
                                                 {new Date(
@@ -204,7 +195,7 @@ export default function TourismBlog() {
                                                     '...'}
                                         </p>
                                         <Link to={`/blog/${blog._id}`}>
-                                            <span className="inline-block px-4 py-2 text-white transition duration-300 transform rounded-full bg-sky-500 hover:bg-sky-600 hover:translate-y-1">
+                                            <span className="inline-block px-4 py-2 text-white transition duration-300 transform rounded-full bg-lime-500 hover:bg-lime-400 hover:translate-y-1">
                                                 Read More
                                             </span>
                                         </Link>

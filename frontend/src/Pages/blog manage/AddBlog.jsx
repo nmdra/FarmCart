@@ -84,7 +84,7 @@ function AddNews() {
             }
 
             await axios.post('/api/blog/add', news)
-            setSuccessMessage('✅ News added successfully!')
+            setSuccessMessage('✅ Blog added successfully!')
             resetForm()
         } catch (err) {
             console.error('Error adding news:', err)
@@ -114,19 +114,19 @@ function AddNews() {
     return (
         <>
             {successMessage && (
-                <div className="p-4 mb-4 text-center text-white bg-blue-600 rounded-md">
+                <div className="p-4 mb-4 text-center text-black rounded-md bg-lime-600">
                     {successMessage}
                 </div>
             )}
-            <section className="max-w-4xl p-6 mx-auto mt-20 bg-blue-700 rounded-md shadow-md dark:bg-gray-800">
-                <h1 className="text-xl font-bold text-white capitalize dark:text-white">
-                    Add News
+            <section className="max-w-4xl p-6 mx-auto mt-20 bg-blue-700 rounded-md shadow-md dark:bg-gray-200">
+                <h1 className="text-xl font-bold text-black capitalize dark:text-black">
+                    Add Blog
                 </h1>
 
                 <form onSubmit={addNews}>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                         <div>
-                            <label className="text-white dark:text-green-200" htmlFor="title">
+                            <label className="text-black dark:text-black" htmlFor="title">
                                 Title
                             </label>
                             <input
@@ -140,7 +140,7 @@ function AddNews() {
                         </div>
 
                         <div>
-                            <label className="text-white dark:text-gray-200" htmlFor="author">
+                            <label className="text-black dark:text-black" htmlFor="author">
                                 Author
                             </label>
                             <input
@@ -154,7 +154,7 @@ function AddNews() {
                         </div>
 
                         <div className="col-span-2">
-                            <label className="text-white dark:text-gray-200" htmlFor="content">
+                            <label className="text-black dark:text-black" htmlFor="content">
                                 Content
                             </label>
                             <textarea
@@ -168,7 +168,7 @@ function AddNews() {
                         </div>
 
                         <div>
-                            <label className="block mb-2 font-medium text-white text-l dark:text-white" htmlFor="newsImage">
+                            <label className="block mb-2 font-medium text-black text-l dark:text-black" htmlFor="newsImage">
                                 Upload Image
                             </label>
                             <input
@@ -183,7 +183,7 @@ function AddNews() {
                         {/* Image Preview Section */}
                         {imagePreview && (
                             <div className="col-span-2 mt-4">
-                                <h2 className="text-white dark:text-gray-200">Image Preview:</h2>
+                                <h2 className="text-black dark:text-black">Image Preview:</h2>
                                 <img
                                     src={imagePreview}
                                     alt="Preview"
@@ -196,7 +196,7 @@ function AddNews() {
                     <div className="flex justify-end mt-6">
                         <button
                             type="submit"
-                            className="px-6 py-2 leading-5 text-white bg-blue-500 rounded-md hover:bg-blue-900"
+                            className="px-6 py-2 leading-5 text-white rounded-md bg-lime-500 hover:bg-lime-600"
                             disabled={loading} // Disable button while loading
                         >
                             {loading ? 'Uploading...' : 'Submit'}
