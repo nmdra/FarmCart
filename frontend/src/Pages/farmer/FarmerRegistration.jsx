@@ -278,32 +278,6 @@ const Register = () => {
                         </div>
                     </div>
                     <div className="flex items-center w-full gap-x-4">
-                        {/* NIC input */}
-                        <div className="w-full mb-4">
-                            <label
-                                htmlFor="NIC"
-                                className="block text-sm font-medium text-left text-gray-700"
-                            >
-                                NIC
-                            </label>
-                            <input
-                                type="text"
-                                id="NIC"
-                                name="NIC" // Add name attribute
-                                value={formData.NIC}
-                                onChange={handleInputChange}
-                                required
-                                className={
-                                    'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
-                                }
-                                placeholder="Enter your NIC"
-                            />
-                            {errors.NIC && (
-                                <p className="text-sm text-red-500">
-                                    {errors.NIC}
-                                </p>
-                            )}
-                        </div>
                         {/* BirthDay input */}
                         <div className="w-full mb-4">
                             <label
@@ -328,6 +302,32 @@ const Register = () => {
                             {errors.BirthDay && (
                                 <p className="text-sm text-red-500">
                                     {errors.BirthDay}
+                                </p>
+                            )}
+                        </div>
+                        {/* NIC input */}
+                        <div className="w-full mb-4">
+                            <label
+                                htmlFor="NIC"
+                                className="block text-sm font-medium text-left text-gray-700"
+                            >
+                                NIC
+                            </label>
+                            <input
+                                type="text"
+                                id="NIC"
+                                name="NIC" // Add name attribute
+                                value={formData.NIC}
+                                onChange={handleInputChange}
+                                required
+                                className={
+                                    'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
+                                }
+                                placeholder="Enter your NIC"
+                            />
+                            {errors.NIC && (
+                                <p className="text-sm text-red-500">
+                                    {errors.NIC}
                                 </p>
                             )}
                         </div>

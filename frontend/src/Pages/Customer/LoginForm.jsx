@@ -29,14 +29,14 @@ const Login = () => {
     }, [error])
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border-2 border-green-600">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="w-full max-w-md p-8 bg-white border-2 border-green-600 rounded-lg shadow-lg">
                 <img
                     src={farmcartLogo} // Replace with the path to your logo image
                     alt="Logo"
-                    className="h-5 w-auto mb-2" // Adjust the height as needed
+                    className="w-auto h-5 mb-2" // Adjust the height as needed
                 />
-                <div className="text-left mb-5">
+                <div className="mb-5 text-left">
                     <h2 className="text-3xl font-bold">Welcome Back...</h2>
                 </div>
                 <form onSubmit={handleSubmit}>
@@ -47,7 +47,7 @@ const Login = () => {
                         <input
                             type="email"
                             id="email"
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                            className="block w-full px-4 py-2 mt-1 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-lime-400"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -64,7 +64,7 @@ const Login = () => {
                         <input
                             type="password"
                             id="password"
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                            className="block w-full px-4 py-2 mt-1 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-lime-400"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -74,12 +74,12 @@ const Login = () => {
                     <button
                         disabled={isLoading}
                         type="submit"
-                        className="w-full px-4 py-2 bg-lime-500 text-black rounded-lg hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        className="w-full px-4 py-2 text-black rounded-lg bg-lime-500 hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-400"
                     >
                         {isLoading ? (
-                            <div className="flex justify-center items-center">
+                            <div className="flex items-center justify-center">
                                 <svg
-                                    className="animate-spin h-5 w-5 mr-3 text-white"
+                                    className="w-5 h-5 mr-3 text-white animate-spin"
                                     viewBox="0 0 24 24"
                                 >
                                     <circle
