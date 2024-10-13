@@ -103,6 +103,7 @@ import IndividualBlog from './Pages/blog manage/InduvidualBlog'
 import Admin from './Pages/dashboard/Admin'
 import UpdateBlogDashboard from './Pages/dashboard/ishanka dahsbaord/UpdateBlogDashbaord'
 import SpeechGenerator from './Pages/common/speech/SpeechGenerator'
+import BlogLayout from './Layouts/BlogLayout'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -290,17 +291,17 @@ const router = createBrowserRouter(
             {/* Add Other Roots Below */}
             {/*Blog route*/}
 
-            <Route path="/" element={<DLayout />}>
+            <Route path="/" element={<BlogLayout />}>
                 <Route path="/add-blog" element={<Blog />} />
                 <Route path="/blog-list" element={<BlogList />} />
                 <Route
                     path="/update-blog/:id"
                     element={<UpdateBlogDashboard />}
                 />
-                <Route path="/user-blog" element={<TourismBlog />} />
+                <Route path="/Blog" element={<TourismBlog />} />
                 <Route path="/blog/:id" element={<IndividualBlog />} />
                 <Route path="/speechgenerator" element={<SpeechGenerator />} />
-                <Route path="/dashboard" element={<Admin />} />
+                <Route path="/blogDashboard" element={<Admin />} />
             </Route>
         </>
     )

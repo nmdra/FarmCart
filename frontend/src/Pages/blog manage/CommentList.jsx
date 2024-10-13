@@ -10,7 +10,7 @@ const CommentList = () => {
 
     const fetchComments = async () => {
         try {
-            const response = await axios.get('/comments') // Fetch all comments
+            const response = await axios.get('/api/comments') // Fetch all comments
             setComments(response.data)
         } catch (error) {
             console.error('Error fetching comments:', error)
@@ -23,7 +23,7 @@ const CommentList = () => {
         )
         if (confirmed) {
             try {
-                await axios.delete(`/comments/delete/${id}`)
+                await axios.delete(`/api/comments/delete/${id}`)
                 alert('Comment deleted successfully!')
                 fetchComments() // Refresh comment list after deletion
             } catch (error) {

@@ -44,7 +44,7 @@ const Admin = () => {
             <main className="flex-1 p-6">
                 {loading ? (
                     <div className="flex items-center justify-center h-full">
-                        <Spinner />
+                        Loading
                     </div>
                 ) : (
                     <>

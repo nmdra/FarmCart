@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 export default function UpdateBlogForm() {
     const { id } = useParams();
@@ -14,8 +13,10 @@ export default function UpdateBlogForm() {
 
     const [loading, setLoading] = useState(true);
     const [imagePreview, setImagePreview] = useState(null);
-    const [error, setError] = useState(null); // Error state
-    const [success, setSuccess] = useState(false); // Success state
+    const [uploadMessage, setUploadMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [error, setError] = useState(null);
+    const [errors, setErrors] = useState({}); // State for validation errors
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,7 +24,7 @@ export default function UpdateBlogForm() {
 
         const fetchBlog = async () => {
             try {
-                const res = await axios.get(`/api/Blog/get/${id}`); // Adjust the endpoint as needed
+                const res = await axios.get(`/api/Blog/get/${id}`);
                 setBlog(res.data);
                 setImagePreview(res.data.image); // Set the initial image preview
             } catch (err) {
@@ -58,35 +59,67 @@ export default function UpdateBlogForm() {
         }
     };
 
-    // Handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError(null); // Reset error state
-        setSuccess(false); // Reset success state
-
-        const formData = new FormData();
-        formData.append('title', blog.title);
-        formData.append('author', blog.author);
-        formData.append('content', blog.content);
-
-        if (blog.image) {
-            formData.append('blogImage', blog.image); // Ensure the field name matches
+    // Function to handle image upload
+    const handleUpload = async () => {
+        const { image } = blog; // Get the image from state
+        if (!image) {
+            setUploadMessage('No file selected');
+            return null;
         }
 
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('folder', 'blogs'); // Adjust folder as needed
+
         try {
-            await axios.put(`/api/Blog/update/${id}`, formData, { // Adjust the endpoint as needed
+            const response = await axios.post('/api/images', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setSuccess(true);
-            setBlog({ title: '', author: '', content: '', image: null }); // Reset form
-            setImagePreview(null); // Reset image preview
-            // Optionally redirect or navigate after successful update
+
+            setUploadMessage('Image uploaded successfully!');
+            return response.data.url; // Return the uploaded image URL
+        } catch (error) {
+            setUploadMessage('Upload failed: ' + error.message);
+            console.error('Upload error:', error);
+            return null; // Return null to signify failure
+        }
+    };
+
+    // Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null); // Reset error state
+        setSuccessMessage(''); // Reset success message
+        setErrors({}); // Reset validation errors
+
+        // Validate required fields
+        const validationErrors = {};
+        if (!blog.title) validationErrors.title = 'Title is required';
+        if (!blog.content) validationErrors.content = 'Content is required';
+        if (!blog.author) validationErrors.author = 'Author is required';
+
+        if (Object.keys(validationErrors).length) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        try {
+            // Handle image upload and get the URL
+            const uploadedUrl = await handleUpload();
+
+            const updatedBlog = {
+                ...blog,
+                newsImage: uploadedUrl || blog.image, // Use the uploaded image URL or keep the existing one
+            };
+
+            await axios.put(`/api/Blog/update/${id}`, updatedBlog);
+            setSuccessMessage('Blog updated successfully!');
             navigate(`/blog/${id}`); // Redirect to the updated blog post
         } catch (err) {
-            console.error(err);
-            setError('Failed to update the blog. Please try again.'); // Set error message
+            console.error('Error updating blog:', err);
+            setError('Failed to update the blog. Please try again.');
         }
     };
 
@@ -98,8 +131,11 @@ export default function UpdateBlogForm() {
     return (
         <div className="max-w-3xl mx-auto mt-10">
             <h1 className="mb-6 text-3xl font-bold">Update Blog</h1>
-            {error && <div className="text-red-500">{error}</div>} {/* Display error message */}
-            {success && <div className="text-green-500">Blog updated successfully!</div>} {/* Display success message */}
+            {error && <div className="text-red-500">{error}</div>}
+            {successMessage && <div className="text-green-500">{successMessage}</div>}
+            {errors.title && <div className="text-red-500">{errors.title}</div>}
+            {errors.content && <div className="text-red-500">{errors.content}</div>}
+            {errors.author && <div className="text-red-500">{errors.author}</div>}
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Title</label>

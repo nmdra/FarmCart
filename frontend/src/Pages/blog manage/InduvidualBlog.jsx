@@ -39,7 +39,7 @@ export default function IndividualBlog() {
     const handleSubmitComment = (e) => {
         e.preventDefault()
         axios
-            .post('/comments/add', {
+            .post('/api/comments/add', {
                 blogId: id,
                 ...newComment,
             })
