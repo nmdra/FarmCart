@@ -8,7 +8,7 @@ const HelpCTASection = () => {
             <div className="py-10 mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <Link
-                        to="/support-ticket"
+                        to="/help/support-ticket"
                         className=" p-10 border border-[#3c590e] bg-white rounded-md gap-x-6 hover:scale-105"
                     >
                         <div className="relative w-full h-full bg-white">
@@ -30,7 +30,7 @@ const HelpCTASection = () => {
                         </div>
                     </Link>
                     <Link
-                        to="/feedback"
+                        to="/help/feedback"
                         className=" p-10 border border-[#3c590e] bg-white rounded-md gap-x-6 hover:scale-105"
                     >
                         <div className="relative w-full h-full bg-white">
