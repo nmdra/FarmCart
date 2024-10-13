@@ -3,12 +3,28 @@ import Blog from '../models/Blog.js' // Blog model
 
 const router = Router()
 
-// Function to validate required fields
+// Function to validate required fields with enhanced rules
 const validateBlogFields = (title, content, author) => {
     const errors = {}
-    if (!title) errors.title = 'Title is required.'
-    if (!content) errors.content = 'Content is required.'
-    if (!author) errors.author = 'Author is required.'
+    
+    if (!title) {
+        errors.title = 'Title is required.'
+    } else if (title.length < 5) {
+        errors.title = 'Title must be at least 5 characters long.'
+    }
+    
+    if (!content) {
+        errors.content = 'Content is required.'
+    } else if (content.length < 10) {
+        errors.content = 'Content must be at least 10 characters long.'
+    }
+    
+    if (!author) {
+        errors.author = 'Author is required.'
+    } else if (author.trim().length === 0) {
+        errors.author = 'Author name cannot be empty.'
+    }
+
     return errors
 }
 
@@ -20,7 +36,11 @@ router.post('/add', async (req, res) => {
         // Validate required fields
         const errors = validateBlogFields(title, content, author)
         if (Object.keys(errors).length) {
-            return res.status(400).json({ errors })
+            // Return a structured response showing all validation errors
+            return res.status(400).json({ 
+                message: 'Validation failed. Please fix the errors below.',
+                errors 
+            })
         }
 
         const newBlog = new Blog({
@@ -70,9 +90,13 @@ router.put('/update/:id', async (req, res) => {
         const { title, content, author, newsImage } = req.body; // Extract the updated fields from the request body
 
         // Validate required fields
-        const errors = validateBlogFields(title, content, author);
+        const errors = validateBlogFields(title, content, author)
         if (Object.keys(errors).length) {
-            return res.status(400).json({ errors });
+            // Return a structured response showing all validation errors
+            return res.status(400).json({ 
+                message: 'Validation failed. Please fix the errors below.',
+                errors
+            })
         }
 
         // Find the blog post by ID and update it
@@ -97,7 +121,7 @@ router.put('/update/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-});
+})
 
 // Route to delete a blog post by ID
 router.delete('/delete/:id', async (req, res) => {
