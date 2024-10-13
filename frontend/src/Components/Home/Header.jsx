@@ -85,14 +85,11 @@ const Header = () => {
                 <div className="flex items-center gap-6">
                     {isLoggedIn ? (
                         <div className="flex items-center gap-4 text-sm">
-                                            <div className='pr-2'>
-                    <Link to="/help">
-                        Help & Support
-                    </Link>
-                </div>
-                            
-                            <CartButton cartItemCount={cartItemCount} />
+                            <div className="pr-2">
+                                <Link to="/help">Help & Support</Link>
+                            </div>
 
+                            <CartButton cartItemCount={cartItemCount} />
 
                             <button
                                 className="flex items-center gap-2"

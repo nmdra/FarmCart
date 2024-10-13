@@ -56,7 +56,7 @@ function AddNews() {
     // Function to handle adding news
     const addNews = async (e) => {
         e.preventDefault()
-        
+
         // Clear previous errors
         setErrors({})
 
@@ -126,7 +126,10 @@ function AddNews() {
                 <form onSubmit={addNews}>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                         <div>
-                            <label className="text-white dark:text-green-200" htmlFor="title">
+                            <label
+                                className="text-white dark:text-green-200"
+                                htmlFor="title"
+                            >
                                 Title
                             </label>
                             <input
@@ -136,11 +139,16 @@ function AddNews() {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
-                            {errors.title && <p className="text-red-500">{errors.title}</p>}
+                            {errors.title && (
+                                <p className="text-red-500">{errors.title}</p>
+                            )}
                         </div>
 
                         <div>
-                            <label className="text-white dark:text-gray-200" htmlFor="author">
+                            <label
+                                className="text-white dark:text-gray-200"
+                                htmlFor="author"
+                            >
                                 Author
                             </label>
                             <input
@@ -150,11 +158,16 @@ function AddNews() {
                                 value={author}
                                 onChange={(e) => setAuthor(e.target.value)}
                             />
-                            {errors.author && <p className="text-red-500">{errors.author}</p>}
+                            {errors.author && (
+                                <p className="text-red-500">{errors.author}</p>
+                            )}
                         </div>
 
                         <div className="col-span-2">
-                            <label className="text-white dark:text-gray-200" htmlFor="content">
+                            <label
+                                className="text-white dark:text-gray-200"
+                                htmlFor="content"
+                            >
                                 Content
                             </label>
                             <textarea
@@ -164,11 +177,16 @@ function AddNews() {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                             />
-                            {errors.content && <p className="text-red-500">{errors.content}</p>}
+                            {errors.content && (
+                                <p className="text-red-500">{errors.content}</p>
+                            )}
                         </div>
 
                         <div>
-                            <label className="block mb-2 font-medium text-white text-l dark:text-white" htmlFor="newsImage">
+                            <label
+                                className="block mb-2 font-medium text-white text-l dark:text-white"
+                                htmlFor="newsImage"
+                            >
                                 Upload Image
                             </label>
                             <input
@@ -183,7 +201,9 @@ function AddNews() {
                         {/* Image Preview Section */}
                         {imagePreview && (
                             <div className="col-span-2 mt-4">
-                                <h2 className="text-white dark:text-gray-200">Image Preview:</h2>
+                                <h2 className="text-white dark:text-gray-200">
+                                    Image Preview:
+                                </h2>
                                 <img
                                     src={imagePreview}
                                     alt="Preview"

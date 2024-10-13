@@ -490,16 +490,25 @@ const Dashboard = () => {
                                                 <option value="Ready">
                                                     Ready
                                                 </option>
-                                                <option value=" Ready. " disabled>
+                                                <option
+                                                    value=" Ready. "
+                                                    disabled
+                                                >
                                                     Ready
-                                                </option> 
-                                                 <option value="PickUp" disabled>
+                                                </option>
+                                                <option value="PickUp" disabled>
                                                     Pickup
                                                 </option>
-                                                <option value="OnTheWay" disabled>
+                                                <option
+                                                    value="OnTheWay"
+                                                    disabled
+                                                >
                                                     On the way
                                                 </option>
-                                                <option value="Delivered" disabled>
+                                                <option
+                                                    value="Delivered"
+                                                    disabled
+                                                >
                                                     Delivered
                                                 </option>
                                             </select>

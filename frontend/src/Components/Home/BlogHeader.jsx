@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../../assets/logo/logo.png';
-import { FaCartShopping } from 'react-icons/fa6';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import logo from '../../assets/logo/logo.png'
+import { FaCartShopping } from 'react-icons/fa6'
 
 const BlogHeader = ({ loading }) => {
     return (
@@ -13,20 +13,23 @@ const BlogHeader = ({ loading }) => {
                     </Link>
                 </div>
                 <div>
-                    <Link to="/shop"> {/* Update the link to the shop */}
+                    <Link to="/shop">
+                        {' '}
+                        {/* Update the link to the shop */}
                         <button
                             type="button"
                             className="flex items-center bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                             disabled={loading}
                         >
-                            <FaCartShopping className="mr-2" /> {/* Cart icon placed here */}
+                            <FaCartShopping className="mr-2" />{' '}
+                            {/* Cart icon placed here */}
                             {loading ? 'Adding...' : 'Shop with Farmcart'}
                         </button>
                     </Link>
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default BlogHeader;
+export default BlogHeader

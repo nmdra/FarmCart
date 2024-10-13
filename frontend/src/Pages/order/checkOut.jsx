@@ -349,11 +349,15 @@ const CheckOut = () => {
                                         <DatePicker
                                             label="Pick Delivery Date"
                                             variant="bordered"
-                                            minValue={today(getLocalTimeZone()).add({ days: 3 })}
-                                            defaultValue={today(getLocalTimeZone())} 
+                                            minValue={today(
+                                                getLocalTimeZone()
+                                            ).add({ days: 3 })}
+                                            defaultValue={today(
+                                                getLocalTimeZone()
+                                            )}
                                             onChange={(date) => setDate(date)}
                                         />
-                                        </div>
+                                    </div>
 
                                     <div className="flex gap-3">
                                         <Textarea
