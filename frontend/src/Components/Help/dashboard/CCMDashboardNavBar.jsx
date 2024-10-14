@@ -20,19 +20,19 @@ const NavLinks = [
     },
     {
         title: 'Knowledge Base',
-        to: '/help/dashboard/knowledge-base',
+        to: 'https://medium.com/@aweesha',
     },
     {
-        title: 'Analytics',
-        to: '/help/dashboard/analytics',
+        title: 'CCM Profile',
+        to: '/help/dashboard/profile',
     },
 ]
 
 const CCMDashboardNavBar = () => {
     return (
         <div className="p-4 text-white bg-gray-800">
-            <nav className="mx-auto  max-w-7xl">
-                <ul className="flex space-x-4">
+            <nav className="mx-auto max-w-7xl">
+                <ul className="flex space-x-10">
                     {NavLinks.map((link, index) => (
                         <li key={index}>
                             {link.external ? (
