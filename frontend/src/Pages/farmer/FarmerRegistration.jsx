@@ -183,23 +183,24 @@ const Register = () => {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 p-8">
-            <div className="bg-white p-16 rounded-lg shadow-md w-2/3 ">
-                <div className="text-center mb-8">
-                    <img src={logo} alt="Logo" className="mx-auto w-48" />
-                    <h1 className="text-4xl font-semibold text-gray-800 mt-4">
+        <div className="flex min-h-screen items-center justify-center  px-[8rem] pb-[8rem] pt-8">
+            <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+            <div className=" p-10 bg-white rounded-lg border w-[600px] ">
+                <div className="mb-8 text-center">
+                    <img src={logo} alt="Logo" className="w-48 mx-auto" />
+                    <h1 className="mt-4 text-4xl font-semibold text-gray-800">
                         Register
                     </h1>
                 </div>
                 {errors.submit && (
-                    <p className="text-red-500 mb-4">{errors.submit}</p>
+                    <p className="mb-4 text-red-500">{errors.submit}</p>
                 )}
                 <form onSubmit={handleSubmit}>
                     {/* Name input */}
                     <div className="mb-4">
                         <label
                             htmlFor="name"
-                            className="block text-sm font-medium text-gray-700 text-left"
+                            className="block text-sm font-medium text-left text-gray-700"
                         >
                             Name
                         </label>
@@ -216,99 +217,129 @@ const Register = () => {
                             placeholder="Enter your name"
                         />
                         {errors.name && (
-                            <p className="text-red-500 text-sm">
+                            <p className="text-sm text-red-500">
                                 {errors.name}
                             </p>
                         )}
                     </div>
+                    <div className="flex items-center w-full gap-x-4">
+                        {/* Email input */}
+                        <div className="w-full mb-4">
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium text-left text-gray-700"
+                            >
+                                Email
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email" // Add name attribute
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                required
+                                className={
+                                    'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
+                                }
+                                placeholder="Enter your email"
+                            />
+                            {errors.email && (
+                                <p className="text-sm text-red-500">
+                                    {errors.email}
+                                </p>
+                            )}
+                        </div>
 
-                    {/* Email input */}
-                    <div className="mb-4">
-                        <label
-                            htmlFor="email"
-                            className="block text-sm font-medium text-gray-700 text-left"
-                        >
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email" // Add name attribute
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            required
-                            className={
-                                'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
-                            }
-                            placeholder="Enter your email"
-                        />
-                        {errors.email && (
-                            <p className="text-red-500 text-sm">
-                                {errors.email}
-                            </p>
-                        )}
+                        {/* Contact Number input */}
+                        <div className="w-full mb-4">
+                            <label
+                                htmlFor="contactNumber"
+                                className="block text-sm font-medium text-left text-gray-700"
+                            >
+                                Contact Number
+                            </label>
+                            <input
+                                type="text"
+                                id="contactNumber"
+                                name="contactNumber" // Add name attribute
+                                value={formData.contactNumber}
+                                onChange={handleInputChange}
+                                required
+                                className={
+                                    'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
+                                }
+                                placeholder="Enter your contact number"
+                            />
+                            {errors.contactNumber && (
+                                <p className="text-sm text-red-500">
+                                    {errors.contactNumber}
+                                </p>
+                            )}
+                        </div>
                     </div>
-
-                    {/* BirthDay input */}
-                    <div className="mb-4">
-                        <label
-                            htmlFor="birthDay"
-                            className="block text-sm font-medium text-gray-700 text-left"
-                        >
-                            Birth Day
-                        </label>
-                        <input
-                            type="date"
-                            id="BirthDay"
-                            name="BirthDay" // Add name attribute
-                            value={formData.BirthDay}
-                            onChange={handleInputChange}
-                            required
-                            max={new Date().toISOString().split('T')[0]} // Ensures only past dates can be selected
-                            min="1930-01-01" // Ensures the earliest selectable date is 1930-01-01
-                            className={
-                                'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
-                            }
-                        />
-                        {errors.BirthDay && (
-                            <p className="text-red-500 text-sm">
-                                {errors.BirthDay}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* NIC input */}
-                    <div className="mb-4">
-                        <label
-                            htmlFor="NIC"
-                            className="block text-sm font-medium text-gray-700 text-left"
-                        >
-                            NIC
-                        </label>
-                        <input
-                            type="text"
-                            id="NIC"
-                            name="NIC" // Add name attribute
-                            value={formData.NIC}
-                            onChange={handleInputChange}
-                            required
-                            className={
-                                'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
-                            }
-                            placeholder="Enter your NIC"
-                        />
-                        {errors.NIC && (
-                            <p className="text-red-500 text-sm">{errors.NIC}</p>
-                        )}
+                    <div className="flex items-center w-full gap-x-4">
+                        {/* BirthDay input */}
+                        <div className="w-full mb-4">
+                            <label
+                                htmlFor="birthDay"
+                                className="block text-sm font-medium text-left text-gray-700"
+                            >
+                                Birth Day
+                            </label>
+                            <input
+                                type="date"
+                                id="BirthDay"
+                                name="BirthDay" // Add name attribute
+                                value={formData.BirthDay}
+                                onChange={handleInputChange}
+                                required
+                                max={new Date().toISOString().split('T')[0]} // Ensures only past dates can be selected
+                                min="1930-01-01" // Ensures the earliest selectable date is 1930-01-01
+                                className={
+                                    'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
+                                }
+                            />
+                            {errors.BirthDay && (
+                                <p className="text-sm text-red-500">
+                                    {errors.BirthDay}
+                                </p>
+                            )}
+                        </div>
+                        {/* NIC input */}
+                        <div className="w-full mb-4">
+                            <label
+                                htmlFor="NIC"
+                                className="block text-sm font-medium text-left text-gray-700"
+                            >
+                                NIC
+                            </label>
+                            <input
+                                type="text"
+                                id="NIC"
+                                name="NIC" // Add name attribute
+                                value={formData.NIC}
+                                onChange={handleInputChange}
+                                required
+                                className={
+                                    'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
+                                }
+                                placeholder="Enter your NIC"
+                            />
+                            {errors.NIC && (
+                                <p className="text-sm text-red-500">
+                                    {errors.NIC}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
                     {/* Address inputs */}
                     <label>Address</label>
-                    <div className="mb-4 flex flex-wrap gap-4">
+                    <div className="flex flex-wrap gap-4 mb-4">
                         <div className="flex-1">
                             <label
                                 htmlFor="houseNo"
-                                className="block text-sm font-medium text-gray-700 text-left"
+                                className="block text-sm font-medium text-left text-gray-700"
                             >
                                 House No
                             </label>
@@ -329,7 +360,7 @@ const Register = () => {
                         <div className="flex-1">
                             <label
                                 htmlFor="streetName"
-                                className="block text-sm font-medium text-gray-700 text-left"
+                                className="block text-sm font-medium text-left text-gray-700"
                             >
                                 Street Name
                             </label>
@@ -350,7 +381,7 @@ const Register = () => {
                         <div className="flex-1">
                             <label
                                 htmlFor="city"
-                                className="block text-sm font-medium text-gray-700 text-left"
+                                className="block text-sm font-medium text-left text-gray-700"
                             >
                                 City
                             </label>
@@ -369,96 +400,71 @@ const Register = () => {
                         </div>
                     </div>
 
-                    {/* Contact Number input */}
-                    <div className="mb-4">
-                        <label
-                            htmlFor="contactNumber"
-                            className="block text-sm font-medium text-gray-700 text-left"
-                        >
-                            Contact Number
-                        </label>
-                        <input
-                            type="text"
-                            id="contactNumber"
-                            name="contactNumber" // Add name attribute
-                            value={formData.contactNumber}
-                            onChange={handleInputChange}
-                            required
-                            className={
-                                'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
-                            }
-                            placeholder="Enter your contact number"
-                        />
-                        {errors.contactNumber && (
-                            <p className="text-red-500 text-sm">
-                                {errors.contactNumber}
-                            </p>
-                        )}
-                    </div>
+                    <div className="flex items-center w-full gap-x-4 ">
+                        {/* Password input */}
+                        <div className="w-full mb-4">
+                            <label
+                                htmlFor="password"
+                                className="block text-sm font-medium text-left text-gray-700"
+                            >
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password" // Add name attribute
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                required
+                                className={
+                                    'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
+                                }
+                                placeholder="Enter your password"
+                            />
+                            {errors.password && (
+                                <p className="text-sm text-red-500">
+                                    {errors.password}
+                                </p>
+                            )}
+                        </div>
 
-                    {/* Password input */}
-                    <div className="mb-4">
-                        <label
-                            htmlFor="password"
-                            className="block text-sm font-medium text-gray-700 text-left"
-                        >
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password" // Add name attribute
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            required
-                            className={
-                                'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
-                            }
-                            placeholder="Enter your password"
-                        />
-                        {errors.password && (
-                            <p className="text-red-500 text-sm">
-                                {errors.password}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Confirm Password input */}
-                    <div className="mb-4">
-                        <label
-                            htmlFor="confirmPassword"
-                            className="block text-sm font-medium text-gray-700 text-left"
-                        >
-                            Confirm Password
-                        </label>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                            required
-                            className={
-                                'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
-                            }
-                            placeholder="Confirm your password"
-                        />
-                        {errors.confirmPassword && (
-                            <p className="text-red-500 text-sm">
-                                {errors.confirmPassword}
-                            </p>
-                        )}
+                        {/* Confirm Password input */}
+                        <div className="w-full mb-4">
+                            <label
+                                htmlFor="confirmPassword"
+                                className="block text-sm font-medium text-left text-gray-700"
+                            >
+                                Confirm Password
+                            </label>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                                required
+                                className={
+                                    'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
+                                }
+                                placeholder="Confirm your password"
+                            />
+                            {errors.confirmPassword && (
+                                <p className="text-sm text-red-500">
+                                    {errors.confirmPassword}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
                     {/* Submit button */}
                     <button
                         type="submit"
-                        className="w-full bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:bg-green-600"
+                        className="w-full px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-600 focus:outline-none focus:bg-green-600"
                     >
                         Register
                     </button>
                 </form>
-                <div className="text-center mt-4">
+                <div className="mt-4 text-center">
                     <Link
                         to="/farmerlogin"
                         className="text-green-500 hover:underline"

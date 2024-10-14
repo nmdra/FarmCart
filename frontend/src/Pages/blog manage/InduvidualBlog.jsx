@@ -216,7 +216,7 @@ export default function IndividualBlog() {
 
                 {blog.newsImage && (
                     <img
-                        src={`${blog.newsImage}`}
+                        src={blog.newsImage.replace(/\.\w+$/, '.webp')}
                         alt={blog.title}
                         className="object-cover w-full h-auto mb-8 rounded-lg shadow-lg"
                     />

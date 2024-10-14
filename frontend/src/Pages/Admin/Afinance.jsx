@@ -1,302 +1,168 @@
-import { useEffect, useMemo, useState } from 'react'
-import axios from '../../axios'
-import Sidebar from '../../Components/Admin/AsideBar.jsx'
-import { useNavigate } from 'react-router-dom'
-import { useDisclosure } from '@nextui-org/react'
-import {
-    Input,
-    Pagination,
-    Table,
-    TableBody,
-    TableCell,
-    TableColumn,
-    TableHeader,
-    TableRow,
-    Tooltip,
-    Button,
-} from '@nextui-org/react'
-import { FaRegEye } from 'react-icons/fa'
-import { MdDeleteSweep } from 'react-icons/md'
-import Loading from '../../Components/Loading'
-import Swal from 'sweetalert2'
-import jsPDF from 'jspdf'
-import 'jspdf-autotable'
-import logo from '../../assets/logo.png'
-import { FaDownload } from 'react-icons/fa'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../../Components/Admin/AsideBar.jsx';
+import { Button } from '@nextui-org/react';
+import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const Finance = () => {
-    const [staffMembers, setStaffMembers] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [refetch, setRefetch] = useState(false)
-    const [page, setPage] = useState(1)
-    const [search, setSearch] = useState('')
+    const navigate = useNavigate();
+    const [incomeData, setIncomeData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortOrder, setSortOrder] = useState('asc'); // 'asc' for ascending, 'desc' for descending
 
-    const rowsPerPage = 4
-    const navigate = useNavigate()
+    // Function to fetch shop income data
+    const fetchShopIncomeData = async () => {
+        try {
+            const response = await axios.get('/api/orders/shop-total-income');
+            setIncomeData(response.data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    // Fetch staff members
     useEffect(() => {
-        const fetchStaffMembers = async () => {
-            setLoading(true)
-            try {
-                const { data } = await axios.get('/staff')
-                setStaffMembers(data)
-            } catch (error) {
-                console.error('Error fetching staff members:', error)
-            } finally {
-                setLoading(false)
-            }
-        }
+        fetchShopIncomeData();
+    }, []);
 
-        fetchStaffMembers()
-    }, [refetch])
+    // Handle search input change
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
 
-    // Search functionality
-    const filteredStaff = useMemo(() => {
-        return staffMembers.filter((member) =>
-            `${member.firstName} ${member.lastName}`
-                .toLowerCase()
-                .includes(search.toLowerCase())
-        )
-    }, [search, staffMembers])
+    // Sort the income data based on total income
+    const handleSort = () => {
+        const sortedData = [...incomeData].sort((a, b) => {
+            return sortOrder === 'asc'
+                ? a.totalIncome - b.totalIncome
+                : b.totalIncome - a.totalIncome;
+        });
+        setIncomeData(sortedData);
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    };
 
-    // Pagination
-    const items = useMemo(() => {
-        const start = (page - 1) * rowsPerPage
-        const end = start + rowsPerPage
-        return filteredStaff.slice(start, end)
-    }, [page, filteredStaff])
-
-    const pages = Math.ceil(filteredStaff.length / rowsPerPage)
-
-    const handleDeleteStaff = async (staffId) => {
-        const result = await Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you really want to delete this staff member? This process cannot be undone.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Cancel',
-        })
-
-        if (result.isConfirmed) {
-            try {
-                await axios.delete(`/staff/${staffId}`)
-                Swal.fire(
-                    'Deleted!',
-                    'Staff member has been deleted.',
-                    'success'
-                )
-                setRefetch((prev) => !prev)
-            } catch (error) {
-                console.error('Error deleting staff:', error)
-                Swal.fire(
-                    'Error!',
-                    'There was an error deleting the staff member.',
-                    'error'
-                )
-            }
-        }
-    }
-
-    const handleAddNewStaff = () => {
-        navigate('/AddStaff')
-    }
-
-    const handleEditStaff = (memberId) => {
-        navigate(`/updatestaff/${memberId}`)
-    }
-
-    // PDF Generation
+    // Generate PDF report
     const generatePDF = () => {
-        const doc = new jsPDF()
-        const img = new Image()
-        img.src = logo
-        // Add logo
-        doc.addImage(img, 'PNG', 20, 35, 30, 5) // Adjust the X, Y, width, and height as needed // Adjust x, y, width, height as needed
-
-        // Add title below the logo
-        doc.setFontSize(15)
-        doc.text('Staff List', 105, 40, null, null, 'center') // Centered below logo
-
-        // Prepare the table data
-        const tableColumn = [
-            'Id',
-            'Full Name',
-            'NIC',
-            'Email',
-            'Birth Day',
-            'Address',
-            'Role',
-        ]
-        const tableRows = []
-
-        filteredStaff.forEach((member, index) => {
-            const memberData = [
-                index + 1,
-                `${member.firstName} ${member.lastName}`,
-                member.nic,
-                member.email,
-                member.birthday.split('T')[0],
-                `${member.Address.home} ${member.Address.street} ${member.Address.city}`,
-                member.role,
-            ]
-            tableRows.push(memberData)
-        })
-
-        // Add table to PDF
+        const doc = new jsPDF();
+        const title = 'Shop Income Report';
+    
+        // Set font size and style for title
+        doc.setFontSize(16);
+        doc.text(title, 14, 16);
+        
+        // Set font size for table headers
+        doc.setFontSize(12);
+    
+        // Create the table
         doc.autoTable({
-            head: [tableColumn],
-            body: tableRows,
-            startY: 50, // Positioning the table after the logo and title
+            head: [['Shop Name', 'Owner Name', 'Total Income']],
+            body: incomeData
+                .filter(shop => shop.shopName.toLowerCase().includes(searchTerm.toLowerCase()))
+                .map(shop => [
+                    shop.shopName,
+                    shop.ownerName,
+                    `Rs. ${shop.totalIncome.toFixed(2)}`
+                ]),
+            margin: { top: 24 }, // Margin from the top
             styles: {
-                fontSize: 9, // Adjust this value to make the table content smaller
+                fontSize: 10,
+                cellPadding: 5,
+                halign: 'left', // Align text to the right in cells
+                valign: 'middle' // Vertically center the text
             },
-        })
-
-        doc.save('staff-list.pdf')
-    }
-
-    if (loading) {
-        return (
-            <div className="flex flex-1 min-h-screen justify-center items-center">
-                <Loading />
-            </div>
-        )
-    }
+            headStyles: {
+                fillColor: [22, 160, 133], // Header background color
+                textColor: [255, 255, 255], // Header text color
+                fontStyle: 'bold' // Bold font style for headers
+            },
+            theme: 'striped', // Use striped theme for better readability
+        });
+    
+        doc.save('shop_monthly_payment_report.pdf');
+    };
+    
+    // Filter data based on search term
+    const filteredData = incomeData.filter(shop =>
+        shop.shopName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-50">
+        <div className="flex min-h-screen bg-gray-50">
             <div className="flex flex-1 mt-16">
-                <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16 mt-16">
+                <aside className="fixed top-0 left-0 bottom-0 w-64 bg-gray-50 shadow-md pl-8 pt-16">
                     <Sidebar />
                 </aside>
 
-                <main className="flex-1 ml-60 p-24 pt-8 overflow-y-auto">
-                    <div className="flex justify-center mb-8">
-                        <h3 className="text-2xl font-semibold text-gray-800">
-                            STAFF
-                        </h3>
-                    </div>
+                <main className="flex-1 ml-64 p-24 pt-8 overflow-y-auto">
+                    <header>
+                    <h1 className="text-3xl font-bold  text-center">Shop Income Report</h1>
 
-                    <div className="w-96 mb-6">
-                        <Input
-                            isClearable
-                            radius="full"
-                            placeholder="Search staff..."
-                            onChange={(e) => setSearch(e.target.value)}
-                            className="rounded-full border-[#99DD05] border-2 focus:border-[#99DD05] focus:ring-[#99DD05] placeholder-green-500" // Add custom classes here
+
+                    </header>
+                   
+                    {/* Container for search field, buttons */}
+                    <div className="flex items-center justify-center space-x-2 mt-10 mb-4">
+                        {/* Search Bar */}
+                        <input
+                            type="text"
+                            placeholder="Search by shop name..."
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            className="border p-2 w-1/4 rounded-md shadow-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" // Adjusted classes
                         />
+
+                        {/* Button to Manage Shop Income */}
+                        <Button onClick={() => navigate('/manage-shop-income')} className="bg-blue-500 text-white">
+                            Manage Shop Income
+                        </Button>
+
+                        {/* Sort Button */}
+                        <Button onClick={handleSort} className="bg-gray-200">
+                            Sort Income {sortOrder === 'asc' ? 'Low to High' : 'High to Low'}
+                        </Button>
+
+                        {/* Download PDF Button */}
+                        <Button onClick={generatePDF} className="bg-green-500 text-white">
+                            Shops Income Report
+                        </Button>
                     </div>
 
-                    <Table
-                        aria-label="Staff Members Table"
-                        bottomContent={
-                            <div className="flex w-full justify-center">
-                                <Pagination
-                                    isCompact
-                                    showControls
-                                    showShadow
-                                    color="primary"
-                                    page={page}
-                                    total={pages}
-                                    onChange={(page) => setPage(page)}
-                                />
-                            </div>
-                        }
-                    >
-                        <TableHeader>
-                            <TableColumn>Id</TableColumn>
-                            <TableColumn>Full Name</TableColumn>
-                            <TableColumn>NIC</TableColumn>
-                            <TableColumn>Email</TableColumn>
-                            <TableColumn>Birthday</TableColumn>
-                            <TableColumn>Address</TableColumn>
-                            <TableColumn>Role</TableColumn>
-                            <TableColumn>Action</TableColumn>
-                        </TableHeader>
-                        <TableBody>
-                            {items.map((member, index) => (
-                                <TableRow
-                                    key={member._id}
-                                    className="border-b-1"
-                                >
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{`${member.firstName} ${member.lastName}`}</TableCell>
-                                    <TableCell>{member.nic}</TableCell>
-                                    <TableCell>{member.email}</TableCell>
-                                    <TableCell>
-                                        {member.birthday.split('T')[0]}
-                                    </TableCell>
-                                    <TableCell>{`${member.Address.home} ${member.Address.street} ${member.Address.city}`}</TableCell>
-                                    <TableCell>{member.role}</TableCell>
-                                    <TableCell className="flex gap-6 justify-center items-center h-16">
-                                        <Tooltip
-                                            color="secondary"
-                                            content="More details"
-                                        >
-                                            <span className="text-lg text-blue-700 cursor-pointer active:opacity-50">
-                                                <FaRegEye
-                                                    onClick={() => {
-                                                        // Open the modal for more details if implemented
-                                                    }}
-                                                />
-                                            </span>
-                                        </Tooltip>
-                                        <Tooltip
-                                            color="warning"
-                                            content="Edit staff"
-                                        >
-                                            <span className="text-lg text-warning cursor-pointer active:opacity-50">
-                                                <Button
-                                                    onClick={() =>
-                                                        handleEditStaff(
-                                                            member._id
-                                                        )
-                                                    }
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </span>
-                                        </Tooltip>
-                                        <Tooltip
-                                            color="danger"
-                                            content="Delete staff"
-                                        >
-                                            <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                                <MdDeleteSweep
-                                                    onClick={() => {
-                                                        handleDeleteStaff(
-                                                            member._id
-                                                        )
-                                                    }}
-                                                />
-                                            </span>
-                                        </Tooltip>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    <div className="flex justify-end space-x-4 mt-5">
-                        <button
-                            onClick={handleAddNewStaff}
-                            className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
-                        >
-                            Add New Staff
-                        </button>
-                        <button
-                            onClick={generatePDF}
-                            className="max-w-5xl px-5 py-3 border-2 rounded-full border-[#99DD05] flex items-center gap-3 hover:bg-[#f5fce6] hover:cursor-pointer transition-transform transform hover:scale-105"
-                        >
-                            <FaDownload size={20} />
-                            Export Staff list
-                        </button>
+                    {/* Added margin to separate buttons and table */}
+                    <div className="mt-6">
+                        {loading ? (
+                            <div>Loading...</div>
+                        ) : error ? (
+                            <div>Error: {error}</div>
+                        ) : (
+                            <table className="min-w-full border-collapse border border-gray-200">
+                                <thead>
+                                    <tr className="bg-gray-100">
+                                        <th className="border border-gray-200 p-2">Shop Name</th>
+                                        <th className="border border-gray-200 p-2">Owner Name</th>
+                                        <th className="border border-gray-200 p-2">Total Income</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredData.map((shop) => (
+                                        <tr key={shop.shopId}>
+                                            <td className="border border-gray-200 p-2">{shop.shopName}</td>
+                                            <td className="border border-gray-200 p-2">{shop.ownerName}</td>
+                                            <td className="border border-gray-200 p-2">Rs.{shop.totalIncome.toFixed(2)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
                 </main>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Finance
+export default Finance;

@@ -44,7 +44,7 @@ export default function TourismBlog() {
                 setCurrentSlide(
                     (prevSlide) => (prevSlide + 1) % latestBlogs.length
                 )
-            }, 3000) // Change slides every 3 seconds
+            }, 5000) // Change slides every 3 seconds
             return () => clearInterval(interval)
         }
     }, [latestBlogs])
@@ -100,7 +100,7 @@ export default function TourismBlog() {
                                         <div className="relative w-full h-25">
                                             {blog.newsImage && (
                                                 <img
-                                                    src={`${blog.newsImage}`}
+                                                    src={blog.newsImage.replace(/\.\w+$/, '.webp')}
                                                     alt={blog.title}
                                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                                 />
@@ -181,7 +181,7 @@ export default function TourismBlog() {
                                 <div className="relative">
                                     {blog.newsImage && (
                                         <img
-                                            src={`${blog.newsImage}`}
+                                            src={blog.newsImage.replace(/\.\w+$/, '.webp')}
                                             alt={blog.title}
                                             className="object-cover w-full h-64"
                                         />

@@ -354,10 +354,11 @@ const CheckOut = () => {
                                             ).add({ days: 3 })}
                                             defaultValue={today(
                                                 getLocalTimeZone()
-                                            ).subtract({ days: 3 })}
+                                            )}
                                             onChange={(date) => setDate(date)}
                                         />
                                     </div>
+
                                     <div className="flex gap-3">
                                         <Textarea
                                             label="Your address"

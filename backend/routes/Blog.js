@@ -95,11 +95,13 @@ router.put('/update/:id', async (req, res) => {
         // Validate required fields
         const errors = validateBlogFields(title, content, author)
         if (Object.keys(errors).length) {
+
             // Return a structured response showing all validation errors
             return res.status(400).json({
                 message: 'Validation failed. Please fix the errors below.',
                 errors,
             })
+
         }
 
         // Find the blog post by ID and update it
