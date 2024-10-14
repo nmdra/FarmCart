@@ -43,7 +43,7 @@ const HelpHeroSection = () => {
                     <div className="flex flex-col mb-8 space-y-4 lg:mb-16 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
                         <Link
                             to="/support-ticket"
-                            className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-black hover:text-white rounded-lg bg-[#b8f724] hover:bg-[#588605] focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 text-black"
+                            className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center  hover:text-white rounded-lg bg-[#b8f724] hover:bg-[#588605] focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900 text-black"
                         >
                             Learn more
                             <svg
@@ -61,7 +61,7 @@ const HelpHeroSection = () => {
                         </Link>
                         <Link
                             to="https://cal.com/aweesha-thavishanka/30min"
-                            className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-black border border-gray-300 rounded-lg dark:text-black hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+                            className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-black border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
                         >
                             <svg
                                 className="w-5 h-5 mr-2 -ml-1"
