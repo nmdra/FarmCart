@@ -1,4 +1,7 @@
-import { sendWelcomeEmail } from '../../config/mailtrap/emails.js'
+import {
+    sendSuccessResetPasswordEmail,
+    sendWelcomeEmail,
+} from '../../config/mailtrap/emails.js'
 import {
     sendVerificationEmail,
     sendPasswordResetEmail,
@@ -170,6 +173,46 @@ export const ccmForgotPassword = async (req, res) => {
             success: false,
             message: 'An error occurred while sending the reset email',
             error: error.message,
+        })
+    }
+}
+
+export const ccmResetPassword = async (req, res) => {
+    try {
+        const { token } = req.body
+        const { password } = req.body
+
+        const user = await CCMUser.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpireAt: { $gt: Date.now() },
+        })
+
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid or expired reset token',
+            })
+        }
+
+        //update password
+        const hashedPassword = await bcrypt.hash(password, 10)
+        user.password = hashedPassword
+        user.resetPasswordToken = undefined
+        user.resetPasswordExpire = undefined
+
+        await user.save()
+
+        await sendSuccessResetPasswordEmail(user.email)
+
+        res.status(200).json({
+            success: true,
+            message: 'Password Reset Successfully',
+        })
+    } catch (error) {
+        console.log('Error in Password Reset', error)
+        res.status(400).json({
+            success: false,
+            message: 'Password Reset Wrrong',
         })
     }
 }
