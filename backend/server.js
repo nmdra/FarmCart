@@ -35,6 +35,8 @@ import {
 
 //Help Routes
 import routes from './routes/Help/index.js'
+import authRoutes from './routes/Help/authCCM.route.js'
+import ccmRoutes from './routes/Help/ccmRoutes.js'
 
 // Production-only delivery task scheduling
 if (process.env.SERVER_ENV === 'production') {
@@ -103,6 +105,8 @@ app.use('/api/news', newsRoutes) // News routes
 
 //Help Routes
 app.use('/api/help', routes)
+app.use('/api/help/auth', authRoutes)
+app.use('/api/ccm', ccmRoutes)
 
 // Middleware to handle errors and send appropriate responses
 app.use(notFound) // Handle 404 Not Found

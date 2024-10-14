@@ -111,6 +111,14 @@ import Help from './Pages/Help/Help'
 import SupportTicket from './Pages/Help/SupportTicket'
 import Feedback from './Pages/Help/Feedback'
 import ManageShopIncome from './Pages/Admin/ManageShopIncome'
+import Signup from './Pages/Help/CCManager/Signup'
+import LogIn from './Pages/Help/CCManager/Login'
+import OtpEntry from './Pages/Help/CCManager/OtpEntry'
+import Dashboard from './Pages/Help/CCManager/Dashboard'
+
+import SupportTicketDashboardPage from './Pages/Help/CCManager/SupportTicket'
+import FeedbackDashboard from './Pages/Help/CCManager/FeedbackDashboard'
+import CCMProfile from './Pages/Help/CCManager/CCMProfile'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -309,6 +317,22 @@ const router = createBrowserRouter(
                     element={<SupportTicket />}
                 />
                 <Route path="/help/feedback" element={<Feedback />} />
+                <Route path="/help/signup" element={<Signup />} />
+                <Route path="/help/login" element={<LogIn />} />
+                <Route path="/help/verify" element={<OtpEntry />} />
+                <Route path="/help/dashboard" element={<Dashboard />} />
+                <Route
+                    path="/help/dashboard/profile"
+                    element={<CCMProfile />}
+                />
+                <Route
+                    path="/help/dashboard/feedbacks"
+                    element={<FeedbackDashboard />}
+                />
+                <Route
+                    path="/help/dashboard/support-tickets"
+                    element={<SupportTicketDashboardPage />}
+                />
                 <Route path="*" element={<NotFound />} />
             </Route>
 
