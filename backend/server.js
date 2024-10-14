@@ -50,6 +50,7 @@ import commentRoutes from './routes/comments.js'
 import newsRoutes from './routes/newsRoutes.js'
 
 // Error handling
+
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
 // Set up port from environment or default to 8000

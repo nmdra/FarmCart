@@ -62,7 +62,7 @@ const AdminLogin = ({ manager }) => {
                 <img
                     src={farmcartLogo} // Replace with the path to your logo image
                     alt="Logo"
-                    className="h-16 w-auto mb-4 mx-auto"
+                    className="h-10 w-auto mb-4 mx-auto"
                 />
                 <div className="text-left mb-5">
                     <h2 className="text-3xl font-bold">Admin Login</h2>

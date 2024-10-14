@@ -1,95 +1,99 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../Components/Admin/AsideBar.jsx';
-import { Button } from '@nextui-org/react';
-import axios from 'axios';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Sidebar from '../../Components/Admin/AsideBar.jsx'
+import { Button } from '@nextui-org/react'
+import axios from 'axios'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 const Finance = () => {
-    const navigate = useNavigate();
-    const [incomeData, setIncomeData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
-    const [sortOrder, setSortOrder] = useState('asc'); // 'asc' for ascending, 'desc' for descending
+    const navigate = useNavigate()
+    const [incomeData, setIncomeData] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState('')
+    const [searchTerm, setSearchTerm] = useState('')
+    const [sortOrder, setSortOrder] = useState('asc') // 'asc' for ascending, 'desc' for descending
 
     // Function to fetch shop income data
     const fetchShopIncomeData = async () => {
         try {
-            const response = await axios.get('/api/orders/shop-total-income');
-            setIncomeData(response.data);
+            const response = await axios.get('/api/orders/shop-total-income')
+            setIncomeData(response.data)
         } catch (err) {
-            setError(err.message);
+            setError(err.message)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
     useEffect(() => {
-        fetchShopIncomeData();
-    }, []);
+        fetchShopIncomeData()
+    }, [])
 
     // Handle search input change
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
+        setSearchTerm(e.target.value)
+    }
 
     // Sort the income data based on total income
     const handleSort = () => {
         const sortedData = [...incomeData].sort((a, b) => {
             return sortOrder === 'asc'
                 ? a.totalIncome - b.totalIncome
-                : b.totalIncome - a.totalIncome;
-        });
-        setIncomeData(sortedData);
-        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    };
+                : b.totalIncome - a.totalIncome
+        })
+        setIncomeData(sortedData)
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    }
 
     // Generate PDF report
     const generatePDF = () => {
-        const doc = new jsPDF();
-        const title = 'Shop Income Report';
-    
+        const doc = new jsPDF()
+        const title = 'Shop Income Report'
+
         // Set font size and style for title
-        doc.setFontSize(16);
-        doc.text(title, 14, 16);
-        
+        doc.setFontSize(16)
+        doc.text(title, 14, 16)
+
         // Set font size for table headers
-        doc.setFontSize(12);
-    
+        doc.setFontSize(12)
+
         // Create the table
         doc.autoTable({
             head: [['Shop Name', 'Owner Name', 'Total Income']],
             body: incomeData
-                .filter(shop => shop.shopName.toLowerCase().includes(searchTerm.toLowerCase()))
-                .map(shop => [
+                .filter((shop) =>
+                    shop.shopName
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                )
+                .map((shop) => [
                     shop.shopName,
                     shop.ownerName,
-                    `Rs. ${shop.totalIncome.toFixed(2)}`
+                    `Rs. ${shop.totalIncome.toFixed(2)}`,
                 ]),
             margin: { top: 24 }, // Margin from the top
             styles: {
                 fontSize: 10,
                 cellPadding: 5,
                 halign: 'left', // Align text to the right in cells
-                valign: 'middle' // Vertically center the text
+                valign: 'middle', // Vertically center the text
             },
             headStyles: {
                 fillColor: [22, 160, 133], // Header background color
                 textColor: [255, 255, 255], // Header text color
-                fontStyle: 'bold' // Bold font style for headers
+                fontStyle: 'bold', // Bold font style for headers
             },
             theme: 'striped', // Use striped theme for better readability
-        });
-    
-        doc.save('shop_monthly_payment_report.pdf');
-    };
-    
+        })
+
+        doc.save('shop_monthly_payment_report.pdf')
+    }
+
     // Filter data based on search term
-    const filteredData = incomeData.filter(shop =>
+    const filteredData = incomeData.filter((shop) =>
         shop.shopName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -100,11 +104,11 @@ const Finance = () => {
 
                 <main className="flex-1 ml-64 p-24 pt-8 overflow-y-auto">
                     <header>
-                    <h1 className="text-3xl font-bold  text-center">Shop Income Report</h1>
-
-
+                        <h1 className="text-3xl font-bold  text-center">
+                            Shop Income Report
+                        </h1>
                     </header>
-                   
+
                     {/* Container for search field, buttons */}
                     <div className="flex items-center justify-center space-x-2 mt-10 mb-4">
                         {/* Search Bar */}
@@ -117,17 +121,26 @@ const Finance = () => {
                         />
 
                         {/* Button to Manage Shop Income */}
-                        <Button onClick={() => navigate('/manage-shop-income')} className="bg-blue-500 text-white">
+                        <Button
+                            onClick={() => navigate('/manage-shop-income')}
+                            className="bg-blue-500 text-white"
+                        >
                             Manage Shop Income
                         </Button>
 
                         {/* Sort Button */}
                         <Button onClick={handleSort} className="bg-gray-200">
-                            Sort Income {sortOrder === 'asc' ? 'Low to High' : 'High to Low'}
+                            Sort Income{' '}
+                            {sortOrder === 'asc'
+                                ? 'Low to High'
+                                : 'High to Low'}
                         </Button>
 
                         {/* Download PDF Button */}
-                        <Button onClick={generatePDF} className="bg-green-500 text-white">
+                        <Button
+                            onClick={generatePDF}
+                            className="bg-green-500 text-white"
+                        >
                             Shops Income Report
                         </Button>
                     </div>
@@ -142,17 +155,29 @@ const Finance = () => {
                             <table className="min-w-full border-collapse border border-gray-200">
                                 <thead>
                                     <tr className="bg-gray-100">
-                                        <th className="border border-gray-200 p-2">Shop Name</th>
-                                        <th className="border border-gray-200 p-2">Owner Name</th>
-                                        <th className="border border-gray-200 p-2">Total Income</th>
+                                        <th className="border border-gray-200 p-2">
+                                            Shop Name
+                                        </th>
+                                        <th className="border border-gray-200 p-2">
+                                            Owner Name
+                                        </th>
+                                        <th className="border border-gray-200 p-2">
+                                            Total Income
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {filteredData.map((shop) => (
                                         <tr key={shop.shopId}>
-                                            <td className="border border-gray-200 p-2">{shop.shopName}</td>
-                                            <td className="border border-gray-200 p-2">{shop.ownerName}</td>
-                                            <td className="border border-gray-200 p-2">Rs.{shop.totalIncome.toFixed(2)}</td>
+                                            <td className="border border-gray-200 p-2">
+                                                {shop.shopName}
+                                            </td>
+                                            <td className="border border-gray-200 p-2">
+                                                {shop.ownerName}
+                                            </td>
+                                            <td className="border border-gray-200 p-2">
+                                                Rs.{shop.totalIncome.toFixed(2)}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -162,7 +187,7 @@ const Finance = () => {
                 </main>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Finance;
+export default Finance

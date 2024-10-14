@@ -249,7 +249,6 @@ export const getTotalSales = async (req, res) => {
     }
 }
 
-
 export const getShopTotalIncome = async (req, res) => {
     try {
         const totalIncome = await Order.aggregate([
@@ -290,11 +289,13 @@ export const getShopTotalIncome = async (req, res) => {
                     ownerName: '$farmerDetails.name', // Include the owner's name
                 },
             },
-        ]);
+        ])
 
-        res.status(200).json(totalIncome); // Send the total income response
+        res.status(200).json(totalIncome) // Send the total income response
     } catch (error) {
-        console.error('Error fetching shop total income with owner:', error);
-        res.status(500).json({ message: 'Error fetching total income for shops with owner' });
+        console.error('Error fetching shop total income with owner:', error)
+        res.status(500).json({
+            message: 'Error fetching total income for shops with owner',
+        })
     }
 }

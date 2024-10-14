@@ -26,12 +26,34 @@ const DLDeliverySchema = new mongoose.Schema({
     drID: {
         type: String,
     },
+
     shopName: String,
+
+    shopEmail: {
+        type: String,
+        required: false,
+    },
+
+    shopPhone: {
+        type: String,
+        required: false,
+    },
 
     pickupAddress: {
         type: String,
     },
+
     customerName: String,
+
+    customerEmail: {
+        type: String,
+        required: false,
+    },
+
+    customerNumber: {
+        type: String,
+        required: false,
+    },
 
     dropOffAddress: {
         type: String,
