@@ -38,7 +38,7 @@ const ShopList = () => {
     }
 
     return (
-        <div className="mx-auto max-w-7xl py-[5rem]">
+        <div id="shop-list" className="mx-auto max-w-7xl py-[5rem]">
             <h1 className="pb-10 text-4xl">Shop List</h1>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
                 {shops.map((shop, index) => (

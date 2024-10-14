@@ -8,27 +8,27 @@ export const process = [
     {
         id: '01',
         title: 'Choose Your Product',
-        desc: 'Explore a wide variety of products tailored to your needs. Simply browse, select your favorites, and add them to your cart.',
+        desc: 'Explore a wide variety of fresh produce, groceries, and more tailored to your preferences. Easily browse, pick your favorites, and add them to your personalized cart.',
     },
     {
         id: '02',
         title: 'Checkout',
-        desc: 'Review your selected items, ensure your details are correct, and proceed with our secure checkout process for a seamless experience.',
+        desc: 'Double-check your selected items and ensure your details are up-to-date before proceeding with our secure and hassle-free checkout process.',
     },
     {
         id: '03',
-        title: 'Making your own box',
-        desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a t",
+        title: 'Making Your Own Box',
+        desc: 'Create your own custom box filled with products you love. Mix and match items to build a personalized selection that fits your lifestyle.',
     },
     {
         id: '04',
         title: 'Delivering',
-        desc: 'Your order is on the way! We ensure timely and careful delivery to make sure your products arrive in perfect condition.',
+        desc: 'Once your order is confirmed, it’s prepared for shipment. Our reliable delivery service ensures your products reach you swiftly and safely.',
     },
     {
         id: '05',
         title: 'In Your Hands',
-        desc: 'Receive your order right at your doorstep. Unbox and enjoy your products, knowing they’ve been delivered with care.',
+        desc: 'Receive your order at your doorstep, open your box, and enjoy your carefully selected items. We ensure everything arrives in perfect condition.',
     },
 ]
 
