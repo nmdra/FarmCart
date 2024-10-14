@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router-dom'
 // import Footer from '../Components/Home/Footer'
 import Footer from '../Components/Home/FooterDashboard'
-import DHeader from '../Components/Home/DHeader'
 import BlogHeader from '../Components/Home/BlogHeader'
 
 function BlogLayout() {
