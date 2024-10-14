@@ -22,6 +22,7 @@ import Swal from 'sweetalert2'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import logo from '../../assets/logo.png'
+import image from '../../assets/logo/image.png'
 import { FaDownload } from 'react-icons/fa'
 import Header from '../../Components/Admin/Aheader.jsx'
 
@@ -108,18 +109,31 @@ const Staff = () => {
         navigate(`/updatestaff/${memberId}`)
     }
 
-    // PDF Generation
     const generatePDF = () => {
-        const doc = new jsPDF()
-        const img = new Image()
-        img.src = logo
+        const doc = new jsPDF();
+        const img = new Image();
+        const img1 = new Image();
+        img.src = logo;
+        img1.src = image;
         // Add logo
-        doc.addImage(img, 'PNG', 20, 35, 30, 5) // Adjust the X, Y, width, and height as needed // Adjust x, y, width, height as needed
+        doc.addImage(img, 'PNG', 20, 20, 35, 10); // Adjust x, y, width, height as needed
+        // Get the width of the PDF page
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const imgWidth = 60; // Width of the image
+        const imgHeight = 25;  // Height of the image
+        
+        // Adjustments for moving the image higher and left
+        const xPosition = pdfWidth - imgWidth - 10; // Move left by 10 units
+        const yPosition = 20;  // Move up on the Y-axis (reduce from 35 to 20)
+        
+        // Position the image
+        doc.addImage(img1, 'PNG', xPosition, yPosition, imgWidth, imgHeight);
+        
 
         // Add title below the logo
-        doc.setFontSize(15)
-        doc.text('Staff List', 105, 40, null, null, 'center') // Centered below logo
-
+        doc.setFontSize(15);
+        doc.text('Staff List', 105, 40, null, null, 'center'); // Centered below logo
+    
         // Prepare the table data
         const tableColumn = [
             'Id',
@@ -129,9 +143,9 @@ const Staff = () => {
             'Birth Day',
             'Address',
             'Role',
-        ]
-        const tableRows = []
-
+        ];
+        const tableRows = [];
+    
         filteredStaff.forEach((member, index) => {
             const memberData = [
                 index + 1,
@@ -141,10 +155,11 @@ const Staff = () => {
                 member.birthday.split('T')[0],
                 `${member.Address.home} ${member.Address.street} ${member.Address.city}`,
                 member.role,
-            ]
-            tableRows.push(memberData)
-        })
-
+            ];
+            tableRows.push(memberData);
+        });
+        
+        
         // Add table to PDF
         doc.autoTable({
             head: [tableColumn],
@@ -153,10 +168,25 @@ const Staff = () => {
             styles: {
                 fontSize: 9, // Adjust this value to make the table content smaller
             },
-        })
-
-        doc.save('staff-list.pdf')
-    }
+        });
+    
+        // Get the final Y position after the table
+        const finalY = doc.lastAutoTable.finalY;
+    
+        // Add current date and time below the table, aligned to the left
+        const currentDate = new Date();
+        const dateString = currentDate.toLocaleDateString();  // Format: MM/DD/YYYY or local format
+        const timeString = currentDate.toLocaleTimeString();  // Format: HH:MM:SS AM/PM or local format
+    
+        doc.setFontSize(8); // Smaller font for date and time
+        doc.text(`Generated on: ${dateString} at ${timeString}`, 20, finalY + 10, null, null, 'left'); // Left side of the document
+    
+        // Save the PDF
+        doc.save('staff-list.pdf');
+    };
+    
+    
+    
 
     if (loading) {
         return (
