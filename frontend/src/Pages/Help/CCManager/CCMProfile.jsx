@@ -1,9 +1,9 @@
-import CustomerCareManagerProfile from '../../../Components/Help/dashboard/CustomerCareManagerProfile'
+// import CustomerCareManagerProfile from '../../../Components/Help/dashboard/CustomerCareManagerProfile'
 
 function CCMProfile() {
     return (
         <div>
-            <CustomerCareManagerProfile />
+            {/* <CustomerCareManagerProfile /> */}
         </div>
     )
 }

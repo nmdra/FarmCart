@@ -5,7 +5,7 @@ import {
     getCCMById,
     updateCCM,
     deleteCCM,
-} from '../controllers/ccmController.js'
+} from '../../controllers/Help/ccmController.js'
 
 const router = express.Router()
 

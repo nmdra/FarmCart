@@ -1,4 +1,4 @@
-import signupImg from '../../../../public/loginimg.png'
+import signupImg from '../../../../public/loginImg.png'
 import LoginForm from '../../../Components/Help/LoginForm'
 
 const LogIn = () => {

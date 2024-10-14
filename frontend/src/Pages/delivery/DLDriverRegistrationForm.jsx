@@ -132,8 +132,8 @@ const RegisterDriverForm = () => {
 
             // Ensure the NIC is not longer than 12 characters
             if (value.length > 12) {
-                return
                 errorMessage = 'NIC cannot exceed 12 characters.'
+                return
             } else if (!nicRegex.test(value)) {
                 errorMessage = 'Please enter a valid NIC.'
             } else if (!value.startsWith(birthYear)) {
