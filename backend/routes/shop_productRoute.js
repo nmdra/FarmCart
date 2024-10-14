@@ -5,6 +5,7 @@ import {
     createShop,
     updateShop,
     deleteShop,
+    getAllShops,
 } from '../controllers/shopController.js'
 
 import { protect } from '../middlewares/farmerauthMiddleware.js' // Ensure the path is correct
@@ -17,6 +18,9 @@ import {
 } from '../controllers/productController.js'
 
 const router = express.Router()
+
+//Fetch All Shops
+router.get('/all-shops', getAllShops)
 
 // Route to handle GET and POST requests for shops
 router
