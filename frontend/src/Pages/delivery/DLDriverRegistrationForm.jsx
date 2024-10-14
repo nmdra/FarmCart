@@ -272,369 +272,392 @@ const RegisterDriverForm = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border-2 border-green-600">
-                <img
-                    src={farmcartLogo} // Replace with the path to your logo image
-                    alt="Logo"
-                    className="h-16 w-auto mb-4 mx-auto" // Adjust the height as needed
-                />
-                <h2 className="text-3xl font-bold mb-6 text-center">
-                    Driver Registration Form
-                </h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {/* Input fields for registration */}
-                        <div className="col-span-1">
-                            <input
-                                type="text"
-                                name="firstName"
-                                placeholder="First Name"
-                                value={formData.firstName}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-                            {errors.firstName && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.firstName}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="col-span-1">
-                            <input
-                                type="text"
-                                name="lastName"
-                                placeholder="Last Name"
-                                value={formData.lastName}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-                            {errors.lastName && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.lastName}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="col-span-2">
-                            <input
-                                type="text"
-                                name="fullName"
-                                placeholder="Full Name"
-                                value={formData.fullName}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-                        </div>
-
-                        <div className="col-span-2">
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-                            {errors.email && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.email}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="col-span-2">
-                            <input
-                                type="text"
-                                name="phone"
-                                placeholder="Phone Number"
-                                value={formData.phone}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-                            {errors.phone && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.phone}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="col-span-2">
-                            <input
-                                type="date"
-                                name="dateOfBirth"
-                                value={formData.dateOfBirth}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-
-                            {errors.dateOfBirth && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.dateOfBirth}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="col-span-2">
-                            <input
-                                type="text"
-                                name="idCardNumber"
-                                placeholder="ID Card Number"
-                                value={formData.idCardNumber}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-
-                            {errors.idCardNumber && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.idCardNumber}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="col-span-2">
-                            <input
-                                type="text"
-                                name="licenseCardNumber"
-                                placeholder="License Card Number"
-                                value={formData.licenseCardNumber}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-                            {errors.licenseCardNumber && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.licenseCardNumber}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="col-span-2">
-                            <input
-                                type="text"
-                                name="address"
-                                placeholder="Address"
-                                value={formData.address}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-                        </div>
-
-                        <div className="col-span-2">
-                            <input
-                                type="text"
-                                name="vehicleNumber"
-                                placeholder="Vehicle Number"
-                                value={formData.vehicleNumber}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            />
-
-                            {errors.vehicleNumber && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.vehicleNumber}
-                                </p>
-                            )}
-                        </div>
-
-                        <div className="col-span-2">
-                            <select
-                                name="vehicleType"
-                                value={formData.vehicleType}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
-                                required
-                            >
-                                <option value="">Select Vehicle Type</option>
-                                <option value="Bike">Bike</option>
-                                <option value="Three-Wheel">Three-Wheel</option>
-                                <option value="Lorry">Lorry</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    {/* ID Card Image Upload */}
-                    <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            ID Card Image
-                        </label>
-                        <input
-                            type="file"
-                            onChange={(e) =>
-                                handleFileChange(
-                                    e,
-                                    setIdCardImageUrl,
-                                    setPreviewIdCard,
-                                    'idCard'
-                                )
-                            }
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
-                            required
-                        />
-                        {loading.idCard && (
-                            <div className="mt-2">
-                                <svg
-                                    className="animate-spin h-5 w-5 mr-3"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        className="opacity-25"
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        strokeWidth="4"
-                                    ></circle>
-                                    <path
-                                        className="opacity-75"
-                                        fill="currentColor"
-                                        d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"
-                                    ></path>
-                                </svg>
-                            </div>
-                        )}
-                        {previewIdCard && (
-                            <img
-                                src={`${idCardImageUrl}`}
-                                alt="ID Card Preview"
-                                className="mt-2 w-32 h-32 object-cover"
-                            />
-                        )}
-                    </div>
-
-                    {/* License Image Upload */}
-                    <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            License Image
-                        </label>
-                        <input
-                            type="file"
-                            onChange={(e) =>
-                                handleFileChange(
-                                    e,
-                                    setLicenseImageUrl,
-                                    setPreviewLicense,
-                                    'license'
-                                )
-                            }
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
-                            required
-                        />
-                        {loading.license && (
-                            <div className="mt-2">
-                                <svg
-                                    className="animate-spin h-5 w-5 mr-3"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        className="opacity-25"
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        strokeWidth="4"
-                                    ></circle>
-                                    <path
-                                        className="opacity-75"
-                                        fill="currentColor"
-                                        d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"
-                                    ></path>
-                                </svg>
-                            </div>
-                        )}
-                        {previewLicense && (
-                            <img
-                                src={`${licenseImageUrl}`}
-                                alt="License Preview"
-                                className="mt-2 w-32 h-32 object-cover"
-                            />
-                        )}
-                    </div>
-
-                    {/* Personal Image Upload */}
-                    <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Personal Image
-                        </label>
-                        <input
-                            type="file"
-                            onChange={(e) =>
-                                handleFileChange(
-                                    e,
-                                    setPersonalImageUrl,
-                                    setPreviewPersonal,
-                                    'personal'
-                                )
-                            }
-                            className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
-                            required
-                        />
-                        {loading.personal && (
-                            <div className="mt-2">
-                                <svg
-                                    className="animate-spin h-5 w-5 mr-3"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle
-                                        className="opacity-25"
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        strokeWidth="4"
-                                    ></circle>
-                                    <path
-                                        className="opacity-75"
-                                        fill="currentColor"
-                                        d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"
-                                    ></path>
-                                </svg>
-                            </div>
-                        )}
-                        {previewPersonal && (
-                            <img
-                                src={`${personalImageUrl}`}
-                                alt="Personal Preview"
-                                className="mt-2 w-32 h-32 object-cover"
-                            />
-                        )}
-                    </div>
-
-                    {successMessage && (
-                        <p className="text-green-500 text-sm mt-2">
-                            {successMessage}
+            <div>
+                {/* New Login Section */}
+                <div className="max-w-1-md min-w-full bg-white p-4 rounded-lg shadow-lg border-2">
+                    <div className="flex items-center justify-between">
+                        <p className="text-gray-700 text-sm">
+                            Do you have an account?
                         </p>
-                    )}
+                        <button
+                            className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                            onClick={() => navigate('/driver/login')} // Navigate to the login page
+                        >
+                            Login
+                        </button>
+                    </div>
+                </div>
 
-                    <button
-                        type="submit"
-                        className="mt-6 w-full bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600"
-                        disabled={
-                            loading.idCard ||
+                <div className="max-w-xl w-full bg-white p-8 rounded-lg shadow-lg border-2 border-green-600">
+                    <img
+                        src={farmcartLogo} // Replace with the path to your logo image
+                        alt="Logo"
+                        className="h-16 w-auto mb-4 mx-auto" // Adjust the height as needed
+                    />
+                    <h2 className="text-3xl font-bold mb-6 text-center">
+                        Driver Registration Form
+                    </h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Input fields for registration */}
+                            <div className="col-span-1">
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    placeholder="First Name"
+                                    value={formData.firstName}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+                                {errors.firstName && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.firstName}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="col-span-1">
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    placeholder="Last Name"
+                                    value={formData.lastName}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+                                {errors.lastName && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.lastName}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="col-span-2">
+                                <input
+                                    type="text"
+                                    name="fullName"
+                                    placeholder="Full Name"
+                                    value={formData.fullName}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+                            </div>
+
+                            <div className="col-span-2">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+                                {errors.email && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.email}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="col-span-2">
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    placeholder="Phone Number"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+                                {errors.phone && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.phone}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="col-span-2">
+                                <input
+                                    type="date"
+                                    name="dateOfBirth"
+                                    value={formData.dateOfBirth}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+
+                                {errors.dateOfBirth && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.dateOfBirth}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="col-span-2">
+                                <input
+                                    type="text"
+                                    name="idCardNumber"
+                                    placeholder="ID Card Number"
+                                    value={formData.idCardNumber}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+
+                                {errors.idCardNumber && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.idCardNumber}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="col-span-2">
+                                <input
+                                    type="text"
+                                    name="licenseCardNumber"
+                                    placeholder="License Card Number"
+                                    value={formData.licenseCardNumber}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+                                {errors.licenseCardNumber && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.licenseCardNumber}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="col-span-2">
+                                <input
+                                    type="text"
+                                    name="address"
+                                    placeholder="Address"
+                                    value={formData.address}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+                            </div>
+
+                            <div className="col-span-2">
+                                <input
+                                    type="text"
+                                    name="vehicleNumber"
+                                    placeholder="Vehicle Number"
+                                    value={formData.vehicleNumber}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                />
+
+                                {errors.vehicleNumber && (
+                                    <p className="text-red-500 text-sm">
+                                        {errors.vehicleNumber}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="col-span-2">
+                                <select
+                                    name="vehicleType"
+                                    value={formData.vehicleType}
+                                    onChange={handleInputChange}
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
+                                    required
+                                >
+                                    <option value="">
+                                        Select Vehicle Type
+                                    </option>
+                                    <option value="Bike">Bike</option>
+                                    <option value="Three-Wheel">
+                                        Three-Wheel
+                                    </option>
+                                    <option value="Lorry">Lorry</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* ID Card Image Upload */}
+                        <div className="mt-4">
+                            <label className="block text-sm font-medium text-gray-700">
+                                ID Card Image
+                            </label>
+                            <input
+                                type="file"
+                                onChange={(e) =>
+                                    handleFileChange(
+                                        e,
+                                        setIdCardImageUrl,
+                                        setPreviewIdCard,
+                                        'idCard'
+                                    )
+                                }
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
+                                required
+                            />
+                            {loading.idCard && (
+                                <div className="mt-2">
+                                    <svg
+                                        className="animate-spin h-5 w-5 mr-3"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            className="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            strokeWidth="4"
+                                        ></circle>
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            )}
+                            {previewIdCard && (
+                                <img
+                                    src={`${idCardImageUrl}`}
+                                    alt="ID Card Preview"
+                                    className="mt-2 w-32 h-32 object-cover"
+                                />
+                            )}
+                        </div>
+
+                        {/* License Image Upload */}
+                        <div className="mt-4">
+                            <label className="block text-sm font-medium text-gray-700">
+                                License Image
+                            </label>
+                            <input
+                                type="file"
+                                onChange={(e) =>
+                                    handleFileChange(
+                                        e,
+                                        setLicenseImageUrl,
+                                        setPreviewLicense,
+                                        'license'
+                                    )
+                                }
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
+                                required
+                            />
+                            {loading.license && (
+                                <div className="mt-2">
+                                    <svg
+                                        className="animate-spin h-5 w-5 mr-3"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            className="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            strokeWidth="4"
+                                        ></circle>
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            )}
+                            {previewLicense && (
+                                <img
+                                    src={`${licenseImageUrl}`}
+                                    alt="License Preview"
+                                    className="mt-2 w-32 h-32 object-cover"
+                                />
+                            )}
+                        </div>
+
+                        {/* Personal Image Upload */}
+                        <div className="mt-4">
+                            <label className="block text-sm font-medium text-gray-700">
+                                Personal Image
+                            </label>
+                            <input
+                                type="file"
+                                onChange={(e) =>
+                                    handleFileChange(
+                                        e,
+                                        setPersonalImageUrl,
+                                        setPreviewPersonal,
+                                        'personal'
+                                    )
+                                }
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg"
+                                required
+                            />
+                            {loading.personal && (
+                                <div className="mt-2">
+                                    <svg
+                                        className="animate-spin h-5 w-5 mr-3"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            className="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            strokeWidth="4"
+                                        ></circle>
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 0114.276-4.8L4.64 12H4z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            )}
+                            {previewPersonal && (
+                                <img
+                                    src={`${personalImageUrl}`}
+                                    alt="Personal Preview"
+                                    className="mt-2 w-32 h-32 object-cover"
+                                />
+                            )}
+                        </div>
+
+                        {successMessage && (
+                            <p className="text-green-500 text-sm mt-2">
+                                {successMessage}
+                            </p>
+                        )}
+
+                        <button
+                            type="submit"
+                            className="mt-6 w-full bg-lime-500 text-black py-2 px-4 rounded-lg hover:bg-lime-600"
+                            disabled={
+                                loading.idCard ||
+                                loading.license ||
+                                loading.personal
+                            }
+                        >
+                            {loading.idCard ||
                             loading.license ||
                             loading.personal
-                        }
-                    >
-                        {loading.idCard || loading.license || loading.personal
-                            ? 'Uploading...'
-                            : 'Submit'}
-                    </button>
-                </form>
+                                ? 'Uploading...'
+                                : 'Submit'}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     )
