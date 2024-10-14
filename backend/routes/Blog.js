@@ -12,7 +12,7 @@ const validateBlogFields = (title, content, author) => {
     } else if (title.length < 5) {
         errors.title = 'Title must be at least 5 characters long.'
     }
-    
+
     if (!content) {
         errors.content = 'Content is required.'
     } else if (content.length < 10) {

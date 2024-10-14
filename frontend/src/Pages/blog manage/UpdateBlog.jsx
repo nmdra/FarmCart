@@ -132,7 +132,11 @@ export default function UpdateBlogForm() {
         <div className="max-w-3xl mx-auto mt-10">
             <h1 className="mb-6 text-3xl font-bold">Update Blog</h1>
             {error && <div className="text-red-500">{error}</div>}
-            {successMessage && <div className="text-lime-500">{successMessage}</div>}
+            {successMessage && (
+
+                <div className="text-lime-500">{successMessage}</div>
+
+            )}
             {errors.title && <div className="text-red-500">{errors.title}</div>}
             {errors.content && (
                 <div className="text-red-500">{errors.content}</div>
