@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+import logo from '../../../../public/logoIcon.png' // Make sure this path is correct
 
 const SupportTicketFullViewTable = () => {
     const [tickets, setTickets] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [ticketsPerPage] = useState(5) // Show 5 tickets per page
+    const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {
         const fetchTickets = async () => {
@@ -26,6 +32,71 @@ const SupportTicketFullViewTable = () => {
         fetchTickets()
     }, [])
 
+    // Handle Pagination
+    const indexOfLastTicket = currentPage * ticketsPerPage
+    const indexOfFirstTicket = indexOfLastTicket - ticketsPerPage
+    const currentTickets = tickets.slice(indexOfFirstTicket, indexOfLastTicket)
+    const totalPages = Math.ceil(tickets.length / ticketsPerPage)
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
+    // Handle Search
+    const filteredTickets = currentTickets.filter(
+        (ticket) =>
+            ticket.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            ticket.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            ticket.subject.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
+    // Generate PDF Report
+    const generateReport = () => {
+        const input = document.getElementById('table-to-pdf')
+
+        html2canvas(input).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png')
+            const pdf = new jsPDF()
+
+            // Load the logo and add it to the PDF
+            const logoImage = new Image()
+            logoImage.src = logo // Use the imported logo
+
+            logoImage.onload = () => {
+                pdf.addImage(logoImage, 'PNG', 10, 10, 50, 20) // Adjust position and size as needed
+
+                const imgWidth = 190
+                const pageHeight = pdf.internal.pageSize.height
+                const imgHeight = (canvas.height * imgWidth) / canvas.width
+                let heightLeft = imgHeight
+                let position = 30 // Adjust to position below logo
+
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
+                heightLeft -= pageHeight
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight
+                    pdf.addPage()
+                    pdf.addImage(logoImage, 'PNG', 10, 10, 50, 50) // Add logo to each page
+                    pdf.addImage(
+                        imgData,
+                        'PNG',
+                        10,
+                        position,
+                        imgWidth,
+                        imgHeight
+                    )
+                    heightLeft -= pageHeight
+                }
+
+                pdf.save('support_ticket_report.pdf')
+            }
+
+            logoImage.onerror = () => {
+                console.error('Failed to load logo image.')
+            }
+        })
+    }
+
+    // Loading and Error States
     if (loading) {
         return <p className="text-center text-gray-500">Loading...</p>
     }
@@ -35,70 +106,132 @@ const SupportTicketFullViewTable = () => {
     }
 
     return (
-        <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-                <thead className="bg-gray-200">
-                    <tr>
-                        <th className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300">
-                            Name
-                        </th>
-                        <th className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300">
-                            Email
-                        </th>
-                        <th className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300">
-                            Phone
-                        </th>
-                        <th className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300">
-                            Subject
-                        </th>
-                        <th className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300">
-                            Priority Level
-                        </th>
-                        <th className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300">
-                            Category
-                        </th>
-                        <th className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300">
-                            Description
-                        </th>
-                        <th className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300">
-                            Created At
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tickets.map((ticket, index) => (
-                        <tr
-                            key={ticket._id}
-                            className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
-                        >
-                            <td className="px-6 py-4 border-b border-gray-300">
-                                {ticket.name}
-                            </td>
-                            <td className="px-6 py-4 border-b border-gray-300">
-                                {ticket.email}
-                            </td>
-                            <td className="px-6 py-4 border-b border-gray-300">
-                                {ticket.phone}
-                            </td>
-                            <td className="px-6 py-4 border-b border-gray-300">
-                                {ticket.subject}
-                            </td>
-                            <td className="px-6 py-4 border-b border-gray-300">
-                                {ticket.priorityLevel}
-                            </td>
-                            <td className="px-6 py-4 border-b border-gray-300">
-                                {ticket.category}
-                            </td>
-                            <td className="px-6 py-4 border-b border-gray-300">
-                                {ticket.description}
-                            </td>
-                            <td className="px-6 py-4 border-b border-gray-300">
-                                {new Date(ticket.createdAt).toLocaleString()}
-                            </td>
+        <div className="overflow-x-auto border rounded-lg">
+            {/* Search Input */}
+            <div className="flex items-center justify-between w-full p-3 py-4">
+                <input
+                    type="text"
+                    className="px-4 py-2 border border-gray-300 rounded shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Search tickets"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button
+                    onClick={generateReport}
+                    className="px-4 py-2 ml-4 text-white bg-indigo-600 rounded hover:bg-indigo-700"
+                >
+                    Generate Report
+                </button>
+            </div>
+
+            {/* Tickets Table */}
+            <div className="p-3" id="table-to-pdf">
+                <table className="min-w-full p-10 bg-white border border-gray-200 rounded-xl">
+                    <thead className="bg-gray-200">
+                        <tr>
+                            {[
+                                'Name',
+                                'Email',
+                                'Phone',
+                                'Subject',
+                                'Priority Level',
+                                'Category',
+                                'Description',
+                                'Created At',
+                            ].map((header) => (
+                                <th
+                                    key={header}
+                                    className="px-6 py-4 font-semibold text-left text-gray-600 border-b border-gray-300"
+                                >
+                                    {header}
+                                </th>
+                            ))}
                         </tr>
+                    </thead>
+                    <tbody>
+                        {filteredTickets.map((ticket, index) => (
+                            <tr
+                                key={ticket._id}
+                                className={`hover:bg-gray-100 ${
+                                    index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                                }`}
+                            >
+                                <td className="px-6 py-4 border-b border-gray-300">
+                                    {ticket.name}
+                                </td>
+                                <td className="px-6 py-4 border-b border-gray-300">
+                                    {ticket.email}
+                                </td>
+                                <td className="px-6 py-4 border-b border-gray-300">
+                                    {ticket.phone}
+                                </td>
+                                <td className="px-6 py-4 border-b border-gray-300">
+                                    {ticket.subject}
+                                </td>
+                                <td className="px-6 py-4 border-b border-gray-300">
+                                    {ticket.priorityLevel}
+                                </td>
+                                <td className="px-6 py-4 border-b border-gray-300">
+                                    {ticket.category}
+                                </td>
+                                <td className="px-6 py-4 border-b border-gray-300">
+                                    {ticket.description}
+                                </td>
+                                <td className="px-6 py-4 border-b border-gray-300">
+                                    {new Date(
+                                        ticket.createdAt
+                                    ).toLocaleString()}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Pagination Section */}
+            <nav className="flex items-center justify-between p-4 border-t">
+                <span className="text-sm font-normal text-gray-500">
+                    Showing{' '}
+                    <span className="font-semibold text-gray-900">
+                        {indexOfFirstTicket + 1}-{indexOfLastTicket}
+                    </span>{' '}
+                    of{' '}
+                    <span className="font-semibold text-gray-900">
+                        {tickets.length}
+                    </span>
+                </span>
+
+                {/* Pagination Buttons */}
+                <div className="flex space-x-2">
+                    <button
+                        className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700 disabled:opacity-50"
+                        disabled={currentPage === 1}
+                        onClick={() => paginate(currentPage - 1)}
+                    >
+                        Previous
+                    </button>
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <button
+                            key={i + 1}
+                            onClick={() => paginate(i + 1)}
+                            className={`px-4 py-2 border rounded ${
+                                currentPage === i + 1
+                                    ? 'bg-indigo-600 text-white'
+                                    : 'bg-white text-indigo-600'
+                            }`}
+                        >
+                            {i + 1}
+                        </button>
                     ))}
-                </tbody>
-            </table>
+                    <button
+                        className="px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700 disabled:opacity-50"
+                        disabled={currentPage === totalPages}
+                        onClick={() => paginate(currentPage + 1)}
+                    >
+                        Next
+                    </button>
+                </div>
+            </nav>
         </div>
     )
 }
