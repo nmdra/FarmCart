@@ -13,10 +13,10 @@ const BlogHeader = ({ loading }) => {
                     </Link>
                 </div>
                 <div>
-                    <Link to="/shop"> {/* Update the link to the shop */}
+                    <Link to="/"> {/* Update the link to the shop */}
                         <button
                             type="button"
-                            className="flex items-center bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                            className="flex items-center px-4 py-2 text-white rounded bg-lime-500 hover:bg-lime-600"
                             disabled={loading}
                         >
                             <FaCartShopping className="mr-2" /> {/* Cart icon placed here */}

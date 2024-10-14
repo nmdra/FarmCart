@@ -54,74 +54,88 @@ export default function IndividualBlog() {
     // Function to download PDF
     const downloadPDF = () => {
         const doc = new jsPDF()
-
+    
         // Load the logo image
         const logoImg = new Image()
         logoImg.src = logo
-
+    
         // Ensure the logo is loaded before generating the PDF
         logoImg.onload = () => {
-            doc.addImage(logoImg, 'PNG', 10, 10, 40, 5) // Add logo
-            doc.setFontSize(22)
-            doc.text(blog.title, 10, 60) // Blog title
-            doc.setFontSize(12)
-            doc.text(`By: ${blog.author}`, 10, 70) // Author
-            doc.text(
-                `Date: ${new Date(blog.createdAt).toLocaleDateString()}`,
-                10,
-                80
-            ) // Date
-
-            // Adding blog image if it exists
+            // Center the logo
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const logoWidth = 40;
+            const logoX = (pageWidth - logoWidth) / 2;
+            doc.addImage(logoImg, 'PNG', logoX, 10, logoWidth, 10); // Centered logo
+    
+            // Add company details below the logo, centered
+            doc.setFontSize(12);
+            doc.text('FarmCart Lanka (PVT.) LTD', pageWidth / 2, 35, null, null, 'center');
+            doc.text('No.78, Malabe, Colombo', pageWidth / 2, 40, null, null, 'center');
+            doc.text('Phone: (+94) 011 34 56 837', pageWidth / 2, 45, null, null, 'center');
+            doc.text('Website: www.farmcart.com', pageWidth / 2, 50, null, null, 'center');
+    
+            // Add blog title below the company details, centered and bold
+            doc.setFontSize(22);
+            doc.setFont('helvetica', 'bold'); // Make the title bold
+            doc.text(blog.title, pageWidth / 2, 70, null, null, 'center');
+    
+            // Reset the font style to normal for the rest of the content
+            doc.setFont('helvetica', 'normal');
+    
+            // Add blog author and date information below the title, left-aligned
+            doc.setFontSize(12);
+            doc.text(`By: ${blog.author}`, 10, 80);
+            doc.text(`Date: ${new Date(blog.createdAt).toLocaleDateString()}`, 10, 85);
+    
+            // Add blog content
             if (blog.newsImage) {
-                const imageUrl = `${blog.newsImage}`
-                const blogImg = new Image()
-                blogImg.src = imageUrl
-
+                const imageUrl = blog.newsImage;
+                const blogImg = new Image();
+                blogImg.src = imageUrl;
+    
                 blogImg.onload = () => {
-                    doc.addImage(blogImg, 'JPEG', 10, 90, 180, 100) // Blog image
-                    addContentToPDF(doc, blog.content, blog.title) // Add content
-                }
-
+                    doc.addImage(blogImg, 'JPEG', 10, 90, 180, 100); // Blog image
+                    addContentToPDF(doc, blog.content, blog.title); // Function to add the blog content
+                };
+    
                 blogImg.onerror = () => {
-                    console.error('Failed to load blog image')
-                    addContentToPDF(doc, blog.content, blog.title) // Save PDF without image
+                    console.error('Failed to load blog image');
+                    addContentToPDF(doc, blog.content, blog.title); // Save PDF without image
                 }
             } else {
-                addContentToPDF(doc, blog.content, blog.title) // Add content without image
+                addContentToPDF(doc, blog.content, blog.title); // Add content without image
             }
-        }
-
+        };
+    
         logoImg.onerror = () => {
-            console.error('Failed to load logo image')
+            console.error('Failed to load logo image');
         }
     }
-
+    
     const addContentToPDF = (doc, content, title) => {
-        let yPosition = 200 // Starting position for content
-        doc.setFontSize(10)
-        doc.text('Content:', 10, yPosition)
-        yPosition += 10 // Move down after header
-
+        let yPosition = 200; // Starting position for content
+        doc.setFontSize(10);
+        
+        yPosition += 10; // Move down after header
+    
         // Split content into lines that fit within the page width
-        const contentLines = doc.splitTextToSize(content, 180)
-
-        // Loop through content lines and add them to the PDF
+        const contentLines = doc.splitTextToSize(content, 180);
+    
+        // Manually justify content by adjusting spaces between words
         contentLines.forEach((line) => {
             if (yPosition > 280) {
-                doc.addPage()
-                yPosition = 10 // Reset Y position for new page
-                doc.text(title, 10, 10) // Title on new page
-                doc.text('Content:', 10, 20) // Content header on new page
-                yPosition = 30 // Reset position for content
+                doc.addPage();
+                yPosition = 10; // Reset Y position for new page
+                doc.text(title, 10, 10); // Title on new page
+                
+                yPosition = 30; // Reset position for content
             }
-            doc.text(line, 10, yPosition) // Add line to PDF
-            yPosition += 10 // Move down for next line
-        })
-
-        doc.save(`${title}.pdf`) // Save the PDF
-    }
-
+            doc.text(line, 10, yPosition); // Add line to PDF
+            yPosition += 10; // Move down for next line
+        });
+    
+        doc.save(`${title}`.pdf); // Save the PDF
+    };
     // Function to handle document download
     const handleDownloadDocument = () => {
         const downloadUrl = `/BlogDocuments/${blog.document}` // Assuming document field holds the filename
