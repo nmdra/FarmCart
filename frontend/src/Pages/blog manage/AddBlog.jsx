@@ -41,7 +41,8 @@ function AddNews() {
     const validateAuthor = () => {
         if (!author) return 'Author is required'
         const regex = /^[a-zA-Z\s]*$/
-        if (!regex.test(author)) return 'Author name should not contain numbers or special characters'
+        if (!regex.test(author))
+            return 'Author name should not contain numbers or special characters'
         return ''
     }
 
@@ -91,7 +92,11 @@ function AddNews() {
         const authorError = validateAuthor()
 
         if (titleError || contentError || authorError) {
-            setErrors({ title: titleError, content: contentError, author: authorError })
+            setErrors({
+                title: titleError,
+                content: contentError,
+                author: authorError,
+            })
             return
         }
 
@@ -155,7 +160,10 @@ function AddNews() {
                 <form onSubmit={addNews}>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                         <div>
-                            <label className="text-black dark:text-black" htmlFor="title">
+                            <label
+                                className="text-black dark:text-black"
+                                htmlFor="title"
+                            >
                                 Title
                             </label>
                             <input
@@ -165,11 +173,16 @@ function AddNews() {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                             />
-                            {errors.title && <p className="text-red-500">{errors.title}</p>}
+                            {errors.title && (
+                                <p className="text-red-500">{errors.title}</p>
+                            )}
                         </div>
 
                         <div>
-                            <label className="text-black dark:text-black" htmlFor="author">
+                            <label
+                                className="text-black dark:text-black"
+                                htmlFor="author"
+                            >
                                 Author
                             </label>
                             <input
@@ -179,11 +192,16 @@ function AddNews() {
                                 value={author}
                                 onChange={(e) => setAuthor(e.target.value)}
                             />
-                            {errors.author && <p className="text-red-500">{errors.author}</p>}
+                            {errors.author && (
+                                <p className="text-red-500">{errors.author}</p>
+                            )}
                         </div>
 
                         <div className="col-span-2">
-                            <label className="text-black dark:text-black" htmlFor="content">
+                            <label
+                                className="text-black dark:text-black"
+                                htmlFor="content"
+                            >
                                 Content
                             </label>
                             <textarea
@@ -193,11 +211,16 @@ function AddNews() {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                             />
-                            {errors.content && <p className="text-red-500">{errors.content}</p>}
+                            {errors.content && (
+                                <p className="text-red-500">{errors.content}</p>
+                            )}
                         </div>
 
                         <div>
-                            <label className="block mb-2 font-medium text-black text-l dark:text-black" htmlFor="newsImage">
+                            <label
+                                className="block mb-2 font-medium text-black text-l dark:text-black"
+                                htmlFor="newsImage"
+                            >
                                 Upload Image
                             </label>
                             <input
@@ -211,7 +234,9 @@ function AddNews() {
 
                         {imagePreview && (
                             <div className="col-span-2 mt-4">
-                                <h2 className="text-black dark:text-black">Image Preview:</h2>
+                                <h2 className="text-black dark:text-black">
+                                    Image Preview:
+                                </h2>
                                 <img
                                     src={imagePreview}
                                     alt="Preview"
