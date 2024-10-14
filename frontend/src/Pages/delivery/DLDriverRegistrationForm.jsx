@@ -164,6 +164,9 @@ const RegisterDriverForm = () => {
                 errorMessage =
                     'licenseCardNumber must be in uppercase and follow the format A000000 .'
             }
+            if (value.length > 7) {
+                return // Prevent setting values longer than 7 digits
+            }
         }
         setFormData((prevData) => ({
             ...prevData,
