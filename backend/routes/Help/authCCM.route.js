@@ -6,9 +6,13 @@ import {
     ccmVerifyEmail,
     ccmForgotPassword,
     ccmResetPassword,
+    checkAuth,
 } from '../../controllers/Help/authCCM.controller.js'
+import { verifyToken } from '../../middlewares/help/VerifyToken.js'
 
 const router = express.Router()
+
+router.get('/check-auth', verifyToken, checkAuth)
 
 router.post('/signup', ccmSignup)
 router.post('/login', ccmLogin)

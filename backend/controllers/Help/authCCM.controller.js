@@ -149,7 +149,7 @@ export const ccmForgotPassword = async (req, res) => {
 
         // Generate reset token
         const resetToken = crypto.randomBytes(20).toString('hex')
-        const resetTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000 // 1 hour expiry
+        const resetTokenExpiresAt = Date.now() + 24 * 60 * 60 * 1000 // 1 hour expiry
 
         // Set token and expiration time in the user object
         user.resetPasswordToken = resetToken
@@ -184,7 +184,7 @@ export const ccmResetPassword = async (req, res) => {
 
         const user = await CCMUser.findOne({
             resetPasswordToken: token,
-            resetPasswordExpireAt: { $gt: Date.now() },
+            resetPasswordExpire: { $gt: Date.now() },
         })
 
         if (!user) {
@@ -214,5 +214,21 @@ export const ccmResetPassword = async (req, res) => {
             success: false,
             message: 'Password Reset Wrrong',
         })
+    }
+}
+
+export const checkAuth = async (req, res) => {
+    try {
+        const user = await CCMUser.findById(req.CCMUser._id).select('-password')
+        if (!user) {
+            return res
+                .status(400)
+                .json({ success: false, message: 'User not found' })
+        }
+
+        res.status(200).json({ success: true, user })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+        console.log(error)
     }
 }
