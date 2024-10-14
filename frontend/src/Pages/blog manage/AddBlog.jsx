@@ -161,9 +161,7 @@ function AddNews() {
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                         <div>
                             <label
-
                                 className="text-black dark:text-black"
-
                                 htmlFor="title"
                             >
                                 Title
@@ -182,9 +180,7 @@ function AddNews() {
 
                         <div>
                             <label
-
                                 className="text-black dark:text-black"
-
                                 htmlFor="author"
                             >
                                 Author
@@ -203,9 +199,7 @@ function AddNews() {
 
                         <div className="col-span-2">
                             <label
-
                                 className="text-black dark:text-black"
-
                                 htmlFor="content"
                             >
                                 Content
@@ -224,9 +218,7 @@ function AddNews() {
 
                         <div>
                             <label
-
                                 className="block mb-2 font-medium text-black text-l dark:text-black"
-
                                 htmlFor="newsImage"
                             >
                                 Upload Image
@@ -242,9 +234,7 @@ function AddNews() {
 
                         {imagePreview && (
                             <div className="col-span-2 mt-4">
-
                                 <h2 className="text-black dark:text-black">
-
                                     Image Preview:
                                 </h2>
                                 <img

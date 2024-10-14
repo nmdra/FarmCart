@@ -14,9 +14,7 @@ const ShopList = () => {
         const fetchShops = async () => {
             try {
                 // Use the VITE_API_URL environment variable from .env file
-                const { data } = await axios.get(
-                    `/api/shops/all-shops`
-                )
+                const { data } = await axios.get(`/api/shops/all-shops`)
                 setShops(data) // Set shop data in state
                 setLoading(false) // Turn off loading
             } catch (error) {

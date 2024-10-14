@@ -377,8 +377,8 @@ function Settings() {
                 </div>
                 <Address />
                 <PasswordUpdate />
-                <div className='pl-12'>
-                <DeleteAccountButton />
+                <div className="pl-12">
+                    <DeleteAccountButton />
                 </div>
             </div>
         </div>
