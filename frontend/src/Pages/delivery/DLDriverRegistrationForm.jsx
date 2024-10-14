@@ -292,7 +292,7 @@ const RegisterDriverForm = () => {
                     <img
                         src={farmcartLogo} // Replace with the path to your logo image
                         alt="Logo"
-                        className="h-16 w-auto mb-4 mx-auto" // Adjust the height as needed
+                        className="h-10 w-auto mb-4 mx-auto" // Adjust the height as needed
                     />
                     <h2 className="text-3xl font-bold mb-6 text-center">
                         Driver Registration Form
