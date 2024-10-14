@@ -2,6 +2,19 @@ import asyncHandler from '../middlewares/asyncHandler.js'
 import Shop from '../models/shopModel.js'
 
 // Fetch all shops
+export const getAllShops = asyncHandler(async (req, res) => {
+    try {
+        const shops = await Shop.find() // Fetch all shops
+        if (!shops || shops.length === 0) {
+            return res.status(404).json({ message: 'No shops found' }) // Handle case where no shops are found
+        }
+        res.json(shops) // Send the shops data as response
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to fetch all shops: ' + error.message,
+        }) // Send error message in response
+    }
+})
 // route         GET /api/shops
 const getShops = asyncHandler(async (req, res) => {
     try {
