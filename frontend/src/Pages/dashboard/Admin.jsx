@@ -21,9 +21,9 @@ const Admin = () => {
     }
 
     return (
-        <div className="flex min-h-screen bg-green-100">
-            <aside className="flex flex-col w-64 text-white bg-green-800">
-                <div className="p-4 text-xl font-bold bg-green-900">
+        <div className="flex min-h-screen bg-white">
+            <aside className="flex flex-col w-64 text-black bg-gray-200">
+                <div className="p-4 text-xl font-bold bg-gray-400">
                     Admin Dashboard
                 </div>
                 <nav className="flex-1 px-2 py-4">
@@ -32,7 +32,7 @@ const Admin = () => {
                             <button
                                 key={tab}
                                 onClick={() => handleTabChange(tab)}
-                                className={`block w-full text-left px-4 py-2 rounded ${activeTab === tab ? 'bg-green-700' : ''}`}
+                                className={`block w-full text-left px-4 py-2 rounded ${activeTab === tab ? 'bg-lime-500' : ''}`}
                             >
                                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
                             </button>
