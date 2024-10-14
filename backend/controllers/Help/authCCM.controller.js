@@ -1,11 +1,15 @@
 import { sendWelcomeEmail } from '../../config/mailtrap/emails.js'
-import { sendVerificationEmail } from '../../config/mailtrap/emails.js'
+import {
+    sendVerificationEmail,
+    sendPasswordResetEmail,
+} from '../../config/mailtrap/emails.js'
 import {
     generateTokenAndSetCookie,
     generateVerificationCode,
 } from '../../utils/generateVerificationCode.js'
 import CCMUser from '../../models/Help/ccmUser.model.js'
 import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
 
 export const ccmSignup = async (req, res) => {
     const { email, firstName, lastName, password, profilePicture } = req.body
@@ -87,8 +91,85 @@ export const ccmVerifyEmail = async (req, res) => {
     }
 }
 export const ccmLogin = async (req, res) => {
-    res.send('Login route')
+    const { email, password } = req.body
+
+    try {
+        const user = await CCMUser.findOne({ email })
+        if (!user) {
+            return res
+                .status(400)
+                .json({ message: 'Invalid email or password' })
+        }
+
+        // Verify password
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            return res
+                .status(400)
+                .json({ message: 'Invalid email or password' })
+        }
+
+        // JWT token generation and setting cookie
+        generateTokenAndSetCookie(res, user._id)
+        user.lastLogin = Date.now()
+        await user.save()
+
+        res.status(200).json({
+            success: true,
+            message: 'Login successful',
+            user: {
+                ...user._doc,
+                password: undefined,
+            },
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
 }
+
 export const ccmLogout = async (req, res) => {
-    res.send('Logout route')
+    res.clearCookie('token')
+    res.status(200).json({ success: true, message: 'Logged out successfully' })
+}
+
+export const ccmForgotPassword = async (req, res) => {
+    const { email } = req.body
+
+    try {
+        // Find user by email
+        const user = await CCMUser.findOne({ email })
+        if (!user) {
+            return res
+                .status(400)
+                .json({ success: false, message: 'User not found' })
+        }
+
+        // Generate reset token
+        const resetToken = crypto.randomBytes(20).toString('hex')
+        const resetTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000 // 1 hour expiry
+
+        // Set token and expiration time in the user object
+        user.resetPasswordToken = resetToken
+        user.resetPasswordExpire = resetTokenExpiresAt
+
+        // Save the user with the updated token
+        await user.save()
+
+        // Send the reset password email
+        const resetUrl = `${process.env.SITE_URL}/help/ccm/reset-password/${resetToken}`
+        await sendPasswordResetEmail(user.email, resetUrl)
+
+        // Send a response
+        res.status(200).json({
+            success: true,
+            message: 'Password reset email sent successfully',
+        })
+    } catch (error) {
+        // Handle and log error
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred while sending the reset email',
+            error: error.message,
+        })
+    }
 }
