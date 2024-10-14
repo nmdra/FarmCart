@@ -5,15 +5,17 @@ function AddNews() {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [author, setAuthor] = useState('')
-    const [selectedFile, setSelectedFile] = useState(null) // State for selected file
-    const [imagePreview, setImagePreview] = useState(null) // State for image preview
-    const [uploadMessage, setUploadMessage] = useState('') // Message for file upload status
+    const [selectedFile, setSelectedFile] = useState(null)
+    const [imagePreview, setImagePreview] = useState(null)
+    const [uploadMessage, setUploadMessage] = useState('')
     const [successMessage, setSuccessMessage] = useState('')
-    const [loading, setLoading] = useState(false) // State to track loading
+    const [loading, setLoading] = useState(false)
     const [errors, setErrors] = useState({})
 
+    const MAX_FILE_SIZE = 10 * 1024 * 1024 // 5MB limit
+    const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png']
+
     useEffect(() => {
-        // Cleanup function to revoke object URL to avoid memory leaks
         return () => {
             if (imagePreview) {
                 URL.revokeObjectURL(imagePreview)
@@ -21,18 +23,49 @@ function AddNews() {
         }
     }, [imagePreview])
 
-    // Function to handle image upload
+    // Validate title length
+    const validateTitle = () => {
+        if (!title) return 'Title is required'
+        if (title.length > 100) return 'Title cannot exceed 100 characters'
+        return ''
+    }
+
+    // Validate content length
+    const validateContent = () => {
+        if (!content) return 'Content is required'
+        if (content.length < 20) return 'Content must be at least 20 characters'
+        return ''
+    }
+
+    // Validate author name (no numbers allowed)
+    const validateAuthor = () => {
+        if (!author) return 'Author is required'
+        const regex = /^[a-zA-Z\s]*$/
+        if (!regex.test(author)) return 'Author name should not contain numbers or special characters'
+        return ''
+    }
+
     const handleUpload = async () => {
         if (!selectedFile) {
             setUploadMessage('No file selected')
             return null
         }
 
+        if (selectedFile.size > MAX_FILE_SIZE) {
+            setUploadMessage('File size exceeds the 5MB limit.')
+            return null
+        }
+
+        if (!ALLOWED_FILE_TYPES.includes(selectedFile.type)) {
+            setUploadMessage('Only JPG or PNG files are allowed.')
+            return null
+        }
+
         const formData = new FormData()
         formData.append('image', selectedFile)
-        formData.append('folder', 'avatars') // Adjust folder if needed
+        formData.append('folder', 'avatars')
 
-        setLoading(true) // Start loading
+        setLoading(true)
 
         try {
             const response = await axios.post('/api/images', formData, {
@@ -41,67 +74,56 @@ function AddNews() {
                 },
             })
 
-            setUploadMessage('Image uploaded successfully!')
-            console.log(response.data)
-            return response.data.url // Return the uploaded image URL
+            return response.data.url
         } catch (error) {
             setUploadMessage('Upload failed: ' + error.message)
-            console.error('Upload error:', error) // Log the error for debugging
-            return null // Return null to signify failure
+            return null
         } finally {
-            setLoading(false) // Stop loading
+            setLoading(false)
         }
     }
 
-    // Function to handle adding news
     const addNews = async (e) => {
         e.preventDefault()
 
-        // Clear previous errors
-        setErrors({})
+        const titleError = validateTitle()
+        const contentError = validateContent()
+        const authorError = validateAuthor()
 
-        // Basic validation
-        if (!title || !content || !author) {
-            setErrors({
-                title: !title ? 'Title is required' : '',
-                content: !content ? 'Content is required' : '',
-                author: !author ? 'Author is required' : '',
-            })
+        if (titleError || contentError || authorError) {
+            setErrors({ title: titleError, content: contentError, author: authorError })
             return
         }
 
-        // Upload the image first and get the URL
         try {
             const uploadedUrl = await handleUpload()
 
-            if (!uploadedUrl) return // Exit if image upload failed
+            if (!uploadedUrl) return
 
             const news = {
                 title,
                 content,
                 author,
-                newsImage: uploadedUrl, // Use the uploaded image URL
+                newsImage: uploadedUrl,
             }
 
             await axios.post('/api/blog/add', news)
-            setSuccessMessage('✅ News added successfully!')
+            setSuccessMessage('✅ Blog added successfully!')
             resetForm()
         } catch (err) {
-            console.error('Error adding news:', err)
-            alert('Failed to add news: ' + err.message)
+            console.error('Error adding Blog:', err)
+            alert('Failed to add Blog: ' + err.message)
         }
     }
 
-    // Function to handle image file selection and preview
     const handleImageChange = (e) => {
         const file = e.target.files[0]
         if (file) {
             setSelectedFile(file)
-            setImagePreview(URL.createObjectURL(file)) // Create preview URL for the selected image
+            setImagePreview(URL.createObjectURL(file))
         }
     }
 
-    // Function to reset form fields
     const resetForm = () => {
         setTitle('')
         setContent('')
@@ -114,22 +136,26 @@ function AddNews() {
     return (
         <>
             {successMessage && (
-                <div className="p-4 mb-4 text-center text-white bg-blue-600 rounded-md">
+                <div className="p-4 mb-4 text-center text-white rounded-md bg-lime-600">
                     {successMessage}
                 </div>
             )}
-            <section className="max-w-4xl p-6 mx-auto mt-20 bg-blue-700 rounded-md shadow-md dark:bg-gray-800">
-                <h1 className="text-xl font-bold text-white capitalize dark:text-white">
-                    Add News
+
+            {uploadMessage && (
+                <div className="p-4 mb-4 text-center text-white bg-red-600 rounded-md">
+                    {uploadMessage}
+                </div>
+            )}
+
+            <section className="max-w-4xl p-6 mx-auto mt-20 rounded-md shadow-md bg-lime-700 dark:bg-gray-200">
+                <h1 className="text-xl font-bold text-black capitalize dark:text-black">
+                    Add Blog
                 </h1>
 
                 <form onSubmit={addNews}>
                     <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                         <div>
-                            <label
-                                className="text-white dark:text-green-200"
-                                htmlFor="title"
-                            >
+                            <label className="text-black dark:text-black" htmlFor="title">
                                 Title
                             </label>
                             <input
@@ -145,10 +171,7 @@ function AddNews() {
                         </div>
 
                         <div>
-                            <label
-                                className="text-white dark:text-gray-200"
-                                htmlFor="author"
-                            >
+                            <label className="text-black dark:text-black" htmlFor="author">
                                 Author
                             </label>
                             <input
@@ -164,10 +187,7 @@ function AddNews() {
                         </div>
 
                         <div className="col-span-2">
-                            <label
-                                className="text-white dark:text-gray-200"
-                                htmlFor="content"
-                            >
+                            <label className="text-black dark:text-black" htmlFor="content">
                                 Content
                             </label>
                             <textarea
@@ -183,10 +203,7 @@ function AddNews() {
                         </div>
 
                         <div>
-                            <label
-                                className="block mb-2 font-medium text-white text-l dark:text-white"
-                                htmlFor="newsImage"
-                            >
+                            <label className="block mb-2 font-medium text-black text-l dark:text-black" htmlFor="newsImage">
                                 Upload Image
                             </label>
                             <input
@@ -198,12 +215,9 @@ function AddNews() {
                             />
                         </div>
 
-                        {/* Image Preview Section */}
                         {imagePreview && (
                             <div className="col-span-2 mt-4">
-                                <h2 className="text-white dark:text-gray-200">
-                                    Image Preview:
-                                </h2>
+                                <h2 className="text-black dark:text-black">Image Preview:</h2>
                                 <img
                                     src={imagePreview}
                                     alt="Preview"
@@ -216,8 +230,8 @@ function AddNews() {
                     <div className="flex justify-end mt-6">
                         <button
                             type="submit"
-                            className="px-6 py-2 leading-5 text-white bg-blue-500 rounded-md hover:bg-blue-900"
-                            disabled={loading} // Disable button while loading
+                            className="px-6 py-2 leading-5 text-white rounded-md bg-lime-500 hover:bg-lime-600"
+                            disabled={loading}
                         >
                             {loading ? 'Uploading...' : 'Submit'}
                         </button>

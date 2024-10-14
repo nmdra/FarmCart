@@ -5,8 +5,8 @@ import back from '../../../assets/Back.png'
 const AdminUpdateTour = () => {
     return (
         <div className="flex min-h-screen">
-            <aside className="flex flex-col w-64 text-white bg-green-800">
-                <div className="p-4 text-xl font-bold bg-green-900">
+            <aside className="flex flex-col w-64 text-black bg-gray-200">
+                <div className="p-4 text-xl font-bold bg-white">
                     Admin Dashboard
                 </div>
 
@@ -27,7 +27,7 @@ const AdminUpdateTour = () => {
                 </header>
 
                 <Link to="/dashboard">
-                    <button className="flex items-center px-4 py-2 font-bold text-black rounded hover:bg-blue-600">
+                    <button className="flex items-center px-4 py-2 font-bold text-black rounded hover:bg-lime-500">
                         <img
                             src={back}
                             alt="Back Icon"

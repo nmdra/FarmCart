@@ -11,7 +11,8 @@ export default function IndividualBlog() {
     const [blog, setBlog] = useState({})
     const [comments, setComments] = useState([])
     const [newComment, setNewComment] = useState({ name: '', comment: '' })
-
+    // Variables to handle speech synthesis state
+    let speechUtterance = null
     useEffect(() => {
         if (!id) return
 
@@ -126,7 +127,32 @@ export default function IndividualBlog() {
         const downloadUrl = `/BlogDocuments/${blog.document}` // Assuming document field holds the filename
         window.open(downloadUrl, '_blank') // Open the document URL
     }
+    // Function to generate speech from blog content
+    const speakBlogContent = () => {
+    if ('speechSynthesis' in window) {
+        if (speechSynthesis.speaking && !speechSynthesis.paused) {
+            // If already speaking, pause the speech
+            speechSynthesis.pause()
+        } else if (speechSynthesis.paused) {
+            // If speech is paused, resume it
+            speechSynthesis.resume()
+        } else {
+            // If not speaking, start the speech
+            speechUtterance = new SpeechSynthesisUtterance(blog.content)
+            speechUtterance.lang = 'en-US' // You can set the language here
+            speechSynthesis.speak(speechUtterance)
+        }
+    } else {
+        alert('Your browser does not support text-to-speech functionality.')
+    }
+}
 
+// Function to stop the speech
+const stopSpeech = () => {
+    if ('speechSynthesis' in window && speechSynthesis.speaking) {
+        speechSynthesis.cancel()
+    }
+}
     return (
         <div>
             {/* <Navbar /> */}
@@ -170,13 +196,28 @@ export default function IndividualBlog() {
 
                 <div className="mb-4 text-center">
                     <button
-                        className="px-6 py-3 font-bold text-white transition duration-300 ease-in-out transform bg-green-600 rounded-lg shadow-lg hover:bg-green-700 hover:scale-105"
+                        className="px-6 py-3 font-bold text-white transition duration-300 ease-in-out transform rounded-lg shadow-lg bg-lime-500 hover:bg-lime-600 hover:scale-105"
                         onClick={downloadPDF}
                     >
                         Download Blog as PDF
                     </button>
                 </div>
-
+                <div className="mb-4 text-center">
+            <button
+                onClick={speakBlogContent}
+                className="px-6 py-3 font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+            >
+                {speechSynthesis.speaking && !speechSynthesis.paused
+                    ? 'Pause Reading'
+                    : 'Read Blog Aloud'}
+            </button>
+            <button
+                onClick={stopSpeech}
+                className="px-6 py-3 ml-2 font-bold text-white bg-red-600 rounded-lg hover:bg-red-700"
+            >
+                Stop Reading
+            </button>
+        </div>
                 {/* Comment Form */}
                 <div className="mb-8">
                     <h2 className="mb-4 text-2xl font-semibold">
@@ -202,7 +243,7 @@ export default function IndividualBlog() {
                         />
                         <button
                             type="submit"
-                            className="px-4 py-2 font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
+                            className="px-4 py-2 font-bold text-white rounded-lg bg-lime-500 hover:bg-lime-600"
                         >
                             Submit
                         </button>

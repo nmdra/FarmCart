@@ -51,9 +51,9 @@ function BlogList() {
 
     return (
         <>
-            <section className="p-6 mx-auto mt-20 bg-green-700 rounded-md shadow-md max-w-7xl dark:bg-green-800">
+            <section className="p-6 mx-auto mt-20 bg-white rounded-md shadow-md max-w-7xl dark:bg-gray-100">
                 <div className="flex items-center justify-between mb-4">
-                    <h1 className="text-4xl font-bold text-white capitalize dark:text-white">
+                    <h1 className="text-4xl font-bold text-black capitalize dark:text-black">
                         Blog List
                     </h1>
                 </div>
@@ -62,23 +62,23 @@ function BlogList() {
                     {blogs.map((blog) => (
                         <div
                             key={blog._id}
-                            className="flex items-start p-4 bg-white rounded-md shadow-md dark:bg-green-800"
+                            className="flex items-start p-4 bg-white rounded-md shadow-md dark:bg-white"
                         >
                             <div className="flex-shrink-0 mr-4">
                                 <img
                                     src={`${blog.newsImage}`}
                                     alt={blog.title}
-                                    className="object-cover w-32 h-32 border border-green-300 rounded-md"
+                                    className="object-cover w-32 h-32 border rounded-md border-lime-500"
                                 />
                             </div>
                             <div className="flex-1">
-                                <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+                                <h2 className="text-2xl font-semibold text-gray-800 dark:text-black">
                                     {blog.title}
                                 </h2>
-                                <p className="text-gray-600 dark:text-green-300">
+                                <p className="text-gray-600 dark:text-black">
                                     Author: {blog.author}
                                 </p>
-                                <p className="mt-2 text-gray-600 dark:text-green-400 line-clamp-3">
+                                <p className="mt-2 text-gray-600 dark:text-black line-clamp-3">
                                     {blog.content.substring(0, 50)}...
                                 </p>
                             </div>
