@@ -15,7 +15,7 @@ const ShopList = () => {
             try {
                 // Use the VITE_API_URL environment variable from .env file
                 const { data } = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/shops/all-shops`
+                    `/api/shops/all-shops`
                 )
                 setShops(data) // Set shop data in state
                 setLoading(false) // Turn off loading
@@ -44,13 +44,14 @@ const ShopList = () => {
                 {shops.map((shop, index) => (
                     <div
                         key={index}
-                        className="border-2 p-2 border-[#b8f724] rounded-lg"
+                        className="border-2 p-2 border-[#b8f724] rounded-lg cursor-pointer transition-transform transform hover:scale-105 hover:border-[#f3ffc6] hover:shadow-lg"
+                        onClick={() => navigate(`/shops/${shop._id}`)} // Navigate to shop page on click
                     >
                         <div>
                             <img
-                                src={shop.cover_img}
+                                src={shop.image.replace(/\.\w+$/, '.webp')}
                                 alt={shop.name}
-                                className="object-cover w-[300px] h-[200px] rounded-md"
+                                className="object-cover w-[300px] h-[200px] rounded-md transition-transform transform hover:scale-103"
                             />
                         </div>
                         <div className="flex flex-col py-3 gap-y-2">
@@ -58,9 +59,8 @@ const ShopList = () => {
                                 <h1 className="text-xl ">{shop.name}</h1>
                             </div>
                             <div className="flex items-center gap-3 ">
-                                <h1>{shop.ratings}</h1>
-                                <h1>LKR.{shop.delivery_fee}</h1>
-                                <h1>{shop.location}</h1>
+                                <h1>{shop.category}</h1>
+                                <h1>{shop.district}</h1>
                             </div>
                         </div>
                     </div>
