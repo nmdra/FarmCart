@@ -8,7 +8,7 @@ const LogIn = () => {
                 <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_800px_at_100%_200px,#d0ff57/30,transparent)]"></div>
             </div>
 
-            <div className="mx-auto max-w-7xl">
+            <div className="max-w-5xl mx-auto">
                 <div className="grid items-center grid-cols-2">
                     <div>
                         <img src={signupImg} alt="SignUp Img" />

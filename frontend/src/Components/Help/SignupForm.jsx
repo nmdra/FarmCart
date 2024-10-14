@@ -1,5 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import axios from 'axios'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const SignupForm = () => {
     const [formData, setFormData] = useState({
@@ -9,6 +12,8 @@ const SignupForm = () => {
         password: '',
     })
 
+    const navigate = useNavigate()
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData((prevData) => ({
@@ -17,14 +22,39 @@ const SignupForm = () => {
         }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // Handle form submission logic here
-        console.log('Form submitted:', formData)
+        try {
+            const response = await axios.post(
+                `${import.meta.env.VITE_API_URL}/help/auth/signup`,
+                formData
+            )
+
+            console.log('Signup successful:', response.data)
+            toast.success(
+                'Signup successful! Please check your email for the OTP.',
+                {
+                    position: 'top-right',
+                }
+            )
+
+            // Redirect to OTP entry page after a short delay
+            navigate('/help/verify')
+        } catch (error) {
+            console.error('Signup error:', error.response?.data)
+            toast.error(
+                error.response?.data.message ||
+                    'Signup failed! Please try again.',
+                {
+                    position: 'top-right',
+                }
+            )
+        }
     }
 
     return (
         <div className="flex items-center justify-center min-h-screen">
+            <ToastContainer />
             <div className="px-[5rem] ">
                 <h1 className="mb-5 text-4xl font-bold text-center">
                     Create Customer Care Manager Account

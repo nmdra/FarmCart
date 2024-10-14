@@ -112,6 +112,8 @@ import SupportTicket from './Pages/Help/SupportTicket'
 import Feedback from './Pages/Help/Feedback'
 import Signup from './Pages/Help/CCManager/Signup'
 import LogIn from './Pages/Help/CCManager/Login'
+import OtpEntry from './Pages/Help/CCManager/OtpEntry'
+import Dashboard from './Pages/Help/CCManager/Dashboard'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -308,6 +310,8 @@ const router = createBrowserRouter(
                 <Route path="/help/feedback" element={<Feedback />} />
                 <Route path="/help/signup" element={<Signup />} />
                 <Route path="/help/login" element={<LogIn />} />
+                <Route path="/help/verify" element={<OtpEntry />} />
+                <Route path="/help/dashboard" element={<Dashboard />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
 
