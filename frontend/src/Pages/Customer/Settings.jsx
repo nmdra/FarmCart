@@ -129,6 +129,13 @@ function Settings() {
     const handlePhoneChange = (e) => {
         const contactNumber = e.target.value
 
+        const input = e.target.value
+
+        // Only allow numbers and limit input to 10 digits
+        if (input.length <= 10) {
+            setcontactNumber(input)
+        }
+
         if (!phoneRegex.test(contactNumber)) {
             setPhoneError('Invalid Sri Lankan phone number')
         } else {
@@ -271,6 +278,7 @@ function Settings() {
                                         type="text"
                                         placeholder={firstname || 'First Name'}
                                         value={firstname}
+                                        maxLength={20}
                                         // onChange={(e) =>
                                         //     setfirstname(e.target.value)
                                         // }
@@ -291,6 +299,7 @@ function Settings() {
                                         type="text"
                                         placeholder={lastname || 'Last Name'}
                                         value={lastname}
+                                        maxLength={20}
                                         // onChange={(e) =>
                                         //     setlastname(e.target.value)
                                         // }
@@ -311,6 +320,7 @@ function Settings() {
                                         type="email"
                                         placeholder={email || 'Email'}
                                         value={email}
+                                        maxLength={25}
                                         // onChange={(e) => setEmail(e.target.value)}
                                         onChange={handleEmailChange}
                                         className="border p-2 rounded-md w-full"
@@ -328,10 +338,13 @@ function Settings() {
                                     <input
                                         type="number"
                                         placeholder="Phone Number"
-                                        maxLength={10}
                                         value={contactNumber}
                                         className={`border p-2 rounded-md w-full ${phoneError ? 'border-red-500' : ''}`}
                                         onChange={handlePhoneChange}
+                                        onInput={(e) =>
+                                            (e.target.value =
+                                                e.target.value.slice(0, 10))
+                                        } // Ensures only 10 digits max
                                     />
                                     {phoneError && (
                                         <div className="text-red-500 text-sm">

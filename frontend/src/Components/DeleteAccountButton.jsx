@@ -19,6 +19,7 @@ const DeleteAccountButton = () => {
             const response = await axios.delete('/api/users') // Adjust the endpoint as necessary
             toast.success(response.data.message)
 
+            localStorage.removeItem('user')
             // Redirect to the registration page after deletion
             navigate('/register') // Adjust the path as necessary
         } catch (error) {

@@ -143,6 +143,11 @@ const Address = () => {
                             min="10000" // Minimum value
                             max="99999" // Maximum value
                             required
+                            onInput={(e) => {
+                                if (e.target.value.length > 5) {
+                                    e.target.value = e.target.value.slice(0, 5) // Limit to 5 digits
+                                }
+                            }}
                         />
                     </div>
                 </div>
