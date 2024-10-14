@@ -87,8 +87,6 @@ function AddNews() {
     const addNews = async (e) => {
         e.preventDefault()
 
-
-
         const titleError = validateTitle()
         const contentError = validateContent()
         const authorError = validateAuthor()
