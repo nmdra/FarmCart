@@ -110,6 +110,7 @@ import HelpLayout from './Layouts/HelpLayout'
 import Help from './Pages/Help/Help'
 import SupportTicket from './Pages/Help/SupportTicket'
 import Feedback from './Pages/Help/Feedback'
+import ManageShopIncome from './Pages/Admin/ManageShopIncome'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -218,6 +219,7 @@ const router = createBrowserRouter(
                     />
                     <Route path="/coupens" element={<Coupens />} />
                     <Route path="/finance" element={<Finance />} />
+                    <Route path="/manage-shop-income" element={<ManageShopIncome />} />
                 </Route>
 
                 {/* 
