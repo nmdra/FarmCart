@@ -1,11 +1,11 @@
-import CustomerCareManagerProfile from '../../../Components/Help/dashboard/CustomerCareManagerProfile'
+// import CustomerCareManagerProfile from '../../../Components/Help/dashboard/CustomerCareManagerProfile'
 
-function CCMProfile() {
-    return (
-        <div>
-            <CustomerCareManagerProfile />
-        </div>
-    )
-}
+// function CCMProfile() {
+//     return (
+//         <div>
+//             <CustomerCareManagerProfile />
+//         </div>
+//     )
+// }
 
-export default CCMProfile
+// export default CCMProfile

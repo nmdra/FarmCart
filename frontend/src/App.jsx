@@ -117,7 +117,7 @@ import Dashboard from './Pages/Help/CCManager/Dashboard'
 
 import SupportTicketDashboardPage from './Pages/Help/CCManager/SupportTicket'
 import FeedbackDashboard from './Pages/Help/CCManager/FeedbackDashboard'
-import CCMProfile from './Pages/Help/CCManager/CCMProfile'
+// import CCMProfile from './Pages/Help/CCManager/CCMProfile'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -316,10 +316,10 @@ const router = createBrowserRouter(
                 <Route path="/help/login" element={<LogIn />} />
                 <Route path="/help/verify" element={<OtpEntry />} />
                 <Route path="/help/dashboard" element={<Dashboard />} />
-                <Route
+                {/* <Route
                     path="/help/dashboard/profile"
                     element={<CCMProfile />}
-                />
+                /> */}
                 <Route
                     path="/help/dashboard/feedbacks"
                     element={<FeedbackDashboard />}
