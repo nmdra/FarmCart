@@ -6,7 +6,7 @@ const router = Router()
 // Function to validate required fields with enhanced rules
 const validateBlogFields = (title, content, author) => {
     const errors = {}
-    
+
     if (!title) {
         errors.title = 'Title is required.'
     } else if (title.length < 5) {
@@ -18,7 +18,7 @@ const validateBlogFields = (title, content, author) => {
     } else if (content.length < 10) {
         errors.content = 'Content must be at least 10 characters long.'
     }
-    
+
     if (!author) {
         errors.author = 'Author is required.'
     } else if (author.trim().length === 0) {
@@ -37,9 +37,9 @@ router.post('/add', async (req, res) => {
         const errors = validateBlogFields(title, content, author)
         if (Object.keys(errors).length) {
             // Return a structured response showing all validation errors
-            return res.status(400).json({ 
+            return res.status(400).json({
                 message: 'Validation failed. Please fix the errors below.',
-                errors 
+                errors,
             })
         }
 
@@ -96,9 +96,9 @@ router.put('/update/:id', async (req, res) => {
         const errors = validateBlogFields(title, content, author)
         if (Object.keys(errors).length) {
             // Return a structured response showing all validation errors
-            return res.status(400).json({ 
+            return res.status(400).json({
                 message: 'Validation failed. Please fix the errors below.',
-                errors
+                errors,
             })
         }
 

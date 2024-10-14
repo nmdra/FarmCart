@@ -12,7 +12,7 @@ const Homepage = () => {
         document.title = 'FarmCart : Home'
     }, [])
 
-        const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem('user'))
 
     // Handle the case where user is null or undefined
     const customer = user

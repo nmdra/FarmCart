@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
-import { toast } from 'react-hot-toast';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import ConfirmationModal from './ConfirmationModalDelete'; // Import the modal component
+import React, { useState } from 'react'
+import { toast } from 'react-hot-toast'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import ConfirmationModal from './ConfirmationModalDelete' // Import the modal component
 
 const DeleteAccountButton = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [confirmationText, setConfirmationText] = useState('');
-    const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [confirmationText, setConfirmationText] = useState('')
+    const navigate = useNavigate()
 
     const handleDeleteAccount = async () => {
         if (confirmationText !== 'I want to delete my account') {
-            toast.error('Please type "I want to delete my account" to confirm.');
-            return;
+            toast.error('Please type "I want to delete my account" to confirm.')
+            return
         }
 
         try {
-            const response = await axios.delete('/api/users'); // Adjust the endpoint as necessary
-            toast.success(response.data.message);
-            
+            const response = await axios.delete('/api/users') // Adjust the endpoint as necessary
+            toast.success(response.data.message)
+
             // Redirect to the registration page after deletion
-            navigate('/register'); // Adjust the path as necessary
+            navigate('/register') // Adjust the path as necessary
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Failed to delete account');
+            toast.error(
+                error.response?.data?.message || 'Failed to delete account'
+            )
         }
-    };
+    }
 
     return (
         <div>
@@ -43,7 +45,7 @@ const DeleteAccountButton = () => {
                 setConfirmationText={setConfirmationText}
             />
         </div>
-    );
-};
+    )
+}
 
-export default DeleteAccountButton;
+export default DeleteAccountButton
