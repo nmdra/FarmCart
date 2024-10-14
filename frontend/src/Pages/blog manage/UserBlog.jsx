@@ -79,7 +79,7 @@ export default function TourismBlog() {
             {/* Latest News Section */}
             <div className="py-1 bg-gradient-to-r from-white">
                 <div className="container px-4 mx-auto">
-                    <h2 className="mb-6 text-3xl font-bold text-center text-sky-700">
+                    <h2 className="mb-6 text-3xl font-bold text-center text-black">
                         Trending Blogs!
                     </h2>
                     <div className="relative w-full h-48 overflow-hidden rounded-lg shadow-lg">
@@ -128,8 +128,8 @@ export default function TourismBlog() {
                 </div>
             </div>
 
-            <div className="min-h-screen pt-20 mt-6 bg-gradient-to-br from-sky-100 to-sky-200 md:mt-10 md:mx-10">
-                <nav className="sticky top-0 z-10 py-6 text-white shadow-md bg-sky-500">
+            <div className="min-h-screen pt-20 mt-6 bg-gradient-to-br from-gray-100 to-white md:mt-10 md:mx-10">
+                <nav className="sticky top-0 z-10 py-6 text-white shadow-md bg-lime-600">
                     <div className="container px-4 mx-auto">
                         <div className="flex items-center justify-between ml-20">
                             <div className="relative w-full max-w-xs">
@@ -147,12 +147,12 @@ export default function TourismBlog() {
                                     }
                                 />
                                 <Search
-                                    className="absolute transform -translate-y-1/2 right-3 top-1/2 text-sky-600"
+                                    className="absolute text-black transform -translate-y-1/2 right-3 top-1/2"
                                     size={20}
                                 />
                             </div>
                             <Link to="/speechgenerator">
-                                <button className="px-4 py-2 ml-4 text-white transition duration-300 bg-green-500 rounded-full hover:bg-green-800">
+                                <button className="px-4 py-2 ml-4 text-white transition duration-300 rounded-full bg-lime-700 hover:bg-lime-900">
                                     Speech Generator
                                 </button>
                             </Link>
@@ -163,7 +163,7 @@ export default function TourismBlog() {
                 {/* Blog Section */}
                 <div className="container px-4 py-8 mx-auto">
                     {loading && (
-                        <p className="text-center text-gray-600">
+                        <p className="text-center text-black">
                             Loading data...
                         </p>
                     )}
@@ -187,10 +187,10 @@ export default function TourismBlog() {
                                         />
                                     )}
                                     <div className="p-6">
-                                        <h2 className="mb-2 text-2xl font-bold text-sky-700">
+                                        <h2 className="mb-2 text-2xl font-bold text-lime-900">
                                             {blog.title}
                                         </h2>
-                                        <div className="flex items-center mb-2 text-gray-600">
+                                        <div className="flex items-center mb-2 text-black">
                                             <span>{blog.author}</span>
                                             <span className="ml-4">
                                                 {new Date(
@@ -198,13 +198,13 @@ export default function TourismBlog() {
                                                 ).toLocaleDateString()}
                                             </span>
                                         </div>
-                                        <p className="mb-4 text-gray-700">
+                                        <p className="mb-4 text-black">
                                             {blog.excerpt ||
                                                 blog.content.substring(0, 100) +
                                                     '...'}
                                         </p>
                                         <Link to={`/blog/${blog._id}`}>
-                                            <span className="inline-block px-4 py-2 text-white transition duration-300 transform rounded-full bg-sky-500 hover:bg-sky-600 hover:translate-y-1">
+                                            <span className="inline-block px-4 py-2 text-white transition duration-300 transform rounded-full bg-lime-500 hover:bg-lime-600 hover:translate-y-1">
                                                 Read More
                                             </span>
                                         </Link>

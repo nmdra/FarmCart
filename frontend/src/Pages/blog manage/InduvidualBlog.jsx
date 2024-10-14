@@ -11,7 +11,8 @@ export default function IndividualBlog() {
     const [blog, setBlog] = useState({})
     const [comments, setComments] = useState([])
     const [newComment, setNewComment] = useState({ name: '', comment: '' })
-
+    // Variables to handle speech synthesis state
+    let speechUtterance = null
     useEffect(() => {
         if (!id) return
 
@@ -60,26 +61,73 @@ export default function IndividualBlog() {
 
         // Ensure the logo is loaded before generating the PDF
         logoImg.onload = () => {
-            doc.addImage(logoImg, 'PNG', 10, 10, 40, 5) // Add logo
-            doc.setFontSize(22)
-            doc.text(blog.title, 10, 60) // Blog title
+            // Center the logo
+            const pageWidth = doc.internal.pageSize.getWidth()
+            const logoWidth = 40
+            const logoX = (pageWidth - logoWidth) / 2
+            doc.addImage(logoImg, 'PNG', logoX, 10, logoWidth, 10) // Centered logo
+
+            // Add company details below the logo, centered
             doc.setFontSize(12)
-            doc.text(`By: ${blog.author}`, 10, 70) // Author
+            doc.text(
+                'FarmCart Lanka (PVT.) LTD',
+                pageWidth / 2,
+                35,
+                null,
+                null,
+                'center'
+            )
+            doc.text(
+                'No.78, Malabe, Colombo',
+                pageWidth / 2,
+                40,
+                null,
+                null,
+                'center'
+            )
+            doc.text(
+                'Phone: (+94) 011 34 56 837',
+                pageWidth / 2,
+                45,
+                null,
+                null,
+                'center'
+            )
+            doc.text(
+                'Website: www.farmcart.com',
+                pageWidth / 2,
+                50,
+                null,
+                null,
+                'center'
+            )
+
+            // Add blog title below the company details, centered and bold
+            doc.setFontSize(22)
+            doc.setFont('helvetica', 'bold') // Make the title bold
+            doc.text(blog.title, pageWidth / 2, 70, null, null, 'center')
+
+            // Reset the font style to normal for the rest of the content
+            doc.setFont('helvetica', 'normal')
+
+            // Add blog author and date information below the title, left-aligned
+            doc.setFontSize(12)
+            doc.text(`By: ${blog.author}`, 10, 80)
             doc.text(
                 `Date: ${new Date(blog.createdAt).toLocaleDateString()}`,
                 10,
-                80
-            ) // Date
+                85
+            )
 
-            // Adding blog image if it exists
+            // Add blog content
             if (blog.newsImage) {
-                const imageUrl = `${blog.newsImage}`
+                const imageUrl = blog.newsImage
                 const blogImg = new Image()
                 blogImg.src = imageUrl
 
                 blogImg.onload = () => {
                     doc.addImage(blogImg, 'JPEG', 10, 90, 180, 100) // Blog image
-                    addContentToPDF(doc, blog.content, blog.title) // Add content
+                    addContentToPDF(doc, blog.content, blog.title) // Function to add the blog content
                 }
 
                 blogImg.onerror = () => {
@@ -99,34 +147,58 @@ export default function IndividualBlog() {
     const addContentToPDF = (doc, content, title) => {
         let yPosition = 200 // Starting position for content
         doc.setFontSize(10)
-        doc.text('Content:', 10, yPosition)
+
         yPosition += 10 // Move down after header
 
         // Split content into lines that fit within the page width
         const contentLines = doc.splitTextToSize(content, 180)
 
-        // Loop through content lines and add them to the PDF
+        // Manually justify content by adjusting spaces between words
         contentLines.forEach((line) => {
             if (yPosition > 280) {
                 doc.addPage()
                 yPosition = 10 // Reset Y position for new page
                 doc.text(title, 10, 10) // Title on new page
-                doc.text('Content:', 10, 20) // Content header on new page
+
                 yPosition = 30 // Reset position for content
             }
             doc.text(line, 10, yPosition) // Add line to PDF
             yPosition += 10 // Move down for next line
         })
 
-        doc.save(`${title}.pdf`) // Save the PDF
+        doc.save(`${title}`.pdf) // Save the PDF
     }
-
     // Function to handle document download
     const handleDownloadDocument = () => {
         const downloadUrl = `/BlogDocuments/${blog.document}` // Assuming document field holds the filename
         window.open(downloadUrl, '_blank') // Open the document URL
     }
+    // Function to generate speech from blog content
+    const speakBlogContent = () => {
+        if ('speechSynthesis' in window) {
+            if (speechSynthesis.speaking && !speechSynthesis.paused) {
+                // If already speaking, pause the speech
+                speechSynthesis.pause()
+            } else if (speechSynthesis.paused) {
+                // If speech is paused, resume it
+                speechSynthesis.resume()
+            } else {
+                // If not speaking, start the speech
+                speechUtterance = new SpeechSynthesisUtterance(blog.content)
+                speechUtterance.lang = 'en-US' // You can set the language here
+                speechSynthesis.speak(speechUtterance)
+            }
+        } else {
+            alert('Your browser does not support text-to-speech functionality.')
+        }
+    }
 
+    // Function to stop the speech
+    const stopSpeech = () => {
+        if ('speechSynthesis' in window && speechSynthesis.speaking) {
+            speechSynthesis.cancel()
+        }
+    }
     return (
         <div>
             {/* <Navbar /> */}
@@ -170,13 +242,28 @@ export default function IndividualBlog() {
 
                 <div className="mb-4 text-center">
                     <button
-                        className="px-6 py-3 font-bold text-white transition duration-300 ease-in-out transform bg-green-600 rounded-lg shadow-lg hover:bg-green-700 hover:scale-105"
+                        className="px-6 py-3 font-bold text-white transition duration-300 ease-in-out transform rounded-lg shadow-lg bg-lime-500 hover:bg-lime-600 hover:scale-105"
                         onClick={downloadPDF}
                     >
                         Download Blog as PDF
                     </button>
                 </div>
-
+                <div className="mb-4 text-center">
+                    <button
+                        onClick={speakBlogContent}
+                        className="px-6 py-3 font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                    >
+                        {speechSynthesis.speaking && !speechSynthesis.paused
+                            ? 'Pause Reading'
+                            : 'Read Blog Aloud'}
+                    </button>
+                    <button
+                        onClick={stopSpeech}
+                        className="px-6 py-3 ml-2 font-bold text-white bg-red-600 rounded-lg hover:bg-red-700"
+                    >
+                        Stop Reading
+                    </button>
+                </div>
                 {/* Comment Form */}
                 <div className="mb-8">
                     <h2 className="mb-4 text-2xl font-semibold">
@@ -202,7 +289,7 @@ export default function IndividualBlog() {
                         />
                         <button
                             type="submit"
-                            className="px-4 py-2 font-bold text-white bg-green-600 rounded-lg hover:bg-green-700"
+                            className="px-4 py-2 font-bold text-white rounded-lg bg-lime-500 hover:bg-lime-600"
                         >
                             Submit
                         </button>

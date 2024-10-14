@@ -46,24 +46,24 @@ const SpeechGenerator = () => {
     }
 
     return (
-        <div className="hero h-screen flex items-center justify-center bg-gradient-to-br from-green-500 to-green-800">
-            <div className="bg-white bg-opacity-95 p-10 rounded-2xl shadow-2xl max-w-lg w-full">
-                <h1 className="text-5xl font-bold text-gray-800 text-center mb-8 tracking-wide">
+        <div className="flex items-center justify-center h-screen hero bg-gradient-to-br from-white to-gray-300">
+            <div className="w-full max-w-lg p-10 bg-white shadow-2xl bg-opacity-95 rounded-2xl">
+                <h1 className="mb-8 text-5xl font-bold tracking-wide text-center text-gray-800">
                     Text to Speech{' '}
-                    <span className="text-green-600">Converter</span>
+                    <span className="text-lime-500">Converter</span>
                 </h1>
 
                 <textarea
                     ref={textareaRef}
                     placeholder="Write anything here..."
-                    className="w-full h-40 p-4 border border-gray-300 rounded-lg shadow-inner text-lg mb-6 focus:outline-none focus:ring-4 focus:ring-green-400 transition duration-300"
+                    className="w-full h-40 p-4 mb-6 text-lg transition duration-300 border border-gray-300 rounded-lg shadow-inner focus:outline-none focus:ring-4 focus:ring-green-400"
                 ></textarea>
 
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center justify-between mb-6">
                     <select
                         value={selectedVoiceIndex}
                         onChange={handleVoiceChange}
-                        className="border border-gray-300 rounded-lg p-2 bg-white shadow-md focus:outline-none focus:ring-4 focus:ring-green-400 transition duration-300"
+                        className="p-2 transition duration-300 bg-white border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-4 focus:ring-green-400"
                     >
                         {voices.map((voice, index) => (
                             <option key={index} value={index}>
@@ -73,7 +73,7 @@ const SpeechGenerator = () => {
                     </select>
                     <button
                         onClick={handleListen}
-                        className="bg-green-500 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-green-600 transition duration-300 transform hover:scale-105"
+                        className="px-6 py-2 text-white transition duration-300 transform rounded-lg shadow-lg bg-lime-500 hover:bg-lime-600 hover:scale-105"
                     >
                         Listen
                     </button>
