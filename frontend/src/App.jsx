@@ -110,6 +110,8 @@ import HelpLayout from './Layouts/HelpLayout'
 import Help from './Pages/Help/Help'
 import SupportTicket from './Pages/Help/SupportTicket'
 import Feedback from './Pages/Help/Feedback'
+import Signup from './Pages/Help/CCManager/Signup'
+import LogIn from './Pages/Help/CCManager/Login'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -304,6 +306,8 @@ const router = createBrowserRouter(
                     element={<SupportTicket />}
                 />
                 <Route path="/help/feedback" element={<Feedback />} />
+                <Route path="/help/signup" element={<Signup />} />
+                <Route path="/help/login" element={<LogIn />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
 
