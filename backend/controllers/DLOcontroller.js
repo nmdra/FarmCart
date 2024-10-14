@@ -148,22 +148,32 @@ const assignReadyOrders = async () => {
             const customerName =
                 `${user.firstname || ''} ${user.lastname || ''}`.trim()
 
-            // Use the defaultAddress from the User model
-            const customerAddress = {
-                streetAddress: user.defaultAddress.streetAddress || 'N/A',
-                city: user.defaultAddress.city || 'N/A',
-                zipCode: user.defaultAddress.zipCode || 'N/A',
-                district: user.defaultAddress.district || 'N/A',
-            }
-            // console.log(`Customer Address: ${customerAddress.streetAddress}, ${customerAddress.city}`)
+            // // Use the defaultAddress from the User model
+            // const customerAddress = {
+            //     streetAddress: user.defaultAddress.streetAddress || 'N/A',
+            //     city: user.defaultAddress.city || 'N/A',
+            //     zipCode: user.defaultAddress.zipCode || 'N/A',
+            //     district: user.defaultAddress.district || 'N/A',
+            // }
+            // // console.log(`Customer Address: ${customerAddress.streetAddress}, ${customerAddress.city}`)
+
+            // Extract the shippingAddress fields from the user
+            const { name, address, city, phone, email } = order.shippingAddress
+
+            // Combine address and city into a single string
+            const cusAddress = `${address}, ${city}`
 
             // Create a new dOrder with the customer and shop address and order data
             const newDOrder = new dOrder({
                 oID: order._id.toString(), // Assigning the order ID from the Order model
                 orderID: generateOrderId(), // Randomly generated order ID
                 customerName: customerName, // Full name from User model
-                customerAddress: customerAddress, // Address from User model
+                customerEmail: email, // Email from User model
+                customerNumber: phone, // Phone number from User model
+                customerAddress: cusAddress, // Address from User model
                 shopName: shop.name, // Shop name from the Shop model
+                shopEmail: shop.email, // Shop email from the Shop model
+                shopPhone: shop.contactNumber, // Shop phone from the Shop model
                 shopAddress: {
                     houseNo: shop.address.houseNo, // House number from the Shop model
                     streetName: shop.address.streetName, // Street name from the Shop model

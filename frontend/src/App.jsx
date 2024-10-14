@@ -219,7 +219,10 @@ const router = createBrowserRouter(
                     />
                     <Route path="/coupens" element={<Coupens />} />
                     <Route path="/finance" element={<Finance />} />
-                    <Route path="/manage-shop-income" element={<ManageShopIncome />} />
+                    <Route
+                        path="/manage-shop-income"
+                        element={<ManageShopIncome />}
+                    />
                 </Route>
 
                 {/* 

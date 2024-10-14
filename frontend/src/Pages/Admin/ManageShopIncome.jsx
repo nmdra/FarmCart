@@ -1,66 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Sidebar from '../../Components/Admin/AsideBar.jsx';
-import { Button } from '@nextui-org/react';
-import axios from 'axios';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Sidebar from '../../Components/Admin/AsideBar.jsx'
+import { Button } from '@nextui-org/react'
+import axios from 'axios'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 const ManageShopIncome = () => {
-    const navigate = useNavigate();
-    const [shopIncomeData, setShopIncomeData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
-    const [sortOrder, setSortOrder] = useState('asc');
-    const [taxRate, setTaxRate] = useState(20);
-    const [paymentStatus, setPaymentStatus] = useState({}); // State to store payment statuses
+    const navigate = useNavigate()
+    const [shopIncomeData, setShopIncomeData] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState('')
+    const [searchTerm, setSearchTerm] = useState('')
+    const [sortOrder, setSortOrder] = useState('asc')
+    const [taxRate, setTaxRate] = useState(20)
+    const [paymentStatus, setPaymentStatus] = useState({}) // State to store payment statuses
 
     // Function to fetch shop income data
     const fetchShopIncomeData = async () => {
         try {
-            const response = await axios.get('/api/orders/shop-total-income'); // Adjust endpoint as necessary
-            setShopIncomeData(response.data);
+            const response = await axios.get('/api/orders/shop-total-income') // Adjust endpoint as necessary
+            setShopIncomeData(response.data)
             // Initialize payment statuses with default values (e.g., 'Pending')
-            const initialStatus = {};
-            response.data.forEach(shop => {
-                initialStatus[shop.shopId] = 'Pending'; // Default to 'Pending'
-            });
-            setPaymentStatus(initialStatus);
+            const initialStatus = {}
+            response.data.forEach((shop) => {
+                initialStatus[shop.shopId] = 'Pending' // Default to 'Pending'
+            })
+            setPaymentStatus(initialStatus)
         } catch (err) {
-            setError(err.message);
+            setError(err.message)
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
-    };
+    }
 
     useEffect(() => {
-        fetchShopIncomeData();
-    }, []);
+        fetchShopIncomeData()
+    }, [])
 
     // Handle search input change
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
+        setSearchTerm(e.target.value)
+    }
 
     // Sort the shop income data based on total income
     const handleSort = () => {
         const sortedData = [...shopIncomeData].sort((a, b) => {
             return sortOrder === 'asc'
                 ? a.totalIncome - b.totalIncome
-                : b.totalIncome - a.totalIncome;
-        });
-        setShopIncomeData(sortedData);
-        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    };
+                : b.totalIncome - a.totalIncome
+        })
+        setShopIncomeData(sortedData)
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    }
 
     const generatePDF = () => {
-        const doc = new jsPDF();
-        const title = 'Shop Income Report';
+        const doc = new jsPDF()
+        const title = 'Shop Income Report'
 
         // Set font size and style for title
-        doc.setFontSize(16);
-        doc.text(title, 14, 16);
+        doc.setFontSize(16)
+        doc.text(title, 14, 16)
 
         // Create the table
         doc.autoTable({
@@ -72,17 +72,19 @@ const ManageShopIncome = () => {
                     `Tax (${taxRate}%)`,
                     'Final Shop Income',
                     'FarmCart Company Income',
-                    'Payment Status' // New header for payment status
+                    'Payment Status', // New header for payment status
                 ],
             ],
             body: shopIncomeData
                 .filter((shop) =>
-                    shop.shopName.toLowerCase().includes(searchTerm.toLowerCase())
+                    shop.shopName
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
                 )
                 .map((shop) => {
-                    const tax = (shop.totalIncome * (taxRate / 100)).toFixed(2);
-                    const finalIncome = (shop.totalIncome - tax).toFixed(2);
-                    const farmCartIncome = tax; // FarmCart company income is the same as the tax amount
+                    const tax = (shop.totalIncome * (taxRate / 100)).toFixed(2)
+                    const finalIncome = (shop.totalIncome - tax).toFixed(2)
+                    const farmCartIncome = tax // FarmCart company income is the same as the tax amount
                     return [
                         shop.shopName,
                         shop.ownerName,
@@ -90,8 +92,8 @@ const ManageShopIncome = () => {
                         `Rs. ${tax}`,
                         `Rs. ${finalIncome}`,
                         `Rs. ${farmCartIncome}`,
-                        paymentStatus[shop.shopId] // Add payment status to the PDF
-                    ];
+                        paymentStatus[shop.shopId], // Add payment status to the PDF
+                    ]
                 }),
             margin: { top: 24 },
             styles: {
@@ -106,28 +108,29 @@ const ManageShopIncome = () => {
                 fontStyle: 'bold',
             },
             theme: 'striped',
-        });
+        })
 
-        doc.save('shop_income_report.pdf');
-    };
+        doc.save('shop_income_report.pdf')
+    }
 
     // Filter data based on search term
     const filteredData = shopIncomeData.filter((shop) =>
         shop.shopName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
 
     // Handle payment status button click
     const handlePaymentStatusChange = (shopId, status) => {
         setPaymentStatus((prevStatus) => ({
             ...prevStatus,
-            [shopId]: status // Update the payment status for the specific shop
-        }));
+            [shopId]: status, // Update the payment status for the specific shop
+        }))
 
         // Optionally, send the new payment status to the backend
-        axios.post('/api/payment-status', { shopId, status })
-            .then(response => console.log("Payment status updated", response))
-            .catch(err => console.error("Error updating payment status", err));
-    };
+        axios
+            .post('/api/payment-status', { shopId, status })
+            .then((response) => console.log('Payment status updated', response))
+            .catch((err) => console.error('Error updating payment status', err))
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -157,14 +160,17 @@ const ManageShopIncome = () => {
                             placeholder="Enter Tax Rate"
                             value={taxRate}
                             onChange={(e) => {
-                                const value = parseFloat(e.target.value);
+                                const value = parseFloat(e.target.value)
                                 if (!isNaN(value) && value >= 0) {
-                                    setTaxRate(value);
+                                    setTaxRate(value)
                                 }
                             }}
                             className="border p-2 w-1/12 rounded-md shadow-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-                        <p className="text-gray-500 text-sm mt-1"> Adjust the tax rate</p>
+                        <p className="text-gray-500 text-sm mt-1">
+                            {' '}
+                            Adjust the tax rate
+                        </p>
 
                         <Button
                             onClick={() => navigate('/finance')}
@@ -224,11 +230,18 @@ const ManageShopIncome = () => {
                                 </thead>
                                 <tbody>
                                     {filteredData.map((shop) => {
-                                        const tax = (shop.totalIncome * (taxRate / 100)).toFixed(2);
-                                        const finalIncome = (shop.totalIncome - tax).toFixed(2);
+                                        const tax = (
+                                            shop.totalIncome *
+                                            (taxRate / 100)
+                                        ).toFixed(2)
+                                        const finalIncome = (
+                                            shop.totalIncome - tax
+                                        ).toFixed(2)
 
                                         // Debugging: Log values to check calculations
-                                        console.log(`Shop: ${shop.shopName}, Total Income: ${shop.totalIncome}, Tax: ${tax}, Final Income: ${finalIncome}`);
+                                        console.log(
+                                            `Shop: ${shop.shopName}, Total Income: ${shop.totalIncome}, Tax: ${tax}, Final Income: ${finalIncome}`
+                                        )
 
                                         return (
                                             <tr key={shop.shopId}>
@@ -239,7 +252,10 @@ const ManageShopIncome = () => {
                                                     {shop.ownerName}
                                                 </td>
                                                 <td className="border border-gray-200 p-2">
-                                                    Rs.{shop.totalIncome.toFixed(2)}
+                                                    Rs.
+                                                    {shop.totalIncome.toFixed(
+                                                        2
+                                                    )}
                                                 </td>
                                                 <td className="border border-gray-200 p-2">
                                                     Rs.{tax}
@@ -253,31 +269,58 @@ const ManageShopIncome = () => {
                                                 <td className="border border-gray-200 p-2 flex space-x-2">
                                                     <Button
                                                         className={`${
-                                                            paymentStatus[shop.shopId] === 'Pending' ? 'bg-yellow-500' : 'bg-gray-300'
+                                                            paymentStatus[
+                                                                shop.shopId
+                                                            ] === 'Pending'
+                                                                ? 'bg-yellow-500'
+                                                                : 'bg-gray-300'
                                                         } text-white`}
-                                                        onClick={() => handlePaymentStatusChange(shop.shopId, 'Pending')}
+                                                        onClick={() =>
+                                                            handlePaymentStatusChange(
+                                                                shop.shopId,
+                                                                'Pending'
+                                                            )
+                                                        }
                                                     >
                                                         Pending
                                                     </Button>
                                                     <Button
                                                         className={`${
-                                                            paymentStatus[shop.shopId] === 'Paid' ? 'bg-green-500' : 'bg-gray-300'
+                                                            paymentStatus[
+                                                                shop.shopId
+                                                            ] === 'Paid'
+                                                                ? 'bg-green-500'
+                                                                : 'bg-gray-300'
                                                         } text-white`}
-                                                        onClick={() => handlePaymentStatusChange(shop.shopId, 'Paid')}
+                                                        onClick={() =>
+                                                            handlePaymentStatusChange(
+                                                                shop.shopId,
+                                                                'Paid'
+                                                            )
+                                                        }
                                                     >
                                                         Paid
                                                     </Button>
                                                     <Button
                                                         className={`${
-                                                            paymentStatus[shop.shopId] === 'Declined' ? 'bg-red-500' : 'bg-gray-300'
+                                                            paymentStatus[
+                                                                shop.shopId
+                                                            ] === 'Declined'
+                                                                ? 'bg-red-500'
+                                                                : 'bg-gray-300'
                                                         } text-white`}
-                                                        onClick={() => handlePaymentStatusChange(shop.shopId, 'Declined')}
+                                                        onClick={() =>
+                                                            handlePaymentStatusChange(
+                                                                shop.shopId,
+                                                                'Declined'
+                                                            )
+                                                        }
                                                     >
                                                         Declined
                                                     </Button>
                                                 </td>
                                             </tr>
-                                        );
+                                        )
                                     })}
                                 </tbody>
                             </table>
@@ -286,7 +329,7 @@ const ManageShopIncome = () => {
                 </main>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ManageShopIncome;
+export default ManageShopIncome

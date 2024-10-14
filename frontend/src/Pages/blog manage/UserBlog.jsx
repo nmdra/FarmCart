@@ -100,7 +100,10 @@ export default function TourismBlog() {
                                         <div className="relative w-full h-25">
                                             {blog.newsImage && (
                                                 <img
-                                                    src={blog.newsImage.replace(/\.\w+$/, '.webp')}
+                                                    src={blog.newsImage.replace(
+                                                        /\.\w+$/,
+                                                        '.webp'
+                                                    )}
                                                     alt={blog.title}
                                                     className="object-cover w-full h-full rounded-lg shadow-lg"
                                                 />
@@ -181,7 +184,10 @@ export default function TourismBlog() {
                                 <div className="relative">
                                     {blog.newsImage && (
                                         <img
-                                            src={blog.newsImage.replace(/\.\w+$/, '.webp')}
+                                            src={blog.newsImage.replace(
+                                                /\.\w+$/,
+                                                '.webp'
+                                            )}
                                             alt={blog.title}
                                             className="object-cover w-full h-64"
                                         />

@@ -52,15 +52,19 @@ export const assignDriverToOrder = async () => {
             driverID: driver._id,
             drID: driver.driverID,
             shopName: order.shopName,
+            shopEmail: order.shopEmail,
+            shopPhone: order.shopPhone,
             pickupAddress:
                 `${order.shopAddress.houseNo || ''}, ${order.shopAddress.streetName || ''}, ${order.shopAddress.city || ''}, ${order.shopAddress.district || ''}`
                     .trim()
                     .replace(/^,|,$/g, ''),
             customerName: order.customerName,
-            dropOffAddress:
-                `${order.customerAddress.streetAddress || ''}, ${order.customerAddress.city || ''}, ${order.customerAddress.zipCode || ''}, ${order.customerAddress.district || ''}`
-                    .trim()
-                    .replace(/^,|,$/g, ''),
+            customerEmail: order.customerEmail,
+            customerNumber: order.customerNumber,
+            dropOffAddress: order.customerAddress,
+            // `${order.customerAddress.streetAddress || ''}, ${order.customerAddress.city || ''}, ${order.customerAddress.zipCode || ''}, ${order.customerAddress.district || ''}`
+            //     .trim()
+            //     .replace(/^,|,$/g, ''),
         })
 
         await delivery.save()
@@ -112,8 +116,10 @@ export const sendEmailToDriver = async (driver, delivery) => {
                     <li><strong>Order ID:</strong> ${delivery.oID}</li>
                     <li><strong>Tracking ID:</strong> ${delivery.trackingID}</li>
                     <li><strong>Shop Name:</strong> ${delivery.shopName}</li>
+                    <li><strong>Shop Contact:</strong> ${delivery.shopPhone}</li>
                     <li><strong>Pickup Address:</strong> ${delivery.pickupAddress}</li>
                     <li><strong>Customer Name:</strong> ${delivery.customerName}</li>
+                    <li><strong>Customer Contact:</strong> ${delivery.customerNumber}</li>
                     <li><strong>Drop-Off Address:</strong> ${delivery.dropOffAddress}</li>
                 </ul>
 
