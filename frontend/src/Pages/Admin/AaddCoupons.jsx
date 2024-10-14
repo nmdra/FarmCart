@@ -5,68 +5,88 @@ import Swal from 'sweetalert2'
 import Sidebar from '../../Components/Admin/AsideBar'
 
 const AddCoupon = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         couponCode: '',
         discount: '',
         expiryDate: '',
-    })
-    const [loading, setLoading] = useState(false)
+    });
+    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({
         couponCode: '',
         discount: '',
         expiryDate: '',
-    })
+    });
 
+    // Handle input change with validation
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData({ ...formData, [name]: value })
+        const { name, value } = e.target;
+        let error = '';
 
-        // Simple validation for discount (should be a number)
-        if (name === 'discount') {
-            const discountRegex = /^\d+$/ // Accept only digits
-            setErrors({
-                ...errors,
-                discount: !discountRegex.test(value)
-                    ? 'Discount must be a number'
-                    : '',
-            })
+        // Coupon Code validation: Ensure it's not empty
+        if (name === 'couponCode' && value === '') {
+            error = 'Coupon code cannot be empty';
         }
-    }
 
+        // Discount validation: Must be a number and <= 100
+        if (name === 'discount') {
+            const discountValue = parseInt(value, 10);
+            if (isNaN(discountValue) || discountValue < 0) {
+                error = 'Discount must be a positive number';
+            } else if (discountValue > 100) {
+                error = 'Discount cannot be more than 100';
+            }
+        }
+        // Expiry date validation: Must be today or a future date
+        if (name === 'expiryDate') {
+            const minDate = new Date('2024-10-15')
+            const maxDate = new Date('2030-01-01')
+            const selectedDate = new Date(value)
+            if (selectedDate < minDate || selectedDate > maxDate) {
+                error = 'Birthday must be between today and upcoming'
+            }
+        }
+
+        // Update form data and errors
+        setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: error });
+    };
+
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        if (errors.discount) {
-            Swal.fire('Validation Error', 'Please fix the errors', 'error')
-            return
+        e.preventDefault();
+        // Check if any validation errors exist
+        if (Object.values(errors).some((err) => err)) {
+            Swal.fire('Validation Error', 'Please fix the errors', 'error');
+            return;
         }
 
         try {
-            setLoading(true)
+            setLoading(true);
 
             await axios.post('/coupon', formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
-            })
+            });
 
-            Swal.fire('Success', 'Coupon created successfully', 'success')
-            navigate('/coupons') // Redirect to coupons page after creation
+            Swal.fire('Success', 'Coupon created successfully', 'success');
+            navigate('/coupons');
         } catch (err) {
-            console.error('Error creating coupon:', err)
+            console.error('Error creating coupon:', err);
             Swal.fire(
                 'Error',
                 'Error creating coupon, please try again',
                 'error'
-            )
+            );
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     const handleCancel = () => {
-        navigate('/coupons') // Navigate back to coupons page
-    }
+        navigate('/coupons');
+    };
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -100,6 +120,11 @@ const AddCoupon = () => {
                                     onChange={handleChange}
                                     required
                                 />
+                                {errors.couponCode && (
+                                    <p className="text-red-500 text-xs">
+                                        {errors.couponCode}
+                                    </p>
+                                )}
                             </div>
                             <div>
                                 <label className="block text-gray-700">
@@ -111,6 +136,11 @@ const AddCoupon = () => {
                                     className="w-full mt-1 p-2 border border-gray-300 rounded"
                                     value={formData.discount}
                                     onChange={handleChange}
+                                    onBlur={() => {
+                                        if (parseInt(formData.discount, 10) > 100) {
+                                            setFormData({ ...formData, discount: '100' });
+                                        }
+                                    }}
                                     required
                                 />
                                 {errors.discount && (
@@ -130,15 +160,21 @@ const AddCoupon = () => {
                                     value={formData.expiryDate}
                                     onChange={handleChange}
                                     required
+                                    min="2024-10-15"
+                                     max="2030-10-15"
                                 />
+                                {errors.expiryDate && (
+                                    <p className="text-red-500 text-xs">
+                                        {errors.expiryDate}
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
-
-                    <div className="flex gap-x-5 mt-4">
+                    <div className="flex justify-end space-x-4 mt-6">
                         <button
                             type="submit"
-                            className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                             disabled={loading}
                         >
                             {loading ? 'Creating...' : 'Create Coupon'}
@@ -146,7 +182,7 @@ const AddCoupon = () => {
                         <button
                             type="button"
                             onClick={handleCancel}
-                            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                         >
                             Cancel
                         </button>
@@ -154,7 +190,7 @@ const AddCoupon = () => {
                 </form>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default AddCoupon
+export default AddCoupon;
