@@ -33,17 +33,13 @@ import {
     startSyncDeliveryOrderStatus,
 } from './controllers/DLOcontroller.js' // Import the periodic check
 
-<<<<<<< HEAD
-=======
+
 
 //Help Routes
 import routes from './routes/Help/index.js'
 
 
-<<<<<<< Updated upstream
-=======
->>>>>>> f32c50044c74728373eafb28103c74438c160c64
->>>>>>> Stashed changes
+
 // Production-only delivery task scheduling
 if (process.env.SERVER_ENV === 'production') {
     checkForAvailableDrivers()
@@ -52,11 +48,6 @@ if (process.env.SERVER_ENV === 'production') {
     cleanUpDuplicateDeliveries()
 }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
 // Blog, Comments, and News Imports (Merged Content)
 import blogRouter from './routes/Blog.js'
 import commentRoutes from './routes/comments.js'
@@ -64,10 +55,7 @@ import newsRoutes from './routes/newsRoutes.js'
 
 
 // Error handling
-<<<<<<< Updated upstream
-=======
->>>>>>> f32c50044c74728373eafb28103c74438c160c64
->>>>>>> Stashed changes
+
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
 // Set up port from environment or default to 8000
