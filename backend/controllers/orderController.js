@@ -248,3 +248,53 @@ export const getTotalSales = async (req, res) => {
         return res.status(500).json({ message: 'Error fetching total sales' })
     }
 }
+
+
+export const getShopTotalIncome = async (req, res) => {
+    try {
+        const totalIncome = await Order.aggregate([
+            {
+                $group: {
+                    _id: '$farmer.shopId', // Group by shop ID
+                    totalIncome: { $sum: '$totalPrice' }, // Sum totalPrice for each shop
+                },
+            },
+            {
+                $lookup: {
+                    from: 'shops', // Name of your shop collection
+                    localField: '_id', // The shop ID from the previous group stage
+                    foreignField: '_id', // The shop ID in the shops collection
+                    as: 'shopDetails', // Output array field for joined shop details
+                },
+            },
+            {
+                $unwind: '$shopDetails', // Deconstruct the shopDetails array
+            },
+            {
+                $lookup: {
+                    from: 'farmers', // Assuming the farmers collection holds owner information
+                    localField: 'shopDetails.farmer', // Reference to farmer ID in the shopDetails
+                    foreignField: '_id', // The farmer ID in the farmers collection
+                    as: 'farmerDetails', // Output array field for joined farmer details
+                },
+            },
+            {
+                $unwind: '$farmerDetails', // Deconstruct the farmerDetails array
+            },
+            {
+                $project: {
+                    _id: 0, // Exclude the default _id field
+                    shopId: '$_id', // Include the shop ID
+                    shopName: '$shopDetails.name', // Include the shop name
+                    totalIncome: 1, // Include total income
+                    ownerName: '$farmerDetails.name', // Include the owner's name
+                },
+            },
+        ]);
+
+        res.status(200).json(totalIncome); // Send the total income response
+    } catch (error) {
+        console.error('Error fetching shop total income with owner:', error);
+        res.status(500).json({ message: 'Error fetching total income for shops with owner' });
+    }
+}

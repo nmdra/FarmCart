@@ -10,7 +10,7 @@ function UserAllOrders() {
     const [orders, setOrders] = useState([])
     const user = JSON.parse(localStorage.getItem('user'))
 
-    const rowsPerPage = 5
+    const rowsPerPage = 8
     const pages = Math.ceil(orders?.length / rowsPerPage)
 
     const items = useMemo(() => {

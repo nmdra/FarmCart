@@ -140,6 +140,8 @@ const Address = () => {
                             onChange={handleInputChange}
                             className="block w-full px-4 py-2 border rounded-md"
                             placeholder="Zip Code"
+                            min="10000" // Minimum value
+                            max="99999" // Maximum value
                             required
                         />
                     </div>

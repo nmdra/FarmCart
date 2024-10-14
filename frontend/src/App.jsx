@@ -12,7 +12,7 @@ import DLayout from './Layouts/DLayout'
 import SidebarLayout from './Layouts/SidebarLayout' // Layout with Sidebar
 import PrivateRoute from './Components/PrivateRoute'
 import FarmerLayout from './Layouts/FarmerLayout'
-import Farmer_sidebar from './Components/farmer/Farmer_sidebar'
+// import Farmer_sidebar from './Components/farmer/Farmer_sidebar'
 
 // Customer Pages
 import HomePage from './Pages/HomePage'
@@ -90,9 +90,27 @@ import DLViewDelivery from './Pages/delivery/DLviewDelivery' // Import the
 import OngoingDelivery from './Pages/delivery/driver/OngoingDelivery' // Import the OngoingDelivery component
 import ViewDelivery from './Pages/delivery/driver/ViewDelivery' // Import the ViewDelivery page
 import ViewDeliveries from './Pages/delivery/driver/ViewDeliveries' // Import the ViewDeliveries page
-import DLMap from './Pages/delivery/DLMap' // Import the DLMap component
+// import DLMap from './Pages/delivery/DLMap' // Import the DLMap component
 import IncomePage from './Pages/delivery/driver/incomepage' // Import the DLList component
 import StaffPrivateRoute from './Components/Admin/AstaffPrivateRoute'
+
+//Blog
+
+import Blog from './Pages/blog manage/AddBlog'
+import BlogList from './Pages/blog manage/BlogList'
+import TourismBlog from './Pages/blog manage/UserBlog'
+import IndividualBlog from './Pages/blog manage/InduvidualBlog'
+import Admin from './Pages/dashboard/Admin'
+import UpdateBlogDashboard from './Pages/dashboard/ishanka dahsbaord/UpdateBlogDashbaord'
+import SpeechGenerator from './Pages/common/speech/SpeechGenerator'
+import BlogLayout from './Layouts/BlogLayout'
+
+//Help & Support
+import HelpLayout from './Layouts/HelpLayout'
+import Help from './Pages/Help/Help'
+import SupportTicket from './Pages/Help/SupportTicket'
+import Feedback from './Pages/Help/Feedback'
+import ManageShopIncome from './Pages/Admin/ManageShopIncome'
 
 // Define all routes in a single Router
 const router = createBrowserRouter(
@@ -201,6 +219,7 @@ const router = createBrowserRouter(
                     />
                     <Route path="/coupens" element={<Coupens />} />
                     <Route path="/finance" element={<Finance />} />
+                    <Route path="/manage-shop-income" element={<ManageShopIncome />} />
                 </Route>
 
                 {/* 
@@ -273,11 +292,37 @@ const router = createBrowserRouter(
                 {/* Route for viewing a specific delivery */}
                 <Route path="/driver/deliveries" element={<ViewDeliveries />} />
                 <Route path="/driver/income" element={<IncomePage />} />
-                <Route path="/driver/map" element={<DLMap />} />
+                {/* <Route path="/driver/map" element={<DLMap />} /> */}
                 <Route path="*" element={<NotFound />} />
             </Route>
 
             {/* Add Other Roots Below */}
+
+            {/* Help & Support Routes */}
+            <Route path="/" element={<HelpLayout />}>
+                <Route path="/help" element={<Help />} />
+                <Route
+                    path="/help/support-ticket"
+                    element={<SupportTicket />}
+                />
+                <Route path="/help/feedback" element={<Feedback />} />
+                <Route path="*" element={<NotFound />} />
+            </Route>
+
+            {/*Blog route*/}
+
+            <Route path="/" element={<BlogLayout />}>
+                <Route path="/add-blog" element={<Blog />} />
+                <Route path="/blog-list" element={<BlogList />} />
+                <Route
+                    path="/update-blog/:id"
+                    element={<UpdateBlogDashboard />}
+                />
+                <Route path="/Blog" element={<TourismBlog />} />
+                <Route path="/blog/:id" element={<IndividualBlog />} />
+                <Route path="/speechgenerator" element={<SpeechGenerator />} />
+                <Route path="/blogDashboard" element={<Admin />} />
+            </Route>
         </>
     )
 )

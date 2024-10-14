@@ -12,6 +12,13 @@ services:
     deploy:
       mode: replicated
       replicas: 2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "api:5002/health"]  # Use service name instead of localhost
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    
     # ports:
     #   - "5002:5002"  # Expose the API on port 5002 for internal communication
 
@@ -35,6 +42,7 @@ services:
       - api
     networks:
       - app-network-caddy
+
 
 networks:
   app-network-caddy:

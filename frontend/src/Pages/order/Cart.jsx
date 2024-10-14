@@ -83,13 +83,13 @@ const Cart = () => {
         <div>
             <ProgressBar currentStep={1} />
             <section className="bg-white py-2 md:py-4 antialiased">
-                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 ml-10 p-4 bg-gray-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl">
+                <div className="mx-auto max-w-screen-xl px-4 2xl:px-0 border-gray-300 mb-2 p-4 bg-gray-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <h2 className="text-xl font-semibold text-gray-900  sm:text-2xl ml-5">
                         My Shopping Cart
                     </h2>
 
                     <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
-                        <table className="w-2/3 mr-4 table-auto border-collapse">
+                        <table className="w-2/3 mr-4 table-auto border-collapse ml-5">
                             <thead>
                                 <tr className="border-b">
                                     <th className="text-left py-4">Product</th>
@@ -263,11 +263,12 @@ const Cart = () => {
                                         <input
                                             type="text"
                                             id="voucher"
-                                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 "
-                                            placeholder=""
+                                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-green-500 focus:ring-green-500 "
+                                            placeholder="Enter code"
                                             onChange={(e) =>
                                                 setCoupon(e.target.value)
                                             }
+                                            autocomplete="off"
                                         />
                                     </div>
                                     <button

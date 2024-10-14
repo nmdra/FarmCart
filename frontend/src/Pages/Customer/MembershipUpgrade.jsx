@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { HiOutlineCheckBadge, HiArrowRight } from 'react-icons/hi2'
-import Breadcrumbs from '../../Components/Breadcrumbs'
+// import Breadcrumbs from '../../Components/Breadcrumbs'
 
 const MembershipUpgrade = () => {
     const [billingCycle, setBillingCycle] = useState('monthly')
@@ -36,7 +36,7 @@ const MembershipUpgrade = () => {
 
     return (
         <section className="text-gray-600 body-font overflow-hidden bg-gray-100 px-4">
-            <Breadcrumbs /> {/* Breadcrumbs at the top */}
+            {/* <Breadcrumbs /> Breadcrumbs at the top */}
             {/* Conditionally Render Membership Banner */}
             <div className="flex w-fit items-center max-md:flex-col gap-6 animated-background bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3.5  mx-6 rounded font-[sans-serif] mt-4 shadow-sm">
                 <p className="text-base flex-1 max-md:text-center">
