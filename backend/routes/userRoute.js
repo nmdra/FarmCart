@@ -1,6 +1,7 @@
 import express from 'express'
 import {
     authUser,
+    deleteUserAccount,
     forgotPassword,
     getUserById,
     logoutUser,
@@ -29,6 +30,7 @@ router.route('/upgrade').post(protect, upgradeMembership)
 router.route('/paymentIntent').post(protect, paymentUser)
 router.route('/validate-password').post(protect, validatePassword) // Route to validate the current password
 router.route('/update-password').put(protect, updatePassword) // Route to update the password
+router.route('/').delete(protect, deleteUserAccount)
 
 router.route('/:id').get(protect, getUserById)
 
