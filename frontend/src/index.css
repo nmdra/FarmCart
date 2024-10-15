@@ -19,3 +19,9 @@
         background-position: 100% 50%;
     }
 }
+
+@layer base {
+    img {
+        display: initial;
+    }
+}
