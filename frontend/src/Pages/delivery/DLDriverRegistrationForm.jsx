@@ -388,6 +388,16 @@ const RegisterDriverForm = () => {
                                     type="date"
                                     name="dateOfBirth"
                                     value={formData.dateOfBirth}
+                                    max={
+                                        new Date(
+                                            new Date().setFullYear(
+                                                new Date().getFullYear() - 18
+                                            )
+                                        )
+                                            .toISOString()
+                                            .split('T')[0]
+                                    } // Maximum date set to 18 years ago
+                                    placeholder="Date of Birth"
                                     onChange={handleInputChange}
                                     className="mt-1 block w-full px-4 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-400"
                                     required
