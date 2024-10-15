@@ -293,7 +293,7 @@ const Register = () => {
                                 value={formData.BirthDay}
                                 onChange={handleInputChange}
                                 required
-                                max={new Date().toISOString().split('T')[0]} // Ensures only past dates can be selected
+                                max="2005-01-01" // Ensures only past dates can be selected
                                 min="1930-01-01" // Ensures the earliest selectable date is 1930-01-01
                                 className={
                                     'w-full mt-1 p-2 border border-gray-300 rounded bg-white text-black'
