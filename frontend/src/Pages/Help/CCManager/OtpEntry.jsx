@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 const OtpEntry = () => {
     const [otp, setOtp] = useState('')
     const navigate = useNavigate() // To programmatically navigate after OTP verification
-    const VERIFY_OTP_URL = `${import.meta.env.VITE_API_URL}/help/auth/verify-email`
+    const VERIFY_OTP_URL = `/api/help/auth/verify-email`
 
     const handleChange = (e) => {
         setOtp(e.target.value)

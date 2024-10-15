@@ -25,10 +25,7 @@ const SignupForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_API_URL}/help/auth/signup`,
-                formData
-            )
+            const response = await axios.post(`/api/help/auth/signup`, formData)
 
             console.log('Signup successful:', response.data)
             toast.success(

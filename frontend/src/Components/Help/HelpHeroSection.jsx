@@ -17,8 +17,8 @@ const HelpHeroSection = () => {
                             New
                         </span>{' '}
                         <span className="text-sm font-medium text-black">
-                            Need Instant Help? 🚀 Our Live Chat is Coming Soon
-                            to Assist You in Real-Time! 👋
+                            Need Assistance? We’re Here to Help! Start Live Chat
+                            👋
                         </span>
                         <svg
                             className="w-5 h-5 ml-2"

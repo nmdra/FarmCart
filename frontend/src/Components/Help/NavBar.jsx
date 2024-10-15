@@ -6,8 +6,7 @@ const NavBar = () => {
         <div className="sticky top-0 z-50 backdrop-blur-md bg-white/60 ">
             <div className="bg-[#b8f724] p-2">
                 <h1 className="max-w-2xl px-2 py-3 mx-auto text-sm font-semibold text-center">
-                    Need Instant Help? 🚀 Our Live Chat is Coming Soon to Assist
-                    You in Real-Time! 👋
+                    Need Assistance? 🚀 We’re Here to Help! Start Live Chat 👋
                 </h1>
             </div>
             <div className="px-10 py-6 border-b">

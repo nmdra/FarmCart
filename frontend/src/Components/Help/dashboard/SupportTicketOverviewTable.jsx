@@ -9,9 +9,7 @@ const SupportTicketOverviewTable = () => {
     useEffect(() => {
         const fetchTickets = async () => {
             try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/help/support-tickets`
-                )
+                const response = await axios.get(`/api/help/support-tickets`)
                 console.log('Fetched Tickets:', response.data) // Log fetched tickets
                 setTickets(response.data)
             } catch (err) {
