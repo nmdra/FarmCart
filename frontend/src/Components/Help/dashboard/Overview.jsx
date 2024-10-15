@@ -34,7 +34,7 @@ const Overview = () => {
                         <div className="flex items-end justify-end">
                             <button className=" bg-[#99dd05] text-black text-xs p-3 m-2 rounded-md items-end ">
                                 <Link to="/help/dashboard/feedbacks">
-                                    View All Feedbacks
+                                    View All Tickets
                                 </Link>
                             </button>
                         </div>
