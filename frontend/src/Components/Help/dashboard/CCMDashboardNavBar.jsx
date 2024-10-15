@@ -22,10 +22,6 @@ const NavLinks = [
         title: 'Knowledge Base',
         to: 'https://medium.com/@aweesha',
     },
-    {
-        title: 'CCM Profile',
-        to: '/help/dashboard/profile',
-    },
 ]
 
 const CCMDashboardNavBar = () => {

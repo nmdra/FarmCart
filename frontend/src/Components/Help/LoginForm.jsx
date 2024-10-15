@@ -1,11 +1,21 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import axios from 'axios'
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     })
+
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    // Base API URL from environment variable
+    const API_URL = import.meta.env.VITE_API_URL
+
+    // Use navigate to redirect the user
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -15,10 +25,30 @@ const LoginForm = () => {
         }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // Handle form submission logic here
-        console.log('Form submitted:', formData)
+        setLoading(true)
+        setError('')
+
+        try {
+            // Use the API_URL from the environment variable
+            const response = await axios.post(
+                `${API_URL}/help/auth/login`,
+                formData
+            )
+            console.log('Login successful:', response.data)
+
+            // Store the token in localStorage
+            localStorage.setItem('token', response.data.token)
+
+            // Redirect to dashboard after successful login
+            navigate('/help/dashboard')
+        } catch (err) {
+            console.error('Login failed:', err)
+            setError('Invalid email or password')
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -38,6 +68,9 @@ const LoginForm = () => {
                     </span>
                     .
                 </p>
+
+                {error && <p className="text-center text-red-500">{error}</p>}
+
                 <form onSubmit={handleSubmit}>
                     {/* Email */}
                     <div className="flex flex-col mb-4">
@@ -70,10 +103,12 @@ const LoginForm = () => {
                     <button
                         type="submit"
                         className="w-full bg-[#99dd05] text-black rounded p-2 hover:bg-[#5a9100] transition"
+                        disabled={loading}
                     >
-                        Log In
+                        {loading ? 'Logging in...' : 'Log In'}
                     </button>
                 </form>
+
                 {/* Need an account section */}
                 <div className="mt-4 text-center">
                     <p>

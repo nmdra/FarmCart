@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import html2canvas from 'html2canvas'
-import jsPDF from 'jspdf'
-import logo from '../../../../public/logoIcon.png' // Make sure this path is correct
+// import html2canvas from 'html2canvas'
+// import html2pdf from 'html2pdf.js'
+// import jsPDF from 'jspdf'
+// import logo from '../../../../public/logoIcon.png' // Make sure this path is correct
 
 const SupportTicketFullViewTable = () => {
     const [tickets, setTickets] = useState([])
@@ -46,53 +47,58 @@ const SupportTicketFullViewTable = () => {
             ticket.subject.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
+    //Generate PDF
+    // async function generatePDF() {
+    //     const element = document.querySelector('#table-to-pdf')
+    //     html2pdf(element)
+    // }
     // Generate PDF Report
-    const generateReport = () => {
-        const input = document.getElementById('table-to-pdf')
+    // const generateReport = () => {
+    //     const input = document.getElementById('table-to-pdf')
 
-        html2canvas(input).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png')
-            const pdf = new jsPDF()
+    //     html2canvas(input).then((canvas) => {
+    //         const imgData = canvas.toDataURL('image/png')
+    //         const pdf = new jsPDF()
 
-            // Load the logo and add it to the PDF
-            const logoImage = new Image()
-            logoImage.src = logo // Use the imported logo
+    //         // Load the logo and add it to the PDF
+    //         const logoImage = new Image()
+    //         logoImage.src = logo // Use the imported logo
 
-            logoImage.onload = () => {
-                pdf.addImage(logoImage, 'PNG', 10, 10, 50, 20) // Adjust position and size as needed
+    //         logoImage.onload = () => {
+    //             pdf.addImage(logoImage, 'PNG', 10, 10, 50, 20) // Adjust position and size as needed
 
-                const imgWidth = 190
-                const pageHeight = pdf.internal.pageSize.height
-                const imgHeight = (canvas.height * imgWidth) / canvas.width
-                let heightLeft = imgHeight
-                let position = 30 // Adjust to position below logo
+    //             const imgWidth = 190
+    //             const pageHeight = pdf.internal.pageSize.height
+    //             const imgHeight = (canvas.height * imgWidth) / canvas.width
+    //             let heightLeft = imgHeight
+    //             let position = 30 // Adjust to position below logo
 
-                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
-                heightLeft -= pageHeight
+    //             pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
+    //             heightLeft -= pageHeight
 
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight
-                    pdf.addPage()
-                    pdf.addImage(logoImage, 'PNG', 10, 10, 50, 50) // Add logo to each page
-                    pdf.addImage(
-                        imgData,
-                        'PNG',
-                        10,
-                        position,
-                        imgWidth,
-                        imgHeight
-                    )
-                    heightLeft -= pageHeight
-                }
+    //             while (heightLeft >= 0) {
+    //                 position = heightLeft - imgHeight
+    //                 pdf.addPage()
+    //                 pdf.addImage(logoImage, 'PNG', 10, 10, 50, 50) // Add logo to each page
+    //                 pdf.addImage(
+    //                     imgData,
+    //                     'PNG',
+    //                     10,
+    //                     position,
+    //                     imgWidth,
+    //                     imgHeight
+    //                 )
+    //                 heightLeft -= pageHeight
+    //             }
 
-                pdf.save('support_ticket_report.pdf')
-            }
+    //             pdf.save('support_ticket_report.pdf')
+    //         }
 
-            logoImage.onerror = () => {
-                console.error('Failed to load logo image.')
-            }
-        })
-    }
+    //         logoImage.onerror = () => {
+    //             console.error('Failed to load logo image.')
+    //         }
+    //     })
+    // }
 
     // Loading and Error States
     if (loading) {
@@ -114,16 +120,22 @@ const SupportTicketFullViewTable = () => {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <button
+                {/* <button
                     onClick={generateReport}
                     className="px-4 py-2 ml-4 text-white bg-indigo-600 rounded hover:bg-indigo-700"
                 >
                     Generate Report
-                </button>
+                </button> */}
+                {/* <button
+                    onClick={generatePDF}
+                    className="px-4 py-2 ml-4 text-white bg-indigo-600 rounded hover:bg-indigo-700"
+                >
+                    Generate PDF
+                </button> */}
             </div>
 
             {/* Tickets Table */}
-            <div className="p-3" id="table-to-pdf">
+            <div className="p-3 text-xs" id="table-to-pdf">
                 <table className="min-w-full p-10 bg-white border border-gray-200 rounded-xl">
                     <thead className="bg-gray-200">
                         <tr>

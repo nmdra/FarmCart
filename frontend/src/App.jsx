@@ -110,7 +110,6 @@ import HelpLayout from './Layouts/HelpLayout'
 import Help from './Pages/Help/Help'
 import SupportTicket from './Pages/Help/SupportTicket'
 import Feedback from './Pages/Help/Feedback'
-import ManageShopIncome from './Pages/Admin/ManageShopIncome'
 import Signup from './Pages/Help/CCManager/Signup'
 import LogIn from './Pages/Help/CCManager/Login'
 import OtpEntry from './Pages/Help/CCManager/OtpEntry'
@@ -121,6 +120,7 @@ import FeedbackDashboard from './Pages/Help/CCManager/FeedbackDashboard'
 import Calendly from './Components/Help/Calendly'
 import LoginForm from './Components/Help/LoginForm'
 import SignupForm from './Components/Help/SignupForm'
+import SupportTicketPDFView from './Pages/Help/SupportTicketPDFView'
 // import CCMProfile from './Pages/Help/CCManager/CCMProfile'
 
 // Define all routes in a single Router
@@ -230,10 +230,6 @@ const router = createBrowserRouter(
                     />
                     <Route path="/coupens" element={<Coupens />} />
                     <Route path="/finance" element={<Finance />} />
-                    <Route
-                        path="/manage-shop-income"
-                        element={<ManageShopIncome />}
-                    />
                 </Route>
 
                 {/* 
@@ -335,6 +331,10 @@ const router = createBrowserRouter(
                 />
                 <Route path="/help/login" element={<LoginForm />} />
                 <Route path="/help/signup" element={<SignupForm />} />
+                <Route
+                    path="/help/dashboard/supportticketfullview"
+                    element={<SupportTicketPDFView />}
+                />
                 <Route
                     path="/help/dashboard/support-tickets"
                     element={<SupportTicketDashboardPage />}
