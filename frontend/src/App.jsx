@@ -121,6 +121,7 @@ import Calendly from './Components/Help/Calendly'
 import LoginForm from './Components/Help/LoginForm'
 import SignupForm from './Components/Help/SignupForm'
 import SupportTicketPDFView from './Pages/Help/SupportTicketPDFView'
+import ManageShopIncome from './Pages/Admin/ManageShopIncome'
 // import CCMProfile from './Pages/Help/CCManager/CCMProfile'
 
 // Define all routes in a single Router
@@ -230,6 +231,7 @@ const router = createBrowserRouter(
                     />
                     <Route path="/coupens" element={<Coupens />} />
                     <Route path="/finance" element={<Finance />} />
+                    <Route path="/manage-shop-income" element={<ManageShopIncome />} />
                 </Route>
 
                 {/* 
