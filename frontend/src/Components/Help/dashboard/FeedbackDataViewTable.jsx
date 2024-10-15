@@ -14,9 +14,7 @@ const FeedbackDataViewTable = () => {
     useEffect(() => {
         const fetchFeedbacks = async () => {
             try {
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/help/feedback`
-                )
+                const response = await fetch(`/api/help/feedback`)
                 if (!response.ok) {
                     throw new Error('Failed to fetch feedbacks')
                 }

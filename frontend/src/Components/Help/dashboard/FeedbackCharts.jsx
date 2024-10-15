@@ -9,9 +9,7 @@ const FeedbackCharts = () => {
     useEffect(() => {
         const fetchFeedbacks = async () => {
             try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/help/feedback`
-                )
+                const response = await axios.get(`/api/help/feedback`)
                 setFeedbacks(response.data)
             } catch (err) {
                 setError(err.message)

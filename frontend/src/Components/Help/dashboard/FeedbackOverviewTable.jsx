@@ -9,9 +9,7 @@ const FeedbackOverviewTable = () => {
     useEffect(() => {
         const fetchFeedbacks = async () => {
             try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_API_URL}/help/feedback`
-                ) // Use the environment variable here
+                const response = await axios.get(`/api/help/feedback`) // Use the environment variable here
                 setFeedbacks(response.data)
             } catch (err) {
                 setError(err.message)
