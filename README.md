@@ -5,8 +5,7 @@
 [![Uptime Status](https://status.nimendra.xyz/api/badge/8/status)](https://status.nimendra.xyz/status/farmcart) [![Uptime Status](https://status.nimendra.xyz/api/badge/8/uptime)](https://status.nimendra.xyz/status/farmcart)
 
 > [!TIP] 
-> **Website**: [farmcart.com](https://farmcart.nimendra.xyz/) \
-> **Website Status**: [status.farmcart.com](https://status.nimendra.xyz/status/farmcart)
+> **Website**: [farmcart.com](https://farmcart.nimendra.xyz/) ❌ \
 > 
 
 ## Overview
