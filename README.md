@@ -2,10 +2,8 @@
 
 [![Banner](https://github.com/user-attachments/assets/397fa451-14bf-4d31-bf53-28ab9b685e64)](https://farmcart.nimendra.xyz/) 
 
-[![Uptime Status](https://status.nimendra.xyz/api/badge/8/status)](https://status.nimendra.xyz/status/farmcart) [![Uptime Status](https://status.nimendra.xyz/api/badge/8/uptime)](https://status.nimendra.xyz/status/farmcart)
-
 > [!TIP] 
-> **Website**: [farmcart.com](https://farmcart.nimendra.xyz/) ❌ \
+> **Website**: [farmcart.com](https://farmcart.nimendra.xyz/) ❌
 > 
 
 ## Overview
@@ -69,12 +67,8 @@
 
 ## System Design Diagram
 
-<details>
-<summary>Click Me</summary>
 
 [![Diagram-2](https://github.com/user-attachments/assets/bd6483e1-58c5-4ec0-9e02-f56f7f8feb78)](https://excalidraw.com/#json=2FhyHBhIRC7GNhxnmV4U6,VCwEk9O0trP7QRRWLxu6OA)
-
-</details>
 
 
 ---
