@@ -258,7 +258,8 @@ const Cart = () => {
                                             className="mb-2 block text-sm font-medium text-gray-900 "
                                         >
                                             {' '}
-                                            Do you have a voucher or gift card?{' '}
+                                            Do you have a voucher or gift
+                                            card?{' '}
                                         </label>
                                         <input
                                             type="text"
